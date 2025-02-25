@@ -1,10 +1,10 @@
 {
   "name": "howtoeat_frontend",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "howToEat FE server",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js"
   },
   "author": "",
   "license": "ISC",
