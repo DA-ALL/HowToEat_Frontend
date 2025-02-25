@@ -1,0 +1,8 @@
+# Ignore cache folder
+.cache/
+
+# Ignore distribution folder
+dist/
+
+# Ignore node_modules folder
+node_modules/
