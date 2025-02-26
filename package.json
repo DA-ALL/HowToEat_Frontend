@@ -4,7 +4,8 @@
   "description": "howToEat FE server",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "sldjaak": "node src/server.js"
   },
   "author": "",
   "license": "ISC",
