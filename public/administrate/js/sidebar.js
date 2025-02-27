@@ -2,12 +2,12 @@ $(document).ready(function() {
     // 사이드바 HTML 삽입
     $('#sidebar').html(`
         <div class="sidebar">
-            <ul>
-                <li><a href="/admin/dashboard" class="nav-link" data-page="dashboard">대시보드</a></li>
-                <li><a href="/admin/user-management" class="nav-link" data-page="user-management">유저관리</a></li>
-                <li><a href="/admin/food-management" class="nav-link" data-page="food-management">음식관리</a></li>
-                <li><a href="/admin/notice" class="nav-link" data-page="notice">공지사항</a></li>
-                <li><a href="/admin/admin-management" class="nav-link" data-page="admin-management">어드민관리</a></li>
+            <div class="sidebar-item-wrapper>
+                <div class="nav-link" data-page="dashboard">대시보드</div>
+                <div class="nav-link" data-page="user-management">유저관리</div>
+                <div class="nav-link" data-page="food-management">음식관리</div>
+                <div href="/admin/notice" class="nav-link" data-page="notice">공지사항</div>
+                <div href="/admin/admin-management" class="nav-link" data-page="admin-management">어드민관리</div>
             </ul>
         </div>
     `);
