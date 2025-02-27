@@ -26,6 +26,10 @@ app.get('/admin/food-management', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
+app.get('/admin/report', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
+});
+
 app.get('/admin/notice', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
