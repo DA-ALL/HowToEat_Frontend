@@ -1,10 +1,10 @@
 #profilebar {
     display: flex;
     justify-content: flex-end;
-    flex: 1;
     height: 50px;
     padding: 12px 60px;
     border-bottom: 1px solid #E7E7E7;
+    background-color: #ffffff;
 }
 
 #profilebar .profile-wrapper{

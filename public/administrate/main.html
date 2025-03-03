@@ -7,10 +7,99 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/administrate/js/sidebar.js" defer></script>
     <script src="/administrate/js/profilebar.js" defer></script>
+    <script src="/administrate/js/title.js" defer></script>
     <link rel="stylesheet" href="/administrate/css/sidebar.css">
     <link rel="stylesheet" href="/administrate/css/main.css">
     <link rel="stylesheet" href="/administrate/css/profilebar.css">
+    <link rel="stylesheet" href="/administrate/css/title.css">
 </head>
+
+<style>
+    .stat-card-wrapper {
+        display: flex;
+        padding: 0px 30px;
+        gap: 30px;
+    }
+
+    .stat-card-wrapper #stat-card{
+        width: 246px;
+        height: 145px;
+        border-radius: 14px;
+        display: flex;
+        justify-content: space-between;
+        padding: 16px;
+        background-color: white;
+        box-shadow: 6px 6px 54px 0px rgba(0, 0, 0, 0.05);
+    }
+    .stat-card-wrapper #stat-card img{
+        width: 60px;
+        height: 60px;
+    }
+
+    .stat-card-wrapper #stat-card .card-content-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        
+        gap: 19px;
+    }
+
+    .stat-card-wrapper #stat-card .card-content-wrapper .title-card{
+        color: #202224;
+        font-family: Pretendard;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .stat-card-wrapper #stat-card .card-content-wrapper .value-card{
+        color: #202224;
+        font-family: Pretendard;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+    }
+    .stat-card-wrapper #stat-card .card-content-wrapper .trend-difference-wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .stat-card-wrapper #stat-card .card-content-wrapper .trend-difference-wrapper img{
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+    }
+    .stat-card-wrapper #stat-card .card-content-wrapper .trend-difference-wrapper .trend-difference-value{
+        color: #F24545;
+        font-family: Pretendard;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+    .stat-card-wrapper #stat-card .card-content-wrapper .trend-difference-wrapper .trend-difference-unit{
+        color: #F24545;
+        font-family: Pretendard;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-right: 8px;
+    }
+    .stat-card-wrapper #stat-card .card-content-wrapper .trend-difference-wrapper .trend-difference-comparison{
+        color: #12163C;
+        font-family: Pretendard;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+</style>
 
 <body>
     <div id="main">
@@ -18,8 +107,27 @@
 
         <div class="content-container"">
             <div id="profilebar"></div>
-            
+
+            <div id="title"></div>
+
+            <div class="stat-card-wrapper">
+                <div id="stat-card">
+                    <div class="card-content-wrapper">
+                        <div class="title-card">전체 회원수</div>
+                        <div class="value-card">423</div>
+                        <div class="trend-difference-wrapper">
+                            <img src="/administrate/images/icon_trending_up.png">
+                            <div class="trend-difference-value">13</div>
+                            <div class="trend-difference-unit">명</div>
+                            <div class="trend-difference-comparison">어제보다</div>
+                        </div>
+                    </div>
+                    <img src="/administrate/images/icon_users.png">
+                </div>
+            </div>
         </div>
+
+        
     </div>
 </body>
 
