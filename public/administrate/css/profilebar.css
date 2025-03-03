@@ -1,0 +1,50 @@
+#profilebar {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    height: 50px;
+    padding: 12px 60px;
+    border-bottom: 1px solid #E7E7E7;
+}
+
+#profilebar .profile-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 14px;        
+}
+
+#profilebar .profile-wrapper .image-profile { 
+    width: 52px;
+    height: 52px;
+    border-radius: 50%; 
+    object-fit: cover; /* 이미지 꽉 차게 */
+}
+
+#profilebar .profile-wrapper .profile-text-wrapper { 
+    display: flex;
+    flex-direction: column;
+    margin-right: 21px;
+}
+
+#profilebar .profile-wrapper .profile-text-wrapper .label-name{ 
+    color: #404040;
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    
+}
+
+#profilebar .profile-wrapper .profile-text-wrapper .label-role{ 
+    color: #565656;
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+#profilebar .profile-wrapper .button-profile { 
+    width: 18px;
+    height: 18px;
+}

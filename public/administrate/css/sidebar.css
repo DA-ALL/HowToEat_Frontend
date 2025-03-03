@@ -17,7 +17,9 @@ html, body {
     display: flex;
     flex-direction: column;
     width: 240px;
+    height: 100%;
     gap: 10px;
+    border-right: 1px solid #E7E7E7;
 }
 
 /* 로고 */
