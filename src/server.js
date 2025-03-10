@@ -26,6 +26,7 @@ app.get('/admin/food-management', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
+
 app.get('/admin/notice', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
@@ -33,7 +34,6 @@ app.get('/admin/notice', (req, res) => {
 app.get('/admin/admin-management', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
-
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
