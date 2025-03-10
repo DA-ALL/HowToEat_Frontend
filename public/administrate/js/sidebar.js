@@ -87,7 +87,8 @@ $(document).ready(function () {
     // 뒤로가기/앞으로가기 처리 (popstate 이벤트)
     window.onpopstate = function (event) {
         if (event.state && event.state.page) {
-            loadPageContent(event.state.page);
+            loadPageContent(event.state.page); // 콘텐츠 변경
+            updateActiveState(event.state.page); // 사이드바 active 업데이트
         }
     };
 
