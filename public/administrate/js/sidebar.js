@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // 사이드바 HTML 삽입
     $('#sidebar').html(`
         <div class="sidebar-container">
@@ -54,19 +54,13 @@ $(document).ready(function() {
         </div>
     `);
 
-    // 현재 URL에서 활성화할 페이지 가져오기
-    function getCurrentPage() {
-        return window.location.pathname.split("/").pop(); // 예: "/admin/dashboard" -> "dashboard"
-    }
-
-    // 사이드바 선택 상태 업데이트
-    function updateActiveState(page) {
-        $(".nav-link").removeClass("active"); // 기존 active 제거
-        $(`.nav-link[data-page="${page}"]`).addClass("active"); // 새로 선택된 요소에 active 추가
-    }
+    // 페이지 로드 시 현재 URL 기준으로 active 상태 설정
+    const currentPage = getCurrentPage();
+    updateActiveState(currentPage);
+    loadPageContent(currentPage);
 
     // 링크 클릭 이벤트 설정 (새로고침 없이 이동)
-    $('.nav-link').on('click', function(event) {
+    $('.nav-link').on('click', function (event) {
         event.preventDefault(); // 기본 이동 방지
         const page = $(this).data('page'); // data-page 값 가져오기
         const newUrl = `/admin/${page}`; // 새로운 URL 생성
@@ -77,14 +71,23 @@ $(document).ready(function() {
         // 콘텐츠 변경 (AJAX로 해당 페이지 내용 불러오기)
         loadPageContent(page);
         updateActiveState(page); // active 상태 업데이트
+
+        // 모든 nav-link의 이미지 원래대로 변경
+        $('.nav-link .logo-dashboard').each(function () {
+            $(this).attr('src', '/administrate/images/icon_dashboard.png');
+        });
+
+        // 클릭한 요소의 이미지 변경
+        $(this).find('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
     });
 
     // 뒤로가기/앞으로가기 처리 (popstate 이벤트)
-    window.onpopstate = function(event) {
+    window.onpopstate = function (event) {
         if (event.state && event.state.page) {
             loadPageContent(event.state.page);
         }
     };
+
 
     // 페이지 콘텐츠 불러오는 함수
     function loadPageContent(page) {
@@ -92,8 +95,14 @@ $(document).ready(function() {
     }
 
 
-    // 페이지 로드 시 현재 URL 기준으로 active 상태 설정
-    const currentPage = getCurrentPage();
-    updateActiveState(currentPage);
-    loadPageContent(currentPage);
+    // 현재 페이지의 맨뒤에 url을 가져오기
+    function getCurrentPage() {
+        return window.location.pathname.split("/").pop(); // 예: "/admin/dashboard" -> "dashboard"
+    }
+
+    // 사이드바 선택 상태 업데이트
+    function updateActiveState(page) {
+        $(".nav-link").removeClass("active"); // 기존 active 제거
+        $(`.nav-link[data-page="${page}"]`).addClass("active"); // 새로 선택된 요소에 active 추가
+    }
 });

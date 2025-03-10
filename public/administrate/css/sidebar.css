@@ -56,6 +56,10 @@ html, body {
     border-radius: 6px;
 }
 
+#sidebar .sidebar-item-wrapper .sidebar-item:hover {
+    background-color: #FFEBEB;
+}
+
 /* 선택된 아이템 스타일 */
 #sidebar .sidebar-item-wrapper.active .point-rect {
     background: var(--Foundation-Red-red-600, #D67979);
