@@ -1,25 +1,48 @@
-$(document).ready(function() {
-    
-    //TODO: url 변경될때마다 실행시키는것도 해야되는데 그건 다른게 뭔가 있을듯?
+$(document).ready(function () {
     function updatePageTitle() {
-        const pathSegments = window.location.pathname.split("/");
-        const lastSegment = pathSegments[pathSegments.length - 1]; // 마지막 경로 추출
-        let titleText = "";
+        const path = window.location.pathname;
+        let titleText = "Unknown Page"; // 기본값 설정
 
-        switch (lastSegment) {
-            case "dashboard":
-                titleText = "Dashboard";
-                break;
-            case "user-management":
-                titleText = "User Management";
-                break;
-            default:
-                titleText = "Unknown Page"; // 기본값 설정 (예: 예외 처리)
-                break;
+        if (path.includes("dashboard")) {
+            titleText = "Dashboard";
+        } else if (path.includes("user-management")) {
+            titleText = "User Management";
+        }
+        else if (path.includes("food-management")) {
+            titleText = "Food Management";
+        }
+        else if (path.includes("notice")) {
+            titleText = "Notice";
+        }
+        else if (path.includes("admin-management")) {
+            titleText = "Admin Management";
         }
 
         $('#title').text(titleText);
     }
 
+    // 초기 실행
     updatePageTitle();
+
+    // 뒤로 가기, 앞으로 가기 등의 이벤트 감지
+    window.addEventListener("popstate", updatePageTitle);
+
+    // pushState와 replaceState 이벤트를 감지하도록 설정
+    (function () {
+        const originalPushState = history.pushState;
+        const originalReplaceState = history.replaceState;
+
+        history.pushState = function () {
+            originalPushState.apply(this, arguments);
+            window.dispatchEvent(new Event("pushstate"));
+        };
+
+        history.replaceState = function () {
+            originalReplaceState.apply(this, arguments);
+            window.dispatchEvent(new Event("replacestate"));
+        };
+
+        window.addEventListener("pushstate", updatePageTitle);
+        window.addEventListener("replacestate", updatePageTitle);
+    })();
 });
