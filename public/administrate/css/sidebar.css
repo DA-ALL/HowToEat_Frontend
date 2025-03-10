@@ -71,39 +71,25 @@ html, body {
 
 #sidebar .sidebar-item-wrapper .sidebar-item .label{
     color: #202224;
-    font-family: Pretendard;
     font-size: 16px;
-    font-style: normal;
     font-weight: 500;
-    line-height: normal;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
 }
 
 #sidebar .sidebar-item-wrapper.active .label {
     color: white;
+    font-weight: 700;
 }
+
+
 /* 아이콘들 */
-
-
-#sidebar .sidebar-item-wrapper .logo-dashboard{
-    width: 14px;
-}
-#sidebar .sidebar-item-wrapper .logo-user{
-    width: 14px;
-}
-#sidebar .sidebar-item-wrapper .logo-food{
-    width: 15px;
-}
-#sidebar .sidebar-item-wrapper .logo-report{
-    width: 14px;
-}
-#sidebar .sidebar-item-wrapper .logo-notice{
-    width: 14px;
-}
-#sidebar .sidebar-item-wrapper .logo-admin{
-    width: 14px;
+#sidebar .sidebar-item-wrapper .icon-sidebar{
+    display: flex;
 }
 
+#sidebar .sidebar-item-wrapper .icon-sidebar img{
+    width: 24px;
+}
 
 /* 디바이더 */
 #sidebar .sidebar-item-divider {
