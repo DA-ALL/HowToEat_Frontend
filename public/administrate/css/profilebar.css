@@ -1,7 +1,7 @@
 #profilebar {
     display: flex;
     justify-content: flex-end;
-    height: 50px;
+    height: 44px;
     padding: 12px 60px;
     border-bottom: 1px solid #E7E7E7;
     background-color: #ffffff;
@@ -10,25 +10,25 @@
 #profilebar .profile-wrapper{
     display: flex;
     align-items: center;
-    gap: 14px;        
+    /* gap: 14px;         */
 }
 
 #profilebar .profile-wrapper .image-profile { 
-    width: 52px;
-    height: 52px;
-    border-radius: 50%; 
-    object-fit: cover; /* 이미지 꽉 차게 */
+    width: 44px;
+    border-radius: 50%;
+    object-fit: cover; 
+    margin-right: 14px;
 }
 
 #profilebar .profile-wrapper .profile-text-wrapper { 
     display: flex;
     flex-direction: column;
-    margin-right: 21px;
+    margin-right: 35px;
 }
 
 #profilebar .profile-wrapper .profile-text-wrapper .label-name{ 
     color: #404040;
-    font-family: "Nunito Sans";
+    font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
