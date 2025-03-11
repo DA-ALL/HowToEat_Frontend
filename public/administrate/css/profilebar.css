@@ -3,7 +3,7 @@
     justify-content: flex-end;
     height: 44px;
     padding: 12px 60px;
-    border-bottom: 1px solid var(--gray75);
+    border-bottom: 1px solid #E7E7E7;
     background-color: var(--white300);
 }
 

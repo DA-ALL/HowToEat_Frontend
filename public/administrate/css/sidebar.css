@@ -4,7 +4,7 @@
     width: 240px;
     height: 100%;
     gap: 10px;
-    border-right: 1px solid var(--gray75);
+    border-right: 1px solid #E7E7E7;
 }
 
 /* 로고 */
@@ -83,6 +83,6 @@
     width: 192px;
     height: 1px;
     margin: 9px 18px;
-    background: var(--gray75);
+    background: #E7E7E7;
 }
 
