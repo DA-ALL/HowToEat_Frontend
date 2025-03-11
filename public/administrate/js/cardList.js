@@ -44,13 +44,21 @@ $(document).ready(function () {
                 { title: "전체 음식", value: 15293, trend: 1.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/icon_users.png", trendIcon: "/administrate/images/icon_trending_up.png", type: "trend" },
                 { title: "전체 식단 등록수", value: 10323, trend: 0, unit: "", comparison: "", icon: "/administrate/images/icon_users.png", trendIcon: "", type: "" },
             ];
+        } else if (path.includes("user-management")) {
+            return [
+                { title: "전체 회원수", value: 423, trend: 13, unit: "명", comparison: "어제보다", icon: "/administrate/images/icon_users.png", trendIcon: "/administrate/images/icon_trending_up.png", type: "trend" },
+                { title: "남자 회원수", value: 14, trend: 4.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/icon_users.png", trendIcon: "/administrate/images/icon_trending_up.png", type: "trend" },
+                { title: "여자 회원수", value: 17, trend: 1.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/icon_users.png", trendIcon: "/administrate/images/icon_trending_up.png", type: "trend" },
+                { title: "넥스트짐 회원수", value: 5, trend: 0, unit: "", comparison: "", icon: "/administrate/images/icon_users.png", trendIcon: "", type: "" },
+            ];
         } else if (path.includes("food-management")) {
             return [
                 { title: "전체 음식", value: 120, trend: 8, unit: "개", comparison: "어제보다", icon: "/administrate/images/icon_users.png", trendIcon: "/administrate/images/icon_trending_up.png", type: "trend" },
                 { title: "관리자 음식 DB", value: 45, trend: 2, unit: "개", comparison: "어제보다", icon: "/administrate/images/icon_users.png", trendIcon: "/administrate/images/icon_trending_up.png", type: "trend" },
                 { title: "유저 레시피", value: 75, trend: 6, unit: "개", comparison: "어제보다", icon: "/administrate/images/icon_users.png", trendIcon: "/administrate/images/icon_trending_up.png", type: "trend" },
             ];
-        } else {
+        } 
+        else {
             return [];
         }
     }
