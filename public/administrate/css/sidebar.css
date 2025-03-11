@@ -1,25 +1,10 @@
-
-
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
-#main {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-}
-
-/* 사이드바에 잡아줘야하는지? 컨테이너에 잡아줘야하는지?? 일단 컨테이너 ㄱㄱ*/
-/* #sidebar {} */
 #sidebar .sidebar-container {
     display: flex;
     flex-direction: column;
     width: 240px;
     height: 100%;
     gap: 10px;
-    border-right: 1px solid #E7E7E7;
+    border-right: 1px solid var(--gray75);
 }
 
 /* 로고 */
@@ -59,27 +44,27 @@ html, body {
 }
 
 #sidebar .sidebar-item-wrapper .sidebar-item:hover {
-    background-color: #FFEBEB;
+    background-color: var(--red50);
 }
 
 /* 선택된 아이템 스타일 */
 #sidebar .sidebar-item-wrapper.active .point-rect {
-    background: var(--Foundation-Red-red-600, #D67979);
+    background: var(--red600);
 }
 
 #sidebar .sidebar-item-wrapper.active .sidebar-item {
-    background: var(--Foundation-Red-red-500, #EB8585);
+    background: var(--red500);
 }
 
 #sidebar .sidebar-item-wrapper .sidebar-item .label{
-    color: #202224;
+    color: var(--balck100);
     font-size: 16px;
     font-weight: 500;
     letter-spacing: 0.5px;
 }
 
 #sidebar .sidebar-item-wrapper.active .label {
-    color: white;
+    color: var(--white300);
     font-weight: 700;
 }
 
@@ -98,6 +83,6 @@ html, body {
     width: 192px;
     height: 1px;
     margin: 9px 18px;
-    background: #E7E7E7;
+    background: var(--gray75);
 }
 

@@ -15,5 +15,5 @@ html, body {
     flex-direction: column;
     flex: 1;
     height: 100%;
-    background-color: #FFFDFD;
+    background-color: var(--red10);
 }
