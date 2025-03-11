@@ -11,6 +11,11 @@ html, body {
     height: 100%;
 }
 
+#sidebar {
+    position: relative;
+    background-color: var(--white300);
+}
+
 /* 사이드바에 잡아줘야하는지? 컨테이너에 잡아줘야하는지?? 일단 컨테이너 ㄱㄱ*/
 /* #sidebar {} */
 #sidebar .sidebar-container {
@@ -20,6 +25,8 @@ html, body {
     height: 100%;
     gap: 10px;
     border-right: 1px solid #E7E7E7;
+    min-width: 10px;
+    max-width: 300px;
 }
 
 /* 로고 */
@@ -37,8 +44,9 @@ html, body {
     display: flex;
     width: 100%;
     height: 50px;
-    gap: 20px;        
+    gap: 20px;
     cursor: pointer;
+    min-width: 200px;
 }
 
 #sidebar .sidebar-item-wrapper .point-rect{
@@ -52,7 +60,7 @@ html, body {
     justify-content: flex-start;
     align-items: center;
     padding: 0px 18px;
-    width: 155px;
+    flex: 0.9;
     height: 50px;
     gap: 18px;
     border-radius: 6px;
@@ -72,7 +80,7 @@ html, body {
 }
 
 #sidebar .sidebar-item-wrapper .sidebar-item .label{
-    color: #202224;
+    color: var(--black100);
     font-size: 16px;
     font-weight: 500;
     letter-spacing: 0.5px;
@@ -95,9 +103,25 @@ html, body {
 
 /* 디바이더 */
 #sidebar .sidebar-item-divider {
-    width: 192px;
+    width: 86%;
     height: 1px;
     margin: 9px 18px;
     background: #E7E7E7;
 }
 
+#sidebar .resizer {
+    width: 10px;
+    cursor: ew-resize;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    box-shadow: none;
+    transition: box-shadow .2s ease;
+}
+
+#sidebar .resizer:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 4px 26px 0px #e0d8ee;
+    cursor: ew-resize;
+}

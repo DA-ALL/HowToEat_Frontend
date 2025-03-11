@@ -55,6 +55,8 @@ $(document).ready(function () {
                 </div>
             </div>                
         </div>
+
+        <div class="resizer" id="resizer"></div>
     `);
 
     // 페이지 로드 시 현재 URL 기준으로 active 상태 설정
@@ -129,4 +131,41 @@ $(document).ready(function () {
             $('.logo-admin').attr('src', '/administrate/images/icon_admin_white.png');
         }
     }
+
+
+    // [사이바 드래그로 줄이 키우기 기능]
+    const $sidebarContainer = $('.sidebar-container');
+    const $resizer = $('#resizer');
+
+    // 로컬 스토리지에서 너비 값 가져오기
+    const savedWidth = localStorage.getItem('sidebarContainerWidth');
+    if (savedWidth) {
+        $sidebarContainer.width(savedWidth);
+    }
+
+    let isResizing = false;
+
+    $(document).on('mousedown', '#resizer', function(event) {
+        isResizing = true;
+        const startX = event.clientX;
+        const startWidth = $sidebarContainer.width();
+
+        $(document).on('mousemove', function(event) {
+            if (isResizing) {
+                const newWidth = startWidth - (startX - event.clientX);
+                $sidebarContainer.width(newWidth);
+            }
+        });
+
+        $(document).on('mouseup', function() {
+            isResizing = false;
+            $(document).off('mousemove');
+            $(document).off('mouseup');
+
+            // 너비 값을 로컬 스토리지에 저장
+            localStorage.setItem('sidebarContainerWidth', $sidebarContainer.width());
+        });
+
+        event.preventDefault();
+    });
 });
