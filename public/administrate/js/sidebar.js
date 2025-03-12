@@ -33,7 +33,7 @@ $(document).ready(function () {
                         </div>
                     </div>
                     <div class="sidebar-item-wrapper user">
-                        <div class="sidebar-item-option" data-page="pt-user">
+                        <div class="sidebar-item-option" data-page="pt">
                             <div class="dot"></div>
                             <div class="label">트레이너 회원 관리</div>
                         </div>
@@ -84,7 +84,7 @@ $(document).ready(function () {
         var page = $(this).data('page');
         var newUrl = '';
 
-        if(page === 'pt-user'){
+        if(page === 'pt'){
             console.log("true");
             // URL 변경 (새로고침 없음)
             newUrl = `/admin/user-management/${page}`; // 새로운 URL 생성
@@ -125,9 +125,10 @@ $(document).ready(function () {
 
     // 뒤로가기/앞으로가기 처리 (popstate 이벤트)
     window.onpopstate = function (event) {
+        const pathParts = window.location.pathname.split("/").slice(2);
         if (event.state && event.state.page) {
-            loadPageContent(event.state.page); // 콘텐츠 변경
-            updateActiveState(event.state.page); // 사이드바 active 업데이트
+            loadPageContent(pathParts.length > 1 ? pathParts : pathParts[0]); // 콘텐츠 변경
+            updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
         }
     };
 
@@ -140,48 +141,70 @@ $(document).ready(function () {
 
     // 현재 페이지의 맨뒤에 url을 가져오기
     function getCurrentPage() {
-        return window.location.pathname.split("/").pop(); // 예: "/admin/dashboard" -> "dashboard"
+        const pathParts = window.location.pathname.split("/").slice(2); // "/admin/user-management/pt" → ["user-management", "pt"]
+        return pathParts.length > 1 ? pathParts : pathParts[0]; // ["user-management", "pt"] or "dashboard"
     }
+    
 
     // 사이드바 선택 상태 업데이트
     function updateActiveState(page) {
         $(".nav-link").removeClass("active"); // 기존 active 제거
         $(".sidebar-item-option").removeClass("active");
         $(`.nav-link[data-page="${page}"]`).addClass("active"); // 새로 선택된 요소에 active 추가
-
-        //드롭 다운 애니메이션
-        const $optionsWrapper = $(".sidebar-item-options-wrapper");
     
-        if (page !== 'user-management') {
-            $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {
-                $(this).hide();
-            });
-        } else {
-            $optionsWrapper.stop(true, true).css({ height: 0, opacity: 0 })
-                .animate({ height: "58px", opacity: 1 }, 300);
-            $('.sidebar-item-option.user').addClass("active");
+        const $optionsWrapper = $(".sidebar-item-options-wrapper");
+        var pageUrl = page;
+
+        if(Array.isArray(page)) {
+            pageUrl = page[0];
         }
 
-        // 모든 nav-link 아이콘을 기본 이미지로 설정
-        $('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard.png');
-        $('.logo-user').attr('src', '/administrate/images/icon_user.png');
-        $('.logo-food').attr('src', '/administrate/images/icon_food.png');
-        $('.logo-notice').attr('src', '/administrate/images/icon_notice.png');
-        $('.logo-admin').attr('src', '/administrate/images/icon_admin.png');
+        if (Array.isArray(page)) {
+            const mainPage = page[0];
+            const subPage = page[1];
+    
+            $(`.nav-link[data-page="${mainPage}"]`).addClass("active");
+    
+            // 드롭다운 애니메이션 적용
+            $optionsWrapper.stop(true, true)
+                .css({ display: "flex", height: 0, opacity: 0 })
+                .animate({ height: "58px", opacity: 1 }, 300);
+    
+            $(`.sidebar-item-option[data-page="${subPage}"]`).addClass("active"); // 하위 옵션도 활성화
+        } else {
+            $(`.nav-link[data-page="${page}"]`).addClass("active");
+    
+            if (page === "user-management") {
+                $optionsWrapper.stop(true, true)
+                    .css({ display: "flex", height: 0, opacity: 0 })
+                    .animate({ height: "58px", opacity: 1 }, 300);
+                
+                $('.sidebar-item-option.user').addClass("active");
+            } else {
+                $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {
+                    $(this).css("display", "none");
+                });
+            }
+        }
 
-        // 현재 활성화된 페이지의 아이콘을 하얀색 이미지로 변경
-        if (page === 'dashboard') {
-            $('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
-        } else if (page === 'user-management') {
-            $('.logo-user').attr('src', '/administrate/images/icon_user_white.png');
-            $(".sidebar-item-options-wrapper").stop(true, true).slideDown(300); // 300ms 동안 나타남
-            $('.sidebar-item-option.user').addClass("active");
-        } else if (page === 'food-management') {
-            $('.logo-food').attr('src', '/administrate/images/icon_food_white.png');
-        } else if (page === 'notice') {
-            $('.logo-notice').attr('src', '/administrate/images/icon_notice_white.png');
-        } else if (page === 'admin-management') {
-            $('.logo-admin').attr('src', '/administrate/images/icon_admin_white.png');
+        // 아이콘 색상 변경 로직 유지
+        $(".logo-dashboard").attr("src", "/administrate/images/icon_dashboard.png");
+        $(".logo-user").attr("src", "/administrate/images/icon_user.png");
+        $(".logo-food").attr("src", "/administrate/images/icon_food.png");
+        $(".logo-notice").attr("src", "/administrate/images/icon_notice.png");
+        $(".logo-admin").attr("src", "/administrate/images/icon_admin.png");
+
+        if (pageUrl === "user-management") {
+            console.log("test")
+            $(".logo-user").attr("src", "/administrate/images/icon_user_white.png");
+        } else if (pageUrl === "dashboard") {
+            $(".logo-dashboard").attr("src", "/administrate/images/icon_dashboard_white.png");
+        } else if (pageUrl === "food-management") {
+            $(".logo-food").attr("src", "/administrate/images/icon_food_white.png");
+        } else if (pageUrl === "notice") {
+            $(".logo-notice").attr("src", "/administrate/images/icon_notice_white.png");
+        } else if (pageUrl === "admin-management") {
+            $(".logo-admin").attr("src", "/administrate/images/icon_admin_white.png");
         }
     }
 
