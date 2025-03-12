@@ -15,13 +15,29 @@ $(document).ready(function () {
                     <div class="label">대시보드</div>
                 </div>
             </div>
-            <div class="sidebar-item-wrapper nav-link" data-page="user-management">
-                <div class="point-rect"></div>
-                <div class="sidebar-item">
-                    <div class="icon-sidebar">
-                        <img class="logo-user" src="/administrate/images/icon_user.png">
+            <div class="sidebar-item-container">
+                <div class="sidebar-item-wrapper nav-link user-management" data-page="user-management">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item">
+                        <div class="icon-sidebar">
+                            <img class="logo-user" src="/administrate/images/icon_user.png">
+                        </div>
+                        <div class="label">유저관리</div>
                     </div>
-                    <div class="label">유저관리</div>
+                </div>
+                <div class="sidebar-item-options-wrapper">
+                    <div class="sidebar-item-wrapper user">
+                        <div class="sidebar-item-option user" data-page="user">
+                            <div class="dot"></div>
+                            <div class="label">전체 유저 관리</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-item-wrapper user">
+                        <div class="sidebar-item-option" data-page="pt-user">
+                            <div class="dot"></div>
+                            <div class="label">트레이너 회원 관리</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="sidebar-item-wrapper nav-link" data-page="food-management">
@@ -63,6 +79,27 @@ $(document).ready(function () {
     const currentPage = getCurrentPage();
     updateActiveState(currentPage);
     loadPageContent(currentPage);
+
+    $('.sidebar-item-option').on('click', function (event) {
+        var page = $(this).data('page');
+        var newUrl = '';
+
+        if(page === 'pt-user'){
+            console.log("true");
+            // URL 변경 (새로고침 없음)
+            newUrl = `/admin/user-management/${page}`; // 새로운 URL 생성
+        } else if (page === 'user') {
+            newUrl = `/admin/user-management`; // 새로운 URL 생성
+        }
+
+        history.pushState({ page: page }, "", newUrl);
+
+        // 콘텐츠 변경 (AJAX로 해당 페이지 내용 불러오기)
+        loadPageContent(page);
+        updateSideOptionActiveState(page);
+
+        $(this).addClass("active");
+    })
 
     // 링크 클릭 이벤트 설정 (새로고침 없이 이동)
     $('.nav-link').on('click', function (event) {
@@ -109,7 +146,21 @@ $(document).ready(function () {
     // 사이드바 선택 상태 업데이트
     function updateActiveState(page) {
         $(".nav-link").removeClass("active"); // 기존 active 제거
+        $(".sidebar-item-option").removeClass("active");
         $(`.nav-link[data-page="${page}"]`).addClass("active"); // 새로 선택된 요소에 active 추가
+
+        //드롭 다운 애니메이션
+        const $optionsWrapper = $(".sidebar-item-options-wrapper");
+    
+        if (page !== 'user-management') {
+            $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {
+                $(this).hide();
+            });
+        } else {
+            $optionsWrapper.stop(true, true).css({ height: 0, opacity: 0 })
+                .animate({ height: "58px", opacity: 1 }, 300);
+            $('.sidebar-item-option.user').addClass("active");
+        }
 
         // 모든 nav-link 아이콘을 기본 이미지로 설정
         $('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard.png');
@@ -123,6 +174,8 @@ $(document).ready(function () {
             $('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
         } else if (page === 'user-management') {
             $('.logo-user').attr('src', '/administrate/images/icon_user_white.png');
+            $(".sidebar-item-options-wrapper").stop(true, true).slideDown(300); // 300ms 동안 나타남
+            $('.sidebar-item-option.user').addClass("active");
         } else if (page === 'food-management') {
             $('.logo-food').attr('src', '/administrate/images/icon_food_white.png');
         } else if (page === 'notice') {
@@ -130,6 +183,11 @@ $(document).ready(function () {
         } else if (page === 'admin-management') {
             $('.logo-admin').attr('src', '/administrate/images/icon_admin_white.png');
         }
+    }
+
+    // 유저관리 서브 사이드 바 상태 업데이트
+    function updateSideOptionActiveState(page) {
+        $(".sidebar-item-option").removeClass("active"); // 기존 active 제거
     }
 
 

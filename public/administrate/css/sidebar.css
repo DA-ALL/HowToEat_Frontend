@@ -46,7 +46,69 @@ html, body {
     height: 50px;
     gap: 20px;
     cursor: pointer;
-    min-width: 200px;
+    min-width: 242px;
+}
+
+#sidebar .sidebar-item-wrapper.user {
+    display: flex;
+    width: 100%;
+    height: auto;
+    gap: 20px;
+    cursor: pointer;
+    min-width: 242px;
+}
+
+/* 아이템 */
+#sidebar .sidebar-item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#sidebar .sidebar-item-container .sidebar-item-option {
+    display: flex;
+    padding: 3px 28px;
+    margin-left: 25px;
+    align-items: center;
+    flex: 0.89;
+    gap: 27px;
+}
+
+#sidebar .sidebar-item-container .sidebar-item-options-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#sidebar .sidebar-item-container .sidebar-item-option .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: inset 0 0 0 1.5px var(--gray400); /* 안쪽 1px stroke */
+}
+
+#sidebar .sidebar-item-container .sidebar-item-option .label {
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    color: var(--gray400);
+}
+
+#sidebar .sidebar-item-container .sidebar-item-option.active{
+    color: white;
+    font-weight: 500;
+    border-radius: 6px;
+    background-color: var(--red400);
+}
+
+#sidebar .sidebar-item-container .sidebar-item-option.active .dot{
+    box-shadow: inset 0 0 0 1.5px var(--white300); /* 안쪽 1px stroke */
+}
+
+#sidebar .sidebar-item-container .sidebar-item-option.active .label{
+    color: white;
+    font-weight: 500;
 }
 
 #sidebar .sidebar-item-wrapper .point-rect{
