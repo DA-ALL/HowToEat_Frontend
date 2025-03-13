@@ -4,13 +4,12 @@
     height: 44px;
     padding: 12px 60px;
     border-bottom: 1px solid #E7E7E7;
-    background-color: #ffffff;
+    background-color: var(--white300);
 }
 
 #profilebar .profile-wrapper{
     display: flex;
     align-items: center;
-    /* gap: 14px;         */
 }
 
 #profilebar .profile-wrapper .image-profile { 
@@ -24,25 +23,19 @@
     display: flex;
     flex-direction: column;
     margin-right: 35px;
+    gap: 2px;
 }
 
 #profilebar .profile-wrapper .profile-text-wrapper .label-name{ 
-    color: #404040;
-    font-family: Pretendard;
+    color: var(--balck100);
     font-size: 14px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
-    
 }
 
 #profilebar .profile-wrapper .profile-text-wrapper .label-role{ 
-    color: #565656;
-    font-family: Pretendard;
+    color: var(--balck100);
     font-size: 12px;
-    font-style: normal;
     font-weight: 400;
-    line-height: normal;
 }
 #profilebar .profile-wrapper .button-profile { 
     width: 18px;
