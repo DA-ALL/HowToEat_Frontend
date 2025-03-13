@@ -51,25 +51,25 @@ $(document).ready(function () {
                     </div>
                 </div>
                 <div class="sidebar-item-options-wrapper food">
-                    <div class="sidebar-item-wrapper user">
-                        <div class="sidebar-item-option user" data-page="all-food">
+                    <div class="sidebar-item-wrapper food">
+                        <div class="sidebar-item-option food" data-page="all-food">
                             <div class="dot"></div>
                             <div class="label">관리자 등록 음식</div>
                         </div>
                     </div>
-                    <div class="sidebar-item-wrapper user">
+                    <div class="sidebar-item-wrapper food">
                         <div class="sidebar-item-option" data-page="user-regist">
                             <div class="dot"></div>
                             <div class="label">유저 등록 음식</div>
                         </div>
                     </div>
-                    <div class="sidebar-item-wrapper user">
+                    <div class="sidebar-item-wrapper food">
                         <div class="sidebar-item-option" data-page="recommend-food">
                             <div class="dot"></div>
                             <div class="label">추천 음식</div>
                         </div>
                     </div>
-                    <div class="sidebar-item-wrapper user">
+                    <div class="sidebar-item-wrapper food">
                         <div class="sidebar-item-option" data-page="add-food">
                             <div class="dot"></div>
                             <div class="label">음식 추가</div>
@@ -89,15 +89,37 @@ $(document).ready(function () {
 
             <div class="sidebar-item-divider"></div>
 
-            <div class="sidebar-item-wrapper nav-link" data-page="admin-management">
-                <div class="point-rect"></div>
-                <div class="sidebar-item"> 
-                    <div class="icon-sidebar">
-                        <img class="logo-admin" src="/administrate/images/icon_admin.png">
+            <div class="sidebar-item-container">
+                <div class="sidebar-item-wrapper nav-link" data-page="admin-management">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <div class="icon-sidebar">
+                            <img class="logo-admin" src="/administrate/images/icon_admin.png">
+                        </div>
+                        <div class="label">어드민 관리</div>
                     </div>
-                    <div class="label">어드민 관리</div>
                 </div>
-            </div>                
+                <div class="sidebar-item-options-wrapper admin">
+                    <div class="sidebar-item-wrapper admin">
+                        <div class="sidebar-item-option admin" data-page="all-admin">
+                            <div class="dot"></div>
+                            <div class="label">아이디 관리</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-item-wrapper admin">
+                        <div class="sidebar-item-option" data-page="trainer">
+                            <div class="dot"></div>
+                            <div class="label">트레이너 관리</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-item-wrapper admin">
+                        <div class="sidebar-item-option" data-page="gym">
+                            <div class="dot"></div>
+                            <div class="label">헬스장 관리</div>
+                        </div>
+                    </div>
+                </div>
+            </div>     
         </div>
 
         <div class="resizer" id="resizer"></div>
@@ -120,10 +142,16 @@ $(document).ready(function () {
             newUrl = `/admin/food-management/${page}`;
         } else if (page === 'add-food') {
             newUrl = `/admin/food-management/${page}`;
+        } else if (page === 'trainer') {
+            newUrl = `/admin/admin-management/${page}`;
+        } else if (page === 'gym') {
+            newUrl = `/admin/admin-management/${page}`;
         } else if (page === 'all-user') {
             newUrl = `/admin/user-management`;
         } else if (page === 'all-food') {
             newUrl = `/admin/food-management`;
+        } else if (page === 'all-admin') {
+            newUrl = `/admin/admin-management`;
         }
 
         history.pushState({ page: page }, "", newUrl);
@@ -189,6 +217,7 @@ $(document).ready(function () {
         const $optionsWrapper = $(".sidebar-item-options-wrapper");
         const $optionsUserManagementWrapper = $(".sidebar-item-options-wrapper.user");
         const $optionsFoodManagementWrapper = $(".sidebar-item-options-wrapper.food");
+        const $optionsAdminManagementWrapper = $(".sidebar-item-options-wrapper.admin");
         var pageUrl = page;
 
         if(Array.isArray(page)) {
@@ -203,15 +232,14 @@ $(document).ready(function () {
     
             // 드롭다운 애니메이션 적용
             if(mainPage === 'user-management') {
-                $optionsUserManagementWrapper.stop(true, true)
-                    .css({ display: "flex", height: 0, opacity: 0 })
-                    .animate({ height: "58px", opacity: 1 }, 300);
-            } else {
-                $optionsFoodManagementWrapper.stop(true, true)
-                .css({ display: "flex", height: 0, opacity: 0 })
-                .animate({ height: "126px", opacity: 1 }, 300);
-    
+                $optionsUserManagementWrapper.stop(true, true).css({ display: "flex", height: 0, opacity: 0 }).animate({ height: "58px", opacity: 1 }, 300);
+            } else if(mainPage === 'food-management') {
+                $optionsFoodManagementWrapper.stop(true, true).css({ display: "flex", height: 0, opacity: 0 }).animate({ height: "126px", opacity: 1 }, 300);
+            } else if(mainPage === 'admin-management') {
+                $optionsAdminManagementWrapper.stop(true, true).css({ display: "flex", height: 0, opacity: 0 }).animate({ height: "92px", opacity: 1 }, 300);
             }
+
+            
             $(`.sidebar-item-option[data-page="${subPage}"]`).addClass("active"); // 하위 옵션도 활성화
             
         } else {
@@ -226,9 +254,14 @@ $(document).ready(function () {
                 $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {$(this).css("display", "none");});
                 $optionsFoodManagementWrapper.stop(true, true).css({ display: "flex", height: 0, opacity: 0 }).animate({ height: "126px", opacity: 1 }, 300);
                 
-                $('.sidebar-item-option.user').addClass("active");
+                $('.sidebar-item-option.food').addClass("active");
+            } else if(page === "admin-management") {
+                $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {$(this).css("display", "none");});
+                $optionsAdminManagementWrapper.stop(true, true).css({ display: "flex", height: 0, opacity: 0 }).animate({ height: "92px", opacity: 1 }, 300);
+                $('.sidebar-item-option.admin').addClass("active");
             } else {
                 $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {$(this).css("display", "none");});
+                
             }
         }
 
@@ -240,7 +273,6 @@ $(document).ready(function () {
         $(".logo-admin").attr("src", "/administrate/images/icon_admin.png");
 
         if (pageUrl === "user-management") {
-            console.log("test")
             $(".logo-user").attr("src", "/administrate/images/icon_user_white.png");
         } else if (pageUrl === "dashboard") {
             $(".logo-dashboard").attr("src", "/administrate/images/icon_dashboard_white.png");
