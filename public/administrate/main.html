@@ -10,6 +10,7 @@
     <script src="/administrate/js/profilebar.js" defer></script>
     <script src="/administrate/js/title.js" defer></script>
     <script src="/administrate/js/cardList.js" defer></script>
+    <script src="/administrate/js/dashboardChart.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="stylesheet" href="/administrate/css/sidebar.css">
@@ -19,56 +20,8 @@
     <link rel="stylesheet" href="/administrate/css/font.css">
     <link rel="stylesheet" href="/administrate/css/cardList.css">
     <link rel="stylesheet" href="/administrate/css/color.css">
+    <link rel="stylesheet" href="/administrate/css/dashboardChart.css">
 </head>
-
-<style>
-    .chart-container {
-        max-width: 1600px;
-        min-width: 1400px;
-        cursor: grab;
-        display: flex;
-        flex-direction: column;
-        background-color: var(--white300);
-        margin: 40px 30px;
-        padding-bottom: 10px;
-        border-radius: 14px;
-        filter: drop-shadow(6px 6px 54px rgba(0, 0, 0, 0.05));
-    }
-
-    .chart-container .title-chart{
-        color: var(--black100);
-        font-size: 24px;
-        font-weight: 700;
-        margin-top: 37px;
-        margin-left: 32px;   
-        margin-bottom: 10px;
-    }
-
-    .chart-container .chart-wrapper {
-        width: 100%;
-        height: 400px;
-        display: flex;
-        align-items: center;
-        cursor: grab;
-    }
-
-    .chart-container .chart-wrapper canvas {
-        display: flex;
-    }
-
-    #tooltip {
-        position: absolute;
-        background: var(--red500);
-        color: white;
-        padding: 5px 12px;
-        border-radius: 25px;
-        font-size: 14px;
-        display: none;
-        pointer-events: none;
-        z-index: 10;
-    }
-
-</style>
 
 <body>
     <div id="main">
@@ -77,160 +30,10 @@
             <div id="profilebar"></div>
             <div id="title"></div>
             <div id="cardList"></div>
-
-            <div class="chart-container">
-                <div class="title-chart">식단 등록 횟수</div>
-                <div class="chart-wrapper">
-                    <canvas id="myChart"></canvas>
-                </div>
-            </div>
-            <div id="tooltip"></div>
+            <div id="dashboardChart"></div>
         </div>
     </div>
 </body>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const chartWrapper = document.querySelector(".chart-wrapper");
-        let isDragging = false;
-        let startX, scrollPosition = 0;
-        let currentStartIndex = 23;
-
-        function generateLast30Days() {
-            let dates = [];
-            let values = [];
-            let today = new Date();
-            for (let i = 29; i >= 0; i--) {
-                let pastDate = new Date();
-                pastDate.setDate(today.getDate() - i);
-                let formattedDate = pastDate.toISOString().split('T')[0];
-                dates.push(formattedDate);
-                values.push(Math.floor(Math.random() * 100) + 1);
-            }
-            return { dates, values };
-        }
-
-        const { dates, values } = generateLast30Days();
-        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)"); 
-        gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)"); 
-        const red500 = getComputedStyle(document.documentElement).getPropertyValue('--red500').trim();
-
-        const data = {
-            labels: dates,
-            datasets: [{
-                label: '개수 변화',
-                data: values,
-                borderColor: red500,
-                backgroundColor: gradient,
-                borderWidth: 1,
-                fill: true,
-                pointRadius: 0,
-                pointHoverRadius: 5
-            }]
-        };
-
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    mode: 'index', // X축 기준으로 툴팁 표시
-                    intersect: false // 점이 아니라 선을 따라가도 툴팁 표시
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: "#A8A8A8", // 텍스트 색상 변경
-                            font: { 
-                                family: "Pretendard", // 폰트 변경
-                                size: 12 // 폰트 크기 변경
-                            },
-                            autoSkip: false, 
-                            padding: 30
-                        },
-                        grid: { display: false },
-                        min: dates[23],
-                        max: dates[30]
-                    },
-                    y: {
-                        ticks: { 
-                            color: "#A8A8A8", // 텍스트 색상 변경
-                            font: { 
-                                family: "Pretendard", // 폰트 변경
-                                size: 12 // 폰트 크기 변경
-                            },
-                            maxTicksLimit: 5, // y축을 5개의 tick으로 제한
-                            padding: 50,
-                        },
-                        suggestedMax: Math.max(...values) * 2,
-                        grid: { color: 'rgba(200, 200, 200, 0.5)'},
-                        border: {
-                            display: false 
-                        }
-                    }
-                },
-
-                plugins: {
-                    legend:{ display: false },
-                    tooltip: {
-                        enabled: false, // 기본 툴팁 비활성화
-                        external: function (context) {
-                            let tooltip = document.getElementById('tooltip');
-                            let chart = context.chart;
-                            let tooltipModel = context.tooltip;
-
-                            if (tooltipModel.opacity === 0) {
-                                tooltip.style.opacity = '0';
-                                return;
-                            }
-
-                            let position = chart.canvas.getBoundingClientRect();
-                            let tooltipX = position.left + window.pageXOffset + tooltipModel.caretX;
-                            let tooltipY = position.top + window.pageYOffset + tooltipModel.caretY - 40;
-
-                            tooltip.style.opacity = '1';
-                            tooltip.style.display = 'block';
-                            tooltip.style.left = tooltipX + 'px';
-                            tooltip.style.top = tooltipY + 'px';
-                            let yValue = tooltipModel.body[0].lines[0].split(": ")[1];
-                            tooltip.innerHTML = yValue;
-                        }
-                    }
-                }
-            }
-        };
-
-        const myChart = new Chart(ctx, config);
-
-        chartWrapper.addEventListener("mousedown", (e) => {
-            isDragging = true;
-            startX = e.clientX;
-        });
-
-        document.addEventListener("mouseup", () => {
-            isDragging = false;
-        });
-
-        document.addEventListener("mousemove", (e) => {
-            if (!isDragging) return;
-            const moveX = e.clientX - startX;
-            if (Math.abs(moveX) > 200) {
-                if (moveX > 0 && currentStartIndex > 0) {
-                    currentStartIndex--;
-                } else if (moveX < 0 && currentStartIndex < dates.length - 7) {
-                    currentStartIndex++;
-                }
-                myChart.options.scales.x.min = dates[currentStartIndex];
-                myChart.options.scales.x.max = dates[currentStartIndex + 6];
-                myChart.update();
-                startX = e.clientX;
-            }
-        });
-    });
-</script>
 
 </html>
