@@ -25,9 +25,9 @@ $(document).ready(function () {
                         <div class="label">유저관리</div>
                     </div>
                 </div>
-                <div class="sidebar-item-options-wrapper">
+                <div class="sidebar-item-options-wrapper user">
                     <div class="sidebar-item-wrapper user">
-                        <div class="sidebar-item-option user" data-page="user">
+                        <div class="sidebar-item-option user" data-page="all-user">
                             <div class="dot"></div>
                             <div class="label">전체 유저 관리</div>
                         </div>
@@ -40,13 +40,41 @@ $(document).ready(function () {
                     </div>
                 </div>
             </div>
-            <div class="sidebar-item-wrapper nav-link" data-page="food-management">
-                <div class="point-rect"></div>
-                <div class="sidebar-item"> 
-                    <div class="icon-sidebar">
-                        <img class="logo-food" src="/administrate/images/icon_food.png">
+            <div class="sidebar-item-container">
+                <div class="sidebar-item-wrapper nav-link" data-page="food-management">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <div class="icon-sidebar">
+                            <img class="logo-food" src="/administrate/images/icon_food.png">
+                        </div>
+                        <div class="label">음식관리</div>
                     </div>
-                    <div class="label">음식관리</div>
+                </div>
+                <div class="sidebar-item-options-wrapper food">
+                    <div class="sidebar-item-wrapper user">
+                        <div class="sidebar-item-option user" data-page="all-food">
+                            <div class="dot"></div>
+                            <div class="label">관리자 등록 음식</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-item-wrapper user">
+                        <div class="sidebar-item-option" data-page="user-regist">
+                            <div class="dot"></div>
+                            <div class="label">유저 등록 음식</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-item-wrapper user">
+                        <div class="sidebar-item-option" data-page="recommend-food">
+                            <div class="dot"></div>
+                            <div class="label">추천 음식</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-item-wrapper user">
+                        <div class="sidebar-item-option" data-page="add-food">
+                            <div class="dot"></div>
+                            <div class="label">음식 추가</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="sidebar-item-wrapper nav-link" data-page="notice">
@@ -85,11 +113,17 @@ $(document).ready(function () {
         var newUrl = '';
 
         if(page === 'pt'){
-            console.log("true");
-            // URL 변경 (새로고침 없음)
-            newUrl = `/admin/user-management/${page}`; // 새로운 URL 생성
-        } else if (page === 'user') {
-            newUrl = `/admin/user-management`; // 새로운 URL 생성
+            newUrl = `/admin/user-management/${page}`;
+        } else if (page === 'user-regist') {
+            newUrl = `/admin/food-management/${page}`;
+        }  else if (page === 'recommend-food') {
+            newUrl = `/admin/food-management/${page}`;
+        } else if (page === 'add-food') {
+            newUrl = `/admin/food-management/${page}`;
+        } else if (page === 'all-user') {
+            newUrl = `/admin/user-management`;
+        } else if (page === 'all-food') {
+            newUrl = `/admin/food-management`;
         }
 
         history.pushState({ page: page }, "", newUrl);
@@ -153,6 +187,8 @@ $(document).ready(function () {
         $(`.nav-link[data-page="${page}"]`).addClass("active"); // 새로 선택된 요소에 active 추가
     
         const $optionsWrapper = $(".sidebar-item-options-wrapper");
+        const $optionsUserManagementWrapper = $(".sidebar-item-options-wrapper.user");
+        const $optionsFoodManagementWrapper = $(".sidebar-item-options-wrapper.food");
         var pageUrl = page;
 
         if(Array.isArray(page)) {
@@ -166,24 +202,33 @@ $(document).ready(function () {
             $(`.nav-link[data-page="${mainPage}"]`).addClass("active");
     
             // 드롭다운 애니메이션 적용
-            $optionsWrapper.stop(true, true)
+            if(mainPage === 'user-management') {
+                $optionsUserManagementWrapper.stop(true, true)
+                    .css({ display: "flex", height: 0, opacity: 0 })
+                    .animate({ height: "58px", opacity: 1 }, 300);
+            } else {
+                $optionsFoodManagementWrapper.stop(true, true)
                 .css({ display: "flex", height: 0, opacity: 0 })
-                .animate({ height: "58px", opacity: 1 }, 300);
+                .animate({ height: "126px", opacity: 1 }, 300);
     
+            }
             $(`.sidebar-item-option[data-page="${subPage}"]`).addClass("active"); // 하위 옵션도 활성화
+            
         } else {
             $(`.nav-link[data-page="${page}"]`).addClass("active");
     
             if (page === "user-management") {
-                $optionsWrapper.stop(true, true)
-                    .css({ display: "flex", height: 0, opacity: 0 })
-                    .animate({ height: "58px", opacity: 1 }, 300);
+                $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {$(this).css("display", "none");});
+                $optionsUserManagementWrapper.stop(true, true).css({ display: "flex", height: 0, opacity: 0 }).animate({ height: "58px", opacity: 1 }, 300);
+
+                $('.sidebar-item-option.user').addClass("active");
+            } else if(page === "food-management") {
+                $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {$(this).css("display", "none");});
+                $optionsFoodManagementWrapper.stop(true, true).css({ display: "flex", height: 0, opacity: 0 }).animate({ height: "126px", opacity: 1 }, 300);
                 
                 $('.sidebar-item-option.user').addClass("active");
             } else {
-                $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {
-                    $(this).css("display", "none");
-                });
+                $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {$(this).css("display", "none");});
             }
         }
 

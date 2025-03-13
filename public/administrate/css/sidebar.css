@@ -62,7 +62,6 @@ html, body {
 #sidebar .sidebar-item-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
 #sidebar .sidebar-item-container .sidebar-item-option {
@@ -75,10 +74,12 @@ html, body {
 }
 
 #sidebar .sidebar-item-container .sidebar-item-options-wrapper{
-    display: flex;
+    display: none;
+    /* display: flex; */
     flex-direction: column;
     gap: 10px;
     height: 0px;
+    margin-top: 10px;
 }
 
 #sidebar .sidebar-item-container .sidebar-item-option .dot {
