@@ -2,3 +2,18 @@
     background: linear-gradient(193deg, #E67771 0%, #FEB5C8 101.31%), #FFF;
     height: 100%;
 }
+
+
+#loginPage .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(193deg, #E67771 0%, #FEB5C8 101.31%), #FFF;
+    height: 100%;
+}
+
+#loginPage .login-container .logo img {
+    width: 33.4vw;
+    max-width: 167px;
+    height: auto;
+}
