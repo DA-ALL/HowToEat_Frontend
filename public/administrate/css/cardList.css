@@ -45,6 +45,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    visibility: hidden;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper.trend{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: visible;
 }
 
 #cardList #cardItem .card-content-wrapper .trend-difference-wrapper .icon-trending img{
