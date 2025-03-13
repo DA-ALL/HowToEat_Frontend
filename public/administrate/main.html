@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,44 +18,54 @@
     <link rel="stylesheet" href="/administrate/css/title.css">
     <link rel="stylesheet" href="/administrate/css/font.css">
     <link rel="stylesheet" href="/administrate/css/cardList.css">
+    <link rel="stylesheet" href="/administrate/css/color.css">
 </head>
 
 <style>
-
-    #dashboardGraph{
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        min-width: 1400px;
+    .chart-container {
         max-width: 1600px;
-        box-shadow: 6px 6px 54px 0px rgba(0, 0, 0, 0.05);
-        border-radius: 14px;
-        margin: 40px 30px
-        
-    }
-
-    #dashboardGraph .title-dashboard-graph{
-        font-size: 24px;
-        font-weight: 600;
-        margin-left: 32px;
-        margin-top: 37px;
-    }
-
-    #dashboardGraph .chart-container {
-        width: 100%;
-        height: 400px;
-        overflow: hidden;
+        min-width: 1400px;
         cursor: grab;
         display: flex;
+        flex-direction: column;
+        background-color: var(--white300);
+        margin: 40px 30px;
+        padding-bottom: 10px;
+        border-radius: 14px;
+        filter: drop-shadow(6px 6px 54px rgba(0, 0, 0, 0.05));
     }
-    #dashboardGraph .chart-wrapper {
-        width: 6000px;
+
+    .chart-container .title-chart{
+        color: var(--black100);
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 37px;
+        margin-left: 32px;   
+        margin-bottom: 10px;
+    }
+
+    .chart-container .chart-wrapper {
+        width: 100%;
         height: 400px;
         display: flex;
         align-items: center;
+        cursor: grab;
     }
-    #dashboardGraph canvas {
-        display: block;
+
+    .chart-container .chart-wrapper canvas {
+        display: flex;
+    }
+
+    #tooltip {
+        position: absolute;
+        background: var(--red500);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 25px;
+        font-size: 14px;
+        display: none;
+        pointer-events: none;
+        z-index: 10;
     }
 
 </style>
@@ -66,157 +77,160 @@
             <div id="profilebar"></div>
             <div id="title"></div>
             <div id="cardList"></div>
-            
-            <div id="dashboardGraph">
-                <div class="title-dashboard-graph">식단 등록 횟수</div>
-                <div class="chart-container">
-                    <div class="chart-wrapper">
-                        <canvas id="chartCanvas" width="6000" height="300"></canvas>
-                    </div>
+
+            <div class="chart-container">
+                <div class="title-chart">식단 등록 횟수</div>
+                <div class="chart-wrapper">
+                    <canvas id="myChart"></canvas>
                 </div>
             </div>
-        </div>        
+            <div id="tooltip"></div>
+        </div>
     </div>
 </body>
 
 <script>
-    const canvas = document.getElementById("chartCanvas");
-    const ctx = canvas.getContext("2d");
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const chartWrapper = document.querySelector(".chart-wrapper");
+        let isDragging = false;
+        let startX, scrollPosition = 0;
+        let currentStartIndex = 23;
 
-    let isDragging = false;
-    let startX;
-    let scrollOffset = 0;
-
-    // 30일 데이터 생성
-    function generateLast30Days() {
-        let dates = [];
-        let values = [];
-        let today = new Date();
-        for (let i = 29; i >= 0; i--) {
-            let pastDate = new Date();
-            pastDate.setDate(today.getDate() - i);
-            let formattedDate = pastDate.toISOString().split('T')[0];
-            dates.push(formattedDate);
-            values.push(Math.floor(Math.random() * 100) + 1);
-        }
-        return { dates, values };
-    }
-
-    const { dates, values } = generateLast30Days();
-
-    // 그래프 설정
-    const chartWidth = 6000;
-    const chartHeight = 300;
-    const paddingTop = 50;    // 상단 padding
-    const paddingRight = 50;  // 우측 padding
-    const paddingBottom = 50; // 하단 padding
-    const paddingLeft = 100;   // 좌측 padding
-    const pointRadius = 5;
-    const maxDataValue = Math.max(...values);
-    const minDataValue = Math.min(...values);
-    const scaleY = (chartHeight - paddingTop - paddingBottom) / (maxDataValue - minDataValue);
-
-    function drawChart(offsetX = 0) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // X축 날짜 표시
-        ctx.fillStyle = "#717171";
-        ctx.font = "12px Pretendard";
-        ctx.textAlign = "center";
-
-        for (let i = 0; i < dates.length; i++) {
-            let x = paddingLeft + i * (chartWidth - paddingLeft - paddingRight) / (dates.length - 1) + offsetX;
-
-            // 첫 번째 날짜는 무조건 보이게 함
-            if (i === 0 || (x > paddingLeft && x < chartWidth - paddingRight)) { 
-                ctx.fillText(dates[i], x, chartHeight);
+        function generateLast30Days() {
+            let dates = [];
+            let values = [];
+            let today = new Date();
+            for (let i = 29; i >= 0; i--) {
+                let pastDate = new Date();
+                pastDate.setDate(today.getDate() - i);
+                let formattedDate = pastDate.toISOString().split('T')[0];
+                dates.push(formattedDate);
+                values.push(Math.floor(Math.random() * 100) + 1);
             }
+            return { dates, values };
         }
 
-        // 그라데이션 생성
-        let gradient = ctx.createLinearGradient(0, paddingTop, 0, chartHeight - paddingBottom);
-        gradient.addColorStop(0, "rgba(235, 133, 133, 0.16)"); // 위쪽 (EB8585, 16%)
-        gradient.addColorStop(1, "rgba(255, 255, 255, 0.18)"); // 아래쪽 (FFFFFF, 18%)
+        const { dates, values } = generateLast30Days();
+        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)"); 
+        gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)"); 
+        const red500 = getComputedStyle(document.documentElement).getPropertyValue('--red500').trim();
 
-        // 데이터 영역 채우기
-        ctx.beginPath();
-        ctx.moveTo(paddingLeft + offsetX, chartHeight - paddingBottom);
+        const data = {
+            labels: dates,
+            datasets: [{
+                label: '개수 변화',
+                data: values,
+                borderColor: red500,
+                backgroundColor: gradient,
+                borderWidth: 1,
+                fill: true,
+                pointRadius: 0,
+                pointHoverRadius: 5
+            }]
+        };
 
-        for (let i = 0; i < values.length; i++) {
-            let x = paddingLeft + i * (chartWidth - paddingLeft - paddingRight) / (dates.length - 1) + offsetX;
-            let y = chartHeight - paddingBottom - (values[i] - minDataValue) * scaleY;
-            ctx.lineTo(x, y);
-        }
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index', // X축 기준으로 툴팁 표시
+                    intersect: false // 점이 아니라 선을 따라가도 툴팁 표시
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "#A8A8A8", // 텍스트 색상 변경
+                            font: { 
+                                family: "Pretendard", // 폰트 변경
+                                size: 12 // 폰트 크기 변경
+                            },
+                            autoSkip: false, 
+                            padding: 30
+                        },
+                        grid: { display: false },
+                        min: dates[23],
+                        max: dates[30]
+                    },
+                    y: {
+                        ticks: { 
+                            color: "#A8A8A8", // 텍스트 색상 변경
+                            font: { 
+                                family: "Pretendard", // 폰트 변경
+                                size: 12 // 폰트 크기 변경
+                            },
+                            maxTicksLimit: 5, // y축을 5개의 tick으로 제한
+                            padding: 50,
+                        },
+                        suggestedMax: Math.max(...values) * 2,
+                        grid: { color: 'rgba(200, 200, 200, 0.5)'},
+                        border: {
+                            display: false 
+                        }
+                    }
+                },
 
-        ctx.lineTo(chartWidth + offsetX - paddingRight, chartHeight - paddingBottom);
-        ctx.closePath();
-        ctx.fillStyle = gradient;
-        ctx.fill();
+                plugins: {
+                    legend:{ display: false },
+                    tooltip: {
+                        enabled: false, // 기본 툴팁 비활성화
+                        external: function (context) {
+                            let tooltip = document.getElementById('tooltip');
+                            let chart = context.chart;
+                            let tooltipModel = context.tooltip;
 
-        // 데이터 선 그리기
-        ctx.beginPath();
-        ctx.strokeStyle = "#EB8585";  // 선 색상
-        ctx.lineWidth = 1;  // 선 두께 1px
+                            if (tooltipModel.opacity === 0) {
+                                tooltip.style.opacity = '0';
+                                return;
+                            }
 
-        for (let i = 0; i < values.length; i++) {
-            let x = paddingLeft + i * (chartWidth - paddingLeft - paddingRight) / (dates.length - 1) + offsetX;
-            let y = chartHeight - paddingBottom - (values[i] - minDataValue) * scaleY;
-            if (i === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
+                            let position = chart.canvas.getBoundingClientRect();
+                            let tooltipX = position.left + window.pageXOffset + tooltipModel.caretX;
+                            let tooltipY = position.top + window.pageYOffset + tooltipModel.caretY - 40;
+
+                            tooltip.style.opacity = '1';
+                            tooltip.style.display = 'block';
+                            tooltip.style.left = tooltipX + 'px';
+                            tooltip.style.top = tooltipY + 'px';
+                            let yValue = tooltipModel.body[0].lines[0].split(": ")[1];
+                            tooltip.innerHTML = yValue;
+                        }
+                    }
+                }
             }
-        }
-        ctx.stroke();
+        };
 
-        // 먼저 Y축 텍스트 영역 뒤에 흰색 배경을 그려주기
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 30, paddingLeft - 0, chartHeight - paddingBottom);
-        // Y축 값 표시 및 구분선 그리기
-        ctx.fillStyle = "#717171";
-        ctx.font = "12px Pretendard";
-        ctx.textAlign = "right";
-        
-        for (let i = 0; i <= 4; i++) {  // 5개의 값으로 변경
-            let value = minDataValue + ((maxDataValue - minDataValue) / 4) * i;
-            let y = chartHeight - paddingBottom - (value - minDataValue) * scaleY;
-            ctx.fillText(Math.round(value), paddingLeft - 50, y + 5);
+        const myChart = new Chart(ctx, config);
 
-            // Y축에 얇은 구분선 추가
-            ctx.beginPath();
-            ctx.moveTo(paddingLeft - 5, y);
-            ctx.lineTo(chartWidth + offsetX - paddingRight, y);
-            ctx.strokeStyle = "lightgray";  // 얇은 구분선 색상
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-        }
+        chartWrapper.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            startX = e.clientX;
+        });
 
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
 
-    }
-    
-    scrollOffset = -(chartWidth - 1600);
-
-    // 초기 차트 그리기
-    drawChart(scrollOffset);
-
-    // 드래그 이벤트 처리
-    canvas.addEventListener("mousedown", (e) => {
-        isDragging = true;
-        startX = e.clientX - scrollOffset;
-        canvas.style.cursor = "grabbing";
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            const moveX = e.clientX - startX;
+            if (Math.abs(moveX) > 200) {
+                if (moveX > 0 && currentStartIndex > 0) {
+                    currentStartIndex--;
+                } else if (moveX < 0 && currentStartIndex < dates.length - 7) {
+                    currentStartIndex++;
+                }
+                myChart.options.scales.x.min = dates[currentStartIndex];
+                myChart.options.scales.x.max = dates[currentStartIndex + 6];
+                myChart.update();
+                startX = e.clientX;
+            }
+        });
     });
-
-    canvas.addEventListener("mouseup", () => {
-        isDragging = false;
-        canvas.style.cursor = "grab";
-    });
-
-    canvas.addEventListener("mousemove", (e) => {
-        if (!isDragging) return;
-        let newOffset = e.clientX - startX;
-        scrollOffset = Math.max(Math.min(newOffset, 0), -chartWidth + 1500);
-        drawChart(scrollOffset);
-    });
-
 </script>
+
 </html>
