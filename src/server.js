@@ -10,6 +10,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'main.html'));
 });
 
+app.get('/login-page', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/user', 'main.html'));
+});
+
 app.get('/admin/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'loginPage.html'));
 });
