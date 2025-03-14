@@ -6,6 +6,7 @@
 @import url("/administrate/css/color.css");
 @import url("/administrate/css/dashboard-chart.css");
 @import url("/administrate/css/searchbar.css");
+@import url("/administrate/css/filter.css");
 
 html, body {
     height: 100%;

@@ -1,0 +1,32 @@
+#filter {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+#filter .filter-title{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+#filter .filter-option-wrapper { 
+    display: flex;
+    gap: 10px;
+}
+
+#filter .filter-option { 
+    background-color: var(--gray10);
+    color: var(--gray300);
+    border: 1px solid var(--gray300);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 30px;
+}
+
+#filter .filter-option.active { 
+    background-color: var(--red50);
+    color: var(--red500);
+    border: 1px solid var(--red500);
+}

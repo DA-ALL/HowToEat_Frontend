@@ -12,11 +12,51 @@
     <script src="/administrate/js/cardList.js" defer></script>
     <script src="/administrate/js/dashboardChart.js" defer></script>
     <script src="/administrate/js/searchbar.js" defer></script>
+    <script src="/administrate/js/filter.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
 
     <link rel="stylesheet" href="/administrate/css/main.css">
 </head>
+
+<style>
+    #userManagement {
+        margin: 40px 30px;
+        background-color: var(--white300);
+        display: flex;
+        flex-direction: column;
+        border-radius: 16px;
+        box-shadow: 6px 6px 54px 0px rgba(0, 0, 0, 0.05);
+    }
+
+    #userManagement .title{
+        margin-top: 37px;
+        margin-left: 30px;
+        margin-bottom: 28px;
+        font-size: 24px;
+        font-weight: 600;    
+    }
+
+    #userManagement #searchbar {
+        margin-left: 30px;
+        margin-bottom: 28px;
+    }
+
+
+/* filter group */
+
+    #userManagement .filter-group{
+        display: flex;
+        flex-direction: row;
+        gap: 50px;
+        margin-left: 30px;
+        margin-bottom: 36px;
+    }
+
+/*  */
+
+
+</style>
 
 <body>
     <div id="main">
@@ -26,8 +66,21 @@
             <div id="title"></div>
             <div id="cardList"></div>
             <div id="dashboardChart"></div>
+            
+            <div id="userManagement">
+                <div class="title">전체 유저 관리</div>
+                <div id="searchbar" data-placeholder="유저명 검색"></div>
 
-            <div id="searchbar" data-placeholder="유저명 검색"></div>
+                <div class="filter-group">
+                    <div id="filter" data-type="1"></div>
+                    <div id="filter" data-type="2"></div>
+                    <div id="filter" data-type="3"></div>
+                    <div id="filter" data-type="4"></div>
+                    <div id="filter" data-type="5"></div>
+                    <div id="filter" data-type="6"></div>
+                    <div id="filter" data-type="7"></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
