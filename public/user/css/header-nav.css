@@ -1,0 +1,55 @@
+@media (min-width: 500px) {
+    #headerNav {
+        max-width: 500px;
+        margin: 0 auto !important;
+    }
+}
+
+#headerNav {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;  /* padding 포함하여 500px 맞춤 */
+}
+
+#headerNav {
+    width: 100%;
+    padding: 16px;
+}
+
+#headerNav .header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#headerNav .title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+#headerNav .header-nav .button-prev {
+    display: flex;
+    cursor: pointer;
+}
+
+#headerNav .header-nav .button-prev img {
+    width: 20px;
+    height: 20px;
+}
+
+#headerNav .header-nav .button-add {
+    display: flex;
+    cursor: pointer;
+}
+
+#headerNav .header-nav .button-add img {
+    width: 22px;
+    height: 22px;
+}
+
+#headerNav .header-nav .hidden {
+    visibility: hidden;
+}
