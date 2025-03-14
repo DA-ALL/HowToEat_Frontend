@@ -27,14 +27,14 @@
 }
 
 #cardList #cardItem .card-content-wrapper .title-card{
-    color: #202224;
+    color: var(--gray500);
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 14px;
 }
 
 #cardList #cardItem .card-content-wrapper .value-card{
-    color: #202224;
+    color: var(--black100);
     font-size: 28px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -60,17 +60,20 @@
     height: 24px;
     margin-right: 8px;
 }
+
 #cardList #cardItem .card-content-wrapper .trend-difference-wrapper .trend-difference-value{
     color: #F24545;
     font-size: 16px;
     font-weight: 600;
 }
+
 #cardList #cardItem .card-content-wrapper .trend-difference-wrapper .trend-difference-unit{
     color: #F24545;
     font-size: 16px;
     font-weight: 600;
     margin-right: 8px;
 }
+
 #cardList #cardItem .card-content-wrapper .trend-difference-wrapper .trend-difference-comparison{
     color: #12163C;
     font-size: 16px;
