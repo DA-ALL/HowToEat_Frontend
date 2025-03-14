@@ -1,0 +1,16 @@
+#surveyPage {
+    position: relative;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+#surveyPage .content-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    background-color: #FFFDFD;
+    z-index: 1;
+}
