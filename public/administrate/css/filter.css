@@ -23,6 +23,7 @@
     font-weight: 500;
     padding: 7px 16px;
     border-radius: 30px;
+    cursor: pointer;
 }
 
 #filter .filter-option.active { 

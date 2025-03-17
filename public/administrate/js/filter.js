@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $('.filter-group').children().each(function () {
-        let $filter = $(this); // 현재 필터 요소
-        let type = $filter.data('type'); // data-type 값 가져오기
+        let $filter = $(this);
+        let type = $filter.data('type');
         let filterTemplate = '';
 
         switch (type) {
@@ -81,11 +81,15 @@ $(document).ready(function () {
                     </div>
                 `;
                 break;
-
-            default:
-                filterTemplate = ``;
         }
 
-        $filter.html(filterTemplate); // 해당 필터에 템플릿 삽입
+        $filter.html(filterTemplate);
+    });
+
+    // 필터 옵션 클릭 이벤트
+    $(document).on('click', '.filter-option', function () {
+        let $parent = $(this).closest('.filter-option-wrapper');
+        $parent.find('.filter-option').removeClass('active');
+        $(this).addClass('active');
     });
 });
