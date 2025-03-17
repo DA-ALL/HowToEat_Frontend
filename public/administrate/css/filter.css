@@ -24,6 +24,7 @@
     padding: 7px 16px;
     border-radius: 30px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 #filter .filter-option.active { 
