@@ -1,25 +1,24 @@
 @media (min-width: 500px) {
-    #headerNav {
+    #headerNav .header-nav {
         max-width: 500px;
         margin: 0 auto !important;
     }
 }
 
 #headerNav {
+    margin-bottom: 55px;
+}
+
+#headerNav .header-nav {
     position: fixed;
     top: 0px;
     width: 100%;
     padding: 16px;
     box-sizing: border-box;
-    border-bottom: 1px solid #F0F0F0
-}
-
-#headerNav {
+    border-bottom: 1px solid #F0F0F0;
     width: 100%;
     padding: 16px;
-}
-
-#headerNav .header-nav {
+    margin-bottom: 55px;
     display: flex;
     justify-content: space-between;
     align-items: center;
