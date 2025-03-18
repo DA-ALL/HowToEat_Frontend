@@ -13,6 +13,7 @@
     position: absolute;
 }
 
+
 .button-container .next-button {
     display: flex;
     justify-content: center;
@@ -81,6 +82,21 @@
     border: 1px solid #E8E8E8;
     border-radius: 16px;
     cursor: pointer;
+    color: #999;
+}
+
+.date-picker .date-box.valid {
+    color: var(--gray500);
+    border: 1px solid var(--gray200);
+}
+
+.date-picker .date-box .dropdown-item {
+    color: var(--black100);
+}
+
+.date-picker .date-box.error {
+    color: red;
+    border : 1px solid red;
 }
 
 .date-picker .date-box.selected {
@@ -112,7 +128,7 @@
 }
 
 .date-picker .date-box.open {
-    border-color: var(--red500); /* 드롭박스가 열리면 테두리 색상을 변경 */
+    border-color: var(--black100); /* 드롭박스가 열리면 테두리 색상을 변경 */
 }
 
 .date-picker .date-box.open .dropdown {
@@ -137,12 +153,23 @@
     transition: box-shadow 0.3s ease;
 }
 
+#surveyPage #survey .input-wrapper .input.valid {
+    color: var(--gray500);
+    border: 1px solid var(--gray200);
+}
+
+#surveyPage #survey .input-wrapper .input.error {
+    color: red;
+    border : 1px solid red
+}
+
 #surveyPage #survey .input-wrapper .input input {
     width: 100%;
     font-size: 16px;
     color: var(--black100);
     border: none;
     outline: none;
+    padding: 0;
 }
 
 #surveyPage #survey .input-wrapper .input:focus {
@@ -150,7 +177,7 @@
 }
 
 #surveyPage #survey .input-wrapper .input:focus-within {
-    border-color: var(--red500);
+    border-color: var(--black100);
 }
 
 #surveyPage #survey .input-wrapper .input input::placeholder {
