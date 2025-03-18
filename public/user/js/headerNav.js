@@ -61,4 +61,9 @@ $(document).ready(function () {
     }
 
     $headerNav.html(headerTemplate);
+
+    // 뒤로가기 버튼 클릭 이벤트 처리
+    $('.button-prev').on('click', function () {
+        window.history.back(); // 이전 페이지로 돌아가기
+    });
 });
