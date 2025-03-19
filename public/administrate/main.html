@@ -11,9 +11,12 @@
     <script src="/administrate/js/title.js" defer></script>
     <script src="/administrate/js/cardList.js" defer></script>
     <script src="/administrate/js/dashboardChart.js" defer></script>
-    <script src="/administrate/js/searchbar.js" defer></script>
-    <script src="/administrate/js/filter.js" defer></script>
-    <script src="/administrate/js/totalUserTable.js" defer></script>
+    <!-- <script src="/administrate/js/searchbar.js" defer></script> -->
+    <!-- <script type="module" src="/administrate/js/filter.js" defer></script> -->
+    <script type="module" src="/administrate/js/totalUserTable.js" defer></script>
+    <script type="module" src="/administrate/js/userManagement.js" defer></script>
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
@@ -67,20 +70,10 @@
             <div id="profilebar"></div>
             <div id="title"></div>
             <div id="cardList"></div>
+
             <div id="dashboardChart"></div>
 
-            <div id="userManagement">
-                <div class="title">전체 유저 관리</div>
-                <div id="searchbar" data-placeholder="유저명 검색"></div>
-
-                <div class="filter-group">
-                    <div id="filter" data-type="1"></div>
-                    <div id="filter" data-type="2"></div>
-                    <div id="filter" data-type="3"></div>
-                </div>
-
-                <div id="totalUserTable"></div>
-            </div>
+            <div id="userManagement"></div>
         </div>
     </div>
 </body>
