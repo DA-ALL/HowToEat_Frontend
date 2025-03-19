@@ -11,6 +11,7 @@ let surveyData = {
     height: '',
     weight: '',
     gender: '',
+    goal: '',
 };
 
 // 뒤로가기 이벤트 처리
@@ -110,6 +111,40 @@ function getSurveyTemplate(pageNumber) {
                     <div class="next-button">다음</div>
                 </div>
             `;
+        case 4:
+            return `
+                <div class="survey-title">
+                    나의 목표는?
+                </div>
+
+                <div class="select-container">
+                    <div class="select-item weight-loss" data-text="1">체중 감량</div>
+                    <div class="select-item weight-maintain" data-text="2">체중 유지</div>
+                    <div class="select-item weight-gain" data-text="3">체중 증량</div>
+                    <div class="select-item muscle-gain" data-text="4">근육 증량</div>
+                </div>
+
+                <div class="button-container">
+                    <div class="next-button">다음</div>
+                </div>
+            `;
+        case 4:
+            return `
+                <div class="survey-title">
+                    나의 목표는?
+                </div>
+
+                <div class="select-container">
+                    <div class="select-item weight-loss" data-text="1">체중 감량</div>
+                    <div class="select-item weight-maintain" data-text="2">체중 유지</div>
+                    <div class="select-item weight-gain" data-text="3">체중 증량</div>
+                    <div class="select-item muscle-gain" data-text="4">근육 증량</div>
+                </div>
+
+                <div class="button-container">
+                    <div class="next-button">다음</div>
+                </div>
+            `;
         default:
             return `<div>잘못된 페이지</div>`;
     }
@@ -167,6 +202,8 @@ function nextPage(pageNumber) {
         saveSurveyData('weight', $('#weight').val());
     } else if(pageNumber === 3) {
         saveSurveyData('gender', $('.select-item.valid').data('text'));
+    } else if(pageNumber === 4) {
+        saveSurveyData('goal', $('.select-item.valid').data('text'));
     }
     currentPage++;
     loadPage(currentPage);
@@ -196,6 +233,17 @@ function restoreSurveyData() {
             $('.select-item.male').addClass('valid');
         } else {
             $('.select-item.female').addClass('valid');
+        }
+    }
+    if (surveyData.goal) {
+        if(surveyData.goal == '1') {
+            $('.select-item.weight-loss').addClass('valid');
+        } else if(surveyData.goal == '2') {
+            $('.select-item.weight-maintain').addClass('valid');
+        } else if(surveyData.goal == '3') {
+            $('.select-item.weight-gain').addClass('valid');
+        } else if(surveyData.goal == '4') {
+            $('.select-item.muscle-gain').addClass('valid');
         }
     }
 

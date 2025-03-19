@@ -7,7 +7,11 @@ export function updateButtonState(pageNumber) {
 
     } else if(pageNumber ===3) {
         allValid = $('.select-item.valid').length === 1;
+        
+    } else if(pageNumber ===4) {
+        allValid = $('.select-item.valid').length === 1;
     }
+
 
     if (allValid) {
         $('.next-button').addClass('active');
