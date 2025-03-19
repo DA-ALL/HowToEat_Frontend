@@ -1,6 +1,11 @@
-export function updateButtonState() {
-    var allValid = $('.input.valid').length === 1 && 
-                   $('.date-box.valid').length === 3;
+export function updateButtonState(pageNumber) {
+
+    if(pageNumber === 1) {
+        var allValid = $('.input.valid').length === 1 && 
+                       $('.date-box.valid').length === 3;
+    } else if(pageNumber ===2) {
+
+    }
 
     if (allValid) {
         $('.next-button').addClass('active');
@@ -76,7 +81,10 @@ export function checkInput($input) {
 
     console.log(value);
 
-    if(value.length > 0) {
-        $wrapper.addClass('valid');
+    if(value != undefined) {
+
+        if(value.length > 0) {
+            $wrapper.addClass('valid');
+        }
     }
 }

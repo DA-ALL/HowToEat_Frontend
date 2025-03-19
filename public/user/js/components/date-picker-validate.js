@@ -48,10 +48,12 @@ export function birthDropDown() {
 
 // 올바른 날짜 선택 시, valid 클래스 추가, 에러시 error 클래스 추가
 export function validateDateInput($element) {
-    var value = $element.attr('data-text').trim();
-    var $wrapper = $element.closest('.date-box');
+    if($element != undefined) {
+        var value = $element.attr('data-text').trim();
+        var $wrapper = $element.closest('.date-box');
+        if (value) {
+            $wrapper.addClass('valid');
+        }
 
-    if (value) {
-        $wrapper.addClass('valid');
     }
 }

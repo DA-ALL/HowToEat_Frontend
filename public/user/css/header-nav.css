@@ -6,22 +6,25 @@
 }
 
 #headerNav {
-    margin-bottom: 55px;
+    margin-bottom: 54px;
 }
 
 #headerNav .header-nav {
     position: fixed;
     top: 0px;
     width: 100%;
-    padding: 16px;
+    padding: 16px 12px;
     box-sizing: border-box;
     border-bottom: 1px solid #F0F0F0;
     width: 100%;
-    padding: 16px;
     margin-bottom: 55px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+#headerNav[data-type="1"] .header-nav {
+    border-bottom: none;
 }
 
 #headerNav .title {

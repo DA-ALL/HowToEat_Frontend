@@ -1,5 +1,6 @@
 import { updateButtonState, validateInput, checkInput } from './components/input-validate.js';
 import { populateDays, updateDays, validateDateInput, birthDropDown } from './components/date-picker-validate.js';
+import { updateProgressBar } from './components/header-processbar.js';
 
 let currentPage = 1;
 let surveyData = {
@@ -113,10 +114,12 @@ function loadPage(pageNumber, isBackNavigation = false) {
     populateDays(31);
     updateDays();
     bindEvents();
-    updateButtonState();
+    updateProgressBar(pageNumber);
+    updateButtonState(pageNumber);
 }
 
-function bindEvents() {
+
+function bindEvents(pageNumber) {
     $(".next-button").off('click').on('click', function () {
         nextPage();
     });
@@ -125,12 +128,15 @@ function bindEvents() {
         validateInput($(this));
     });
 
-    checkInput($('#name'));
-    validateDateInput($('#year-text'));
-    validateDateInput($('#month-text'));
-    validateDateInput($('#day-text'));
+    if(pageNumber === 1) {
+        checkInput($('#name'));
+        validateDateInput($('#year-text'));
+        validateDateInput($('#month-text'));
+        validateDateInput($('#day-text'));
+    }
 
 }
+
 
 function nextPage() {
     saveSurveyData('name', $('#name').val());
@@ -155,7 +161,7 @@ function restoreSurveyData() {
         $('#day-text').text(surveyData.birthDay + '일').attr('data-text', surveyData.birthDay);
     }
 
-    updateButtonState();
+    updateButtonState(currentPage);
 }
 
 function saveSurveyData(key, value) {
@@ -181,7 +187,7 @@ $(document).on('click', '.dropdown-item', function () {
         $('#day-text').text(value + '일').attr('data-text', value);
         validateDateInput($('#day-text'));
     }
-    updateButtonState();
+    updateButtonState(currentPage);
 });
 
 
