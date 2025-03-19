@@ -8,6 +8,8 @@ let surveyData = {
     birthYear: '',
     birthMonth: '',
     birthDay: '',
+    height: '',
+    weight: '',
 };
 
 // 뒤로가기 이벤트 처리
@@ -77,14 +79,14 @@ function getSurveyTemplate(pageNumber) {
                     <div class="input-wrapper">
                         <div class="input-label">키</div>
                         <div class="input">
-                            <input type="number" id="height" name="height" placeholder="키" ime-mode="active" data-text="">
+                            <input type="number" inputmode="numeric" id="height" name="height" placeholder="키" ime-mode="active" data-text="">
                         </div>
                     </div>
 
                     <div class="input-wrapper">
                         <div class="input-label">몸무게</div>
                         <div class="input">
-                            <input type="number" id="weight" name="weight" placeholder="키" ime-mode="active" data-text="">
+                            <input type="number" inputmode="numeric" id="weight" name="weight" placeholder="몸무게" ime-mode="active" data-text="">
                         </div>
                     </div>
                 </div>
@@ -113,7 +115,7 @@ function loadPage(pageNumber, isBackNavigation = false) {
     
     populateDays(31);
     updateDays();
-    bindEvents();
+    bindEvents(pageNumber);
     updateProgressBar(pageNumber);
     updateButtonState(pageNumber);
 }
@@ -121,11 +123,13 @@ function loadPage(pageNumber, isBackNavigation = false) {
 
 function bindEvents(pageNumber) {
     $(".next-button").off('click').on('click', function () {
-        nextPage();
+        nextPage(pageNumber);
     });
 
-    $('#name').off('blur').on('blur', function () {
+    $('input').off('blur').on('blur', function () {
+        console.log("test")
         validateInput($(this));
+        updateButtonState(pageNumber);
     });
 
     if(pageNumber === 1) {
@@ -133,16 +137,26 @@ function bindEvents(pageNumber) {
         validateDateInput($('#year-text'));
         validateDateInput($('#month-text'));
         validateDateInput($('#day-text'));
+    } else if(pageNumber === 2) {
+        checkInput($('#height'));
+        checkInput($('#weight'));
     }
 
 }
 
 
-function nextPage() {
-    saveSurveyData('name', $('#name').val());
-    saveSurveyData('birthYear', $('#year-text').data('text'));
-    saveSurveyData('birthMonth', $('#month-text').data('text'));
-    saveSurveyData('birthDay', $('#day-text').data('text'));
+function nextPage(pageNumber) {
+    console.log("nextPage 함수 호출")
+    if(pageNumber === 1) {
+        saveSurveyData('name', $('#name').val());
+        saveSurveyData('birthYear', $('#year-text').data('text'));
+        saveSurveyData('birthMonth', $('#month-text').data('text'));
+        saveSurveyData('birthDay', $('#day-text').data('text'));
+    } else if(pageNumber === 2) {
+        console.log("nextPage 함수 호출2 ")
+        saveSurveyData('height', $('#height').val());
+        saveSurveyData('weight', $('#weight').val());
+    }
     currentPage++;
     loadPage(currentPage);
 }
@@ -159,6 +173,12 @@ function restoreSurveyData() {
     }
     if (surveyData.birthDay) {
         $('#day-text').text(surveyData.birthDay + '일').attr('data-text', surveyData.birthDay);
+    }
+    if (surveyData.height) {
+        $('#height').val(surveyData.height);
+    }
+    if (surveyData.weight) {
+        $('#weight').val(surveyData.weight);
     }
 
     updateButtonState(currentPage);

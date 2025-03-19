@@ -1,0 +1,17 @@
+.error-wrapper {
+    display: flex;
+    gap: 5px;
+    color: red;
+}
+
+.error-wrapper .error-icon{
+    display: flex;
+}
+
+.error-wrapper .error-icon img{
+    width: 16px;
+}
+
+.error-wrapper .error-message{
+    font-size: 14px;
+}

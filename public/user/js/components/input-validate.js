@@ -1,10 +1,11 @@
 export function updateButtonState(pageNumber) {
-
+    var allValid = false;
     if(pageNumber === 1) {
-        var allValid = $('.input.valid').length === 1 && 
+        allValid = $('.input.valid').length === 1 && 
                        $('.date-box.valid').length === 3;
     } else if(pageNumber ===2) {
-
+        allValid = $('.input.valid').length === 2;
+        console.log(allValid);
     }
 
     if (allValid) {
@@ -21,19 +22,17 @@ export function validateInput($input) {
     var $wrapper = $inputType.closest('.input');
     var $parent = $inputType.closest('.input').parent();
     var nameRegex = /^[가-힣a-zA-Z\s]+$/; // 한글, 영문, 공백 허용
+    var numberRegex = /^[0-9]+$/;// 숫자만 허용
     var errorType = null;
-
-
-    if (value.length === 0) {
-        // 공백 입력 시 에러타입 1
-        errorType = 1;
-    } else if (value.length === 1 || !nameRegex.test(value)) {
-        // 한 글자 입력 시 에러타입 2
-        errorType = 2;
-    } 
 
     // 이름 인풋 에러 처리
     if($inputId === 'name') {
+        if (value.length === 0) {// 공백 입력 시 에러타입 1
+            errorType = 1;
+        } else if (value.length === 1 || !nameRegex.test(value)) { // 한 글자 입력 시 에러타입 2
+            errorType = 2;
+        } 
+
         if (errorType === 1) {
             $wrapper.removeClass('valid').addClass('error').attr('data-error', '1');
             showErrorMessage($parent, errorType, $inputId);
@@ -42,7 +41,47 @@ export function validateInput($input) {
             showErrorMessage($parent, errorType, $inputId);
         } else {
             $wrapper.removeClass('error').addClass('valid').removeAttr('data-error');
-            $parent.find('.error-message').remove();  // 에러 메시지 제거
+            $parent.find('.error-wrapper').remove();  // 에러 메시지 제거
+        }
+    } 
+    
+    else if($inputId === 'height') {
+        if (value.length === 0) { // 공백 입력 시 에러타입 1
+            errorType = 1;
+        } else if (value < 100 || !numberRegex.test(value) || value > 250) { // 키 제한 || 숫자 이외 입력시
+            errorType = 2;
+        }
+
+
+        if (errorType === 1) {
+            $wrapper.removeClass('valid').addClass('error').attr('data-error', '1');
+            showErrorMessage($parent, errorType, $inputId);
+        } else if (errorType === 2) {
+            $wrapper.removeClass('valid').addClass('error').attr('data-error', '2');
+            showErrorMessage($parent, errorType, $inputId);
+        } else {
+            $wrapper.removeClass('error').addClass('valid').removeAttr('data-error');
+            $parent.find('.error-wrapper').remove();  // 에러 메시지 제거
+        }
+    }
+        
+    else if($inputId === 'weight') {
+        if (value.length === 0) { // 공백 입력 시 에러타입 1
+            errorType = 1;
+        } else if (value < 10 || !numberRegex.test(value) || value > 200) { // 몸무게 제한 || 숫자 이외 입력시
+            errorType = 2;
+        }
+
+
+        if (errorType === 1) {
+            $wrapper.removeClass('valid').addClass('error').attr('data-error', '1');
+            showErrorMessage($parent, errorType, $inputId);
+        } else if (errorType === 2) {
+            $wrapper.removeClass('valid').addClass('error').attr('data-error', '2');
+            showErrorMessage($parent, errorType, $inputId);
+        } else {
+            $wrapper.removeClass('error').addClass('valid').removeAttr('data-error');
+            $parent.find('.error-wrapper').remove();  // 에러 메시지 제거
         }
     }
 
@@ -51,7 +90,7 @@ export function validateInput($input) {
 
 
 export function showErrorMessage($wrapper, errorType, inputId) {
-    $wrapper.find('.error-message').remove();
+    $wrapper.find('.error-wrapper').remove();
 
     var errorMessage = '';
 
@@ -68,8 +107,41 @@ export function showErrorMessage($wrapper, errorType, inputId) {
         }
     }
 
+    //[height input]인 경우
+    if (inputId === 'height') {
+        // 에러 메시지 설정
+        switch (errorType) {
+            case 1:
+                errorMessage = '필수 항목이에요';
+                break;
+            case 2:
+                errorMessage = '키를 다시 확인해주세요';
+                break;
+        }
+    }
+
+    //[weight input]인 경우
+    if (inputId === 'weight') {
+        // 에러 메시지 설정
+        switch (errorType) {
+            case 1:
+                errorMessage = '필수 항목이에요';
+                break;
+            case 2:
+                errorMessage = '몸무게를 다시 확인해주세요';
+                break;
+        }
+    }
+
     // 에러 메시지 추가
-    $wrapper.append('<div class="error-message">' + errorMessage + '</div>');
+    $wrapper.append(
+        '<div class="error-wrapper">' +
+            '<div class="error-icon">' + 
+                '<img src="/user/images/icon_warning.png">' + 
+            '</div>' + 
+            '<div class="error-message">' + errorMessage + '</div>' + 
+        '</div>'
+    );
 }
 
 
@@ -78,13 +150,11 @@ export function checkInput($input) {
     var $inputId = $inputType.attr('id');
     var value = $inputType.val();
     var $wrapper = $inputType.closest('.input');
+    console.log("test");
 
-    console.log(value);
-
-    if(value != undefined) {
-
+    // if(value != undefined) {
         if(value.length > 0) {
             $wrapper.addClass('valid');
         }
-    }
+    // }
 }
