@@ -12,6 +12,7 @@ let surveyData = {
     weight: '',
     gender: '',
     goal: '',
+    activity: '',
 };
 
 // 뒤로가기 이벤트 처리
@@ -128,17 +129,33 @@ function getSurveyTemplate(pageNumber) {
                     <div class="next-button">다음</div>
                 </div>
             `;
-        case 4:
+        case 5:
             return `
                 <div class="survey-title">
-                    나의 목표는?
+                    나의 활동량은?
                 </div>
 
-                <div class="select-container">
-                    <div class="select-item weight-loss" data-text="1">체중 감량</div>
-                    <div class="select-item weight-maintain" data-text="2">체중 유지</div>
-                    <div class="select-item weight-gain" data-text="3">체중 증량</div>
-                    <div class="select-item muscle-gain" data-text="4">근육 증량</div>
+                <div class="select-container activity">
+                    <div class="select-wrapper very-active" data-text="5">
+                        <div class="main-text">매우 활동적</div>
+                        <div class="sub-text">주 6~7회 이상 고강도 운동 (운동 선수) <br> 업무 형태가 활동적</div>
+                    </div>
+                    <div class="select-wrapper active" data-text="4">
+                        <div class="main-text">활동적</div>
+                        <div class="sub-text">주 4~6회 운동 (웨이트 트레이닝) <br> 주 150분 이상 유산소 운동</div>
+                    </div>
+                    <div class="select-wrapper moderate" data-text="3">
+                        <div class="main-text">보통</div>
+                        <div class="sub-text">주 2~3회 운동 (유산소 + 웨이트 트레이닝)</div>
+                    </div>
+                    <div class="select-wrapper low" data-text="2">
+                        <div class="main-text">적음</div>
+                        <div class="sub-text">주 2회 미만의 운동 <br> 웨이트 트레이닝 / 유산소 운동 선택적 진행</div>
+                    </div>
+                    <div class="select-wrapper very-low" data-text="1">
+                        <div class="main-text">매우 적음</div>
+                        <div class="sub-text">평소 운동을 하지 않음 <br> 업무 형태가 주로 앉아서 진행</div>
+                    </div>
                 </div>
 
                 <div class="button-container">
@@ -204,6 +221,8 @@ function nextPage(pageNumber) {
         saveSurveyData('gender', $('.select-item.valid').data('text'));
     } else if(pageNumber === 4) {
         saveSurveyData('goal', $('.select-item.valid').data('text'));
+    } else if(pageNumber === 5) {
+        saveSurveyData('activity', $('.select-wrapper.valid').data('text'));
     }
     currentPage++;
     loadPage(currentPage);
@@ -246,6 +265,20 @@ function restoreSurveyData() {
             $('.select-item.muscle-gain').addClass('valid');
         }
     }
+    if (surveyData.activity) {
+        console.log("testseet");
+        if(surveyData.activity == '1') {
+            $('.select-wrapper.very-low').addClass('valid');
+        } else if(surveyData.activity == '2') {
+            $('.select-wrapper.low').addClass('valid');
+        } else if(surveyData.activity == '3') {
+            $('.select-wrapper.moderate').addClass('valid');
+        } else if(surveyData.activity == '4') {
+            $('.select-wrapper.active').addClass('valid');
+        } else if(surveyData.activity == '5') {
+            $('.select-wrapper.very-active').addClass('valid');
+        }
+    }
 
     updateButtonState(currentPage);
 }
@@ -285,7 +318,13 @@ $(document).on('click', '.select-item', function () {
     updateButtonState(currentPage);
 });
 
+// page4 활동량
+$(document).on('click', '.select-wrapper', function () {
+    $('.select-wrapper').removeClass('valid');
+    $(this).addClass('valid');
 
+    updateButtonState(currentPage);
+});
 
 
 $(document).on('click', function (event) {
