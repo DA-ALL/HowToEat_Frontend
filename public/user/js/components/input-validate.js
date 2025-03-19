@@ -1,11 +1,12 @@
 export function updateButtonState(pageNumber) {
     var allValid = false;
     if(pageNumber === 1) {
-        allValid = $('.input.valid').length === 1 && 
-                       $('.date-box.valid').length === 3;
+        allValid = $('.input.valid').length === 1 && $('.date-box.valid').length === 3;
     } else if(pageNumber ===2) {
         allValid = $('.input.valid').length === 2;
-        console.log(allValid);
+
+    } else if(pageNumber ===3) {
+        allValid = $('.select-item.valid').length === 1;
     }
 
     if (allValid) {

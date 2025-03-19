@@ -10,6 +10,7 @@ let surveyData = {
     birthDay: '',
     height: '',
     weight: '',
+    gender: '',
 };
 
 // 뒤로가기 이벤트 처리
@@ -94,10 +95,20 @@ function getSurveyTemplate(pageNumber) {
                     <div class="next-button">다음</div>
                 </div>
             `;
-        case 7:
+        case 3:
             return `
-                <div class="survey-title">모든 질문이 끝났습니다!</div>
-                <button onclick="submitSurvey()">제출</button>
+                <div class="survey-title">
+                    나의 성별은?
+                </div>
+
+                <div class="select-container">
+                    <div class="select-item male" data-text="male">남자</div>
+                    <div class="select-item female" data-text="female">여자</div>
+                </div>
+
+                <div class="button-container">
+                    <div class="next-button">다음</div>
+                </div>
             `;
         default:
             return `<div>잘못된 페이지</div>`;
@@ -146,16 +157,16 @@ function bindEvents(pageNumber) {
 
 
 function nextPage(pageNumber) {
-    console.log("nextPage 함수 호출")
     if(pageNumber === 1) {
         saveSurveyData('name', $('#name').val());
         saveSurveyData('birthYear', $('#year-text').data('text'));
         saveSurveyData('birthMonth', $('#month-text').data('text'));
         saveSurveyData('birthDay', $('#day-text').data('text'));
     } else if(pageNumber === 2) {
-        console.log("nextPage 함수 호출2 ")
         saveSurveyData('height', $('#height').val());
         saveSurveyData('weight', $('#weight').val());
+    } else if(pageNumber === 3) {
+        saveSurveyData('gender', $('.select-item.valid').data('text'));
     }
     currentPage++;
     loadPage(currentPage);
@@ -179,6 +190,13 @@ function restoreSurveyData() {
     }
     if (surveyData.weight) {
         $('#weight').val(surveyData.weight);
+    }
+    if (surveyData.gender) {
+        if(surveyData.gender === 'male') {
+            $('.select-item.male').addClass('valid');
+        } else {
+            $('.select-item.female').addClass('valid');
+        }
     }
 
     updateButtonState(currentPage);
@@ -209,6 +227,17 @@ $(document).on('click', '.dropdown-item', function () {
     }
     updateButtonState(currentPage);
 });
+
+
+// 드롭다운 채우기 및 클릭
+$(document).on('click', '.select-item', function () {
+    $('.select-item').removeClass('valid');
+    $(this).addClass('valid');
+
+    updateButtonState(currentPage);
+});
+
+
 
 
 $(document).on('click', function (event) {
