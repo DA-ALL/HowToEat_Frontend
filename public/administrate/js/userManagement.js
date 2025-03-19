@@ -69,7 +69,7 @@ function loadContent() {
         handleUrlChange();
     };
 
-    // 🚀 popstate 이벤트 강제 실행 코드 제거
+    // popstate 이벤트 강제 실행 코드 제거
     window.addEventListener("popstate", () => {
         handleUrlChange();
     });

@@ -139,9 +139,17 @@ $(document).on('click', '.filter-option', function () {
 });
 
 function updateURL() {
-    const newURL = `${window.location.pathname}?${filterParams.toString()}`;
+    const queryKeysInOrder = ["username", "orderby", "next-gym", "user-role", "data-source", "recommend", "admin-share", "option", "page"];
+    let orderedParams = new URLSearchParams();
+
+    queryKeysInOrder.forEach((key) => {
+        if (filterParams.has(key)) {
+            orderedParams.set(key, filterParams.get(key));
+        }
+    });
+
+    const newURL = `${window.location.pathname}?${orderedParams.toString()}`;
     window.history.pushState({}, '', newURL);
-    // renderFilters();
 }
 
 // 뒤로가기, 앞으로가기 시 필터 상태 렌더링
