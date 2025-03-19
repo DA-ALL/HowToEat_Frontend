@@ -144,7 +144,7 @@ function updateURL() {
     // renderFilters();
 }
 
-// // 🔥 **뒤로가기 / 앞으로가기 시 필터 상태 렌더링**
+// 뒤로가기, 앞으로가기 시 필터 상태 렌더링
 window.addEventListener('popstate', function () {
     filterParams = new URLSearchParams(window.location.search);
     renderFilters();  // 필터 UI를 새로 렌더링
