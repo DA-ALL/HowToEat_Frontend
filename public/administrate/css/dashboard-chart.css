@@ -1,37 +1,14 @@
-
-.chart-container {
-    max-width: 1600px;
-    min-width: 1400px;
-    cursor: grab;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--white300);
-    margin: 40px 30px;
-    padding-bottom: 10px;
-    border-radius: 14px;
-    filter: drop-shadow(6px 6px 54px rgba(0, 0, 0, 0.05));
-}
-
-.chart-container .title-chart {
-    color: var(--black100);
-    font-size: 24px;
-    font-weight: 700;
-    margin-top: 37px;
-    margin-left: 32px;   
-    margin-bottom: 10px;
-}
-
 .chart-container .chart-wrapper {
     width: 100%;
+    min-width: 1400px;
+    max-width: 1600px;
     height: 400px;
     display: flex;
     align-items: center;
     cursor: grab;
+    overflow: hidden;
 }
 
-.chart-container .chart-wrapper canvas {
-    display: flex;
-}
 
 #tooltip {
     position: absolute;

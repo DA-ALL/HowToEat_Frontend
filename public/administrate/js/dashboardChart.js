@@ -1,23 +1,17 @@
 $(document).ready(function () {
     // URL을 체크하고 차트를 초기화/제거하는 함수
     function checkURLAndInitChart() {
-        if (window.location.href.includes("dashboard")) {
-            // dashboard가 URL에 포함되어 있으면 차트 생성
-            $('#dashboardChart').html(`
-                <div class="chart-container">
-                    <div class="title-chart">식단 등록 횟수</div>
-                    <div class="chart-wrapper">
-                        <canvas id="myChart"></canvas>
-                    </div>
+        $('#dashboardChart').html(`
+            <div class="chart-container">
+                <div class="title">식단 등록 횟수</div>
+                <div class="chart-wrapper">
+                    <canvas id="myChart"></canvas>
                 </div>
-                <div id="tooltip"></div>
-            `);
+            </div>
+            <div id="tooltip"></div>
+        `);
 
-            initChart();
-        } else {
-            // dashboard가 URL에 포함되지 않으면 차트 제거
-            $('#dashboardChart').html('');
-        }
+        initChart();
     }
 
     // 차트 초기화 함수
@@ -148,22 +142,22 @@ $(document).ready(function () {
     // 초기 로드 시 URL 확인
     checkURLAndInitChart();
 
-    // popstate 이벤트로 뒤로가기/앞으로가기 시 URL 변경 감지
-    window.addEventListener('popstate', function () {
-        checkURLAndInitChart();
-    });
-
-    // pushState나 replaceState가 호출될 때도 URL을 변경 감지
-    const originalPushState = history.pushState;
-    const originalReplaceState = history.replaceState;
-
-    history.pushState = function () {
-        originalPushState.apply(history, arguments);
-        checkURLAndInitChart(); // URL이 변경되었을 때 차트 확인
-    };
-
-    history.replaceState = function () {
-        originalReplaceState.apply(history, arguments);
-        checkURLAndInitChart(); // URL이 변경되었을 때 차트 확인
-    };
+    function resizeChart() {
+        const chartWrapper = document.querySelector(".chart-wrapper");
+        const sidebar = document.querySelector(".sidebar-container");
+    
+        if (!chartWrapper || !sidebar) return; // 요소가 없으면 함수 종료
+    
+        const sidebarWidth = sidebar.offsetWidth + 30; // sidebar의 현재 width 값
+        const minWidth = 1400;
+        const maxWidth = 1600;
+        // console.log(minWidth);
+        // console.log(maxWidth);
+        const width = Math.max(minWidth, Math.min(window.innerWidth - sidebarWidth, maxWidth));
+        console.log(width);
+        chartWrapper.style.width = `${width}px`;
+    }
+    
+    window.addEventListener("resize", resizeChart);
+    resizeChart(); // 초기 실행
 });

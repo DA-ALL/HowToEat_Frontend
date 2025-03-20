@@ -6,13 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>하잇</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/administrate/js/sidebar.js" defer></script>
+    <script type="module" src="/administrate/js/sidebar.js" defer></script>
     <script src="/administrate/js/profilebar.js" defer></script>
     <script src="/administrate/js/title.js" defer></script>
     <script src="/administrate/js/cardList.js" defer></script>
-    <script src="/administrate/js/dashboardChart.js" defer></script>
-    <!-- <script src="/administrate/js/searchbar.js" defer></script> -->
-    <!-- <script type="module" src="/administrate/js/filter.js" defer></script> -->
+    <script type="module" src="/administrate/js/dashboardChart.js" defer></script>
     <script type="module" src="/administrate/js/totalUserTable.js" defer></script>
     <script type="module" src="/administrate/js/userManagement.js" defer></script>
     
@@ -24,7 +22,7 @@
 </head>
 
 <style>
-    #userManagement {
+    .content-wrapper {
         min-width: 1400px;
         max-width: 1600px;
         margin: 40px 30px;
@@ -35,7 +33,7 @@
         box-shadow: 6px 6px 54px 0px rgba(0, 0, 0, 0.05);
     }
 
-    #userManagement .title {
+    .content-wrapper .title {
         margin-top: 37px;
         margin-left: 30px;
         margin-bottom: 28px;
@@ -43,14 +41,18 @@
         font-weight: 600;
     }
 
-    #userManagement #searchbar {
+    .content-wrapper #searchbar {
         margin-left: 30px;
         margin-bottom: 28px;
     }
 
+    #userManagement {
+        display: flex;
+        flex-direction: column;    
+    }
 
     /* filter group */
-    #userManagement .filter-group {
+    .content-wrapper .filter-group {
         display: flex;
         flex-direction: row;
         gap: 50px;
@@ -71,9 +73,19 @@
             <div id="title"></div>
             <div id="cardList"></div>
 
-            <div id="dashboardChart"></div>
-
-            <div id="userManagement"></div>
+            <div class="content-wrapper"> 
+                <div id="dashboardChart"></div>
+                <div id="userManagement"></div>
+                <div id="ptUserManagement"></div>
+                <div id="foodManagement"></div>
+                <div id="userFoodManagement"></div>
+                <div id="recommendFoodManagement"></div>
+                <div id="addFood"></div>
+                <div id="notice"></div>
+                <div id="adminManagement"></div>
+                <div id="trainerManagement"></div>
+                <div id="gymManagement"></div>
+            </div>
         </div>
     </div>
 </body>

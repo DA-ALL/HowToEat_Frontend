@@ -1,3 +1,6 @@
+import { changePage } from '/administrate/js/router.js';
+
+
 $(document).ready(function () {
     // 사이드바 HTML 삽입
     $('#sidebar').html(`
@@ -128,52 +131,44 @@ $(document).ready(function () {
     // 페이지 로드 시 현재 URL 기준으로 active 상태 설정
     const currentPage = getCurrentPage();
     updateActiveState(currentPage);
-    loadPageContent(currentPage);
 
     $('.sidebar-item-option').on('click', function (event) {
         var page = $(this).data('page');
         var newUrl = '';
-
-        if(page === 'pt'){
-            newUrl = `/admin/user-management/${page}`;
+        
+        if(page === 'pt'){ 
+            newUrl = `user-management/${page}`;
         } else if (page === 'user-regist') {
-            newUrl = `/admin/food-management/${page}`;
+            newUrl = `food-management/${page}`;
         }  else if (page === 'recommend-food') {
-            newUrl = `/admin/food-management/${page}`;
+            newUrl = `food-management/${page}`;
         } else if (page === 'add-food') {
-            newUrl = `/admin/food-management/${page}`;
+            newUrl = `food-management/${page}`;
         } else if (page === 'trainer') {
-            newUrl = `/admin/admin-management/${page}`;
+            newUrl = `admin-management/${page}`;
         } else if (page === 'gym') {
-            newUrl = `/admin/admin-management/${page}`;
+            newUrl = `admin-management/${page}`;
         } else if (page === 'all-user') {
-            newUrl = `/admin/user-management`;
+            newUrl = `user-management`;
         } else if (page === 'all-food') {
-            newUrl = `/admin/food-management`;
+            newUrl = `food-management`;
         } else if (page === 'all-admin') {
-            newUrl = `/admin/admin-management`;
+            newUrl = `admin-management`;
         }
-
-        history.pushState({ page: page }, "", newUrl);
-
-        // 콘텐츠 변경 (AJAX로 해당 페이지 내용 불러오기)
-        loadPageContent(page);
+        
+        changePage(newUrl);
         updateSideOptionActiveState(page);
 
         $(this).addClass("active");
     })
-
+    
     // 링크 클릭 이벤트 설정 (새로고침 없이 이동)
     $('.nav-link').on('click', function (event) {
         event.preventDefault(); // 기본 이동 방지
         const page = $(this).data('page'); // data-page 값 가져오기
-        const newUrl = `/admin/${page}`; // 새로운 URL 생성
 
         // URL 변경 (새로고침 없음)
-        history.pushState({ page: page }, "", newUrl);
-
-        // 콘텐츠 변경 (AJAX로 해당 페이지 내용 불러오기)
-        loadPageContent(page);
+        changePage(page);
         updateActiveState(page); // active 상태 업데이트
 
         // 모든 nav-link의 이미지 원래대로 변경
@@ -185,21 +180,12 @@ $(document).ready(function () {
         $(this).find('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
     });
 
-    // 뒤로가기/앞으로가기 처리 (popstate 이벤트)
     window.onpopstate = function (event) {
         const pathParts = window.location.pathname.split("/").slice(2);
         if (event.state && event.state.page) {
-            loadPageContent(pathParts.length > 1 ? pathParts : pathParts[0]); // 콘텐츠 변경
             updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
         }
     };
-
-
-    // 페이지 콘텐츠 불러오는 함수
-    function loadPageContent(page) {
-        $('#content').load(`/pages/${page}.html`); // AJAX로 해당 페이지 로드
-    }
-
 
     // 현재 페이지의 맨뒤에 url을 가져오기
     function getCurrentPage() {
