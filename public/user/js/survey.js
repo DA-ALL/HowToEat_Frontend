@@ -13,11 +13,12 @@ let surveyData = {
     gender: '',
     goal: '',
     activity: '',
+    isNextGym: ''
 };
 
 // 뒤로가기 이벤트 처리
 window.onpopstate = function (event) {
-    console.log("🔙 뒤로가기 감지!", event.state);
+    console.log("뒤로가기 감지!", event.state);
 
     if (event.state && event.state.page) {
         currentPage = event.state.page;
@@ -162,6 +163,21 @@ function getSurveyTemplate(pageNumber) {
                     <div class="next-button">다음</div>
                 </div>
             `;
+            case 6:
+                return `
+                    <div class="survey-title">
+                        넥스트짐을 다니고 계신가요?
+                    </div>
+    
+                    <div class="select-container">
+                        <div class="select-item yes" data-text=true>예</div>
+                        <div class="select-item no" data-text=false>아니오</div>
+                    </div>
+    
+                    <div class="button-container">
+                        <div class="next-button">다음</div>
+                    </div>
+                `;
         default:
             return `<div>잘못된 페이지</div>`;
     }
@@ -223,6 +239,8 @@ function nextPage(pageNumber) {
         saveSurveyData('goal', $('.select-item.valid').data('text'));
     } else if(pageNumber === 5) {
         saveSurveyData('activity', $('.select-wrapper.valid').data('text'));
+    } else if(pageNumber === 6) {
+        saveSurveyData('isNextGym', $('.select-item.valid').data('text'));
     }
     currentPage++;
     loadPage(currentPage);
@@ -266,7 +284,6 @@ function restoreSurveyData() {
         }
     }
     if (surveyData.activity) {
-        console.log("testseet");
         if(surveyData.activity == '1') {
             $('.select-wrapper.very-low').addClass('valid');
         } else if(surveyData.activity == '2') {
@@ -278,6 +295,11 @@ function restoreSurveyData() {
         } else if(surveyData.activity == '5') {
             $('.select-wrapper.very-active').addClass('valid');
         }
+    }
+    if (surveyData.isNextGym) {
+        $('.select-item.yes').addClass('valid');
+    } else {
+        $('.select-item.no').addClass('valid');
     }
 
     updateButtonState(currentPage);

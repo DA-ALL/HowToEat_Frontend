@@ -13,6 +13,9 @@ export function updateButtonState(pageNumber) {
         
     } else if(pageNumber === 5) {
         allValid = $('.select-wrapper.valid').length === 1;
+    
+    } else if(pageNumber === 6) {
+        allValid = $('.select-item.valid').length === 1;
     }
 
 
