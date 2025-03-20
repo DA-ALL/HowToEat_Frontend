@@ -1,0 +1,58 @@
+@media (min-width: 500px) {
+    #headerNav .header-nav {
+        max-width: 500px;
+        margin: 0 auto !important;
+    }
+}
+
+#headerNav {
+    margin-bottom: 54px;
+}
+
+#headerNav .header-nav {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    padding: 16px 12px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #F0F0F0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--white300);
+}
+
+#headerNav[data-type="1"] .header-nav {
+    border-bottom: none;
+}
+
+#headerNav .title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+#headerNav .header-nav .button-prev {
+    display: flex;
+    cursor: pointer;
+}
+
+#headerNav .header-nav .button-prev img {
+    width: 20px;
+    height: 20px;
+}
+
+#headerNav .header-nav .button-add {
+    display: flex;
+    cursor: pointer;
+}
+
+#headerNav .header-nav .button-add img {
+    width: 22px;
+    height: 22px;
+}
+
+#headerNav .header-nav .hidden {
+    visibility: hidden;
+}
