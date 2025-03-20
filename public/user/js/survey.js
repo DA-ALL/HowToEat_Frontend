@@ -170,8 +170,8 @@ function getSurveyTemplate(pageNumber) {
                     </div>
     
                     <div class="select-container">
-                        <div class="select-item yes" data-text=true>예</div>
-                        <div class="select-item no" data-text=false>아니오</div>
+                        <div class="select-item yes" data-text="true">예</div>
+                        <div class="select-item no" data-text="false">아니오</div>
                     </div>
     
                     <div class="button-container">
@@ -241,6 +241,8 @@ function nextPage(pageNumber) {
         saveSurveyData('activity', $('.select-wrapper.valid').data('text'));
     } else if(pageNumber === 6) {
         saveSurveyData('isNextGym', $('.select-item.valid').data('text'));
+        window.location.href = '/signup-complete';
+        return; // 리다이렉션 후 다음 페이지 로딩을 막기 위해 리턴
     }
     currentPage++;
     loadPage(currentPage);
@@ -297,9 +299,11 @@ function restoreSurveyData() {
         }
     }
     if (surveyData.isNextGym) {
-        $('.select-item.yes').addClass('valid');
-    } else {
-        $('.select-item.no').addClass('valid');
+        if (surveyData.isNextGym === 'true') {
+            $('.select-item.yes').addClass('valid');
+        } else {
+            $('.select-item.no').addClass('valid');
+        }
     }
 
     updateButtonState(currentPage);

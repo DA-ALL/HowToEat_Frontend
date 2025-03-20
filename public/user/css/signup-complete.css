@@ -17,6 +17,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100%;
     background-color: #FFF9F9;
 }
@@ -24,7 +25,44 @@
 #signupComplete .welcome-text {
     font-size: 30px;
     font-weight: 700;
-    color: var(--red500);
-    /* color: var(--black100); */
+    color: var(--red500); 
     letter-spacing: 3px;
+}
+
+
+#signupComplete .goal-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 170px;
+    align-items: center;
+    justify-content: center;
+}
+
+#signupComplete .goal-text-wrapper {
+    display: flex;
+}
+
+#signupComplete .goal-text-wrapper .goal-text-name{
+    color: var(--red500);
+    font-size: 18px;
+    font-weight: 500;
+}
+
+#signupComplete .goal-text-wrapper .goal-text {
+    color: var(--black100);
+    font-size: 18px;
+    font-weight: 500;
+}
+
+#signupComplete .kcal {
+    color: var(--red500);
+    font-size: 36px;
+    font-weight: 600;
+}
+
+#signupComplete .sub-text {
+    color: var(--black100);
+    font-size: 18px;
+    font-weight: 500;
 }
