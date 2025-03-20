@@ -1,0 +1,30 @@
+@media (min-width: 500px) {
+    #signupCompletePage #signupComplete {
+        max-width: 500px;
+        margin: 0 auto !important;
+    }
+}
+
+#signupCompletePage {
+    position: relative;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+#signupComplete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #FFF9F9;
+}
+
+#signupComplete .welcome-text {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--red500);
+    /* color: var(--black100); */
+    letter-spacing: 3px;
+}
