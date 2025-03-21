@@ -1,6 +1,10 @@
 $(document).ready(function () {
     showWelcomeMessage();
     triggerConfettiEffect();
+
+    $(".next-button.signup").on('click', function(){
+        window.location.href = '/main';
+    });
 });
 
 function showWelcomeMessage() {
@@ -29,7 +33,7 @@ const createGoalMessage = () => `
 `;
 
 function animateKcalCounter() {
-    let targetValue = 2562, duration = 2500, startTime = performance.now();
+    let targetValue = 2562, duration = 3000, startTime = performance.now();
 
     function easeOutExpo(t) {
         return t === 1 ? 1 : 1 - Math.pow(2, -15 * t);
@@ -71,10 +75,30 @@ function fadeOutFinalMessage() {
     $(".goal-text-wrapper, .sub-text").fadeOut(1000, function () {
         $(".goal-text-wrapper").html(createFinalMessage1());
         $(".goal-text-sub").html(createFinalMessage2());
-        $(".goal-text-wrapper, .goal-text-sub").hide().fadeIn(1000);
+        $(".goal-text-wrapper, .goal-text-sub").hide().fadeIn(1000, function () {
+            setTimeout(showFinalButton, 2000);
+        });
     });
 }
 
+
+function buttonTemplate() {
+    return `
+        <div class="button-container">
+            <div class="next-button signup">식단 관리하러 가기</div>
+        </div>
+    `;
+}
+
+function showFinalButton() {
+    const $button = $(buttonTemplate()).hide(); // 버튼을 숨긴 상태에서 생성
+    $('#signupComplete').append($button);
+    $button.fadeIn(1000); // 1초 동안 서서히 나타나도록 설정
+
+    $(document).on('click', '.next-button.signup', function () {
+        window.location.href = '/main';
+    });
+}
 const createMotivationMessage1 = () => `
     <div class="goal-text-name">하잇</div>
     <div class="goal-text">과 함께라면</div>

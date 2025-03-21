@@ -40,6 +40,7 @@
 }
 
 #signupComplete .goal-text-wrapper {
+    height: 21px;
     display: flex;
 }
 
@@ -55,14 +56,24 @@
     font-weight: 500;
 }
 
-#signupComplete .kcal {
-    color: var(--red500);
-    font-size: 36px;
-    font-weight: 600;
+
+#signupComplete .goal-kcal-wrapper {
+    height: 60px;
 }
 
-#signupComplete .sub-text {
+#signupComplete .kcal {
+    color: var(--red500);
+    font-size: 50px;
+    font-weight: 700;
+}
+
+#signupComplete .goal-text-sub {
+    height: 21px;
+}
+
+#signupComplete .goal-text-sub .sub-text {
     color: var(--black100);
     font-size: 18px;
     font-weight: 500;
+    height: 21px;
 }

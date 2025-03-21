@@ -1,0 +1,44 @@
+
+@media (min-width: 500px) {
+    .button-container {
+        max-width: 500px;
+        margin: 0 auto !important;
+    }
+}
+
+.button-container {
+    width: 100%;
+    bottom: 20px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    position: absolute;
+}
+
+
+.button-container .next-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 13px 0px;
+    border-radius: 8px;
+}
+
+.button-container .next-button.disabled {
+    background-color: var(--gray100);
+    color: var(--white300);
+    pointer-events: none;
+}
+
+.button-container .next-button.active {
+    color: var(--white300);
+    background-color: var(--red500);
+    cursor: pointer;
+}
+
+.button-container .next-button.signup {
+    color: var(--white300);
+    background: var(--color_01, linear-gradient(269deg, #ED7777 0%, #E386B3 71.52%, #D896EF 103.66%));
+}
+

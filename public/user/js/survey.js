@@ -186,6 +186,13 @@ function getSurveyTemplate(pageNumber) {
 function loadPage(pageNumber, isBackNavigation = false) {
     $('#survey').html(getSurveyTemplate(pageNumber));
 
+    // 페이지가 1이면 button-prev 숨기기, 그렇지 않으면 보이게 설정
+    if (pageNumber === 1) {
+        $('.button-prev').hide();
+    } else {
+        $('.button-prev').show();
+    }
+
     if (!isBackNavigation) {
         history.pushState({ page: pageNumber }, '', `?page=${pageNumber}`);
     }
@@ -206,7 +213,6 @@ function bindEvents(pageNumber) {
     });
 
     $('input').off('blur').on('blur', function () {
-        console.log("test")
         validateInput($(this));
         updateButtonState(pageNumber);
     });
