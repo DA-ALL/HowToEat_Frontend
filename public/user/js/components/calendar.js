@@ -1,3 +1,5 @@
+import { getTodaysCPF } from '../todaysCPF.js';
+
 $(document).ready(function () {
     let currentDate = new Date(); 
     let viewMode = 'week';
@@ -99,7 +101,10 @@ $(document).ready(function () {
             const selected = $(this).data("date");
             activeDate = selected;
             currentDate = new Date(selected); // 선택한 날짜 기준으로 currentDate 이동
+
+            $("#todaysCPF").html(getTodaysCPF(selected));
         });
+        $("#todaysCPF").html(getTodaysCPF(activeDate));
     }
 
     function getCalorieInfo(dateStr) {
