@@ -5,16 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/user/js/loginPage.js" defer></script>
+    <script src="/user/js/components/calendar.js" defer></script>
     <title>하잇</title>
 
     <link rel="stylesheet" href="/user/css/main.css">
-    <link rel="stylesheet" href="/user/css/loginPage.css">
 </head>
 
 <body>
     <div id="main">
         <div class="root-container">
-
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div id="prev">
+                        <img src="/user/images/icon_arrow_back_black.png">
+                    </div>
+                    <span id="current-date">2025년 01월</span>
+                    <div id="next">
+                        <img src="/user/images/icon_arrow_front_black.png">
+                    </div>
+                </div>
+                <div class="toggle-wrapper">
+                    <div id="toggle-view">주단위</div>
+                </div>
+                <div id="calendar"></div>
+            </div>
         </div>
     </div>
 </body>

@@ -170,8 +170,8 @@ function getSurveyTemplate(pageNumber) {
                     </div>
     
                     <div class="select-container">
-                        <div class="select-item yes" data-text=true>예</div>
-                        <div class="select-item no" data-text=false>아니오</div>
+                        <div class="select-item yes" data-text="true">예</div>
+                        <div class="select-item no" data-text="false">아니오</div>
                     </div>
     
                     <div class="button-container">
@@ -185,6 +185,13 @@ function getSurveyTemplate(pageNumber) {
 
 function loadPage(pageNumber, isBackNavigation = false) {
     $('#survey').html(getSurveyTemplate(pageNumber));
+
+    // 페이지가 1이면 button-prev 숨기기, 그렇지 않으면 보이게 설정
+    if (pageNumber === 1) {
+        $('.button-prev').hide();
+    } else {
+        $('.button-prev').show();
+    }
 
     if (!isBackNavigation) {
         history.pushState({ page: pageNumber }, '', `?page=${pageNumber}`);
@@ -206,7 +213,6 @@ function bindEvents(pageNumber) {
     });
 
     $('input').off('blur').on('blur', function () {
-        console.log("test")
         validateInput($(this));
         updateButtonState(pageNumber);
     });
@@ -241,6 +247,8 @@ function nextPage(pageNumber) {
         saveSurveyData('activity', $('.select-wrapper.valid').data('text'));
     } else if(pageNumber === 6) {
         saveSurveyData('isNextGym', $('.select-item.valid').data('text'));
+        window.location.href = '/signup-complete';
+        return; // 리다이렉션 후 다음 페이지 로딩을 막기 위해 리턴
     }
     currentPage++;
     loadPage(currentPage);
@@ -297,9 +305,11 @@ function restoreSurveyData() {
         }
     }
     if (surveyData.isNextGym) {
-        $('.select-item.yes').addClass('valid');
-    } else {
-        $('.select-item.no').addClass('valid');
+        if (surveyData.isNextGym === 'true') {
+            $('.select-item.yes').addClass('valid');
+        } else {
+            $('.select-item.no').addClass('valid');
+        }
     }
 
     updateButtonState(currentPage);

@@ -6,7 +6,7 @@ const port = 3000;
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', (req, res) => {
+app.get('/main', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'main.html'));
 });
 
@@ -16,6 +16,10 @@ app.get('/login-page', (req, res) => {
 
 app.get('/survey', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'survey.html'));
+});
+
+app.get('/signup-complete', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/user', 'signup-complete.html'));
 });
 
 app.get('/admin/login', (req, res) => {

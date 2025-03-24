@@ -20,9 +20,11 @@ export function updateButtonState(pageNumber) {
 
 
     if (allValid) {
+        $('.next-button').removeClass('disabled');
         $('.next-button').addClass('active');
     } else {
         $('.next-button').removeClass('active');
+        $('.next-button').addClass('disabled');
     }
 }
 
@@ -161,11 +163,9 @@ export function checkInput($input) {
     var $inputId = $inputType.attr('id');
     var value = $inputType.val();
     var $wrapper = $inputType.closest('.input');
-    console.log("test");
 
-    // if(value != undefined) {
-        if(value.length > 0) {
-            $wrapper.addClass('valid');
-        }
-    // }
+    if(value.length > 0) {
+        $wrapper.addClass('valid');
+    }
+
 }
