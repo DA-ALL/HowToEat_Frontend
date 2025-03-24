@@ -2,4 +2,78 @@
     font-size: 20px;
     font-weight: 600;
     color: var(--black100);
+    margin-bottom: 36px;
+}
+
+
+#todaysCPF .cpf-target-kcal-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 34px;
+}
+
+#todaysCPF .cpf-target-kcal-wrapper .sub {
+    font-size: 14px;
+    font-weight: 400;
+    color: #929292;
+}
+
+
+#todaysCPF .cpf-target-kcal-wrapper .cpf-target-kcal {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--black100);
+}
+
+#todaysCPF .cpf-kcal-bar {
+    padding: 0 clamp(10px, 18.7vw, 90px);
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper {
+    position: relative;
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper {
+    position: relative;
+    width: 100%;
+    height: clamp(202px, 52.5vw, 240px);
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar {
+    position: absolute;
+    z-index: 1;
+    filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.25));
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar svg{
+    margin-left: 10px;
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar.background {
+    z-index: 0;
+    filter: none;
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-consumed-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-consumed {
+    font-size: 34px;
+    font-weight: 500;
+}
+
+#todaysCPF .cpf-kcal-bar-wrapper .sub {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--gray200);
 }

@@ -5,31 +5,40 @@ $(document).ready(function () {
     let viewMode = 'week';
     let activeDate = formatDate(new Date()); // ✅ 선택된 날짜 기억
 
-    const targetCalories = 2564;
     const calorieData = {
-        "2025-03-01": 1800,
-        "2025-03-02": 2500,
-        "2025-03-03": 2400,
-        "2025-03-04": 2500,
-        "2025-03-05": 2700,
-        "2025-03-06": 2500,
-        "2025-03-07": 2400,
-        "2025-03-08": 2500,
-        "2025-03-09": 2564,
-        "2025-03-10": 2200,
-        "2025-03-11": 1420,
-        "2025-03-12": 1740,
-        "2025-03-13": 2540,
-        "2025-03-14": 0,
-        "2025-03-16": 1740,
-        "2025-03-17": 2740,
-        "2025-03-18": 2440,
-        "2025-03-19": 2540,
-        "2025-03-20": 2140,
-        "2025-03-21": 2440,
-        "2025-03-22": 2540,
-        "2025-03-24": 2140,
-    };
+        "2025-03-01": { consumed: 1800, target: 2564 },
+        "2025-03-02": { consumed: 2500, target: 2400 },
+        "2025-03-03": { consumed: 2200, target: 2564 },
+        "2025-03-04": { consumed: 1200, target: 2564 },
+        "2025-03-05": { consumed: 2600, target: 2564 },
+        "2025-03-06": { consumed: 1700, target: 2564 },
+        "2025-03-07": { consumed: 1900, target: 2564 },
+        "2025-03-08": { consumed: 1800, target: 2564 },
+        "2025-03-09": { consumed: 2500, target: 2564 },
+        "2025-03-10": { consumed: 2600, target: 2564 },
+        "2025-03-11": { consumed: 2200, target: 2564 },
+        "2025-03-12": { consumed: 2200, target: 2564 },
+        "2025-03-13": { consumed: 2200, target: 2564 },
+        "2025-03-14": { consumed: 2200, target: 2420 },
+        "2025-03-15": { consumed: 2200, target: 2420 },
+        "2025-03-16": { consumed: 2521, target: 2420 },
+        "2025-03-17": { consumed: 2200, target: 2420 },
+        "2025-03-18": { consumed: 2200, target: 2420 },
+        "2025-03-19": { consumed: 2200, target: 2420 },
+        "2025-03-20": { consumed: 2400, target: 2420 },
+        "2025-03-21": { consumed: 2200, target: 2420 },
+        "2025-03-22": { consumed: 2600, target: 2420 },
+        "2025-03-23": { consumed: 2500, target: 2420 },
+        "2025-03-24": { consumed: 1500, target: 2420 },
+        "2025-03-25": { consumed: 2100, target: 2420 },
+        "2025-03-26": { consumed: 2200, target: 2420 },
+        "2025-03-27": { consumed: 1600, target: 2420 },
+        "2025-03-28": { consumed: 2600, target: 2420 },
+        "2025-03-29": { consumed: 2500, target: 2420 },
+        "2025-03-30": { consumed: 2400, target: 2420 },
+        "2025-03-31": { consumed: 1650, target: 2420 }
+      }
+      
 
     function updateCalendar() {
         let year = currentDate.getFullYear();
@@ -92,7 +101,7 @@ $(document).ready(function () {
         daysHtml += '</div>';
         $("#calendar").html(daysHtml);
 
-        // ✅ 날짜 클릭 시 activeDate 갱신
+        // ⬇️ 클릭 이벤트 시 percent도 넘겨줌
         $(".day").click(function () {
             if ($(this).hasClass("disabled")) return;
             $(".day").removeClass("active");
@@ -100,17 +109,36 @@ $(document).ready(function () {
 
             const selected = $(this).data("date");
             activeDate = selected;
-            currentDate = new Date(selected); // 선택한 날짜 기준으로 currentDate 이동
+            currentDate = new Date(selected);
 
-            $("#todaysCPF").html(getTodaysCPF(selected));
+            const info = getCalorieInfo(selected);
+            $("#todaysCPF").html(getTodaysCPF(selected, info.target, info.rawPercent, info.percent, info.consumed));
         });
-        $("#todaysCPF").html(getTodaysCPF(activeDate));
+
+        // ⬇️ 초기 렌더 시에도 같이 넘겨줌
+        const initialInfo = getCalorieInfo(activeDate);
+        $("#todaysCPF").html(getTodaysCPF(activeDate, initialInfo.target, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumed));
+
+
     }
 
     function getCalorieInfo(dateStr) {
-        const consumed = calorieData[dateStr] || 0;
-        const rawPercent = (consumed / targetCalories) * 100;
-        const percent = Math.min(100, Math.round(rawPercent));
+        const data = calorieData[dateStr];
+        if (!data) {
+            return {
+                rawPercent: 0,
+                percent: 0,
+                color: "#EBEBEB",
+                isGradient: false,
+                target: null
+            };
+        }
+    
+        const { consumed, target } = data;
+        const rawPercent = Math.round((consumed / target) * 100);
+    
+        // 실제 SVG 계산에 쓸 percent는 최대 100까지만 (게이지 길이 제한용)
+        const percent = Math.min(100, rawPercent);
     
         let color = "#EBEBEB";
         let isGradient = false;
@@ -126,8 +154,10 @@ $(document).ready(function () {
             color = "#7C001D";
         }
     
-        return { percent, color, isGradient };
+        return { rawPercent, percent, color, isGradient, target , consumed};
     }
+    
+
 
     function createDayHTML(date, disabledClass, isActive) {
         const dateStr = formatDate(date);
@@ -140,7 +170,7 @@ $(document).ready(function () {
                 </div>`;
         }
 
-        const { percent, color, isGradient } = getCalorieInfo(dateStr);
+        const { percent, color, isGradient, target } = getCalorieInfo(dateStr);
 
         const centerX = 14;
         const centerY = 14;
