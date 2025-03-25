@@ -1,4 +1,4 @@
-import { onPopstate, updateQueryParam} from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
 
 const usersPerPage = 20;
 let currentPage = getPageFromURL() || 1; // URL에서 page 값 가져오기
@@ -92,19 +92,12 @@ function renderPagination(totalUsers) {
         const key = $(this).data('key');
         const newPage = parseInt($(this).data("page"));
         if (newPage !== currentPage) {
-            // updatePageInURL(newPage);
             updateQueryParam(key, newPage);
             currentPage = newPage;
             renderPageData();
         }
     });
 }
-
-// function updatePageInURL(page) {
-//     const url = new URL(window.location);
-//     url.searchParams.set('page', page);
-//     window.history.pushState({ page }, "", url);
-// }
 
 function getPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);

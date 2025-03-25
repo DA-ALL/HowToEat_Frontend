@@ -113,7 +113,7 @@ export function updateURLWithActiveElements(contentId) {
     let params = new URLSearchParams(window.location.search);
 
     // 파라미터가 없으면 
-    if(params.size == 0){
+    if(params.size == 0){        
         $(`#${contentId}`).find('.filter-option-wrapper').each(function(){
             const activeFilterOption = $(this).find('.filter-option.active');
             let queryValue = activeFilterOption.data('query');
@@ -143,8 +143,12 @@ export function updateURLWithActiveElements(contentId) {
 
 
     // page
-    
+    const activePageButton = $(`#${contentId}`).find('.pagination-button.active');
+    if(contentId == 'userManagement' && !params.has('page') && activePageButton && activePageButton.data('page') != 1){
+        replaceQueryParam('page', activePageButton.data('page'));
+    }
 }
+
 
 $(document).ready(function () {
     hideAllContents();
