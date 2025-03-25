@@ -1,4 +1,5 @@
-import { onPopstate, updateQueryParam} from '/administrate/js/router.js';
+
+import { onPopstate,  updateQueryParam, removeQueryParam} from '/administrate/js/router.js';
 
 export function loadSearchBar() {
     let placeholder = $('#searchbar').data('placeholder'); // HTML의 data-placeholder 값 가져오기
@@ -18,14 +19,12 @@ export function loadSearchBar() {
 
 $(document).on('click', '.button-search', function () {
     let searchValue = $('#searchbar input').val(); // input 값 가져오기
-    console.log(searchValue);
+    // console.log(searchValue);
     // TODO: - 검색 백엔드 호출
-    updateQueryParam('username', searchValue);
+    
+    if(searchValue){
+        updateQueryParam('username', searchValue);
+    } else {
+        removeQueryParam('username');
+    }
 });
-
-function test(){
-    console.log("이벤트 리스너 추가욤");
-}
-
-onPopstate(test);
-

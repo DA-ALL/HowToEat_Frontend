@@ -1,7 +1,7 @@
 
 import { loadTotalUserTable } from '/administrate/js/totalUserTable.js';
 import { loadSearchBar } from '/administrate/js/searchbar.js';
-import { renderFilters } from '/administrate/js/filter.js';
+import { loadFilter } from '/administrate/js/filter.js';
 
 $(document).ready(function () {
     loadContent();
@@ -26,7 +26,7 @@ function loadContent() {
     container.html(totalUserManagementHTML);
     loadTotalUserTable();
     loadSearchBar();
-    renderFilters();
+    loadFilter();
 }
 
 // onPopstate(loadContent);

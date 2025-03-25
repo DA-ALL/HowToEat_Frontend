@@ -1,3 +1,5 @@
+import { onPopstate, updateQueryParam} from '/administrate/js/router.js';
+
 const usersPerPage = 20;
 let currentPage = getPageFromURL() || 1; // URL에서 page 값 가져오기
 
@@ -62,8 +64,8 @@ function renderPagination(totalUsers) {
     const totalPages = Math.ceil(totalUsers / usersPerPage);
     let paginationHTML = "<div class='pagination'>";
 
-    paginationHTML += `<div class="pagination-button" data-page="${Math.max(1, currentPage - 10)}"><<</div>`;
-    paginationHTML += `<div class="pagination-button" data-page="${Math.max(1, currentPage - 1)}"><</div>`;
+    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.max(1, currentPage - 10)}"><<</div>`;
+    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.max(1, currentPage - 1)}"><</div>`;
 
     let startPage = Math.max(1, currentPage - 2);
     let endPage = Math.min(totalPages, currentPage + 2);
@@ -77,30 +79,32 @@ function renderPagination(totalUsers) {
     }
 
     for (let i = startPage; i <= endPage; i++) {
-        paginationHTML += `<div class="pagination-button ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</div>`;
+        paginationHTML += `<div class="pagination-button ${i === currentPage ? 'active' : ''}" data-key="page" data-page="${i}">${i}</div>`;
     }
 
-    paginationHTML += `<div class="pagination-button" data-page="${Math.min(totalPages, currentPage + 1)}">></div>`;
-    paginationHTML += `<div class="pagination-button" data-page="${Math.min(totalPages, currentPage + 10)}">>></div>`;
+    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.min(totalPages, currentPage + 1)}">></div>`;
+    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.min(totalPages, currentPage + 10)}">>></div>`;
     paginationHTML += "</div>";
 
     $('#pagination').html(paginationHTML);
 
     $('.pagination-button').click(function () {
+        const key = $(this).data('key');
         const newPage = parseInt($(this).data("page"));
         if (newPage !== currentPage) {
-            updatePageInURL(newPage);
+            // updatePageInURL(newPage);
+            updateQueryParam(key, newPage);
             currentPage = newPage;
             renderPageData();
         }
     });
 }
 
-function updatePageInURL(page) {
-    const url = new URL(window.location);
-    url.searchParams.set('page', page);
-    window.history.pushState({ page }, "", url);
-}
+// function updatePageInURL(page) {
+//     const url = new URL(window.location);
+//     url.searchParams.set('page', page);
+//     window.history.pushState({ page }, "", url);
+// }
 
 function getPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -124,3 +128,5 @@ export function loadTotalUserTable() {
     currentPage = getPageFromURL(); // URL에서 페이지 값 다시 읽기
     renderUserTable();
 }
+
+onPopstate(loadTotalUserTable);

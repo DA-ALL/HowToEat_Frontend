@@ -1,4 +1,4 @@
-import { changePage } from '/administrate/js/router.js';
+import { updateURL, onPopstate } from '/administrate/js/router.js';
 
 
 $(document).ready(function () {
@@ -156,7 +156,7 @@ $(document).ready(function () {
             newUrl = `admin-management`;
         }
         
-        changePage(newUrl);
+        updateURL(newUrl);
         updateSideOptionActiveState(page);
 
         $(this).addClass("active");
@@ -168,7 +168,7 @@ $(document).ready(function () {
         const page = $(this).data('page'); // data-page 값 가져오기
 
         // URL 변경 (새로고침 없음)
-        changePage(page);
+        updateURL(page);
         updateActiveState(page); // active 상태 업데이트
 
         // 모든 nav-link의 이미지 원래대로 변경
@@ -180,12 +180,10 @@ $(document).ready(function () {
         $(this).find('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
     });
 
-    window.onpopstate = function (event) {
+    onPopstate(function (event) {
         const pathParts = window.location.pathname.split("/").slice(2);
-        if (event.state && event.state.page) {
-            updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
-        }
-    };
+        updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
+    });
 
     // 현재 페이지의 맨뒤에 url을 가져오기
     function getCurrentPage() {

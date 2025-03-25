@@ -1,20 +1,54 @@
-// URL 변경 및 파라미터 추가
-export function changePage(page, params = {}) {
-    let newUrl = `/admin/${page}`;
-    const queryString = new URLSearchParams(params).toString();
-    if (queryString) newUrl += `?${queryString}`;
+// URL 변경
+export function updateURL(page) {
+    const currentUrl = new URL(window.location.href);
+    const newUrl = new URL(`/admin/${page}`, window.location.origin);
 
-    history.pushState({ page, params }, "", newUrl);
+    // 현재 URL과 변경될 URL이 동일하면 pushState 실행 안 함
+    if (currentUrl.pathname === newUrl.pathname) {
+        return;
+    }
+    history.pushState({ page }, "", newUrl.toString());
 
     hideAllContents();
-    showCurrentContent();
+    let currentContent = showCurrentContent();
+    updateURLWithActiveElements(currentContent);
 }
 
-// 현재 URL에서 특정 파라미터 추가/수정
-export function updateQueryParam(key, value) {
+function updateURLParam(key, value, useReplaceState = false) {
     const url = new URL(window.location.href);
-    url.searchParams.set(key, value);
-    history.pushState({}, "", url);
+    const searchParams = url.searchParams;
+
+    // 기존 값과 비교 후 변경이 없으면 실행 안 함
+    if (searchParams.get(key) === String(value)) {
+        return;
+    }
+    searchParams.set(key, value);
+
+    const sortOrder = ["username", "orderby", "next-gym", "user-role", "data-source", "recommend", "admin-share", "option", "page"];
+    const sortedParams = new URLSearchParams();
+    sortOrder.forEach(param => {
+        if (searchParams.has(param)) {
+            sortedParams.set(param, searchParams.get(param));
+        }
+    });
+
+    const newUrl = `${url.pathname}?${sortedParams.toString()}`;
+
+    if (useReplaceState) {
+        history.replaceState({}, "", newUrl);
+    } else {
+        history.pushState({}, "", newUrl);
+    }
+}
+
+// 파라미터 변경 pushState 사용
+export function updateQueryParam(key, value) {
+    updateURLParam(key, value, false);
+}
+
+// 파라미터 변경 replaceState 사용
+export function replaceQueryParam(key, value) {
+    updateURLParam(key, value, true);
 }
 
 // 현재 URL에서 특정 파라미터 삭제
@@ -32,12 +66,90 @@ export function getQueryParams() {
 // popstate 발생시 처리
 export function onPopstate(callback){
     window.addEventListener('popstate', function(event) {
-        callback();
+        callback(event); 
         hideAllContents();
         showCurrentContent();
     });
 }
 
+
+function hideAllContents() {
+    $('.content-wrapper').children().each(function (index) {
+        $(this).css('display', 'none');
+    });
+}
+
+function showCurrentContent() {
+    const currentPage = window.location.pathname.split("/").slice(2).join("/"); // user-management/pt or user-management
+
+    const contentMap = {
+        'dashboard': 'dashboardChart',
+        'user-management': 'userManagement',
+        'user-management/pt' : 'ptUserManagement',
+        'food-management': 'foodManagement',
+        'food-management/user-regist': 'userFoodManagement',
+        'food-management/recommend-food': 'recommendFoodManagement',
+        'food-management/add-food': 'addFood',
+        'notice': 'notice',
+        'admin-management': 'adminManagement',
+        'admin-management/trainer': 'trainerManagement',
+        'admin-management/gym': 'gymManagement',    
+    };
+
+    const currentContent = contentMap[currentPage];
+
+    if (currentContent) {
+        $(`#${currentContent}`).css('display', 'flex');
+    } else {
+        console.warn('Unknown page:', currentPage);
+    }
+
+    return currentContent;
+}
+
+
+export function updateURLWithActiveElements(contentId) {
+    // const currentUrl = new URL(window.location.href).toString();
+    let params = new URLSearchParams(window.location.search);
+
+    // 파라미터가 없으면 
+    if(params.size == 0){
+        $(`#${contentId}`).find('.filter-option-wrapper').each(function(){
+            const activeFilterOption = $(this).find('.filter-option.active');
+            let queryValue = activeFilterOption.data('query');
+            
+            // active 되어있는 요소가 있으면 파라미터에 추가
+            if(queryValue && !(queryValue == 'all' || queryValue == 'desc')){
+                replaceQueryParam($(this).data('key'), queryValue);
+            } else { // active 없으면 초기값으로 설정
+                let defaultQuery = $(this).find('.filter-option').first().data('query');
+                $(this).find(`.filter-option[data-query="${defaultQuery}"]`).addClass('active');
+            }
+        });
+    } else { // url에 파라미터가 있으면 url대로
+        $(`#${contentId}`).find('.filter-option-wrapper').each(function(){            
+            const key = $(this).data('key');
+            const queryValue = params.get(key);
+            
+            if(queryValue){
+                $(this).find('.filter-option').removeClass('active');
+                $(this).find(`.filter-option[data-query="${queryValue}"]`).addClass('active');
+            } else {
+                let defaultQuery = $(this).find('.filter-option').first().data('query');
+                $(this).find(`.filter-option[data-query="${defaultQuery}"]`).addClass('active');
+            }
+        });
+    }
+
+
+    // page
+    
+}
+
+$(document).ready(function () {
+    hideAllContents();
+    showCurrentContent();
+});
 
 
 /*
@@ -61,42 +173,3 @@ export function onPopstate(callback){
     /admin/admin-management/trainer     trainerManagement
     /admin/admin-management/gym     gymManagement
 */
-
-function hideAllContents() {
-    $('.content-wrapper').children().each(function (index) {
-        $(this).css('display', 'none');
-        // console.log($(this))
-    });
-}
-
-function showCurrentContent() {
-    const currentPage = window.location.pathname.split("/").slice(2).join("/"); // user-management/pt or user-management
-
-    const contentMap = {
-        'dashboard': 'dashboardChart',
-        'user-management': 'userManagement',
-        'user-management/pt' : 'ptUserManagement',
-        'food-management': 'foodManagement',
-        'food-management/user-regist': 'userFoodManagement',
-        'food-management/recommend-food': 'recommendFoodManagement',
-        'food-management/add-food': 'addFood',
-        'notice': 'notice',
-        'admin-management': 'adminManagement',
-        'admin-management/trainer': 'trainerManagement',
-        'admin-management/gym': 'gymManagement',
-    };
-
-    const currentContent = contentMap[currentPage];
-
-    if (currentContent) {
-        $(`#${currentContent}`).css('display', 'flex');
-    } else {
-        console.warn('Unknown page:', currentPage);
-    }
-}
-
-$(document).ready(function () {
-    hideAllContents();
-    showCurrentContent();
-});
-

@@ -151,10 +151,7 @@ $(document).ready(function () {
         const sidebarWidth = sidebar.offsetWidth + 30; // sidebar의 현재 width 값
         const minWidth = 1400;
         const maxWidth = 1600;
-        // console.log(minWidth);
-        // console.log(maxWidth);
         const width = Math.max(minWidth, Math.min(window.innerWidth - sidebarWidth, maxWidth));
-        console.log(width);
         chartWrapper.style.width = `${width}px`;
     }
     
