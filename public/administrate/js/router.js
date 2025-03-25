@@ -147,6 +147,18 @@ export function updateURLWithActiveElements(contentId) {
     if(contentId == 'userManagement' && !params.has('page') && activePageButton && activePageButton.data('page') != 1){
         replaceQueryParam('page', activePageButton.data('page'));
     }
+
+    // searchBar
+    if(contentId =='userManagement'){
+        const searchBar = $(`#${contentId}`).find('#searchbar input');
+        
+        if(!params.has('username') && searchBar.val()){
+            replaceQueryParam('username', searchBar.val());
+        } else if(params.has('username')){
+            searchBar.val(params.get('username'));
+        }
+    } 
+    
 }
 
 
