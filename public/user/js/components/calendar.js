@@ -30,7 +30,7 @@ $(document).ready(function () {
         "2025-03-22": { consumed: 2600, target: 2420 },
         "2025-03-23": { consumed: 2500, target: 2420 },
         "2025-03-24": { consumed: 1500, target: 2420 },
-        "2025-03-25": { consumed: 2100, target: 2420 },
+        "2025-03-25": { consumed: 2524, target: 2420 },
         "2025-03-26": { consumed: 2200, target: 2420 },
         "2025-03-27": { consumed: 1600, target: 2420 },
         "2025-03-28": { consumed: 2600, target: 2420 },
@@ -112,12 +112,12 @@ $(document).ready(function () {
             currentDate = new Date(selected);
 
             const info = getCalorieInfo(selected);
-            $("#todaysCPF").html(getTodaysCPF(selected, info.target, info.rawPercent, info.percent, info.consumed));
+            $("#todaysCPF").html(getTodaysCPF(selected, info.target, info.rawPercent, info.percent, info.consumed, info.caloriesLeft));
         });
 
         // ⬇️ 초기 렌더 시에도 같이 넘겨줌
         const initialInfo = getCalorieInfo(activeDate);
-        $("#todaysCPF").html(getTodaysCPF(activeDate, initialInfo.target, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumed));
+        $("#todaysCPF").html(getTodaysCPF(activeDate, initialInfo.target, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumed, initialInfo.caloriesLeft));
 
 
     }
@@ -139,6 +139,8 @@ $(document).ready(function () {
     
         // 실제 SVG 계산에 쓸 percent는 최대 100까지만 (게이지 길이 제한용)
         const percent = Math.min(100, rawPercent);
+
+        const caloriesLeft = target - consumed;
     
         let color = "#EBEBEB";
         let isGradient = false;
@@ -151,10 +153,10 @@ $(document).ready(function () {
             color = "url(#calorieGradient)";
             isGradient = true;
         } else if (rawPercent > 105) {
-            color = "#7C001D";
+            color = "#814949";
         }
     
-        return { rawPercent, percent, color, isGradient, target , consumed};
+        return { rawPercent, percent, color, isGradient, target, consumed, caloriesLeft};
     }
     
 

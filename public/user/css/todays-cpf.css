@@ -79,3 +79,39 @@
     font-weight: 300;
     color: var(--gray200);
 }
+
+#todaysCPF .cpf-kcal-left-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: clamp(17.8px, 7.2vw, 36px);
+  }
+  
+  #todaysCPF .cpf-kcal-left-message-wrapper .cpf-kcal-left-message {
+    font-size: clamp(10.4px, 3.465vw, 17.33px);
+    font-weight: 300;
+    position: relative;
+    padding: 10px 17px;
+    border-radius: 17px;
+    background-color: var(--white300); /* 원하는 배경 색상 */
+    color: var(--black100); /* 텍스트 색상 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  #todaysCPF .cpf-kcal-left-message-wrapper span {
+    font-size: clamp(16.8px, 4.8vw, 20px);
+    font-weight: 500;
+    color: var(--red500);
+  }
+
+  #todaysCPF .cpf-kcal-left-message-wrapper .over {
+    color: var(--red800);
+  }
+
+  #todaysCPF .cpf-kcal-left-message-wrapper .cpf-kcal-tail-svg {
+    z-index: 10;
+    position: absolute;
+    bottom: -26px;
+  }

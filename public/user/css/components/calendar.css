@@ -114,7 +114,7 @@
 
 #calendar .day span {
     position: absolute;
-    /* font-size: clamp(10.4px, 4.8vw, 16px); */
+    /* font-size: clamp(10.4px, 4.8vw, 16px);  */
     font-size: clamp(11.2px, 3.4vw, 16px);
     font-weight: 400;
     color: var(--black100);
