@@ -54,11 +54,11 @@ function createBackgroundSvg() {
     const centerX = 14;
     const centerY = 14;
     const radius = 11;
-    const arcStartAngle = -30;
-    const arcEndAngle = 210;
+    const arcStartAngle = -35;
+    const arcEndAngle = 215;
     const backgroundArc = describeArc(centerX, centerY, radius, arcStartAngle, arcEndAngle);
 
-    const pathElement = `<path d="${backgroundArc}" fill="none" stroke="#F0F0F0" stroke-width="3.5" stroke-linecap="round"/>`
+    const pathElement = `<path d="${backgroundArc}" fill="none" stroke="#F0F0F0" stroke-width="4.5" stroke-linecap="round"/>`
 
     return `
         <svg width="100%" height="100%" viewBox="0 0 30 30">
@@ -71,8 +71,8 @@ function createCalorieArc(rawPercent, percent) {
     const centerX = 14;
     const centerY = 14;
     const radius = 11;
-    const arcStartAngle = -30;
-    const arcEndAngle = 210;
+    const arcStartAngle = -35;
+    const arcEndAngle = 215;
     const dynamicEnd = arcStartAngle + (arcEndAngle - arcStartAngle) * (percent / 100);
 
     const pathD = describeArc(centerX, centerY, radius, arcStartAngle, dynamicEnd);
@@ -84,7 +84,9 @@ function createCalorieArc(rawPercent, percent) {
     if (rawPercent === 0) {
         color = "#EBEBEB";
     } else if (rawPercent > 0 && rawPercent <= 95) {
-        color = "#F9D9D9";
+        // color = "url(#calorieGradient)";
+        color = "#ED7777";
+        // isGradient = true;
     } else if (rawPercent > 95 && rawPercent <= 105) {
         color = "url(#calorieGradient)";
         isGradient = true;
@@ -103,8 +105,8 @@ function createCalorieArc(rawPercent, percent) {
     `;
 
     const pathElement = percent === 0
-        ? `<path d="${backgroundArc}" fill="none" stroke="#EBEBEB" stroke-width="3" stroke-linecap="round"/>`
-        : `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>`;
+        ? `<path d="${backgroundArc}" fill="none" stroke="#EBEBEB" stroke-width="4.5" stroke-linecap="round"/>`
+        : `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="4.5" stroke-linecap="round"/>`;
 
     return `
         <svg width="100%" height="100%" viewBox="0 0 30 30">

@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 60px;
+    gap: clamp(10px, 16vw, 80px);
     margin-bottom: 22px;
 }
 
@@ -114,7 +114,8 @@
 
 #calendar .day span {
     position: absolute;
-    font-size: 13px;
+    /* font-size: clamp(10.4px, 4.8vw, 16px); */
+    font-size: clamp(11.2px, 3.4vw, 16px);
     font-weight: 400;
     color: var(--black100);
     margin-top: 2px;

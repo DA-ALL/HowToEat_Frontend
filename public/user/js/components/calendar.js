@@ -146,7 +146,7 @@ $(document).ready(function () {
         if (rawPercent === 0) {
             color = "#EBEBEB";
         } else if (rawPercent > 0 && rawPercent <= 95) {
-            color = "#F9D9D9";
+            color = "#FFE1E4";
         } else if (rawPercent > 95 && rawPercent <= 105) {
             color = "url(#calorieGradient)";
             isGradient = true;
@@ -191,6 +191,7 @@ $(document).ready(function () {
                 </linearGradient>
             </defs>
         `;
+        const svgStyle = isGradient ? `style="filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.25));"` : "";
 
         const pathElement = percent === 0
             ? `<path d="${backgroundArc}" fill="none" stroke="#EBEBEB" stroke-width="3" stroke-linecap="round"/>`
@@ -198,7 +199,7 @@ $(document).ready(function () {
 
         return `
             <div class="day ${disabledClass} ${isActive}" data-date="${dateStr}">
-                <svg width="30" height="30" viewBox="0 0 30 30">
+                <svg width="30" height="30" viewBox="0 0 30 30" ${svgStyle}>
                     ${isGradient ? gradientDef : ""}
                     ${pathElement}
                 </svg>

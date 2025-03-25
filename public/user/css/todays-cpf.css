@@ -1,8 +1,8 @@
 #todaysCPF .cpf-title {
-    font-size: 20px;
+    font-size: clamp(16px, 5.336vw, 26.67px);
     font-weight: 600;
     color: var(--black100);
-    margin-bottom: 36px;
+    margin-bottom: clamp(24px, 9.6vw, 48px);
 }
 
 
@@ -12,34 +12,33 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
-    margin-bottom: 34px;
+    margin-bottom: clamp(22.5px, 9.2vw, 45px);
 }
 
 #todaysCPF .cpf-target-kcal-wrapper .sub {
-    font-size: 14px;
+    font-size: clamp(11.2px, 3.736vw, 18.67px);
     font-weight: 400;
     color: #929292;
 }
 
 
 #todaysCPF .cpf-target-kcal-wrapper .cpf-target-kcal {
-    font-size: 18px;
+    font-size: clamp(14.4px, 4.8vw, 24px);;
     font-weight: 600;
     color: var(--black100);
 }
 
 #todaysCPF .cpf-kcal-bar {
-    padding: 0 clamp(10px, 18.7vw, 90px);
+    padding: 0 clamp(10px, 15vw, 85px);
+    
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper {
     position: relative;
-}
-
-#todaysCPF .cpf-kcal-bar-wrapper {
-    position: relative;
+    display: flex;
+    justify-content: center;
     width: 100%;
-    height: clamp(202px, 52.5vw, 240px);
+    height: clamp(195px, 56.5vw, 270px);;
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar {
@@ -49,7 +48,10 @@
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar svg{
-    margin-left: 10px;
+    margin-left: clamp(2px, 2vw, 10px);
+    width: 100%;
+    max-width: 298px;
+    min-width: 208px;
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar.background {
@@ -68,12 +70,12 @@
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-consumed {
-    font-size: 34px;
+    font-size: clamp(28px, 8.55vw, 45px);
     font-weight: 500;
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .sub {
-    font-size: 18px;
-    font-weight: 400;
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 300;
     color: var(--gray200);
 }
