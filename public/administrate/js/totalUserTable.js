@@ -171,14 +171,53 @@ $(document).on('click', '.user-role-button', function () {
 $(document).on('click', '.role-item', function () {
     // TODO: role 변경 API 호출
     console.log("role변경 API 호출");
+
+    const isOk = true;
+    
+    if(isOk){
+        
+    }
+    
     $('#roleChangeDropdown').remove();
 });
 
 
 $(document).on('click', '.image-gym-user', function () {
-    
     console.log("gym-user 버튼 클릭");
-    
+    let dropdownHTML =`
+        <div id="gymUserDropdown">
+            <div class="gym-user-item gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>
+            <div class="gym-user-item not-gym-user">-</div>
+        </div>
+    `
+    const $button = $(this);
+    const offset = $button.offset(); // 버튼의 위치 가져오기
+
+    if ($('#gymUserDropdown').length) {
+        $('#gymUserDropdown').remove();
+        return;
+    }
+
+    const $dropdown = $(dropdownHTML).css({
+        position: 'absolute',
+        top: offset.top + $button.outerHeight() + 5, // 버튼 아래에 배치
+        left: offset.left - 10,
+        zIndex: 1000
+    });
+
+    $('body').append($dropdown);
+
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.image-gym-user, #gymUserDropdown').length) {
+            $('#gymUserDropdown').remove();
+        }
+    });
+});
+
+$(document).on('click', '.gym-user-item', function () {
+    // TODO: role 변경 API 호출
+    console.log("gymuser 변경 API 호출");
+    $('#gymUserDropdown').remove();
 });
 
 

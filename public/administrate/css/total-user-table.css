@@ -178,3 +178,30 @@
 #roleChangeDropdown .role-item.user {
     background-color: #70BFC4;
 }
+
+
+#gymUserDropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 10px;
+    background-color: var(--white300);    
+    box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.13);
+    border-radius: 16px;
+    position: absolute;
+}
+
+#gymUserDropdown .gym-user-item {
+    width: 90px;
+    height: 27px;
+    background-color: var(--gray50);
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#gymUserDropdown .gym-user-item img{
+    width: 30px;
+}
