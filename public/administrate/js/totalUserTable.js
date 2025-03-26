@@ -1,4 +1,4 @@
-import { onPopstate, updateQueryParam} from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
 
 const usersPerPage = 20;
 let currentPage = getPageFromURL() || 1; // URL에서 page 값 가져오기
@@ -23,12 +23,13 @@ function createUserRow({ id, imageURL, name, mealCount, joined, left, gymUser, r
             </td>
             <td class="td-user-role">
                 <div class="user-role-wrapper">
-                    <div class="user-role-button ${role}">${role.charAt(0).toUpperCase() + role.slice(1)}</div>
+                    <div class="user-role-button ${role}">${role=='super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
                 </div>
             </td>
         </tr>
     `;
 }
+
 
 function renderUserTable() {
     const tableHTML = `
@@ -92,7 +93,6 @@ function renderPagination(totalUsers) {
         const key = $(this).data('key');
         const newPage = parseInt($(this).data("page"));
         if (newPage !== currentPage) {
-            // updatePageInURL(newPage);
             updateQueryParam(key, newPage);
             currentPage = newPage;
             renderPageData();
@@ -100,18 +100,13 @@ function renderPagination(totalUsers) {
     });
 }
 
-// function updatePageInURL(page) {
-//     const url = new URL(window.location);
-//     url.searchParams.set('page', page);
-//     window.history.pushState({ page }, "", url);
-// }
-
 function getPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return parseInt(urlParams.get('page')) || 1;
 }
 
 function getUserData() {
+    //TODO: data 요청 api
     return Array.from({ length: 200 }, (_, i) => ({
         id: i + 1,
         imageURL: "/administrate/images/icon_human_green.png",
@@ -120,7 +115,7 @@ function getUserData() {
         joined: "2025.03.16",
         left: "-",
         gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master"][Math.floor(Math.random() * 3)]
+        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
     }));
 }
 
@@ -128,5 +123,102 @@ export function loadTotalUserTable() {
     currentPage = getPageFromURL(); // URL에서 페이지 값 다시 읽기
     renderUserTable();
 }
+
+// 유저권한 변경 버튼
+$(document).on('click', '.user-role-button', function () {
+    let dropdownMaster =`
+        <div id="roleChangeDropdown">
+            <div class="role-item master">Master</div>
+        </div>
+    `
+    let dropdownOther = `
+        <div id="roleChangeDropdown">
+            <div class="role-item admin">Admin</div>
+            <div class="role-item user">User</div>
+            <div class="role-item super-user">SuperUser</div>
+        </div>
+    `
+    const $button = $(this);
+    const offset = $button.offset(); // 버튼의 위치 가져오기
+
+    // 기존 dropdown이 있으면 삭제 (토글 효과)
+    if ($('#roleChangeDropdown').length) {
+        $('#roleChangeDropdown').remove();
+        return;
+    }
+
+    // 버튼이 master 클래스인지 확인 후 드롭다운 선택
+    const dropdownHTML = $button.hasClass('master') ? dropdownMaster : dropdownOther;
+
+    // Dropdown 생성 및 위치 지정
+    const $dropdown = $(dropdownHTML).css({
+        position: 'absolute',
+        top: offset.top + $button.outerHeight() + 5, // 버튼 아래에 배치
+        left: offset.left - 10,
+        zIndex: 1000
+    });
+
+    $('body').append($dropdown);
+
+    // 다른 곳 클릭 시 닫기
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.user-role-button, #roleChangeDropdown').length) {
+            $('#roleChangeDropdown').remove();
+        }
+    });
+});
+
+$(document).on('click', '.role-item', function () {
+    // TODO: role 변경 API 호출
+    console.log("role변경 API 호출");
+
+    const isOk = true;
+    
+    if(isOk){
+        
+    }
+    
+    $('#roleChangeDropdown').remove();
+});
+
+
+$(document).on('click', '.image-gym-user', function () {
+    console.log("gym-user 버튼 클릭");
+    let dropdownHTML =`
+        <div id="gymUserDropdown">
+            <div class="gym-user-item gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>
+            <div class="gym-user-item not-gym-user">-</div>
+        </div>
+    `
+    const $button = $(this);
+    const offset = $button.offset(); // 버튼의 위치 가져오기
+
+    if ($('#gymUserDropdown').length) {
+        $('#gymUserDropdown').remove();
+        return;
+    }
+
+    const $dropdown = $(dropdownHTML).css({
+        position: 'absolute',
+        top: offset.top + $button.outerHeight() + 5, // 버튼 아래에 배치
+        left: offset.left - 10,
+        zIndex: 1000
+    });
+
+    $('body').append($dropdown);
+
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.image-gym-user, #gymUserDropdown').length) {
+            $('#gymUserDropdown').remove();
+        }
+    });
+});
+
+$(document).on('click', '.gym-user-item', function () {
+    // TODO: role 변경 API 호출
+    console.log("gymuser 변경 API 호출");
+    $('#gymUserDropdown').remove();
+});
+
 
 onPopstate(loadTotalUserTable);

@@ -28,3 +28,5 @@ $(document).on('click', '.button-search', function () {
         removeQueryParam('username');
     }
 });
+
+onPopstate(loadSearchBar);
