@@ -1,3 +1,14 @@
+@import url("/administrate/css/sidebar.css");
+@import url("/administrate/css/profilebar.css");
+@import url("/administrate/css/title.css");
+@import url("/administrate/css/font.css");
+@import url("/administrate/css/card-list.css");
+@import url("/administrate/css/color.css");
+@import url("/administrate/css/dashboard-chart.css");
+@import url("/administrate/css/searchbar.css");
+@import url("/administrate/css/filter.css");
+@import url("/administrate/css/total-user-table.css");
+
 html, body {
     height: 100%;
     margin: 0;
