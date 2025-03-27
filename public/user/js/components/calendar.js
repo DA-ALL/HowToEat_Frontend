@@ -1,33 +1,45 @@
+import { getTodaysCPF } from '../todaysCPF.js';
+
 $(document).ready(function () {
-    let currentDate = new Date(); 
+    let currentDate = new Date();
     let viewMode = 'week';
     let activeDate = formatDate(new Date()); // ✅ 선택된 날짜 기억
 
-    const targetCalories = 2564;
     const calorieData = {
-        "2025-03-01": 1800,
-        "2025-03-02": 2500,
-        "2025-03-03": 2400,
-        "2025-03-04": 2500,
-        "2025-03-05": 2700,
-        "2025-03-06": 2500,
-        "2025-03-07": 2400,
-        "2025-03-08": 2500,
-        "2025-03-09": 2564,
-        "2025-03-10": 2200,
-        "2025-03-11": 1420,
-        "2025-03-12": 1740,
-        "2025-03-13": 2540,
-        "2025-03-14": 0,
-        "2025-03-16": 1740,
-        "2025-03-17": 2740,
-        "2025-03-18": 2440,
-        "2025-03-19": 2540,
-        "2025-03-20": 2140,
-        "2025-03-21": 2440,
-        "2025-03-22": 2540,
-        "2025-03-24": 2140,
+        "2025-03-01": { consumed: 1800, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 225, consumedProtein: 135, consumedFat: 40 },
+        "2025-03-02": { consumed: 2500, target: 2400, targetCarbo: 300, targetProtein: 180, targetFat: 53, consumedCarbo: 313, consumedProtein: 188, consumedFat: 56 },
+        "2025-03-03": { consumed: 2200, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 275, consumedProtein: 165, consumedFat: 49 },
+        "2025-03-04": { consumed: 1200, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 150, consumedProtein: 90, consumedFat: 27 },
+        "2025-03-05": { consumed: 2600, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 325, consumedProtein: 195, consumedFat: 58 },
+        "2025-03-06": { consumed: 1700, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 213, consumedProtein: 128, consumedFat: 38 },
+        "2025-03-07": { consumed: 1952, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 244, consumedProtein: 146, consumedFat: 43 },
+        "2025-03-08": { consumed: 1832, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 229, consumedProtein: 137, consumedFat: 41 },
+        "2025-03-09": { consumed: 2530, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 316, consumedProtein: 190, consumedFat: 56 },
+        "2025-03-10": { consumed: 2662, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 333, consumedProtein: 200, consumedFat: 59 },
+        "2025-03-11": { consumed: 2673, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 334, consumedProtein: 200, consumedFat: 59 },
+        "2025-03-12": { consumed: 2262, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 283, consumedProtein: 170, consumedFat: 50 },
+        "2025-03-13": { consumed: 2552, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 319, consumedProtein: 191, consumedFat: 57 },
+        "2025-03-14": { consumed: 2573, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 322, consumedProtein: 193, consumedFat: 57 },
+        "2025-03-15": { consumed: 2445, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 306, consumedProtein: 183, consumedFat: 54 },
+        "2025-03-16": { consumed: 2521, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 315, consumedProtein: 189, consumedFat: 56 },
+        "2025-03-17": { consumed: 2200, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 275, consumedProtein: 165, consumedFat: 49 },
+        "2025-03-18": { consumed: 2200, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 275, consumedProtein: 165, consumedFat: 49 },
+        "2025-03-19": { consumed: 2252, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 282, consumedProtein: 169, consumedFat: 50 },
+        "2025-03-20": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
+        "2025-03-21": { consumed: 2681, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 335, consumedProtein: 201, consumedFat: 60 },
+        "2025-03-22": { consumed: 2624, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 328, consumedProtein: 197, consumedFat: 58 },
+        "2025-03-23": { consumed: 2551, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 319, consumedProtein: 191, consumedFat: 57 },
+        "2025-03-24": { consumed: 1593, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 199, consumedProtein: 119, consumedFat: 35 },
+        "2025-03-25": { consumed: 2545, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 318, consumedProtein: 191, consumedFat: 57 },
+        "2025-03-26": { consumed: 2400, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 300, consumedProtein: 180, consumedFat: 53 },
+        "2025-03-27": { consumed: 1656, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 207, consumedProtein: 124, consumedFat: 37 },
+        "2025-03-28": { consumed: 2662, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 333, consumedProtein: 200, consumedFat: 59 },
+        "2025-03-29": { consumed: 2556, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 320, consumedProtein: 192, consumedFat: 57 },
+        "2025-03-30": { consumed: 2462, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 308, consumedProtein: 185, consumedFat: 55 },
+        "2025-03-31": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 }
     };
+
+
 
     function updateCalendar() {
         let year = currentDate.getFullYear();
@@ -41,9 +53,9 @@ $(document).ready(function () {
         daysHtml += '<div class="week-header">';
         weekDays.forEach(day => {
             if (day === '토') {
-                daysHtml += `<div class="day-header saturday">${day}</div>`;    
+                daysHtml += `<div class="day-header saturday">${day}</div>`;
             } else if (day === '일') {
-                daysHtml += `<div class="day-header sunday">${day}</div>`;    
+                daysHtml += `<div class="day-header sunday">${day}</div>`;
             } else {
                 daysHtml += `<div class="day-header">${day}</div>`;
             }
@@ -90,7 +102,7 @@ $(document).ready(function () {
         daysHtml += '</div>';
         $("#calendar").html(daysHtml);
 
-        // ✅ 날짜 클릭 시 activeDate 갱신
+        // ⬇️ 클릭 이벤트 시 percent도 넘겨줌
         $(".day").click(function () {
             if ($(this).hasClass("disabled")) return;
             $(".day").removeClass("active");
@@ -98,30 +110,78 @@ $(document).ready(function () {
 
             const selected = $(this).data("date");
             activeDate = selected;
-            currentDate = new Date(selected); // 선택한 날짜 기준으로 currentDate 이동
+            currentDate = new Date(selected);
+
+            const info = getCalorieInfo(selected);
+            $("#todaysCPF").html(getTodaysCPF(
+                selected, info.target, info.rawPercent, info.percent, info.consumed, info.caloriesLeft,
+                info.targetCarbo, info.targetProtein, info.targetFat,
+                info.consumedCarbo, info.consumedProtein, info.consumedFat,
+                info.carboRawPercent, info.carboPercent,
+                info.proteinRawPercent, info.proteinPercent,
+                info.fatRawPercent, info.fatPercent
+            ));
         });
+
+        // ⬇️ 초기 렌더 시에도 같이 넘겨줌
+        const initialInfo = getCalorieInfo(activeDate);
+        $("#todaysCPF").html(getTodaysCPF(
+            activeDate, initialInfo.target, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumed, initialInfo.caloriesLeft,
+            initialInfo.targetCarbo, initialInfo.targetProtein, initialInfo.targetFat,
+            initialInfo.consumedCarbo, initialInfo.consumedProtein, initialInfo.consumedFat,
+            initialInfo.carboRawPercent, initialInfo.carboPercent,
+            initialInfo.proteinRawPercent, initialInfo.proteinPercent,
+            initialInfo.fatRawPercent, initialInfo.fatPercent
+        ));
+
+
     }
 
     function getCalorieInfo(dateStr) {
-        const consumed = calorieData[dateStr] || 0;
-        const rawPercent = (consumed / targetCalories) * 100;
-        const percent = Math.min(100, Math.round(rawPercent));
-    
+        const data = calorieData[dateStr];
+        if (!data) return { rawPercent: 0, percent: 0, target: null };
+
+        const {
+            consumed, target,
+            consumedCarbo = 0, consumedProtein = 0, consumedFat = 0,
+            targetCarbo = Math.round((target * 0.5) / 4),
+            targetProtein = Math.round((target * 0.3) / 4),
+            targetFat = Math.round((target * 0.2) / 9)
+        } = data;
+
+        const rawPercent = Math.round((consumed / target) * 100);
+        const percent = Math.min(100, rawPercent);
+        const caloriesLeft = target - consumed;
+
+        const carboRawPercent = Math.round((consumedCarbo / targetCarbo) * 100);
+        const carboPercent = Math.min(100, carboRawPercent);
+        const proteinRawPercent = Math.round((consumedProtein / targetProtein) * 100);
+        const proteinPercent = Math.min(100, proteinRawPercent);
+        const fatRawPercent = Math.round((consumedFat / targetFat) * 100);
+        const fatPercent = Math.min(100, fatRawPercent);
+
         let color = "#EBEBEB";
         let isGradient = false;
     
         if (rawPercent === 0) {
             color = "#EBEBEB";
         } else if (rawPercent > 0 && rawPercent <= 95) {
-            color = "#F9D9D9";
+            color = "#FFE1E4";
         } else if (rawPercent > 95 && rawPercent <= 105) {
             color = "url(#calorieGradient)";
             isGradient = true;
         } else if (rawPercent > 105) {
-            color = "#7C001D";
+            color = "#814949";
         }
-    
-        return { percent, color, isGradient };
+
+        return {
+            rawPercent, color, isGradient, percent, target, consumed, caloriesLeft,
+            targetCarbo, targetProtein, targetFat,
+            consumedCarbo, consumedProtein, consumedFat,
+            carboRawPercent, carboPercent,
+            proteinRawPercent, proteinPercent,
+            fatRawPercent, fatPercent
+        };
     }
 
     function createDayHTML(date, disabledClass, isActive) {
@@ -135,7 +195,7 @@ $(document).ready(function () {
                 </div>`;
         }
 
-        const { percent, color, isGradient } = getCalorieInfo(dateStr);
+        const { percent, color, isGradient, target } = getCalorieInfo(dateStr);
 
         const centerX = 14;
         const centerY = 14;
@@ -143,7 +203,7 @@ $(document).ready(function () {
         const arcStartAngle = -30;
         const arcEndAngle = 210;
         const dynamicEnd = arcStartAngle + (arcEndAngle - arcStartAngle) * (percent / 100);
-        
+
         const pathD = describeArc(centerX, centerY, radius, arcStartAngle, dynamicEnd);
         const backgroundArc = describeArc(centerX, centerY, radius, arcStartAngle, arcEndAngle);
 
@@ -156,6 +216,7 @@ $(document).ready(function () {
                 </linearGradient>
             </defs>
         `;
+        const svgStyle = isGradient ? `style="filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.25));"` : "";
 
         const pathElement = percent === 0
             ? `<path d="${backgroundArc}" fill="none" stroke="#EBEBEB" stroke-width="3" stroke-linecap="round"/>`
@@ -163,7 +224,7 @@ $(document).ready(function () {
 
         return `
             <div class="day ${disabledClass} ${isActive}" data-date="${dateStr}">
-                <svg width="30" height="30" viewBox="0 0 30 30">
+                <svg width="30" height="30" viewBox="0 0 30 30" ${svgStyle}>
                     ${isGradient ? gradientDef : ""}
                     ${pathElement}
                 </svg>
@@ -221,10 +282,10 @@ $(document).ready(function () {
             $(this).text('주단위');
             currentDate = new Date(activeDate);
         }
-    
+
         updateCalendar();
     });
-    
+
 
     function formatDate(date) {
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
