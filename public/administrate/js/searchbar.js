@@ -29,4 +29,10 @@ $(document).on('click', '.button-search', function () {
     }
 });
 
+$(document).on('keypress', '#searchbar input', function (event) {
+    if (event.which === 13) { // 13 = Enter key
+        $('.button-search').click();
+    }
+});
+
 onPopstate(loadSearchBar);
