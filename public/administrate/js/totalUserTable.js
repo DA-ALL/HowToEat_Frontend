@@ -1,4 +1,5 @@
 import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
+import { showCustomAlert } from '/administrate/js/customAlert.js';
 
 const usersPerPage = 20;
 let currentPage = getPageFromURL() || 1; // URL에서 page 값 가져오기
@@ -160,6 +161,8 @@ $(document).on('click', '.user-role-button', function () {
 
     $('body').append($dropdown);
 
+    showCustomAlert();
+    
     // 다른 곳 클릭 시 닫기
     $(document).on('click', function (e) {
         if (!$(e.target).closest('.user-role-button, #roleChangeDropdown').length) {
@@ -181,7 +184,7 @@ $(document).on('click', '.role-item', function () {
     $('#roleChangeDropdown').remove();
 });
 
-
+// 넥스트짐 유저 여부 변경 UI
 $(document).on('click', '.image-gym-user', function () {
     console.log("gym-user 버튼 클릭");
     let dropdownHTML =`

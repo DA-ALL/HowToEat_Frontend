@@ -8,23 +8,25 @@
 @import url("/administrate/css/searchbar.css");
 @import url("/administrate/css/filter.css");
 @import url("/administrate/css/total-user-table.css");
+@import url("/administrate/css/custom-alert.css");
 
 html, body {
-    height: 100%;
+    min-height: 100vh;
     margin: 0;
+    position: relative;
 }
 
 #main {
     display: flex;
     flex-direction: row;
-    height: 100%;
+    min-height: 100vh;
 }
 
 #main .content-container {
     display: flex;
     flex-direction: column;
     flex: 1;
-    height: 100%;
+    min-height: 100vh;
     background-color: var(--red10);
     z-index: 1;
 }
