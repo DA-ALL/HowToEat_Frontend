@@ -61,7 +61,7 @@ function getMessageFormat(rawPercent, caloriesLeft) {
     if (rawPercent > 95) {
         return `<span class="cpf-kcal-left-message">목표를 달성했어요!🎉</span>`;
     }
-    if (rawPercent > 0) {
+    if (rawPercent >= 0) {
         return `<span class="cpf-kcal-left-message">목표까지 <span>${caloriesLeft}</span> 남았어요! 💪</span>`;
     }
     return "";
@@ -73,13 +73,22 @@ function createBar(type, consumed, target, percent, rawPercent) {
         protein: "단백질",
         fat: "지방"
     };
-    const label = labelMap[type];
-    const isOver = rawPercent > 105;
 
-    const color = isOver
-        ? "#814949"
-        : "linear-gradient(269deg, #ED7777 0%, #E386B3 71.52%, #D896EF 103.66%)";
-    const fontColor = isOver ? "#814949" : "var(--red500)";
+    const label = labelMap[type];
+
+    let color = "var(--red500)";
+    let fontColor = "var(--red500)";
+
+    if (rawPercent > 105) {
+        color = '#814949';
+        fontColor = '#814949';
+    } else if (rawPercent > 95) {
+        color = 'linear-gradient(269deg, #ED7777 0%, #E386B3 71.52%, #D896EF 103.66%)';
+        fontColor = 'var(--red500)';
+    } else if (rawPercent >= 0) {
+        color = 'var(--red500)';
+        fontColor = 'var(--red500)';
+    }
 
     return `
         <div class="cpf-bar-wrapper ${type}">
@@ -176,7 +185,7 @@ function createCalorieArc(rawPercent, percent) {
               stroke-linecap="round"
               stroke-dasharray="${pathLength}"
               stroke-dashoffset="${pathLength}"
-              style="animation: fillArc 1.2s ease-out forwards;" />
+              style="animation: fillArc 1.0s ease-out forwards;" />
         <style>
             @keyframes fillArc {
                 to {

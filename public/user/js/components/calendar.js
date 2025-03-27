@@ -41,7 +41,7 @@ $(document).ready(function () {
 
 
 
-    function updateCalendar() {
+    function updateCalendar(updateCPF = true) {
         let year = currentDate.getFullYear();
         let month = currentDate.getMonth();
         $("#current-date").text(`${year}년 ${String(month + 1).padStart(2, '0')}월`);
@@ -123,16 +123,17 @@ $(document).ready(function () {
             ));
         });
 
-        // ⬇️ 초기 렌더 시에도 같이 넘겨줌
-        const initialInfo = getCalorieInfo(activeDate);
-        $("#todaysCPF").html(getTodaysCPF(
-            activeDate, initialInfo.target, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumed, initialInfo.caloriesLeft,
-            initialInfo.targetCarbo, initialInfo.targetProtein, initialInfo.targetFat,
-            initialInfo.consumedCarbo, initialInfo.consumedProtein, initialInfo.consumedFat,
-            initialInfo.carboRawPercent, initialInfo.carboPercent,
-            initialInfo.proteinRawPercent, initialInfo.proteinPercent,
-            initialInfo.fatRawPercent, initialInfo.fatPercent
-        ));
+        if(updateCPF) {            
+            const initialInfo = getCalorieInfo(activeDate);
+            $("#todaysCPF").html(getTodaysCPF(
+                activeDate, initialInfo.target, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumed, initialInfo.caloriesLeft,
+                initialInfo.targetCarbo, initialInfo.targetProtein, initialInfo.targetFat,
+                initialInfo.consumedCarbo, initialInfo.consumedProtein, initialInfo.consumedFat,
+                initialInfo.carboRawPercent, initialInfo.carboPercent,
+                initialInfo.proteinRawPercent, initialInfo.proteinPercent,
+                initialInfo.fatRawPercent, initialInfo.fatPercent
+            ));
+        }
 
 
     }
@@ -258,7 +259,7 @@ $(document).ready(function () {
         } else {
             currentDate.setMonth(currentDate.getMonth() - 1);
         }
-        updateCalendar();
+        updateCalendar(false);
     });
 
     $("#next").click(function () {
@@ -267,7 +268,7 @@ $(document).ready(function () {
         } else {
             currentDate.setMonth(currentDate.getMonth() + 1);
         }
-        updateCalendar();
+        updateCalendar(false);
     });
 
     // [월단위]/[주단위] 전환

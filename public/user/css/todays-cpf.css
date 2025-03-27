@@ -39,7 +39,7 @@
     justify-content: center;
     width: 100%;
     height: clamp(195px, 56.5vw, 270px);
-    margin-bottom: clamp(17.8px, 7.2vw, 36px);
+    margin-bottom: clamp(32px, 10.7vw, 54px);
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar {
