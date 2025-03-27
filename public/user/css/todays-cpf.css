@@ -38,7 +38,8 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    height: clamp(195px, 56.5vw, 270px);;
+    height: clamp(195px, 56.5vw, 270px);
+    margin-bottom: clamp(17.8px, 7.2vw, 36px);
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar {
@@ -114,4 +115,62 @@
     z-index: 10;
     position: absolute;
     bottom: -26px;
+  }
+
+  #todaysCPF .cpf-bar-container {
+    display: flex;
+    flex-direction: row;
+    /* gap: clamp(22px, 9.2vw, 37px); */
+    justify-content: space-between;
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper {
+    display: flex;
+    width: clamp(75.2px, 25vw, 125px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper .cpf-bar-title {
+    font-size: clamp(10.4px, 3.47vw, 17.33px);
+    font-weight: 400;
+    color: var(--black100);
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper .cpf-bar .target, .divide {
+    font-size: clamp(10.4px, 3.47vw, 17.33px);
+    font-weight: 300;
+    color: var(--gray300);
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper .cpf-bar {
+    margin-bottom: 2px;
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper .cpf-bar .consumed {
+    font-size: clamp(12px, 4vw, 20px);
+    font-weight: 500;
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper .bar-wrapper {
+    width: 100%;
+    height: clamp(5.8px, 1.85vw, 9.5px);
+    position: relative;
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper .bar-front {
+    width: 81%;
+    height: clamp(5.8px, 1.85vw, 9.5px);
+    position: absolute;
+    border-radius: 10px;
+  }
+
+  #todaysCPF .cpf-bar-container .cpf-bar-wrapper .bar-back {
+    width: 100%;
+    height: clamp(5.8px, 1.85vw, 9.5px);
+    position: absolute;
+    border-radius: 10px;
+    background-color: #F0F0F0;
   }
