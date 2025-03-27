@@ -1,3 +1,5 @@
+// 리팩터링된 getTodaysCPF.js 전체 코드
+
 export function getTodaysCPF(
     date, target, rawPercent = 0, percent = 0, consumed = 0, caloriesLeft = 0,
     targetCarbo = 0, targetProtein = 0, targetFat = 0,
@@ -11,30 +13,77 @@ export function getTodaysCPF(
 
     const formattedTarget = target.toLocaleString();
     const formattedConsumed = consumed.toLocaleString();
-    let messageFormat = ``;
+    const isToday = date === todayStr;
+    const [year, month, day] = date.split("-");
+    const title = isToday ? "오늘의 탄단지" : `${year}년 ${month}월 ${day}일`;
 
-    if (rawPercent > 105) {
-        messageFormat = `
-            <span class="cpf-kcal-left-message">목표를 <span class="over">${-1 * caloriesLeft}</span> 초과했어요❗️</span>
-        `;
-    } else if (rawPercent > 95 && rawPercent <= 105) {
-        messageFormat = `<span class="cpf-kcal-left-message">목표를 달성했어요!🎉</span>`;
-    } else if (rawPercent > 0 && rawPercent <= 95) {
-        messageFormat = `<span class="cpf-kcal-left-message">목표까지 <span>${caloriesLeft}</span> 남았어요! 💪</span>`;
-    }
-
+    const messageFormat = getMessageFormat(rawPercent, caloriesLeft);
     const svg = createCalorieArc(rawPercent, percent);
     const backgroundSvg = createBackgroundSvg();
 
-    const [year, month, day] = date.split("-");
-    const title = (date === todayStr) ? `오늘의 탄단지` : `${year}년 ${month}월 ${day}일`;
+    const barContainer = `
+        <div class="cpf-bar-container">
+            ${createBar("carbo", consumedCarbo, targetCarbo, carboPercent, carboRawPercent)}
+            ${createBar("protein", consumedProtein, targetProtein, proteinPercent, proteinRawPercent)}
+            ${createBar("fat", consumedFat, targetFat, fatPercent, fatRawPercent)}
+        </div>
+    `;
 
-    const createBar = (type, consumed, target, percent, rawPercent) => {
-        const color = rawPercent > 105 ? '#814949' : 'linear-gradient(269deg, #ED7777 0%, #E386B3 71.52%, #D896EF 103.66%)';
-        const fontColor = rawPercent > 105 ? '#814949' : 'var(--red500)';
-        return `
+    return `
+        <div class="cpf-title">${title}</div>
+        <div class="cpf-target-kcal-wrapper">
+            <div class="sub">일일권장</div>
+            <div class="cpf-target-kcal">${formattedTarget}</div>
+        </div>
+        ${isToday ? `
+            <div class="cpf-kcal-left-message-wrapper">
+                ${messageFormat}
+                <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
+            </div>
+        ` : ""}
+        <div class="cpf-kcal-bar-wrapper">
+            ${percent === 0
+                ? `<div class="cpf-kcal-bar background">${backgroundSvg}</div>`
+                : `<div class="cpf-kcal-bar">${svg}</div><div class="cpf-kcal-bar background">${backgroundSvg}</div>`}
+            <div class="cpf-kcal-consumed-wrapper">
+                <div class="cpf-kcal-consumed">${formattedConsumed}</div>
+                <div class="sub">kcal</div>
+            </div>
+        </div>
+        ${barContainer}
+    `;
+}
+
+function getMessageFormat(rawPercent, caloriesLeft) {
+    if (rawPercent > 105) {
+        return `<span class="cpf-kcal-left-message">목표를 <span class="over">${-1 * caloriesLeft}</span> 초과했어요❗️</span>`;
+    }
+    if (rawPercent > 95) {
+        return `<span class="cpf-kcal-left-message">목표를 달성했어요!🎉</span>`;
+    }
+    if (rawPercent > 0) {
+        return `<span class="cpf-kcal-left-message">목표까지 <span>${caloriesLeft}</span> 남았어요! 💪</span>`;
+    }
+    return "";
+}
+
+function createBar(type, consumed, target, percent, rawPercent) {
+    const labelMap = {
+        carbo: "탄수화물",
+        protein: "단백질",
+        fat: "지방"
+    };
+    const label = labelMap[type];
+    const isOver = rawPercent > 105;
+
+    const color = isOver
+        ? "#814949"
+        : "linear-gradient(269deg, #ED7777 0%, #E386B3 71.52%, #D896EF 103.66%)";
+    const fontColor = isOver ? "#814949" : "var(--red500)";
+
+    return `
         <div class="cpf-bar-wrapper ${type}">
-            <div class="cpf-bar-title ${type}">${type === 'carbo' ? '탄수화물' : type === 'protein' ? '단백질' : '지방'}</div>
+            <div class="cpf-bar-title ${type}">${label}</div>
             <div class="cpf-bar">
                 <span class="consumed ${type}" style="color: ${fontColor}">${consumed}g</span>
                 <span class="divide">/</span>
@@ -51,36 +100,6 @@ export function getTodaysCPF(
                 }
             </style>
         </div>
-        `;
-    };
-    const barContainer = `
-        <div class="cpf-bar-container">
-            ${createBar('carbo', consumedCarbo, targetCarbo, carboPercent, carboRawPercent)}
-            ${createBar('protein', consumedProtein, targetProtein, proteinPercent, proteinRawPercent)}
-            ${createBar('fat', consumedFat, targetFat, fatPercent, fatRawPercent)}
-        </div>
-    `;
-
-    return `
-        <div class="cpf-title">${title}</div>
-        <div class="cpf-target-kcal-wrapper">
-            <div class="sub">일일권장</div>
-            <div class="cpf-target-kcal">${formattedTarget}</div>
-        </div>
-        ${date === todayStr && percent !== 0 ? `
-            <div class="cpf-kcal-left-message-wrapper">
-                ${messageFormat}
-                <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
-            </div>
-        ` : ''}
-        <div class="cpf-kcal-bar-wrapper">
-            ${percent === 0 ? `<div class="cpf-kcal-bar background">${backgroundSvg}</div>` : `<div class="cpf-kcal-bar">${svg}</div><div class="cpf-kcal-bar background">${backgroundSvg}</div>`}
-            <div class="cpf-kcal-consumed-wrapper">
-                <div class="cpf-kcal-consumed">${formattedConsumed}</div>
-                <div class="sub">kcal</div>
-            </div>
-        </div>
-        ${barContainer}
     `;
 }
 
@@ -126,12 +145,18 @@ function createCalorieArc(rawPercent, percent) {
     const arcStartAngle = -35;
     const arcEndAngle = 215;
     const dynamicEnd = arcStartAngle + (arcEndAngle - arcStartAngle) * (percent / 100);
-
     const pathD = describeArc(centerX, centerY, radius, arcStartAngle, dynamicEnd);
-    const backgroundArc = describeArc(centerX, centerY, radius, arcStartAngle, arcEndAngle);
 
-    let color = rawPercent === 0 ? '#EBEBEB' : (rawPercent > 105 ? '#814949' : (rawPercent > 95 ? 'url(#calorieGradient)' : '#ED7777'));
-    let isGradient = rawPercent > 95 && rawPercent <= 105;
+    const isGradient = rawPercent > 95 && rawPercent <= 105;
+    const color = rawPercent === 0 ? '#EBEBEB' : rawPercent > 105 ? '#814949' : isGradient ? 'url(#calorieGradient)' : '#ED7777';
+
+    const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const tempPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    tempPath.setAttribute("d", pathD);
+    tempSvg.appendChild(tempPath);
+    document.body.appendChild(tempSvg);
+    const pathLength = tempPath.getTotalLength();
+    document.body.removeChild(tempSvg);
 
     const gradientDef = `
         <defs>
@@ -142,19 +167,34 @@ function createCalorieArc(rawPercent, percent) {
             </linearGradient>
         </defs>`;
 
-    const pathElement = `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="4.5" stroke-linecap="round"/>`;
-
     return `<svg width="100%" height="100%" viewBox="0 0 30 30">
         ${isGradient ? gradientDef : ''}
-        ${pathElement}
+        <path d="${pathD}"
+              fill="none"
+              stroke="${color}"
+              stroke-width="4.5"
+              stroke-linecap="round"
+              stroke-dasharray="${pathLength}"
+              stroke-dashoffset="${pathLength}"
+              style="animation: fillArc 1.2s ease-out forwards;" />
+        <style>
+            @keyframes fillArc {
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+        </style>
     </svg>`;
 }
 
 function describeArc(x, y, radius, startAngle, endAngle) {
-    const start = polarToCartesian(x, y, radius, endAngle);
-    const end = polarToCartesian(x, y, radius, startAngle);
+    const start = polarToCartesian(x, y, radius, startAngle);
+    const end = polarToCartesian(x, y, radius, endAngle);
     const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-    return ["M", start.x, start.y, "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y].join(" ");
+    return [
+        "M", start.x, start.y,
+        "A", radius, radius, 0, largeArcFlag, 1, end.x, end.y
+    ].join(" ");
 }
 
 function polarToCartesian(cx, cy, r, angleInDegrees) {
