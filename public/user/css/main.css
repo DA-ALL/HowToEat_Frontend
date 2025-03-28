@@ -10,6 +10,7 @@
 @import url("/user/css/signup-complete.css");
 @import url("/user/css/color.css");
 @import url("/user/css/todays-cpf.css");
+@import url("/user/css/meal-log.css");
 
 html, body {
     height: 100%;

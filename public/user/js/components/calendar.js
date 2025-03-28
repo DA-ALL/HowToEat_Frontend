@@ -1,4 +1,5 @@
 import { getTodaysCPF } from '../todaysCPF.js';
+import { getMealLog } from '../mealLog.js';
 
 $(document).ready(function () {
     let currentDate = new Date();
@@ -121,6 +122,8 @@ $(document).ready(function () {
                 info.proteinRawPercent, info.proteinPercent,
                 info.fatRawPercent, info.fatPercent
             ));
+
+            $("#mealLog").html(getMealLog());
         });
 
         if(updateCPF) {            
@@ -133,6 +136,7 @@ $(document).ready(function () {
                 initialInfo.proteinRawPercent, initialInfo.proteinPercent,
                 initialInfo.fatRawPercent, initialInfo.fatPercent
             ));
+            $("#mealLog").html(getMealLog());
         }
 
 
