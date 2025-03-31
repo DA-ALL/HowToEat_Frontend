@@ -1,3 +1,7 @@
+#mealLog {
+    margin-bottom: clamp(51.4px, 17.07vw, 85px);
+}
+
 #mealLog .meal-log-title {
     font-size: clamp(16px, 5.336vw, 26.67px);
     font-weight: 600;

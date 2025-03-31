@@ -11,6 +11,7 @@
 @import url("/user/css/color.css");
 @import url("/user/css/todays-cpf.css");
 @import url("/user/css/meal-log.css");
+@import url("/user/css/components/nav-bottom.css");
 
 html, body {
     height: 100%;
