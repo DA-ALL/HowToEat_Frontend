@@ -176,7 +176,6 @@ export function updateURLWithActiveElements(contentId) {
     if(contentId == 'ptUserManagement'){
         const searchDropdown = $(`#${contentId}`).find('#searchDropdown .dropdown-text');
         if(!params.has('trainer') && !params.has('gym') && searchDropdown.data('trainer') && searchDropdown.data('trainer') != '전체' && searchDropdown.data('gym') != '전체'){
-            console.log("여기에 온다고? 왜?", searchDropdown.data('trainer'));
             replaceQueryParam({'trainer': searchDropdown.data('trainer'), 'gym': searchDropdown.data('gym')});
         }
     }

@@ -42,10 +42,8 @@ export function loadSearchDropdown() {
         let trainer = $(this).data("trainer");
         let gym = $(this).data("gym");
         currentDropdownItem = [trainer, gym];
-        if(trainer != '전체'){
-            updateQueryParam({"trainer": trainer, "gym": gym});
-        }
         
+        updateQueryParam({"trainer": trainer, "gym": gym});
         loadSearchDropdown();
     });
 
