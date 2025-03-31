@@ -1,10 +1,10 @@
 
-import { onPopstate,  updateQueryParam, removeQueryParam} from '/administrate/js/router.js';
+import { onPopstate,  updateQueryParam, removeQueryParam, getCurrentContent, updateURLWithActiveElements} from '/administrate/js/router.js';
 
 export function loadSearchBar() {
-    let placeholder = $('#searchbar').data('placeholder'); // HTML의 data-placeholder 값 가져오기
+    let placeholder = $('.searchbar').data('placeholder'); // HTML의 data-placeholder 값 가져오기
 
-    $('#searchbar').html(`
+    $('.searchbar').html(`
         <div class="searchbar-wrapper">
             <div class="image-search">
                 <img src="/administrate/images/icon_search.png">
@@ -15,21 +15,23 @@ export function loadSearchBar() {
         </div>
         <div class="button-search">검색</div>
     `);
+    // updateURLWithActiveElements();
 }
 
 $(document).on('click', '.button-search', function () {
-    let searchValue = $('#searchbar input').val(); // input 값 가져오기
-    // console.log(searchValue);
+    let currentContent = getCurrentContent();
+    let searchValue = $(`#${currentContent} .searchbar input`).val(); // input 값 가져오기
+    console.log("검색 버튼 click");
     // TODO: - 검색 백엔드 호출
     
     if(searchValue){
-        updateQueryParam('username', searchValue);
+        updateQueryParam({'search': searchValue});
     } else {
-        removeQueryParam('username');
+        removeQueryParam('search');
     }
 });
 
-$(document).on('keypress', '#searchbar input', function (event) {
+$(document).on('keypress', '.searchbar input', function (event) {
     if (event.which === 13) { // 13 = Enter key
         $('.button-search').click();
     }

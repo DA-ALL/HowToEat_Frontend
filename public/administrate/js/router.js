@@ -1,3 +1,9 @@
+let currentContent = "";
+
+export function getCurrentContent(){
+    return currentContent
+}
+
 // URL 변경
 export function updateURL(page) {
     const currentUrl = new URL(window.location.href);
@@ -10,21 +16,28 @@ export function updateURL(page) {
     history.pushState({ page }, "", newUrl.toString());
 
     hideAllContents();
-    let currentContent = showCurrentContent();
+    showCurrentContent();
     updateURLWithActiveElements(currentContent);
 }
 
-function updateURLParam(key, value, useReplaceState = false) {
+function updateURLParams(params, useReplaceState = false) {
     const url = new URL(window.location.href);
     const searchParams = url.searchParams;
+    let hasChanges = false; // 변경 여부 체크
 
-    // 기존 값과 비교 후 변경이 없으면 실행 안 함
-    if (searchParams.get(key) === String(value)) {
-        return;
-    }
-    searchParams.set(key, value);
+    // params 객체를 순회하며 URL 파라미터 업데이트
+    Object.entries(params).forEach(([key, value]) => {
+        if (searchParams.get(key) !== String(value)) {
+            searchParams.set(key, value);
+            hasChanges = true;
+        }
+    });
 
-    const sortOrder = ["username", "orderby", "next-gym", "user-role", "data-source", "recommend", "admin-share", "option", "page"];
+    // 변경이 없으면 실행 안 함
+    if (!hasChanges) return;
+
+    // 파라미터 정렬
+    const sortOrder = ["search", "trainer", "gym", "orderby", "next-gym", "user-role", "data-source", "recommend", "admin-share", "option", "page"];
     const sortedParams = new URLSearchParams();
     sortOrder.forEach(param => {
         if (searchParams.has(param)) {
@@ -34,21 +47,25 @@ function updateURLParam(key, value, useReplaceState = false) {
 
     const newUrl = `${url.pathname}?${sortedParams.toString()}`;
 
+    // pushState 또는 replaceState 한 번만 호출
     if (useReplaceState) {
+        console.log("replaceState");
         history.replaceState({}, "", newUrl);
     } else {
+        console.log("pushState");
         history.pushState({}, "", newUrl);
     }
 }
 
+
 // 파라미터 변경 pushState 사용
-export function updateQueryParam(key, value) {
-    updateURLParam(key, value, false);
+export function updateQueryParam(params) {
+    updateURLParams(params, false);
 }
 
 // 파라미터 변경 replaceState 사용
-export function replaceQueryParam(key, value) {
-    updateURLParam(key, value, true);
+export function replaceQueryParam(params) {
+    updateURLParams(params, true);
 }
 
 // 현재 URL에서 특정 파라미터 삭제
@@ -96,15 +113,13 @@ function showCurrentContent() {
         'admin-management/gym': 'gymManagement',    
     };
 
-    const currentContent = contentMap[currentPage];
+    currentContent = contentMap[currentPage];
 
     if (currentContent) {
         $(`#${currentContent}`).css('display', 'flex');
     } else {
         console.warn('Unknown page:', currentPage);
     }
-
-    return currentContent;
 }
 
 
@@ -120,7 +135,7 @@ export function updateURLWithActiveElements(contentId) {
             
             // active 되어있는 요소가 있으면 파라미터에 추가
             if(queryValue && !(queryValue == 'all' || queryValue == 'desc')){
-                replaceQueryParam($(this).data('key'), queryValue);
+                replaceQueryParam({[$(this).data('key')]: queryValue});
             } else { // active 없으면 초기값으로 설정
                 let defaultQuery = $(this).find('.filter-option').first().data('query');
                 $(this).find(`.filter-option[data-query="${defaultQuery}"]`).addClass('active');
@@ -145,20 +160,26 @@ export function updateURLWithActiveElements(contentId) {
     // page
     const activePageButton = $(`#${contentId}`).find('.pagination-button.active');
     if(contentId == 'userManagement' && !params.has('page') && activePageButton && activePageButton.data('page') != 1){
-        replaceQueryParam('page', activePageButton.data('page'));
+        replaceQueryParam({'page': activePageButton.data('page')});
     }
 
     // searchBar
-    if(contentId =='userManagement'){
-        const searchBar = $(`#${contentId}`).find('#searchbar input');
-        
-        if(!params.has('username') && searchBar.val()){
-            replaceQueryParam('username', searchBar.val());
-        } else if(params.has('username')){
-            searchBar.val(params.get('username'));
-        }
-    } 
+    const searchBar = $(`#${contentId}`).find('.searchbar input');
     
+    if(!params.has('search') && searchBar.val()){
+        replaceQueryParam({'search': searchBar.val()});
+    } else if(params.has('search')){
+        searchBar.val(params.get('search'));
+    }
+
+    //searchDropdown
+    if(contentId == 'ptUserManagement'){
+        const searchDropdown = $(`#${contentId}`).find('#searchDropdown .dropdown-text');
+        if(!params.has('trainer') && !params.has('gym') && searchDropdown.data('trainer') && searchDropdown.data('trainer') != '전체' && searchDropdown.data('gym') != '전체'){
+            console.log("여기에 온다고? 왜?", searchDropdown.data('trainer'));
+            replaceQueryParam({'trainer': searchDropdown.data('trainer'), 'gym': searchDropdown.data('gym')});
+        }
+    }
 }
 
 

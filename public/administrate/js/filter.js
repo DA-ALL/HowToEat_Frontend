@@ -1,4 +1,4 @@
-import { onPopstate, updateQueryParam, updateURLWithActiveElements} from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam, updateURLWithActiveElements, getCurrentContent} from '/administrate/js/router.js';
 
 export function renderFilters() {
     $('.filter-group').children().each(function () {
@@ -96,7 +96,7 @@ $(document).on('click', '.filter-option', function () {
     let queryValue = $(this).data('query');
 
     if (queryKey) {
-        updateQueryParam(queryKey, queryValue);
+        updateQueryParam({[queryKey] : queryValue});
     }
 
     $parent.find('.filter-option').removeClass('active');
@@ -106,7 +106,7 @@ $(document).on('click', '.filter-option', function () {
 
 export function loadFilter(){
     renderFilters();
-    updateURLWithActiveElements('userManagement');
+    updateURLWithActiveElements(getCurrentContent());
 }
 
 onPopstate(loadFilter);  

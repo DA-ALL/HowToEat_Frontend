@@ -94,7 +94,7 @@ function renderPagination(totalUsers) {
         const key = $(this).data('key');
         const newPage = parseInt($(this).data("page"));
         if (newPage !== currentPage) {
-            updateQueryParam(key, newPage);
+            updateQueryParam({[key]: newPage});
             currentPage = newPage;
             renderPageData();
         }
