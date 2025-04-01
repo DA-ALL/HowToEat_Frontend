@@ -1,0 +1,65 @@
+#homeMeal .home-meal-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4.8px, 1.6vw, 8px);
+}
+
+#homeMeal .home-meal-bar-container .home-meal-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#homeMeal .home-meal-bar-container .home-meal-bar-wrapper .meal-title {
+    font-size: clamp(12px, 4vw, 20px);
+    font-weight: 300;
+    color: var(--black100);
+}
+
+#homeMeal .home-meal-bar-container .meal-bar-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(24px, 8vw, 40px);
+
+}
+
+#homeMeal .home-meal-bar-container .meal-bar-wrapper .bar-wrapper {
+    width: 100%;
+    height: clamp(8.6px, 3.2vw - 1px, 15px);
+    position: relative;
+}
+
+#homeMeal .home-meal-bar-container .meal-bar-wrapper .bar-wrapper .bar-back {
+    width: 100%;
+    height: clamp(8.6px, 3.2vw - 1px, 15px);
+    position: absolute;
+    border-radius: 10px;
+    background-color: #F0F0F0;
+}
+
+#homeMeal .home-meal-bar-container .meal-bar-wrapper .bar-wrapper .bar-front {
+    width: 0%;
+    height: clamp(8.6px, 3.2vw - 1px, 15px);
+    position: absolute;
+    border-radius: 10px;
+}
+
+#homeMeal .home-meal-bar-container .meal-bar-wrapper .text-wrapper {
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0; 
+}
+
+#homeMeal .home-meal-bar-container .meal-bar-wrapper .text-wrapper .consumed {
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    font-weight: 500;
+}
+
+#homeMeal .home-meal-bar-container .meal-bar-wrapper .text-wrapper .target, .divide {
+    font-size: clamp(8.8px, 2.93vw, 14.67px);
+    font-weight: 300;
+    color: var(--gray300);
+}

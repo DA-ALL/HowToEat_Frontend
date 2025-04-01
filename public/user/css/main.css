@@ -36,6 +36,13 @@ html, body {
     z-index: 1;
 }
 
+.title-format {
+    font-size: clamp(16px, 5.336vw, 26.67px);
+    font-weight: 600;
+    color: var(--black100);
+    margin-bottom: clamp(24px, 9.6vw, 48px);
+}
+
 .root-container {
     position: relative;
     width: 100vw;

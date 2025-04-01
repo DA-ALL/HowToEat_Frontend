@@ -1,5 +1,5 @@
 #mealLog {
-    margin-bottom: clamp(51.4px, 17.07vw, 85px);
+    margin-bottom: clamp(51.4px, 17.07vw, 85px);;
 }
 
 #mealLog .meal-log-title {
