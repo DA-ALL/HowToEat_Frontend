@@ -9,7 +9,7 @@ export function showMain(meal = null) {
 
     // 예시 텍스트 삽입 (실제 내용은 동적으로 생성)
     const mealKor = mealToKor(meal);
-    $('#home-meal').html(`
+    $('#homMeal').html(`
       <div class="root-container">
         <h2>${mealKor} 식사 상세 페이지</h2>
         <p>여기에 ${mealKor}에 대한 음식, 칼로리, 차트 등 정보가 들어갑니다.</p>
@@ -18,7 +18,7 @@ export function showMain(meal = null) {
     `);
   } else {
     // 메인 홈화면으로 복귀
-    $('#home-meal').hide();
+    $('#homeMeal').hide();
     $('#home').show();
   }
 }
