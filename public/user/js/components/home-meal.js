@@ -2,11 +2,11 @@ export function renderMealDetail(mealKey) {
     const mealKor = mealToKor(mealKey);
   
     return `
-      <div class="root-container">
+        <div id="headerNav" data-title="${mealKor}식사 등록하기" data-type="2"></div>
+       
         <h2>${mealKor} 식사 상세 페이지</h2>
         <p>여기에 ${mealKor}에 대한 음식, 칼로리, 차트 등 정보가 들어갑니다.</p>
         <button id="back-to-main">← 뒤로가기</button>
-      </div>
     `;
   }
   
@@ -19,4 +19,3 @@ export function renderMealDetail(mealKey) {
       default: return '';
     }
   }
-  

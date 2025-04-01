@@ -1,12 +1,10 @@
-$(document).ready(function () {
-    //  [type에 따른 header 구성]
-    //  - type 1 =  뒤로가기 O / 타이틀 X  / 추가하기버튼 X
-    //  - type 2 =  뒤로가기 O / 타이틀 O / 추가하기버튼 X
-    //  - type 3 =  뒤로가기 O / 타이틀 O / 추가하기버튼 O
+// headerNav.js
+export function initHeaderNav() {
+    const $headerNav = $('#headerNav');
+    if ($headerNav.length === 0) return;
 
-    let $headerNav = $('#headerNav');
-    let title = $headerNav.data('title');
-    let type = $headerNav.data('type');
+    const title = $headerNav.data('title');
+    const type = $headerNav.data('type');
 
     let headerTemplate = '';
 
@@ -29,13 +27,12 @@ $(document).ready(function () {
 
         case 2:
             headerTemplate = `
-                <div class="header-nav">
+                <div class="header-nav header-nav-relative">
                     <div class="button-prev">
                         <img src="/user/images/icon_arrow_back.png">
                     </div>
 
                     <div class="title">${title}</div>
-
 
                     <div class="button-add hidden">
                         <img src="/user/images/icon_add.png">
@@ -44,9 +41,9 @@ $(document).ready(function () {
             `;
             break;
 
-        default:
+        default: // type 3
             headerTemplate = `
-                <div class="header-nav">
+                <div class="header-nav header-nav-relative">
                     <div class="button-prev">
                         <img src="/user/images/icon_arrow_back.png">
                     </div>
@@ -62,8 +59,8 @@ $(document).ready(function () {
 
     $headerNav.html(headerTemplate);
 
-    // 뒤로가기 버튼 클릭 이벤트 처리
-    $('.button-prev').on('click', function () {
+    // 이벤트 바인딩 (SPA에서도 작동하도록 매번 재바인딩)
+    $headerNav.find('.button-prev').on('click', function () {
         window.history.back(); // 이전 페이지로 돌아가기
     });
-});
+}

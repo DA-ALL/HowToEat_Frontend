@@ -1,4 +1,5 @@
 import { renderMealDetail } from './home-meal.js';
+import { initHeaderNav } from '../headerNav.js';
 
 export function showMain(meal = null) {
   $('#report').hide();
@@ -6,8 +7,9 @@ export function showMain(meal = null) {
 
   if (meal) {
     $('#home').hide();
-    $('#homeMeal').show();
     $('#homeMeal').html(renderMealDetail(meal));
+    initHeaderNav();
+    $('#homeMeal').show();
   } else {
     $('#homeMeal').hide();
     $('#home').show();

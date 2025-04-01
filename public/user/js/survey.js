@@ -1,6 +1,7 @@
 import { updateButtonState, validateInput, checkInput } from './components/input-validate.js';
 import { populateDays, updateDays, validateDateInput, birthDropDown } from './components/date-picker-validate.js';
 import { updateProgressBar } from './components/header-processbar.js';
+import { initHeaderNav } from './headerNav.js';
 
 let currentPage = 1;
 let surveyData = {
@@ -31,6 +32,7 @@ $(document).ready(function () {
     const savedPage = parseInt(urlParams.get('page')) || 1;
 
     currentPage = savedPage;
+    initHeaderNav();
     loadPage(currentPage);
 });
 

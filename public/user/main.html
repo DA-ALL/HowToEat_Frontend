@@ -10,6 +10,7 @@
     <link rel="preload" as="image" href="/user/images/icon_mypage_active.png">
     <script type="module" src="/user/js/components/calendar.js" defer></script>
     <script type="module" src="/user/js/components/nav-bottom.js" defer></script>
+    <script type="module" src="/user/js/headerNav.js" defer></script>
     <title>하잇</title>
 
     <link rel="stylesheet" href="/user/css/main.css">
@@ -17,8 +18,8 @@
 
 <body>
     <div id="main">
-        <div id="home">
-            <div class="root-container">
+        <div class="root-container">
+            <div id="home">
                 <div class="calendar-container">
                     <div class="calendar-header">
                         <div id="prev">
@@ -43,9 +44,11 @@
 
                 <div id="mealLog" class="padding"></div>
             </div>
+            
+            <div id="homeMeal">
+                
+            </div>
         </div>
-
-        <div id="homeMeal"></div>
     </div>
 
 
