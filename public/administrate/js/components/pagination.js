@@ -1,4 +1,4 @@
-export function renderPagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
+export function renderPagination({ contentId, totalItems, itemsPerPage, currentPage, onPageChange }) {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     let paginationHTML = "<div class='pagination-wrapper'>";
 
@@ -24,9 +24,9 @@ export function renderPagination({ totalItems, itemsPerPage, currentPage, onPage
     paginationHTML += `<div class="pagination-button" data-page="${Math.min(totalPages, currentPage + 10)}">>></div>`;
     paginationHTML += "</div>";
 
-    $('.pagination').html(paginationHTML);
+    $(`#${contentId} .pagination`).html(paginationHTML);
 
-    $('.pagination-button').click(function () {
+    $(`#${contentId} .pagination-button`).click(function () {
         const newPage = parseInt($(this).data("page"));
         if (newPage !== currentPage) {
             onPageChange(newPage);

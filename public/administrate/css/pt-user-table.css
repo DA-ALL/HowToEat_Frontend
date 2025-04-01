@@ -1,0 +1,138 @@
+#ptUserTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 37px;
+}
+
+#ptUserTable table{
+    width: 100%;
+    border-spacing: 0px;
+}
+
+/* table head */
+#ptUserTable th {
+    min-width: 150px;
+    padding: 14px 0px;
+    background-color: var(--red75);
+    border: 0px;
+    text-align: left;
+    color: var(--black100);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#ptUserTable .th-id{
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    padding-left: 24px;
+}
+
+#ptUserTable .th-gym-user {  
+    text-align: center;
+}
+
+#ptUserTable .th-user-role {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    text-align: center;
+}
+
+/* table data */
+#ptUserTable #ptUserTableBody tr {
+    cursor: pointer;
+}
+
+#ptUserTable #ptUserTableBody tr:hover {
+    background-color: var(--red10);
+}
+
+#ptUserTable td {
+    min-width: 150px;
+    padding: 0px;
+    height: 76px;
+    color: var(--black100);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#ptUserTable .td-id{
+    padding-left: 24px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+#ptUserTable .td-user-profile .td-user-profile-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#ptUserTable .td-user-profile .td-user-profile-wrapper .image-user{
+    width: 36px;
+    height: 36px;
+}
+
+#ptUserTable .td-user-profile .td-user-profile-wrapper .image-user img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50px;
+}
+
+#ptUserTable .td-gym-user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#ptUserTable .td-gym-user .image-gym-user{
+    width: 90px;
+    height: 27px;
+    background-color: var(--gray50);
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#ptUserTable .td-gym-user .image-gym-user img{
+    width: 30px;
+}
+
+#ptUserTable .td-user-role{
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+#ptUserTable .td-user-role .user-role-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#ptUserTable .td-user-role .user-role-button {
+    color: var(--white300);        
+    height: 27px;
+    width: 89px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#ptUserTable .td-user-role .user-role-button.master {
+    background-color: #FD5454;
+}
+#ptUserTable .td-user-role .user-role-button.admin {
+    background-color: #4C4C4C;
+}
+#ptUserTable .td-user-role .user-role-button.super-user {
+    background-color: #D36DAE;
+}
+#ptUserTable .td-user-role .user-role-button.user {
+    background-color: #70BFC4;
+}

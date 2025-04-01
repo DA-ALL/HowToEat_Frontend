@@ -1,6 +1,7 @@
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 import { loadSearchDropdown } from '/administrate/js/components/searchDropdown.js';
+import { loadTotalUserTable } from '/administrate/js/ptUserTable.js';
 
 $(document).ready(function () {
     loadContent();
@@ -28,5 +29,6 @@ function loadContent() {
 
     loadSearchBar();
     loadFilter();
+    loadTotalUserTable();
     loadSearchDropdown();
 }

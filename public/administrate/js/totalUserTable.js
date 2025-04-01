@@ -1,4 +1,4 @@
-import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam, getCurrentContent} from '/administrate/js/router.js';
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
 
@@ -62,6 +62,7 @@ function renderPageData() {
     // renderPagination(users.length);
 
     renderPagination({
+        contentId: 'userManagement',
         totalItems: users.length,
         itemsPerPage: usersPerPage,
         currentPage,
@@ -75,7 +76,12 @@ function renderPageData() {
 
 function getPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
+    if(getCurrentContent() == 'userManagement') {
+        return parseInt(urlParams.get('page')) || 1;
+    } else {
+        return 1;
+    }
+    
 }
 
 function getUserData() {
