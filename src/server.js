@@ -5,8 +5,8 @@ const app = express();
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '../public')));
-
-app.get(['/main', '/report', '/my-page'], (req, res) => {
+// 메인 페이지 관련 경로는 모두 main.html로 응답
+app.get(['/main*', '/report*', '/my-page*'], (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'main.html'));
 });
 
