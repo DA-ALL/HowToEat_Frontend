@@ -1,5 +1,5 @@
 
-import { onPopstate, updateQueryParam, removeQueryParam } from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
 
 let data = getTrainerGymData();
 let currentDropdownItem = data[0];

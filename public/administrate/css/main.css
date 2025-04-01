@@ -5,10 +5,11 @@
 @import url("/administrate/css/card-list.css");
 @import url("/administrate/css/color.css");
 @import url("/administrate/css/dashboard-chart.css");
-@import url("/administrate/css/searchbar.css");
-@import url("/administrate/css/filter.css");
+@import url("/administrate/css/components/searchbar.css");
+@import url("/administrate/css/components/filter.css");
 @import url("/administrate/css/total-user-table.css");
-@import url("/administrate/css/custom-alert.css");
+@import url("/administrate/css/components/custom-alert.css");
+@import url("/administrate/css/components/pagination.css");
 
 html, body {
     min-height: 100vh;

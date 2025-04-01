@@ -122,26 +122,6 @@
     background-color: #70BFC4;
 }
 
-#totalUserTable #pagination .pagination{
-    display: flex;
-    align-items: center;
-    height: 64px;
-    gap: 16px;
-}
-
-#totalUserTable #pagination .pagination-button {
-    cursor: pointer;
-    font-size: 14px;
-    width: 17px;
-    color: var(--gray400);
-}
-
-#totalUserTable #pagination .pagination-button.active {
-    font-weight: 700;
-    color: var(--black100);
-}
-
-
 #roleChangeDropdown {
     display: flex;
     flex-direction: column;

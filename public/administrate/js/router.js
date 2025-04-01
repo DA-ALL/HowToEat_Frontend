@@ -159,7 +159,7 @@ export function updateURLWithActiveElements(contentId) {
 
     // page
     const activePageButton = $(`#${contentId}`).find('.pagination-button.active');
-    if(contentId == 'userManagement' && !params.has('page') && activePageButton && activePageButton.data('page') != 1){
+    if(!params.has('page') && activePageButton.length && activePageButton.data('page') != 1){
         replaceQueryParam({'page': activePageButton.data('page')});
     }
 

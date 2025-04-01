@@ -1,5 +1,6 @@
 import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
-import { showCustomAlert } from '/administrate/js/customAlert.js';
+import { showCustomAlert } from '/administrate/js/components/customAlert.js';
+import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 20;
 let currentPage = getPageFromURL() || 1; // URL에서 page 값 가져오기
@@ -31,7 +32,6 @@ function createUserRow({ id, imageURL, name, mealCount, joined, left, gymUser, r
     `;
 }
 
-
 function renderUserTable() {
     const tableHTML = `
         <table>
@@ -48,7 +48,7 @@ function renderUserTable() {
             </thead>
             <tbody id="userTableBody"></tbody>
         </table>
-        <div id="pagination"></div>`;
+        <div class="pagination"></div>`;
 
     $('#totalUserTable').html(tableHTML);
     renderPageData();
@@ -59,42 +59,14 @@ function renderPageData() {
     const start = (currentPage - 1) * usersPerPage;
     const end = start + usersPerPage;
     $('#userTableBody').html(users.slice(start, end).map(createUserRow).join(""));
-    renderPagination(users.length);
-}
+    // renderPagination(users.length);
 
-function renderPagination(totalUsers) {
-    const totalPages = Math.ceil(totalUsers / usersPerPage);
-    let paginationHTML = "<div class='pagination'>";
-
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.max(1, currentPage - 10)}"><<</div>`;
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.max(1, currentPage - 1)}"><</div>`;
-
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, currentPage + 2);
-
-    if (currentPage <= 3) {
-        startPage = 1;
-        endPage = Math.min(5, totalPages);
-    } else if (currentPage >= totalPages - 2) {
-        startPage = Math.max(1, totalPages - 4);
-        endPage = totalPages;
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-        paginationHTML += `<div class="pagination-button ${i === currentPage ? 'active' : ''}" data-key="page" data-page="${i}">${i}</div>`;
-    }
-
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.min(totalPages, currentPage + 1)}">></div>`;
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.min(totalPages, currentPage + 10)}">>></div>`;
-    paginationHTML += "</div>";
-
-    $('#pagination').html(paginationHTML);
-
-    $('.pagination-button').click(function () {
-        const key = $(this).data('key');
-        const newPage = parseInt($(this).data("page"));
-        if (newPage !== currentPage) {
-            updateQueryParam({[key]: newPage});
+    renderPagination({
+        totalItems: users.length,
+        itemsPerPage: usersPerPage,
+        currentPage,
+        onPageChange: (newPage) => {
+            updateQueryParam({ page: newPage });
             currentPage = newPage;
             renderPageData();
         }

@@ -1,7 +1,7 @@
 
 import { loadTotalUserTable } from '/administrate/js/totalUserTable.js';
-import { loadSearchBar } from '/administrate/js/searchbar.js';
-import { loadFilter } from '/administrate/js/filter.js';
+import { loadSearchBar } from '/administrate/js/components/searchbar.js';
+import { loadFilter } from '/administrate/js/components/filter.js';
 
 $(document).ready(function () {
     loadContent();
