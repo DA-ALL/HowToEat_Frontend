@@ -75,26 +75,40 @@ $(document).ready(function () {
     Object.entries(navMap).forEach(([key, { selector }]) => {
         $(selector).on('click', function (e) {
             e.preventDefault();
-
             const currentPath = window.location.pathname;
             let targetPath;
-
+    
             if (key === '/main') {
-                if (currentPath === lastMainPath && currentPath !== '/main') {
-                    // 한 번 더 클릭하면 /main으로 초기화
-                    lastMainPath = '/main';
-                    targetPath = '/main';
+                //  현재 리포트 등 외부에서 진입하는 경우
+                if (!currentPath.startsWith('/main')) {
+                    // 이 시점의 lastMainPath를 복구용으로 써야 하므로 백업
+                    const savedLastMainPath = lastMainPath;
+    
+                    // 히스토리상으로는 /main → (뒤로가기 하면 여기로)
+                    history.replaceState({ view: 'main' }, '', '/main');
+    
+                    // 보여줄 건 원래 작업하던 곳
+                    history.pushState({ view: 'main' }, '', savedLastMainPath);
+                    showPage(savedLastMainPath);
                 } else {
-                    targetPath = lastMainPath;
+                    //  main 내부에서 홈을 또 눌렀을 때
+                    if (currentPath === lastMainPath && currentPath !== '/main') {
+                        lastMainPath = '/main';
+                        history.pushState({ view: 'main' }, '', '/main');
+                        showPage('/main');
+                    } else {
+                        history.pushState({ view: 'main' }, '', lastMainPath);
+                        showPage(lastMainPath);
+                    }
                 }
             } else {
-                targetPath = key;
+                //  report, my-page는 그냥 push
+                history.pushState({ view: key.slice(1) }, '', key);
+                showPage(key);
             }
-
-            history.pushState({ view: key.slice(1) }, '', targetPath);
-            showPage(targetPath);
         });
     });
+    
 
     // 뒤로가기 이벤트 처리
     window.addEventListener('popstate', () => {
