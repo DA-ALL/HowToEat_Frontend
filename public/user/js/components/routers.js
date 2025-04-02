@@ -1,8 +1,8 @@
-import { renderMealDetail } from './home-meal.js';
+import { renderMealDetail } from '../homeMeal.js';
 import { initHeaderNav } from '../headerNav.js';
 
 const data = {
-  date: "2025-04-01",
+  date: "2025-04-02",
   carbo: { consumed: 210, target: 220 },
   protein: { consumed: 92, target: 90 },
   fat: { consumed: 60, target: 50 }

@@ -38,7 +38,9 @@ export function getMealLog() {
             <div class="log-wrapper">
                 <div class="meal-time">간식</div>
                 <div class="meal-kcal-wrapper">
-                    <div class="consumed-kcal">542</div>
+                    <div class="consumed-kcal">0</div>
+                    <div class="divide">/</div>
+                    <div class="target-kcal">240kcal</div>
                     <div class="icon-arrow">
                         <img src="/user/images/icon_arrow_front.png">
                     </div>

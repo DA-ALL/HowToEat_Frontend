@@ -84,13 +84,14 @@ function fadeOutFinalMessage() {
 
 function buttonTemplate() {
     return `
-        <div class="button-container">
+        <div class="button-container bottom">
             <div class="next-button signup">식단 관리하러 가기</div>
         </div>
     `;
 }
 
 function showFinalButton() {
+    console.log("button");
     const $button = $(buttonTemplate()).hide(); // 버튼을 숨긴 상태에서 생성
     $('#signupComplete').append($button);
     $button.fadeIn(1000); // 1초 동안 서서히 나타나도록 설정

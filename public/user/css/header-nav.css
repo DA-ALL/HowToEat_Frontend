@@ -28,7 +28,7 @@
 }
 
 #headerNav .title {
-    font-size: 15px;
+    font-size: clamp(12.8px, 2.935vw + 3.995px, 18.67px);
     font-weight: 500;
     color: var(--black100);
 }

@@ -71,7 +71,7 @@ function getSurveyTemplate(pageNumber) {
                         </div>
                     </div>
                 </div>
-                <div class="button-container">
+                <div class="button-container bottom">
                     <div class="next-button">다음</div>
                 </div>
             `;
@@ -96,7 +96,7 @@ function getSurveyTemplate(pageNumber) {
                         </div>
                     </div>
                 </div>
-                <div class="button-container">
+                <div class="button-container bottom">
                     <div class="next-button">다음</div>
                 </div>
             `;
@@ -111,7 +111,7 @@ function getSurveyTemplate(pageNumber) {
                     <div class="select-item female" data-text="female">여자</div>
                 </div>
 
-                <div class="button-container">
+                <div class="button-container bottom">
                     <div class="next-button">다음</div>
                 </div>
             `;
@@ -128,7 +128,7 @@ function getSurveyTemplate(pageNumber) {
                     <div class="select-item muscle-gain" data-text="4">근육 증량</div>
                 </div>
 
-                <div class="button-container">
+                <div class="button-container bottom">
                     <div class="next-button">다음</div>
                 </div>
             `;
@@ -161,7 +161,7 @@ function getSurveyTemplate(pageNumber) {
                     </div>
                 </div>
 
-                <div class="button-container">
+                <div class="button-container bottom">
                     <div class="next-button">다음</div>
                 </div>
             `;
@@ -176,7 +176,7 @@ function getSurveyTemplate(pageNumber) {
                         <div class="select-item no" data-text="false">아니오</div>
                     </div>
     
-                    <div class="button-container">
+                    <div class="button-container bottom">
                         <div class="next-button">다음</div>
                     </div>
                 `;

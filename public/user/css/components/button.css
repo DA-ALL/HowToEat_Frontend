@@ -8,9 +8,12 @@
 
 .button-container {
     width: 100%;
-    bottom: 20px;
     box-sizing: border-box;
     padding: 0 16px;
+}
+
+.button-container.bottom {
+    bottom: 20px;
     position: absolute;
 }
 
@@ -21,7 +24,7 @@
     width: 100%;
     font-size: 18px;
     font-weight: 500;
-    padding: 13px 0px;
+    padding: clamp(10.4px, 3.46vw, 17.33px) 0;
     border-radius: 8px;
 }
 

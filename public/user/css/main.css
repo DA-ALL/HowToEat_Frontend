@@ -60,5 +60,5 @@ html, body {
   }
   
 .padding {
-    padding : 30px 16px 40px 16px;
+    padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.26vw, 21.33px);
 }

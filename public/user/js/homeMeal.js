@@ -1,18 +1,40 @@
 export function renderMealDetail(mealKey, data) {
     const mealKor = mealToKor(mealKey);
 
-    return `
+    const isToday = isTodayDate(data?.date);
+    const buttonClass = isToday ? 'active' : 'disabled';
+
+    const commonHeader = `
         <div id="headerNav" data-title="${mealKor}식사 등록하기" data-type="2"></div>
         <div class="home-meal-container padding">
             <div class="title-format">${mealKor}의 탄단지</div>
-
             ${createBarContainer(mealKey, data)}
         </div>
+        <div class="divider large"></div>
     `;
+
+    if (mealKey === 'snack') {
+        return `
+            ${commonHeader}
+            <div class="meal-list-container padding">
+                <div class="title-format">${mealKor} 리스트</div>
+            </div>
+        `;
+    } else {
+        return `
+            ${commonHeader}
+            <div class="meal-list-container padding">
+                <div class="title-format">${mealKor}의 식단</div>
+            </div>
+            <div class="button-container">
+                <div class="next-button ${buttonClass}">추가</div>
+            </div>
+        `;
+    }
 }
 
 
-  function createBar(mealKey, type, consumed, target, percent, rawPercent) {
+function createBar(mealKey, type, consumed, target, percent, rawPercent) {
     const labelMap = {
         carbo: "탄수화물",
         protein: "단백질",
@@ -65,22 +87,31 @@ function createBarContainer(mealKey, data) {
     return `
         <div class="home-meal-bar-container">
             ${types.map(type => {
-                const { consumed, target } = data[type];
-                const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
-                const percent = Math.min(rawPercent, 100);
-                return createBar(mealKey, type, consumed, target, percent.toFixed(1), rawPercent);
-            }).join('')}
+        const { consumed, target } = data[type];
+        const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
+        const percent = Math.min(rawPercent, 100);
+        return createBar(mealKey, type, consumed, target, percent.toFixed(1), rawPercent);
+    }).join('')}
         </div>
     `;
 }
 
-  
-  function mealToKor(meal) {
+function isTodayDate(dateStr) {
+    if (!dateStr) return false;
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    return dateStr === todayStr;
+}
+
+function mealToKor(meal) {
     switch (meal) {
-      case 'morning': return '아침';
-      case 'lunch': return '점심';
-      case 'dinner': return '저녁';
-      case 'snack': return '간식';
-      default: return '';
+        case 'morning': return '아침';
+        case 'lunch': return '점심';
+        case 'dinner': return '저녁';
+        case 'snack': return '간식';
+        default: return '';
     }
-  }
+}
