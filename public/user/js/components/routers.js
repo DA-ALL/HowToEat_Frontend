@@ -22,16 +22,22 @@ export function showMain(meal = null, subpage = null) {
   }
 
   if (meal && !subpage) {
-    // /main/morning
-    $('#homeMeal').html(renderMealDetail(meal, data));
-    initHeaderNav($('#homeMeal'));
+    if ($('#homeMeal').children().length === 0) {
+      // 한 번만 렌더링
+      $('#homeMeal').html(renderMealDetail(meal, data));
+      initHeaderNav($('#homeMeal'));
+    }
     $('#homeMeal').show();
   }
-
   if (meal && subpage === 'search') {
     // /main/morning/search
-    $('#homeMealSearch').html(renderMealSearch(meal));
-    initHeaderNav($('#homeMealSearch'));
+    if ($('#homeMealSearch').children().length === 0) {
+
+      $('#homeMealSearch').html(renderMealSearch(meal));
+      initHeaderNav($('#homeMealSearch'));
+    }
+
+
     $('#homeMealSearch').show();
   }
 }

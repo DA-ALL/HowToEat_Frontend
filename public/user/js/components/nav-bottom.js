@@ -81,39 +81,49 @@ $(document).ready(function () {
             e.preventDefault();
             const currentPath = window.location.pathname;
             let targetPath;
-    
+
             if (key === '/main') {
-                //  현재 리포트 등 외부에서 진입하는 경우
+                // 👇 여기에 두 번 눌렀을 때 /main 이동 조건 추가
+                if (currentPath.startsWith('/main')) {
+                    if (currentPath === lastMainPath && currentPath !== '/main') {
+                        // 두 번 눌렀을 때 초기화
+                        lastMainPath = '/main';
+                        history.pushState({ view: 'main' }, '', '/main');
+                        showPage('/main');
+                        return;
+                    }
+                }
+
                 if (!currentPath.startsWith('/main')) {
                     const savedLastMainPath = lastMainPath;
-                
-                    // replace → /main
+
                     history.replaceState({ view: 'main' }, '', '/main');
-                
+
                     const parts = savedLastMainPath.split('/');
                     const meal = parts[2];
                     const subpage = parts[3];
-                
+
                     if (meal && subpage) {
-                        // 두 단계 push: /main/morning → /main/morning/search
                         const basePath = `/main/${meal}`;
                         history.pushState({ view: 'main' }, '', basePath);
                         history.pushState({ view: 'main' }, '', savedLastMainPath);
                     } else {
-                        // 한 단계만 push
                         history.pushState({ view: 'main' }, '', savedLastMainPath);
                     }
-                
+
                     showPage(savedLastMainPath);
+                } else {
+                    // 그냥 다시 진입
+                    history.pushState({ view: 'main' }, '', lastMainPath);
+                    showPage(lastMainPath);
                 }
-                
             } else {
-                //  report, my-page는 그냥 push
                 history.pushState({ view: key.slice(1) }, '', key);
                 showPage(key);
             }
         });
     });
+
     
 
     // 뒤로가기 이벤트 처리

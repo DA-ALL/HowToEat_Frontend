@@ -212,6 +212,7 @@ function loadPage(pageNumber, isBackNavigation = false) {
 function bindEvents(pageNumber) {
     $(".next-button").off('click').on('click', function () {
         nextPage(pageNumber);
+        initHeaderNav();
     });
 
     $('input').off('blur').on('blur', function () {

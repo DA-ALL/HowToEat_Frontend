@@ -63,5 +63,8 @@ export function initHeaderNav(parentSelector = 'body') {
     // 이벤트 바인딩 (SPA에서도 작동하도록 매번 재바인딩)
     $headerNav.find('.button-prev').on('click', function () {
         window.history.back(); // 이전 페이지로 돌아가기
+        if (parentSelector != 'body') {
+            $container.empty();
+        }
     });
 }

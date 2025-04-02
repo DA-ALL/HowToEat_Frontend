@@ -13,6 +13,7 @@
 @import url("/user/css/meal-log.css");
 @import url("/user/css/components/nav-bottom.css");
 @import url("/user/css/home-meal.css");
+@import url("/user/css/home-meal-search.css");
 
 html, body {
     height: 100%;

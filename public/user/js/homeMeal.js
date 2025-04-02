@@ -1,11 +1,12 @@
 export function renderMealDetail(mealKey, data) {
+    console.log("실해2000");
     const mealKor = mealToKor(mealKey);
 
     const isToday = isTodayDate(data?.date);
     const buttonClass = isToday ? 'active' : 'disabled';
 
     const commonHeader = `
-        <div id="headerNav" data-title="${mealKor}식사 등록하기" data-type="2"></div>
+        <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
         <div class="home-meal-container padding">
             <div class="title-format">${mealKor}의 탄단지</div>
             ${createBarContainer(mealKey, data)}
