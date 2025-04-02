@@ -1,5 +1,6 @@
 import { renderMealDetail } from '../homeMeal.js';
 import { initHeaderNav } from '../headerNav.js';
+import { renderMealSearch } from '../homeMealSearch.js';
 
 const data = {
   date: "2025-04-02",
@@ -8,19 +9,30 @@ const data = {
   fat: { consumed: 60, target: 50 }
 }
 
-export function showMain(meal = null) {
+export function showMain(meal = null, subpage = null) {
   $('#report').hide();
   $('#main').show();
 
-  if (meal) {
-    $('#home').hide();
-    //아작스로 호출 예정
+  // 초기 상태: 모든 하위 뷰 숨기고 시작
+  $('#home, #homeMeal, #homeMealSearch').hide();
+
+  if (!meal) {
+    $('#home').show(); // /main
+    return;
+  }
+
+  if (meal && !subpage) {
+    // /main/morning
     $('#homeMeal').html(renderMealDetail(meal, data));
-    initHeaderNav();
+    initHeaderNav($('#homeMeal'));
     $('#homeMeal').show();
-  } else {
-    $('#homeMeal').hide();
-    $('#home').show();
+  }
+
+  if (meal && subpage === 'search') {
+    // /main/morning/search
+    $('#homeMealSearch').html(renderMealSearch(meal));
+    initHeaderNav($('#homeMealSearch'));
+    $('#homeMealSearch').show();
   }
 }
 

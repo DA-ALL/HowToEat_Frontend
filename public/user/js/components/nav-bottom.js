@@ -45,21 +45,25 @@ $(document).ready(function () {
     // 뷰 전환 함수
     function showPage(path) {
         $('#main, #report').hide();
-
-        // 🆕 여기에 항상 업데이트
+    
         if (path.startsWith('/main')) {
             lastMainPath = path;
             $('#main').show();
-            const meal = path.split('/')[2]; // e.g. 'morning'
-            showMain(meal);
-        } else if (path.startsWith('/report')) {
+    
+            const parts = path.split('/');
+            const meal = parts[2];      // morning
+            const subpage = parts[3];   // search 등
+    
+            showMain(meal, subpage);
+        } 
+        else if (path.startsWith('/report')) {
             $('#report').show();
             showReport();
         }
-
+    
         updateNavActive(path);
     }
-
+    
 
     $(document).on('click', '.log-wrapper', function () {
         const mealKor = $(this).find('.meal-time').text(); // '아침' 등
@@ -81,26 +85,28 @@ $(document).ready(function () {
             if (key === '/main') {
                 //  현재 리포트 등 외부에서 진입하는 경우
                 if (!currentPath.startsWith('/main')) {
-                    // 이 시점의 lastMainPath를 복구용으로 써야 하므로 백업
                     const savedLastMainPath = lastMainPath;
-    
-                    // 히스토리상으로는 /main → (뒤로가기 하면 여기로)
+                
+                    // replace → /main
                     history.replaceState({ view: 'main' }, '', '/main');
-    
-                    // 보여줄 건 원래 작업하던 곳
-                    history.pushState({ view: 'main' }, '', savedLastMainPath);
-                    showPage(savedLastMainPath);
-                } else {
-                    //  main 내부에서 홈을 또 눌렀을 때
-                    if (currentPath === lastMainPath && currentPath !== '/main') {
-                        lastMainPath = '/main';
-                        history.pushState({ view: 'main' }, '', '/main');
-                        showPage('/main');
+                
+                    const parts = savedLastMainPath.split('/');
+                    const meal = parts[2];
+                    const subpage = parts[3];
+                
+                    if (meal && subpage) {
+                        // 두 단계 push: /main/morning → /main/morning/search
+                        const basePath = `/main/${meal}`;
+                        history.pushState({ view: 'main' }, '', basePath);
+                        history.pushState({ view: 'main' }, '', savedLastMainPath);
                     } else {
-                        history.pushState({ view: 'main' }, '', lastMainPath);
-                        showPage(lastMainPath);
+                        // 한 단계만 push
+                        history.pushState({ view: 'main' }, '', savedLastMainPath);
                     }
+                
+                    showPage(savedLastMainPath);
                 }
+                
             } else {
                 //  report, my-page는 그냥 push
                 history.pushState({ view: key.slice(1) }, '', key);
@@ -118,6 +124,20 @@ $(document).ready(function () {
         }
         showPage(path);
     });
+
+    $(document).on('click', '.next-button.active', function () {
+        const currentPath = window.location.pathname; // ex: /main/morning
+        const parts = currentPath.split('/');
+        
+        if (parts.length < 3) return; // 예외 처리
+        
+        const meal = parts[2]; // 'morning', 'lunch', etc
+        const newPath = `/main/${meal}/search`;
+
+        history.pushState({ view: 'main', meal }, '', newPath);
+        showPage(newPath); // ⬅︎ 기존 showPage 재사용 (아래 수정 있음)
+    });
+
 
     // 초기 렌더링
     showPage(currentPath);

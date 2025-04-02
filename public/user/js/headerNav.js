@@ -1,6 +1,7 @@
 // headerNav.js
-export function initHeaderNav() {
-    const $headerNav = $('#headerNav');
+export function initHeaderNav(parentSelector = 'body') {
+    const $container = $(parentSelector);
+    const $headerNav = $container.find('#headerNav');
     if ($headerNav.length === 0) return;
 
     const title = $headerNav.data('title');
