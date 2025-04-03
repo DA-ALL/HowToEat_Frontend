@@ -139,7 +139,7 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.next-button.active', function () {
-        const $btn = $(this);
+        let $btn = $(this);
         const currentPath = window.location.pathname; // ex: /main/morning
         const parts = currentPath.split('/');
       
@@ -148,32 +148,33 @@ $(document).ready(function () {
         const meal = parts[2]; // 'morning', 'lunch', etc
       
         // ---------------------------------------------
-        // 1. /main/{meal}/search → from home-meal
+        // 1. /main/{meal}/regist-meal → from home-meal
         // ---------------------------------------------
         if ($btn.hasClass('home-meal')) {
-          const newPath = `/main/${meal}/search`;
+          const newPath = `/main/${meal}/regist-meal`;
           history.pushState({ view: 'main', meal }, '', newPath);
           showPage(newPath);
         }
       
         // ---------------------------------------------
-        // 2. /main/{meal}/search/{id} → from home-meal-search
+        // 2. /main/{meal}/regist-meal/{id} → from home-meal-regist-meal
         // ---------------------------------------------
         else if ($btn.hasClass('home-meal-search')) {
-          const data = {
-            id: $btn.data('id'),
-            type: $btn.data('type'),
-            name: $btn.data('name'),
-            weight: $btn.data('weight'),
-            kcal: $btn.data('kcal'),
-          };
-      
-          if (!data.id) return; // ID 없으면 중단
-      
-          const newPath = `/main/${meal}/search/${data.id}`;
-          history.pushState({ view: 'main', meal, itemId: data.id }, '', newPath);
-          showPage(newPath);
-        }
+            const data = {
+              id: $btn.attr('data-id'),
+              type: $btn.attr('data-type'),
+              name: $btn.attr('data-name'),
+              weight: $btn.attr('data-weight'),
+              kcal: $btn.attr('data-kcal'),
+            };
+            console.log(data);
+          
+            if (!data.id) return;
+          
+            const newPath = `/main/${meal}/regist-meal/${data.id}`;
+            history.pushState({ view: 'main', meal, itemId: data.id }, '', newPath);
+            showPage(newPath);
+          }
 
       });
       
