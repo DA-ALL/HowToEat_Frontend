@@ -1,4 +1,4 @@
-import { showMain, showReport } from './routers.js';
+import { showMain, showReport, resetHomeMealView, resetSearchView } from './routers.js';
 
 $(document).ready(function () {
     let lastMainPath = '/main';
@@ -83,13 +83,15 @@ $(document).ready(function () {
             let targetPath;
 
             if (key === '/main') {
-                // 👇 여기에 두 번 눌렀을 때 /main 이동 조건 추가
+                // 여기에 두 번 눌렀을 때 /main 이동 조건 추가
                 if (currentPath.startsWith('/main')) {
                     if (currentPath === lastMainPath && currentPath !== '/main') {
                         // 두 번 눌렀을 때 초기화
                         lastMainPath = '/main';
                         history.pushState({ view: 'main' }, '', '/main');
                         showPage('/main');
+                        resetHomeMealView();
+                        resetSearchView();
                         return;
                     }
                 }

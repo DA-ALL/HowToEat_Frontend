@@ -1,5 +1,4 @@
 export function renderMealDetail(mealKey, data) {
-    console.log("실해2000");
     const mealKor = mealToKor(mealKey);
 
     const isToday = isTodayDate(data?.date);

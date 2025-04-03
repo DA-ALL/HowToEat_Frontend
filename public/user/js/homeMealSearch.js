@@ -33,7 +33,43 @@ const mealSearchData = [
       detail: "급식",
       weight: 100,
       kcal: 325,
-    }
+    },
+    {
+        type: "원재료",
+        name: "소고기 채끝살 (생것)",
+        detail: "수입산(미국산)",
+        weight: 100,
+        kcal: 325,
+      },
+      {
+        type: "가공식품",
+        name: "소고기 한우볶음구이",
+        detail: "(주)예현 소고기",
+        weight: 100,
+        kcal: 325,
+      },
+      {
+        type: "원재료",
+        name: "소고기 1등급++ (생것)",
+        detail: "수입산(미국산)",
+        weight: 100,
+        kcal: 325,
+      },
+      {
+        type: "가공식품",
+        name: "소고기 한우볶음구이",
+        detail: "청정원",
+        weight: 100,
+        kcal: 325,
+      },
+      {
+        type: "음식",
+        name: "소고기 구이",
+        detail: "급식",
+        weight: 100,
+        kcal: 325,
+      },
+    
   ];
 
   
@@ -52,18 +88,26 @@ export function renderMealSearch(mealKey) {
 
         <div class="meal-tab-content">
             <div class="meal-search-list">
-                <div class="search-tool">
-                    <div class="label">
-                        <img src="/user/images/icon_search_gray2.png">
+                <div class="search-tool-wrapper">
+                    <div class="search-tool">
+                        <input class="input-search"></input>
+                        <div class="label">
+                            <img src="/user/images/icon_search_gray2.png">
+                        </div>
                     </div>
-                    <input class="input-search"></input>
+                </div>
+                <div class="button-container meal-search hidden">
+                    <div class="next-button disabled">다음</div>
                 </div>
             </div>
             <div class="meal-favorite-list" style="display: none;">즐겨찾기</div>
         </div>
+
       </div>
+
     `;
 }
+
 initMealSearchTab()
 
 export function initMealSearchTab() {
@@ -111,6 +155,40 @@ $(document).on('keydown', '.input-search', function (e) {
         handleMealSearch(keyword);
     }
 });
+
+//검색 input 돋보기 클릭 시, 엔터와 같은 효과
+$(document).on('click', '.search-tool .label img', function () {
+    const keyword = $(this).closest('.search-tool').find('.input-search').val().trim();
+    handleMealSearch(keyword);
+});
+
+// 음식 meal-item 클릭 시 active 토글 & 단독 적용
+$(document).on('click', '.meal-item', function () {
+    const $this = $(this);
+
+    if ($this.hasClass('active')) {
+        $this.removeClass('active');
+    } else {
+        $('.meal-item.active').removeClass('active');
+        $this.addClass('active');
+    }
+
+    // 선택된 항목이 있는지 확인
+    const hasSelection = $('.meal-item.active').length > 0;
+
+    // 버튼 컨테이너 show/hide
+    const $container = $('.button-container.meal-search');
+    const $button = $container.find('.next-button');
+
+    if (hasSelection) {
+        $('.button-container.meal-search').removeClass('hidden');
+        $('.next-button').removeClass('disabled').addClass('active');
+    } else {
+          $('.button-container.meal-search').addClass('hidden');
+        $('.next-button').removeClass('active').addClass('disabled');
+      }
+});
+
 
 
 function handleMealSearch(keyword) {

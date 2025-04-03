@@ -3,7 +3,7 @@ import { initHeaderNav } from '../headerNav.js';
 import { renderMealSearch } from '../homeMealSearch.js';
 
 const data = {
-  date: "2025-04-02",
+  date: "2025-04-03",
   carbo: { consumed: 210, target: 220 },
   protein: { consumed: 92, target: 90 },
   fat: { consumed: 60, target: 50 }
@@ -46,4 +46,12 @@ export function showMain(meal = null, subpage = null) {
 export function showReport() {
   $('#main').hide();
   $('#report').show();
+}
+
+export function resetHomeMealView() {
+  $('#homeMeal').html('');
+}
+
+export function resetSearchView() {
+  $('#homeMealSearch').html('');
 }

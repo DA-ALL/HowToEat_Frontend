@@ -24,10 +24,18 @@
     color: white;
 }
 
-.meal-search-container .meal-tab-content .meal-search-list .search-tool {
+.meal-search-container .meal-tab-content .meal-search-list .search-tool-wrapper {
     display: flex;
     flex-direction: row;
+    margin-bottom: 10px;
+    align-items: center;
+    gap: 10px;
+}
+
+.meal-search-container .meal-tab-content .meal-search-list .search-tool-wrapper .search-tool {
+    width: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     padding: clamp(10.8px, 1.6vw + 6px, 14px) clamp(17.8px, 5.6vw, 29px);
@@ -37,20 +45,19 @@
     transition: box-shadow 0.3s ease;
     gap: clamp(7.6px, 3.2vw + 8.8px, 14px);
     cursor: pointer;
-    margin-bottom: 10px;
 }
 
-.meal-search-container .meal-tab-content .meal-search-list .search-tool .label {
+.meal-search-container .meal-tab-content .meal-search-list .search-tool-wrapper .search-tool .label {
     display: flex;
     white-space: nowrap;
 }
 
-.meal-search-container .meal-tab-content .meal-search-list .search-tool .label img {
-    width: clamp(15.6px, 3.2vw + 6px, 22px);
+.meal-search-container .meal-tab-content .meal-search-list .search-tool-wrapper .search-tool .label img {
+    width: clamp(17.6px, 3.2vw + 8px, 24px);
 
 }
 
-.meal-search-container .meal-tab-content .meal-search-list .search-tool input {
+.meal-search-container .meal-tab-content .meal-search-list .search-tool-wrapper .search-tool input {
     width: 100%;
     font-size: 16px;
     color: var(--black100);
@@ -60,7 +67,7 @@
     box-sizing: border-box;
 }
 
-.meal-search-container .meal-tab-content .meal-search-list .search-tool:focus-within {
+.meal-search-container .meal-tab-content .meal-search-list .search-tool-wrapper .search-tool:focus-within {
     border-color: var(--gray300);
 }
 
@@ -74,9 +81,18 @@
     cursor: pointer;
 }
 
-.meal-item:hover {
-    background-color: #FFF6F5;
+.meal-item:last-child {
+    margin-bottom: clamp(107.2px, 3.04vw + 16px, 168px);
+
 }
+
+.meal-item.active {
+    background-color: #fff7f6;
+  }
+
+/* .meal-item:hover {
+    background-color: #fff7f6;
+} */
 
 .meal-type {
     font-size: clamp(10.8px, 1.6vw + 6px, 14px);
