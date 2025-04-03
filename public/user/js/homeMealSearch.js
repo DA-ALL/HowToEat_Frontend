@@ -1,78 +1,88 @@
 const mealSearchData = [
     {
-      type: "원재료",
-      name: "소고기 채끝살 (생것)",
-      detail: "수입산(미국산)",
-      weight: 100,
-      kcal: 325,
-    },
-    {
-      type: "가공식품",
-      name: "소고기 한우볶음구이",
-      detail: "(주)예현 소고기",
-      weight: 100,
-      kcal: 325,
-    },
-    {
-      type: "원재료",
-      name: "소고기 1등급++ (생것)",
-      detail: "수입산(미국산)",
-      weight: 100,
-      kcal: 325,
-    },
-    {
-      type: "가공식품",
-      name: "소고기 한우볶음구이",
-      detail: "청정원",
-      weight: 100,
-      kcal: 325,
-    },
-    {
-      type: "음식",
-      name: "소고기 구이",
-      detail: "급식",
-      weight: 100,
-      kcal: 325,
-    },
-    {
-        type: "원재료",
+        id: 42,
+        type: "ingredient_food",
         name: "소고기 채끝살 (생것)",
         detail: "수입산(미국산)",
         weight: 100,
         kcal: 325,
-      },
-      {
-        type: "가공식품",
+    },
+    {
+        id: 87,
+        type: "processed_food",
         name: "소고기 한우볶음구이",
         detail: "(주)예현 소고기",
         weight: 100,
         kcal: 325,
-      },
-      {
-        type: "원재료",
+    },
+    {
+        id: 13,
+        type: "ingredient_food",
         name: "소고기 1등급++ (생것)",
         detail: "수입산(미국산)",
         weight: 100,
         kcal: 325,
-      },
-      {
-        type: "가공식품",
+    },
+    {
+        id: 74,
+        type: "processed_food",
         name: "소고기 한우볶음구이",
         detail: "청정원",
         weight: 100,
         kcal: 325,
-      },
-      {
-        type: "음식",
+    },
+    {
+        id: 8,
+        type: "cooked_food",
         name: "소고기 구이",
         detail: "급식",
         weight: 100,
         kcal: 325,
-      },
-    
-  ];
+    },
+    {
+        id: 91,
+        type: "ingredient_food",
+        name: "소고기 채끝살 (생것)",
+        detail: "수입산(미국산)",
+        weight: 100,
+        kcal: 325,
+    },
+    {
+        id: 56,
+        type: "processed_food",
+        name: "소고기 한우볶음구이",
+        detail: "(주)예현 소고기",
+        weight: 100,
+        kcal: 325,
+    },
+    {
+        id: 34,
+        type: "ingredient_food",
+        name: "소고기 1등급++ (생것)",
+        detail: "수입산(미국산)",
+        weight: 100,
+        kcal: 325,
+    },
+    {
+        id: 99,
+        type: "processed_food",
+        name: "소고기 한우볶음구이",
+        detail: "청정원",
+        weight: 100,
+        kcal: 325,
+    },
+    {
+        id: 21,
+        type: "cooked_food",
+        name: "소고기 구이",
+        detail: "급식",
+        weight: 100,
+        kcal: 325,
+    },
+];
 
-  
+
+
 export function renderMealSearch(mealKey) {
     const mealKor = mealToKor(mealKey);
     return `
@@ -97,7 +107,7 @@ export function renderMealSearch(mealKey) {
                     </div>
                 </div>
                 <div class="button-container meal-search hidden">
-                    <div class="next-button disabled">다음</div>
+                    <div class="next-button disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
                 </div>
             </div>
             <div class="meal-favorite-list" style="display: none;">즐겨찾기</div>
@@ -165,29 +175,42 @@ $(document).on('click', '.search-tool .label img', function () {
 // 음식 meal-item 클릭 시 active 토글 & 단독 적용
 $(document).on('click', '.meal-item', function () {
     const $this = $(this);
-
-    if ($this.hasClass('active')) {
-        $this.removeClass('active');
-    } else {
-        $('.meal-item.active').removeClass('active');
-        $this.addClass('active');
-    }
-
-    // 선택된 항목이 있는지 확인
-    const hasSelection = $('.meal-item.active').length > 0;
-
-    // 버튼 컨테이너 show/hide
     const $container = $('.button-container.meal-search');
     const $button = $container.find('.next-button');
 
-    if (hasSelection) {
-        $('.button-container.meal-search').removeClass('hidden');
-        $('.next-button').removeClass('disabled').addClass('active');
+    if ($this.hasClass('active')) {
+        // 선택 해제
+        $this.removeClass('active');
+        $button.removeClass('active').addClass('disabled');
+        $container.addClass('hidden');
+
+        // 버튼의 데이터 제거
+        $button
+            .attr('data-id', '')
+            .attr('data-type', '')
+            .attr('data-name', '')
+            .attr('data-weight', '')
+            .attr('data-kcal', '');
+
     } else {
-          $('.button-container.meal-search').addClass('hidden');
-        $('.next-button').removeClass('active').addClass('disabled');
-      }
+        // 기존 active 해제 후 새로 설정
+        $('.meal-item.active').removeClass('active');
+        $this.addClass('active');
+
+        // 버튼 표시
+        $button.removeClass('disabled').addClass('active');
+        $container.removeClass('hidden');
+
+        // 선택된 item의 데이터 복사
+        $button
+            .attr('data-id', $this.data('id'))
+            .attr('data-type', $this.data('type'))
+            .attr('data-name', $this.data('name'))
+            .attr('data-weight', $this.data('weight'))
+            .attr('data-kcal', $this.data('kcal'));
+    }
 });
+
 
 
 
@@ -205,37 +228,43 @@ function handleMealSearch(keyword) {
 
 function renderMealSearchResults(keyword) {
     const filtered = mealSearchData.filter(item =>
-      item.name.includes(keyword)
+        item.name.includes(keyword)
     );
-  
+
     const html = filtered.map(item => `
-      <div class="meal-item">
+      <div class="meal-item"
+           data-id="${item.id}"
+           data-type="${item.type}"
+           data-name="${item.name}"
+           data-weight="${item.weight}"
+           data-kcal="${item.kcal}">
         <div class="meal-wrapper">
-            <div class="meal-type ${typeColorClass(item.type)}">${item.type}</div>
-            <div class="meal-name">${item.name}</div>
-            <div class="meal-detail">${item.detail}</div>
+          <div class="meal-type ${typeColorClass(item.type)}">${typeToKor(item.type)}</div>
+          <div class="meal-name">${item.name}</div>
+          <div class="meal-detail">${item.detail}</div>
         </div>
         <div class="meal-meta">
-            <div class="weight">${item.weight}g</div>
-            <div class="divide">/</div>
-            <div class="kcal">${item.kcal}kcal</div>
+          <div class="weight">${item.weight}g</div>
+          <div class="divide">/</div>
+          <div class="kcal">${item.kcal}kcal</div>
         </div>
       </div>
     `).join('');
-  
+
     $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
-  }
-  
-  // type에 따라 색상 클래스 다르게
-  function typeColorClass(type) {
+}
+
+// type에 따라 색상 클래스 다르게
+function typeColorClass(type) {
     switch (type) {
-      case '원재료': return 'type-raw';
-      case '가공식품': return 'type-processed';
-      case '음식': return 'type-dish';
-      default: return '';
+        case 'ingredient_food': return 'type-ingredient';
+        case 'processed_food': return 'type-processed';
+        case 'cooked_food': return 'type-cooked';
+        case 'custom_food': return 'type-custom';
+        default: return '';
     }
-  }
-  
+}
+
 
 
 function mealToKor(meal) {
@@ -244,6 +273,16 @@ function mealToKor(meal) {
         case 'lunch': return '점심';
         case 'dinner': return '저녁';
         case 'snack': return '간식';
+        default: return '';
+    }
+}
+
+function typeToKor(type) {
+    switch (type) {
+        case 'ingredient_food': return '원재료';
+        case 'processed_food': return '가공식품';
+        case 'cooked_food': return '음식';
+        case 'custom_food': return '유저등록';
         default: return '';
     }
 }

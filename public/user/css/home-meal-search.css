@@ -106,7 +106,7 @@
 }
 
 
-.type-raw {
+.type-ingredient {
     color: #2764E0;
 }
 
@@ -114,8 +114,12 @@
     color: #F05757;
 }
 
-.type-dish {
+.type-cooked {
     color: #B55AE2;
+}
+
+.type-cooked {
+    color: #FFB56F;
 }
 
 .meal-name {

@@ -27,7 +27,7 @@ export function renderMealDetail(mealKey, data) {
                 <div class="title-format">${mealKor}의 식단</div>
             </div>
             <div class="button-container">
-                <div class="next-button ${buttonClass}">추가</div>
+                <div class="next-button home-meal ${buttonClass}">추가</div>
             </div>
         `;
     }
