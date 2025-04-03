@@ -29,7 +29,7 @@ export function showMain(meal = null, subpage = null) {
     }
     $('#homeMeal').show();
   }
-  if (meal && subpage === 'regist-meal') {
+  if (meal && subpage === 'regist') {
     // /main/morning/search
     if ($('#homeMealSearch').children().length === 0) {
 

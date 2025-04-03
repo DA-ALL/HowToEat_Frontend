@@ -148,16 +148,16 @@ $(document).ready(function () {
         const meal = parts[2]; // 'morning', 'lunch', etc
       
         // ---------------------------------------------
-        // 1. /main/{meal}/regist-meal → from home-meal
+        // 1. /main/{meal}/regist → from home-meal
         // ---------------------------------------------
         if ($btn.hasClass('home-meal')) {
-          const newPath = `/main/${meal}/regist-meal`;
+          const newPath = `/main/${meal}/regist`;
           history.pushState({ view: 'main', meal }, '', newPath);
           showPage(newPath);
         }
       
         // ---------------------------------------------
-        // 2. /main/{meal}/regist-meal/{id} → from home-meal-regist-meal
+        // 2. /main/{meal}/regist/{id} → from home-meal-regist
         // ---------------------------------------------
         else if ($btn.hasClass('home-meal-search')) {
             const data = {
@@ -167,15 +167,19 @@ $(document).ready(function () {
               weight: $btn.attr('data-weight'),
               kcal: $btn.attr('data-kcal'),
             };
+          
             console.log(data);
           
-            if (!data.id) return;
+            if (!data.id || !data.type) return;
           
-            const newPath = `/main/${meal}/regist-meal/${data.id}`;
+            // `_food` 제거
+            const pureType = data.type.replace('_food', '');
+          
+            const newPath = `/main/${meal}/regist/${pureType}/${data.id}`;
             history.pushState({ view: 'main', meal, itemId: data.id }, '', newPath);
             showPage(newPath);
           }
-
+          
       });
       
 
