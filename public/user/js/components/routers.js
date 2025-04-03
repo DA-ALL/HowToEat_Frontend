@@ -37,7 +37,6 @@ export function showMain(meal = null, subpage = null) {
       initHeaderNav($('#homeMealSearch'));
     }
 
-
     $('#homeMealSearch').show();
   }
 }

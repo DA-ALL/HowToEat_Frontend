@@ -137,19 +137,46 @@ $(document).ready(function () {
         showPage(path);
     });
 
+
     $(document).on('click', '.next-button.active', function () {
+        const $btn = $(this);
         const currentPath = window.location.pathname; // ex: /main/morning
         const parts = currentPath.split('/');
-        
-        if (parts.length < 3) return; // 예외 처리
-        
+      
+        if (parts.length < 3) return;
+      
         const meal = parts[2]; // 'morning', 'lunch', etc
-        const newPath = `/main/${meal}/search`;
+      
+        // ---------------------------------------------
+        // 1. /main/{meal}/search → from home-meal
+        // ---------------------------------------------
+        if ($btn.hasClass('home-meal')) {
+          const newPath = `/main/${meal}/search`;
+          history.pushState({ view: 'main', meal }, '', newPath);
+          showPage(newPath);
+        }
+      
+        // ---------------------------------------------
+        // 2. /main/{meal}/search/{id} → from home-meal-search
+        // ---------------------------------------------
+        else if ($btn.hasClass('home-meal-search')) {
+          const data = {
+            id: $btn.data('id'),
+            type: $btn.data('type'),
+            name: $btn.data('name'),
+            weight: $btn.data('weight'),
+            kcal: $btn.data('kcal'),
+          };
+      
+          if (!data.id) return; // ID 없으면 중단
+      
+          const newPath = `/main/${meal}/search/${data.id}`;
+          history.pushState({ view: 'main', meal, itemId: data.id }, '', newPath);
+          showPage(newPath);
+        }
 
-        history.pushState({ view: 'main', meal }, '', newPath);
-        showPage(newPath); // ⬅︎ 기존 showPage 재사용 (아래 수정 있음)
-    });
-
+      });
+      
 
     // 초기 렌더링
     showPage(currentPath);

@@ -107,7 +107,7 @@ export function renderMealSearch(mealKey) {
                     </div>
                 </div>
                 <div class="button-container meal-search hidden">
-                    <div class="next-button disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                    <div class="next-button home-meal-search disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
                 </div>
             </div>
             <div class="meal-favorite-list" style="display: none;">즐겨찾기</div>
