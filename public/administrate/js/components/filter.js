@@ -1,4 +1,4 @@
-import { onPopstate, updateQueryParam, updateURLWithActiveElements, getCurrentContent} from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
 
 export function renderFilters() {
     $('.filter-group').children().each(function () {
@@ -106,7 +106,8 @@ $(document).on('click', '.filter-option', function () {
 
 export function loadFilter(){
     renderFilters();
-    updateURLWithActiveElements(getCurrentContent());
+    syncFiltersWithURL();
+    // updateURLWithActiveFilters();
 }
 
 onPopstate(loadFilter);  

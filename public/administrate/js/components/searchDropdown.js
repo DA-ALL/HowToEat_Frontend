@@ -1,18 +1,19 @@
 
-import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam, syncSearchDropdownWithURL } from '/administrate/js/router.js';
 
 let data = getTrainerGymData();
 let currentDropdownItem = data[0];
 
 export function loadSearchDropdown() {
     const container = $("#searchDropdown");
-    
     const params = getParamsFromURL();
+
     if(params[0] && params[1]){
         currentDropdownItem = [params[0], params[1]];
+    } else  {
+        currentDropdownItem = data[0];
     }
     
-
     let searchDropdownHTML = `
         <div class="search-dropdown-wrapper">
             <div class="dropdown-text" data-trainer="${currentDropdownItem[0]}" data-gym="${currentDropdownItem[1]}">
@@ -51,6 +52,8 @@ export function loadSearchDropdown() {
     $(document).click(function () {
         $(".dropdown-list").hide();
     });
+
+    // syncSearchDropdownWithURL();
 }
 
 function generateDropdownItems() {

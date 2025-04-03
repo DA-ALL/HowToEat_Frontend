@@ -1,5 +1,5 @@
 
-import { onPopstate,  updateQueryParam, removeQueryParam, getCurrentContent, updateURLWithActiveElements} from '/administrate/js/router.js';
+import { onPopstate,  updateQueryParam, removeQueryParam, getCurrentContent, syncSearchbarWithURL} from '/administrate/js/router.js';
 
 export function loadSearchBar() {
     let placeholder = $('.searchbar').data('placeholder'); // HTML의 data-placeholder 값 가져오기
@@ -15,7 +15,7 @@ export function loadSearchBar() {
         </div>
         <div class="button-search">검색</div>
     `);
-    // updateURLWithActiveElements();
+    syncSearchbarWithURL();
 }
 
 $(document).on('click', '.button-search', function () {

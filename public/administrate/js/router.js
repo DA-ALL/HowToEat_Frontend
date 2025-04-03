@@ -17,7 +17,7 @@ export function updateURL(page) {
 
     hideAllContents();
     showCurrentContent();
-    updateURLWithActiveElements(currentContent);
+    updateURLWithState();
 }
 
 function updateURLParams(params, useReplaceState = false) {
@@ -83,9 +83,9 @@ export function getQueryParams() {
 // popstate 발생시 처리
 export function onPopstate(callback){
     window.addEventListener('popstate', function(event) {
-        callback(event); 
         hideAllContents();
         showCurrentContent();
+        callback(event); 
     });
 }
 
@@ -97,7 +97,22 @@ function hideAllContents() {
 }
 
 function showCurrentContent() {
-    const currentPage = window.location.pathname.split("/").slice(2).join("/"); // user-management/pt or user-management
+    let pathSegments = window.location.pathname.split("/").slice(2); // ["user-management", "pt", "user-id", "1"]
+    let lastSegment = pathSegments[pathSegments.length - 1];
+
+    // 마지막 값이 숫자인 경우 해당 부분 제거
+    if (!isNaN(lastSegment)) {
+        pathSegments.pop();
+    }
+
+    const currentPage = pathSegments.join("/"); // user-management/pt or user-management
+    
+    if(currentPage == 'user-management/pt/user'){
+        $('.content-section').css('display', 'none');
+    } else {
+        $('.content-section').css('display', 'block');
+        $('#userInfo').remove();
+    }
 
     const contentMap = {
         'dashboard': 'dashboardChart',
@@ -117,19 +132,32 @@ function showCurrentContent() {
 
     if (currentContent) {
         $(`#${currentContent}`).css('display', 'flex');
-    } else {
-        console.warn('Unknown page:', currentPage);
     }
 }
 
 
-export function updateURLWithActiveElements(contentId) {
-    // const currentUrl = new URL(window.location.href).toString();
+
+
+
+/*
+================================================
+    화면이동시 활성화된 요소로 url에 반영
+*/
+
+
+function updateURLWithState() {
+    syncFiltersWithURL();
+    syncPageWithURL();
+    syncSearchbarWithURL();
+    syncSearchDropdownWithURL();
+}
+
+export function syncFiltersWithURL(){
     let params = new URLSearchParams(window.location.search);
 
     // 파라미터가 없으면 
     if(params.size == 0){        
-        $(`#${contentId}`).find('.filter-option-wrapper').each(function(){
+        $(`#${currentContent}`).find('.filter-option-wrapper').each(function(){
             const activeFilterOption = $(this).find('.filter-option.active');
             let queryValue = activeFilterOption.data('query');
             
@@ -142,7 +170,7 @@ export function updateURLWithActiveElements(contentId) {
             }
         });
     } else { // url에 파라미터가 있으면 url대로
-        $(`#${contentId}`).find('.filter-option-wrapper').each(function(){            
+        $(`#${currentContent}`).find('.filter-option-wrapper').each(function(){            
             const key = $(this).data('key');
             const queryValue = params.get(key);
             
@@ -155,31 +183,44 @@ export function updateURLWithActiveElements(contentId) {
             }
         });
     }
+}
 
+export function syncPageWithURL(){
+    let params = new URLSearchParams(window.location.search);
 
     // page
-    const activePageButton = $(`#${contentId}`).find('.pagination-button.active');
+    const activePageButton = $(`#${currentContent}`).find('.pagination-button.active');
     if(!params.has('page') && activePageButton.length && activePageButton.data('page') != 1){
         replaceQueryParam({'page': activePageButton.data('page')});
     }
+}
+
+export function syncSearchbarWithURL(){
+    let params = new URLSearchParams(window.location.search);
 
     // searchBar
-    const searchBar = $(`#${contentId}`).find('.searchbar input');
+    const searchBar = $(`#${currentContent}`).find('.searchbar input');
     
     if(!params.has('search') && searchBar.val()){
         replaceQueryParam({'search': searchBar.val()});
     } else if(params.has('search')){
         searchBar.val(params.get('search'));
     }
+}
+
+export function syncSearchDropdownWithURL(){
+    let params = new URLSearchParams(window.location.search);
 
     //searchDropdown
-    if(contentId == 'ptUserManagement'){
-        const searchDropdown = $(`#${contentId}`).find('#searchDropdown .dropdown-text');
+    if(currentContent == 'ptUserManagement'){
+        const searchDropdown = $(`#${currentContent}`).find('#searchDropdown .dropdown-text');
         if(!params.has('trainer') && !params.has('gym') && searchDropdown.data('trainer') && searchDropdown.data('trainer') != '전체' && searchDropdown.data('gym') != '전체'){
             replaceQueryParam({'trainer': searchDropdown.data('trainer'), 'gym': searchDropdown.data('gym')});
         }
     }
 }
+
+
 
 
 $(document).ready(function () {

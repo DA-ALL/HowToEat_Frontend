@@ -28,5 +28,3 @@ function loadContent() {
     loadSearchBar();
     loadFilter();
 }
-
-// onPopstate(loadContent);
