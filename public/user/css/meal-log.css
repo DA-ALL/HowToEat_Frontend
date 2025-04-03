@@ -1,0 +1,58 @@
+#mealLog .meal-log-title {
+    font-size: clamp(16px, 5.336vw, 26.67px);
+    font-weight: 600;
+    color: var(--black100);
+    margin-bottom: clamp(24px, 9.6vw, 48px);
+}
+
+#mealLog .log-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#mealLog .log-container .log-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: clamp(14.4px, 4.8vw, 24px) clamp(4.8px, 1.6vw, 8px);
+    box-sizing: border-box;
+    border-bottom: 1px solid #F3F3F3;
+    cursor: pointer;
+}
+
+#mealLog .log-container .log-wrapper .meal-time {
+    font-size: clamp(13px, 4.25vw, 22px);
+    font-weight: 500;
+    color: var(--black100);
+}
+
+#mealLog .log-container .log-wrapper .meal-kcal-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+}
+
+#mealLog .log-container .log-wrapper .meal-kcal-wrapper .consumed-kcal {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 500;
+    color: var(--red500);
+}
+
+#mealLog .log-container .log-wrapper .meal-kcal-wrapper .divide, .target-kcal{
+    font-size: clamp(11px, 3.73vw, 19px);
+    font-weight: 400;
+    color: var(--gray200);
+}
+
+#mealLog .log-container .log-wrapper .meal-kcal-wrapper .icon-arrow {
+    display: flex;
+    margin-left: 4px;
+}
+
+#mealLog .log-container .log-wrapper .meal-kcal-wrapper .icon-arrow img{
+    width: clamp(14.8px, 4.8vw, 18px);
+}
