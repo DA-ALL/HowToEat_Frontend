@@ -24,7 +24,7 @@
     transform: translate(-50%, 0); /* 좌우 가운데 정렬 + translateY(0%) 유지 */
     opacity: 1;
     transition: transform 0.3s ease, opacity 0.3s ease;
-    z-index: 1000;
+    z-index: 992;
   }
   
   /* 숨김 시 translateY로 아래로 내려가게 */
@@ -55,6 +55,7 @@
     color: var(--white300);
     background-color: var(--red500);
     cursor: pointer;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.25);
 }
 
 .button-container .next-button.signup {

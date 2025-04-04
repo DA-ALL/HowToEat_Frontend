@@ -43,7 +43,7 @@ $(document).ready(function () {
     }
 
     // 뷰 전환 함수
-    function showPage(path) {
+    function showPage(path, userConsumedData = null, registFoodData = null) {
         $('#main, #report').hide();
     
         if (path.startsWith('/main')) {
@@ -52,9 +52,10 @@ $(document).ready(function () {
     
             const parts = path.split('/');
             const meal = parts[2];      // morning
-            const subpage = parts[3];   // search 등
+            const regist = parts[3];   // regist 등
+            const type = parts[4];     // ingredient 등
     
-            showMain(meal, subpage);
+            showMain(meal, regist, type, userConsumedData, registFoodData);
         } 
         else if (path.startsWith('/report')) {
             $('#report').show();
@@ -64,6 +65,13 @@ $(document).ready(function () {
         updateNavActive(path);
     }
     
+    // 아침 점심 저녁 별 섭취햇던 칼로리 데이터 이 데이터를 나중에 Ajax로 호출
+    const userConsumedData = {
+        date: "2025-04-04",
+        carbo: { consumed: 70, target: 220 },
+        protein: { consumed: 42, target: 90 },
+        fat: { consumed: 20, target: 50 }
+    }
 
     $(document).on('click', '.log-wrapper', function () {
         const mealKor = $(this).find('.meal-time').text(); // '아침' 등
@@ -72,7 +80,7 @@ $(document).ready(function () {
         const newPath = `/main/${meal}`;
 
         history.pushState({ view: 'main', meal }, '', newPath);
-        showPage(newPath);
+        showPage(newPath, userConsumedData);
     });
 
     // nav 클릭 이벤트
@@ -160,7 +168,7 @@ $(document).ready(function () {
         // 2. /main/{meal}/regist/{id} → from home-meal-regist
         // ---------------------------------------------
         else if ($btn.hasClass('home-meal-search')) {
-            const data = {
+            const registFoodData = {
               id: $btn.attr('data-id'),
               type: $btn.attr('data-type'),
               name: $btn.attr('data-name'),
@@ -168,16 +176,16 @@ $(document).ready(function () {
               kcal: $btn.attr('data-kcal'),
             };
           
-            console.log(data);
+            console.log(registFoodData);
           
-            if (!data.id || !data.type) return;
+            if (!registFoodData.id || !registFoodData.type) return;
           
             // `_food` 제거
-            const pureType = data.type.replace('_food', '');
+            const pureType = registFoodData.type.replace('_food', '');
           
-            const newPath = `/main/${meal}/regist/${pureType}/${data.id}`;
-            history.pushState({ view: 'main', meal, itemId: data.id }, '', newPath);
-            showPage(newPath);
+            const newPath = `/main/${meal}/regist/${pureType}/${registFoodData.id}`;
+            history.pushState({ view: 'main', meal, itemId: registFoodData.id }, '', newPath);
+            showPage(newPath, userConsumedData, registFoodData);
           }
           
       });

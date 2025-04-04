@@ -49,9 +49,6 @@ function createBar(mealKey, type, consumed, target, percent, rawPercent) {
     if (rawPercent > 105) {
         color = '#814949';
         fontColor = '#814949';
-    } else if (rawPercent > 95) {
-        color = 'linear-gradient(269deg, #ED7777 0%, #E386B3 71.52%, #D896EF 103.66%)';
-        fontColor = 'var(--red500)';
     } else if (rawPercent >= 0) {
         color = 'var(--red500)';
         fontColor = 'var(--red500)';

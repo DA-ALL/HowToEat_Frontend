@@ -5,7 +5,10 @@ const mealSearchData = [
         name: "소고기 채끝살 (생것)",
         detail: "수입산(미국산)",
         weight: 100,
-        kcal: 325,
+        kcal: 217,
+        carbs: 0,
+        protein: 26,
+        fat: 12,
     },
     {
         id: 87,
@@ -13,7 +16,10 @@ const mealSearchData = [
         name: "소고기 한우볶음구이",
         detail: "(주)예현 소고기",
         weight: 100,
-        kcal: 325,
+        kcal: 320,
+        carbs: 4,
+        protein: 21,
+        fat: 24,
     },
     {
         id: 13,
@@ -21,7 +27,10 @@ const mealSearchData = [
         name: "소고기 1등급++ (생것)",
         detail: "수입산(미국산)",
         weight: 100,
-        kcal: 325,
+        kcal: 245,
+        carbs: 0,
+        protein: 23,
+        fat: 17,
     },
     {
         id: 74,
@@ -29,7 +38,10 @@ const mealSearchData = [
         name: "소고기 한우볶음구이",
         detail: "청정원",
         weight: 100,
-        kcal: 325,
+        kcal: 310,
+        carbs: 5,
+        protein: 20,
+        fat: 22,
     },
     {
         id: 8,
@@ -37,7 +49,10 @@ const mealSearchData = [
         name: "소고기 구이",
         detail: "급식",
         weight: 100,
-        kcal: 325,
+        kcal: 290,
+        carbs: 1,
+        protein: 24,
+        fat: 20,
     },
     {
         id: 91,
@@ -45,7 +60,10 @@ const mealSearchData = [
         name: "소고기 채끝살 (생것)",
         detail: "수입산(미국산)",
         weight: 100,
-        kcal: 325,
+        kcal: 217,
+        carbs: 0,
+        protein: 26,
+        fat: 12,
     },
     {
         id: 56,
@@ -53,7 +71,10 @@ const mealSearchData = [
         name: "소고기 한우볶음구이",
         detail: "(주)예현 소고기",
         weight: 100,
-        kcal: 325,
+        kcal: 320,
+        carbs: 4,
+        protein: 21,
+        fat: 24,
     },
     {
         id: 34,
@@ -61,7 +82,10 @@ const mealSearchData = [
         name: "소고기 1등급++ (생것)",
         detail: "수입산(미국산)",
         weight: 100,
-        kcal: 325,
+        kcal: 245,
+        carbs: 0,
+        protein: 23,
+        fat: 17,
     },
     {
         id: 99,
@@ -69,7 +93,10 @@ const mealSearchData = [
         name: "소고기 한우볶음구이",
         detail: "청정원",
         weight: 100,
-        kcal: 325,
+        kcal: 310,
+        carbs: 5,
+        protein: 20,
+        fat: 22,
     },
     {
         id: 21,
@@ -77,9 +104,13 @@ const mealSearchData = [
         name: "소고기 구이",
         detail: "급식",
         weight: 100,
-        kcal: 325,
+        kcal: 290,
+        carbs: 1,
+        protein: 24,
+        fat: 20,
     },
 ];
+
 
 
 
@@ -190,7 +221,10 @@ $(document).on('click', '.meal-item', function () {
             .attr('data-type', '')
             .attr('data-name', '')
             .attr('data-weight', '')
-            .attr('data-kcal', '');
+            .attr('data-kcal', '')
+            .attr('data-carbs', '')
+            .attr('data-protein', '')
+            .attr('data-fat', '');
 
     } else {
         // 기존 active 해제 후 새로 설정
@@ -207,7 +241,11 @@ $(document).on('click', '.meal-item', function () {
             .attr('data-type', $this.data('type'))
             .attr('data-name', $this.data('name'))
             .attr('data-weight', $this.data('weight'))
-            .attr('data-kcal', $this.data('kcal'));
+            .attr('data-kcal', $this.data('kcal'))
+            .attr('data-carbs', $this.data('carbs'))
+            .attr('data-protein', $this.data('protein'))
+            .attr('data-fat', $this.data('fat'));
+
     }
 });
 
@@ -237,7 +275,10 @@ function renderMealSearchResults(keyword) {
            data-type="${item.type}"
            data-name="${item.name}"
            data-weight="${item.weight}"
-           data-kcal="${item.kcal}">
+           data-kcal="${item.kcal}"
+           data-carbs="${item.carbs}"
+           data-protein="${item.protein}"
+           data-fat="${item.fat}">
         <div class="meal-wrapper">
           <div class="meal-type ${typeColorClass(item.type)}">${typeToKor(item.type)}</div>
           <div class="meal-name">${item.name}</div>
@@ -253,6 +294,7 @@ function renderMealSearchResults(keyword) {
 
     $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
 }
+
 
 // type에 따라 색상 클래스 다르게
 function typeColorClass(type) {
