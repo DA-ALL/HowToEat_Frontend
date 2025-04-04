@@ -34,7 +34,7 @@ export function createUserRow({ id, imageURL, name, mealCount, joined, left, gym
 
 export function renderUserTable(containerId, bodyId) {
     const tableHTML = `
-        <table>
+        <table class="user-table">
             <thead>
                 <tr>
                     <th class="th-id">ID</th>

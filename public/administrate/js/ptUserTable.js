@@ -150,8 +150,34 @@ $(document).on('click', `#${bodyId} tr`, function () {
     
     let elem = document.querySelector('.content-container');
     if (elem) {
-        elem.innerHTML += `<div id='userInfo'> 사용자 ID: ${userId} </div>`;
+        elem.insertAdjacentHTML('beforeend', `<div id='userInfo'> 사용자 ID: ${userId} </div>`);
     }
+
+
+    let userInfoHtml = `
+        <div id="userInfo">
+            <div class="nav-top">
+                <div class="back-button-wrapper">
+                    <div class="icon-back">
+                        <img src="/administrate/images/icon_arrow_back_black.png">
+                    </div>
+                    <div class="label-back">뒤로가기</div>
+                </div>
+            </div>
+
+            <div class="user-info-wrapper">
+                <div class="">
+            
+                </div>
+            </div>
+
+            <div class="user-info-table">
+            </div>
+
+            <div class="daily-calorie-table">
+            </div>
+        </div>
+    `;
 });
 
 onPopstate(loadPtUserTable);
