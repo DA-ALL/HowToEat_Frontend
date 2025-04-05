@@ -37,7 +37,15 @@ $(document).ready(function () {
         "2025-03-28": { consumed: 2662, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 333, consumedProtein: 200, consumedFat: 59 },
         "2025-03-29": { consumed: 2556, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 320, consumedProtein: 192, consumedFat: 57 },
         "2025-03-30": { consumed: 2462, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 308, consumedProtein: 185, consumedFat: 55 },
-        "2025-03-31": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 }
+        "2025-03-31": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
+        "2025-04-01": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
+        "2025-04-02": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
+        "2025-04-03": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
+        "2025-04-04": { consumed: 1593, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 199, consumedProtein: 119, consumedFat: 35 },
+        "2025-04-05": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
+        "2025-04-06": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
+        "2025-04-07": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
+        "2025-04-08": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 }
     };
 
 

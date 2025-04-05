@@ -3,19 +3,12 @@ import { initHeaderNav } from '../headerNav.js';
 import { renderMealSearch } from '../homeMealSearch.js';
 import { renderMealRegist } from '../homeMealRegist.js';
 
-const userConsumedData = {
-    date: "2025-04-04",
-    carbo: { consumed: 70, target: 220 },
-    protein: { consumed: 42, target: 90 },
-    fat: { consumed: 20, target: 50 }
-}
-
-export function showMain(meal = null, subpage = null, type = null, userConsumedData = null, newMeal = null) {
+export function showMain(meal = null, subpage = null, type = null, userConsumedData = null, registFoodData = null) {
     $('#report').hide();
     $('#main').show();
 
     // 초기 상태: 모든 하위 뷰 숨기고 시작
-    $('#home, #homeMeal, #homeMealSearch').hide();
+    $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
 
     if (!meal) {
         $('#home').show(); // /main
@@ -44,8 +37,10 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     if (meal && subpage === 'regist' && type) {
         // /main/morning/search
         if ($('#homeMealRegist').children().length === 0) {
-
-            $('#homeMealRegist').html(renderMealRegist(meal, userConsumedData, newMeal));
+            console.log("=========정보출력=========")
+            console.log("userConsumedData = ", userConsumedData);
+            console.log("registFoodData = ", registFoodData);
+            $('#homeMealRegist').html(renderMealRegist(meal, userConsumedData, registFoodData));
             initHeaderNav($('#homeMealRegist'));
         }
 

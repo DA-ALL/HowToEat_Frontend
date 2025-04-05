@@ -1,14 +1,14 @@
-export function renderMealRegist(mealKey, data) {
+export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
     const mealKor = mealToKor(mealKey);
     const commonHeader = `
         <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
         <div class="home-meal-container padding">
             <div class="title-format">${mealKor}의 탄단지</div>
             <div class="cpf-kcal-left-message-wrapper">
-                <span class="cpf-kcal-left-message">아래와 같이 추가될 예정이에요!</span>
+                ${getMessageFormat(userConsumedData, registFoodData)}
                 <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
             </div>
-            ${createBarContainer(mealKey, data)}
+            ${createBarContainer(mealKey, userConsumedData, registFoodData)}
         </div>
         <div class="divider large"></div>
     `;
@@ -27,21 +27,37 @@ function mealToKor(meal) {
     }
 }
 
-function createBarContainer(mealKey, data) {
+function createBarContainer(mealKey, userConsumedData, registFoodData) {
     const types = ['carbo', 'protein', 'fat'];
     return `
         <div class="home-meal-bar-container">
             ${types.map(type => {
-        const { consumed, target } = data[type];
-        const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
-        const percent = Math.min(rawPercent, 100);
-        return createBar(mealKey, type, consumed, target, percent.toFixed(1), rawPercent);
-    }).join('')}
+                const consumed = Number(userConsumedData[type]?.consumed || 0);
+                const target = Number(userConsumedData[type]?.target || 0);
+                const upcoming = Number(registFoodData[type] || 0); // 예정 섭취량
+                const newConsumed = consumed + upcoming;
+
+                const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
+                const rawIncreasePercent = target > 0 ? (newConsumed / target) * 100 : 0;
+
+                return createBar(
+                    mealKey,
+                    type,
+                    consumed,
+                    newConsumed,
+                    target,
+                    Math.min(rawPercent, 100).toFixed(1),
+                    rawPercent,
+                    Math.min(rawIncreasePercent, 100).toFixed(1),
+                    rawIncreasePercent
+                );
+            }).join('')}
         </div>
     `;
 }
 
-function createBar(mealKey, type, consumed, target, percent, rawPercent) {
+
+function createBar(mealKey, type, consumed, newConsumed, target, percent, rawPercent, increasedPercent, rawIncreasePercent) {
     const labelMap = {
         carbo: "탄수화물",
         protein: "단백질",
@@ -53,6 +69,10 @@ function createBar(mealKey, type, consumed, target, percent, rawPercent) {
     let color = "var(--red500)";
     let fontColor = "var(--red500)";
 
+    let increaseColor = "#ffc0c0";
+    let increaseFontColor = "var(--red500)";
+
+    //현재 섭취한 탄단지 바 색상
     if (rawPercent > 105) {
         color = '#814949';
         fontColor = '#814949';
@@ -61,17 +81,26 @@ function createBar(mealKey, type, consumed, target, percent, rawPercent) {
         fontColor = 'var(--red500)';
     }
 
+    // 등록 후 탄단지 바 색상
+    if (rawIncreasePercent > 105) {
+        increaseColor = '#aa9595';
+        increaseFontColor = '#814949';
+    }  else if (rawIncreasePercent >= 0) {
+        increaseColor = '#ffc0c0';
+        increaseFontColor = 'var(--red500)';
+    }
+
     return `
         <div class="home-meal-bar-wrapper ${type}">
             <div class="meal-title ${type}">${label}</div>
             <div class="meal-bar-wrapper">
                 <div class="bar-wrapper">
                     <div class="bar-back"></div>
-                    <div class="bar-front ${type}" style="width: 0%; background: #ffc0c0; animation: blinkBarOpacity 1.5s infinite ease-in-out, fillBar-${mealKey}-${type}-increase 1s forwards;"></div>
-                    <div class="bar-front ${type}" style="width: ${percent}%; background: ${color}; animation: fillBar-${mealKey}-${type} 1s forwards;"></div>
+                    <div class="bar-front bar-increase ${type}" style="width: 0%; background: ${increaseColor}; animation: blinkBarOpacity 1.5s infinite ease-in-out, fillBar-${mealKey}-${type}-increase 1s forwards;"></div>
+                    <div class="bar-front ${type}" style="width: ${percent}%; background: ${color};"></div>
                 </div>
                 <div class="text-wrapper">
-                    <span class="consumed ${type}" style="color: ${fontColor}">${consumed}g</span>
+                    <span class="consumed ${type}" style="color: ${increaseFontColor}; animation: blinkFontOpacity 1.5s infinite ease-in-out">${newConsumed}g</span>
                     <span class="divide">/</span>
                     <span class="target ${type}">${target}g</span>
                 </div>
@@ -80,15 +109,39 @@ function createBar(mealKey, type, consumed, target, percent, rawPercent) {
             <style>
                 @keyframes fillBar-${mealKey}-${type}-increase {
                     from { width: 0%; }
-                    to { width: 80%; }
+                    to { width: ${increasedPercent}%; }
                 }
                 @keyframes blinkBarOpacity {
                     0%, 100% { opacity: 1; }
                     50% { opacity: 0.3; }
                 }
+                @keyframes blinkFontOpacity {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                }
             </style>
         </div>
     `;
+}
+
+function getMessageFormat(userConsumedData, registFoodData) {
+    console.log(userConsumedData);
+    const types = ['carbo', 'protein', 'fat'];
+
+    for (const type of types) {
+        const consumed = Number(userConsumedData[type]?.consumed || 0);
+        const added = Number(registFoodData[type] || 0);
+        const target = Number(userConsumedData[type]?.target || 0);
+
+        const newConsumed = consumed + added;
+        const rawIncreasePercent = target > 0 ? (newConsumed / target) * 100 : 0;
+
+        if (rawIncreasePercent > 105) {
+            return `<span class="cpf-kcal-left-message">아침 목표치보다 많아요. 양을 조절해주세요 ❗️</span>`;
+        }
+    }
+
+    return `<span class="cpf-kcal-left-message">아래와 같이 추가될 거에요</span>`;
 }
 
 function getTailSvg() {

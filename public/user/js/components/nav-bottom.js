@@ -67,7 +67,7 @@ $(document).ready(function () {
     
     // 아침 점심 저녁 별 섭취햇던 칼로리 데이터 이 데이터를 나중에 Ajax로 호출
     const userConsumedData = {
-        date: "2025-04-04",
+        date: "2025-04-05",
         carbo: { consumed: 70, target: 220 },
         protein: { consumed: 42, target: 90 },
         fat: { consumed: 20, target: 50 }
@@ -106,21 +106,31 @@ $(document).ready(function () {
 
                 if (!currentPath.startsWith('/main')) {
                     const savedLastMainPath = lastMainPath;
-
+                
                     history.replaceState({ view: 'main' }, '', '/main');
-
+                
                     const parts = savedLastMainPath.split('/');
                     const meal = parts[2];
                     const subpage = parts[3];
-
-                    if (meal && subpage) {
-                        const basePath = `/main/${meal}`;
-                        history.pushState({ view: 'main' }, '', basePath);
+                    const type = parts[4];
+                    const itemId = parts[5];
+                
+                    if (meal && subpage && type && itemId) {
+                        // ex: /main/morning/regist/processed/87
+                        const registPath = `/main/${meal}/regist`;
+                        const fullPath = savedLastMainPath;
+                
+                        history.pushState({ view: 'main' }, '', `/main/${meal}`);
+                        history.pushState({ view: 'main' }, '', registPath);
+                        history.pushState({ view: 'main' }, '', fullPath);
+                    } else if (meal && subpage) {
+                        // ex: /main/morning/regist
+                        history.pushState({ view: 'main' }, '', `/main/${meal}`);
                         history.pushState({ view: 'main' }, '', savedLastMainPath);
                     } else {
                         history.pushState({ view: 'main' }, '', savedLastMainPath);
                     }
-
+                
                     showPage(savedLastMainPath);
                 } else {
                     // 그냥 다시 진입
@@ -139,12 +149,19 @@ $(document).ready(function () {
     // 뒤로가기 이벤트 처리
     window.addEventListener('popstate', () => {
         const path = window.location.pathname;
+    
+        // 강제 초기화 -> 안하면 페이지 새로 안그려줌
+        if (path.includes('/regist')) {
+            $('#homeMealRegist').empty();
+        }
+    
         if (path.startsWith('/main')) {
             lastMainPath = path;
         }
+    
         showPage(path);
     });
-
+    
 
     $(document).on('click', '.next-button.active', function () {
         let $btn = $(this);
@@ -174,9 +191,10 @@ $(document).ready(function () {
               name: $btn.attr('data-name'),
               weight: $btn.attr('data-weight'),
               kcal: $btn.attr('data-kcal'),
+              carbo: $btn.attr('data-carbo'),
+              protein: $btn.attr('data-protein'),
+              fat: $btn.attr('data-fat'),
             };
-          
-            console.log(registFoodData);
           
             if (!registFoodData.id || !registFoodData.type) return;
           

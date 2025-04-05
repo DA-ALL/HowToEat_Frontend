@@ -6,7 +6,7 @@ const mealSearchData = [
         detail: "수입산(미국산)",
         weight: 100,
         kcal: 217,
-        carbs: 0,
+        carbo: 0,
         protein: 26,
         fat: 12,
     },
@@ -17,7 +17,7 @@ const mealSearchData = [
         detail: "(주)예현 소고기",
         weight: 100,
         kcal: 320,
-        carbs: 4,
+        carbo: 200,
         protein: 21,
         fat: 24,
     },
@@ -28,7 +28,7 @@ const mealSearchData = [
         detail: "수입산(미국산)",
         weight: 100,
         kcal: 245,
-        carbs: 0,
+        carbo: 0,
         protein: 23,
         fat: 17,
     },
@@ -39,7 +39,7 @@ const mealSearchData = [
         detail: "청정원",
         weight: 100,
         kcal: 310,
-        carbs: 5,
+        carbo: 5,
         protein: 20,
         fat: 22,
     },
@@ -50,7 +50,7 @@ const mealSearchData = [
         detail: "급식",
         weight: 100,
         kcal: 290,
-        carbs: 1,
+        carbo: 1,
         protein: 24,
         fat: 20,
     },
@@ -61,7 +61,7 @@ const mealSearchData = [
         detail: "수입산(미국산)",
         weight: 100,
         kcal: 217,
-        carbs: 0,
+        carbo: 0,
         protein: 26,
         fat: 12,
     },
@@ -72,7 +72,7 @@ const mealSearchData = [
         detail: "(주)예현 소고기",
         weight: 100,
         kcal: 320,
-        carbs: 4,
+        carbo: 4,
         protein: 21,
         fat: 24,
     },
@@ -83,7 +83,7 @@ const mealSearchData = [
         detail: "수입산(미국산)",
         weight: 100,
         kcal: 245,
-        carbs: 0,
+        carbo: 0,
         protein: 23,
         fat: 17,
     },
@@ -94,7 +94,7 @@ const mealSearchData = [
         detail: "청정원",
         weight: 100,
         kcal: 310,
-        carbs: 5,
+        carbo: 5,
         protein: 20,
         fat: 22,
     },
@@ -105,7 +105,7 @@ const mealSearchData = [
         detail: "급식",
         weight: 100,
         kcal: 290,
-        carbs: 1,
+        carbo: 1,
         protein: 24,
         fat: 20,
     },
@@ -222,7 +222,7 @@ $(document).on('click', '.meal-item', function () {
             .attr('data-name', '')
             .attr('data-weight', '')
             .attr('data-kcal', '')
-            .attr('data-carbs', '')
+            .attr('data-carbo', '')
             .attr('data-protein', '')
             .attr('data-fat', '');
 
@@ -242,14 +242,12 @@ $(document).on('click', '.meal-item', function () {
             .attr('data-name', $this.data('name'))
             .attr('data-weight', $this.data('weight'))
             .attr('data-kcal', $this.data('kcal'))
-            .attr('data-carbs', $this.data('carbs'))
+            .attr('data-carbo', $this.data('carbo'))
             .attr('data-protein', $this.data('protein'))
             .attr('data-fat', $this.data('fat'));
 
     }
 });
-
-
 
 
 function handleMealSearch(keyword) {
@@ -276,7 +274,7 @@ function renderMealSearchResults(keyword) {
            data-name="${item.name}"
            data-weight="${item.weight}"
            data-kcal="${item.kcal}"
-           data-carbs="${item.carbs}"
+           data-carbo="${item.carbo}"
            data-protein="${item.protein}"
            data-fat="${item.fat}">
         <div class="meal-wrapper">
