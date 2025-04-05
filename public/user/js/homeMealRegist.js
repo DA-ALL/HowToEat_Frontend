@@ -22,6 +22,11 @@ export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
     const commonHeader = `
         <div class="home-meal-regist-container padding">
             <div class="title-format">${registFoodData.name}</div>
+            <div class="image-container">
+                <img class="new-image" src="">
+                <img class="preview-image" src="/user/images/icon_camera.png">
+                <input type="file" accept="image/*" class="image-input" style="display: none;">
+            </div>
         </div>
         <div class="divider large"></div>
     `;
@@ -203,3 +208,30 @@ function getTailSvg() {
         </svg>
     `;
 }
+
+
+$(document).on('click', '.image-container', function (e) {
+    const $input = $(this).find('.image-input');
+    if ($input.length > 0) {
+        $input[0].click(); // 직접 DOM 메서드 호출 (trigger 보다 안전)
+    }
+    e.stopPropagation(); // 꼭 버블 차단
+});
+
+
+$(document).off('change', '.image-input').on('change', '.image-input', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    const $container = $(this).closest('.image-container');
+    const $newImage = $container.find('.new-image');
+    const $previewImage = $container.find('.preview-image');
+
+    reader.onload = () => {
+        $newImage.attr('src', reader.result).show();
+        $previewImage.hide();
+    };
+
+    reader.readAsDataURL(file);
+});

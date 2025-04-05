@@ -1,7 +1,7 @@
 import { renderMealDetail } from '../homeMeal.js';
 import { initHeaderNav } from '../headerNav.js';
 import { renderMealSearch } from '../homeMealSearch.js';
-import { renderIncreaseCPFbar, runAllCountAnimations } from '../homeMealRegist.js';
+import { renderIncreaseCPFbar, renderMealRegist, runAllCountAnimations } from '../homeMealRegist.js';
 
 const userConsumedDataTest = {
     date: "2025-04-05",
@@ -17,7 +17,7 @@ const registFoodDataTest = {
     detail: "수입산(미국산)",
     weight: 100,
     kcal: 217,
-    carbo: 0,
+    carbo: 42,
     protein: 26,
     fat: 12
 }
@@ -60,6 +60,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
             console.log("userConsumedData = ", userConsumedData);
             console.log("registFoodData = ", registFoodData);
             $('#homeMealRegist').html(renderIncreaseCPFbar(meal, userConsumedDataTest, registFoodDataTest));
+            $('#homeMealRegist').append(renderMealRegist(meal, userConsumedDataTest, registFoodDataTest));
             initHeaderNav($('#homeMealRegist'));
             runAllCountAnimations();
         }
