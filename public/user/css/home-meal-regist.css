@@ -47,10 +47,12 @@
 
 #homeMealRegist .home-meal-bar-container .meal-bar-wrapper .text-wrapper {
     display: flex;
+    width: clamp(73px, 17.7vw, 96px);
     white-space: nowrap;
     align-items: center;
     gap: 2px;
     flex-shrink: 0; 
+    justify-content: flex-end;
 }
 
 #homeMealRegist .home-meal-bar-container .meal-bar-wrapper .text-wrapper .consumed {

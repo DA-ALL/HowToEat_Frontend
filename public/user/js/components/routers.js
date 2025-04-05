@@ -1,7 +1,26 @@
 import { renderMealDetail } from '../homeMeal.js';
 import { initHeaderNav } from '../headerNav.js';
 import { renderMealSearch } from '../homeMealSearch.js';
-import { renderMealRegist } from '../homeMealRegist.js';
+import { renderIncreaseCPFbar, runAllCountAnimations } from '../homeMealRegist.js';
+
+const userConsumedDataTest = {
+    date: "2025-04-05",
+    carbo: { consumed: 70, target: 220 },
+    protein: { consumed: 42, target: 90 },
+    fat: { consumed: 20, target: 50 }
+} 
+
+const registFoodDataTest = {
+    id: 42,
+    type: "ingredient_food",
+    name: "소고기 채끝살 (생것)",
+    detail: "수입산(미국산)",
+    weight: 100,
+    kcal: 217,
+    carbo: 0,
+    protein: 26,
+    fat: 12
+}
 
 export function showMain(meal = null, subpage = null, type = null, userConsumedData = null, registFoodData = null) {
     $('#report').hide();
@@ -40,8 +59,9 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
             console.log("=========정보출력=========")
             console.log("userConsumedData = ", userConsumedData);
             console.log("registFoodData = ", registFoodData);
-            $('#homeMealRegist').html(renderMealRegist(meal, userConsumedData, registFoodData));
+            $('#homeMealRegist').html(renderIncreaseCPFbar(meal, userConsumedDataTest, registFoodDataTest));
             initHeaderNav($('#homeMealRegist'));
+            runAllCountAnimations();
         }
 
         $('#homeMealRegist').show();

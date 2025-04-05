@@ -1,4 +1,4 @@
-export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
+export function renderIncreaseCPFbar(mealKey, userConsumedData, registFoodData) {
     const mealKor = mealToKor(mealKey);
     const commonHeader = `
         <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
@@ -9,6 +9,19 @@ export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
                 <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
             </div>
             ${createBarContainer(mealKey, userConsumedData, registFoodData)}
+        </div>
+        <div class="divider large"></div>
+    `;
+    return `
+        ${commonHeader}
+    `;
+}
+
+export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
+    const mealKor = mealToKor(mealKey);
+    const commonHeader = `
+        <div class="home-meal-regist-container padding">
+            <div class="title-format">${registFoodData.name}</div>
         </div>
         <div class="divider large"></div>
     `;
@@ -100,7 +113,13 @@ function createBar(mealKey, type, consumed, newConsumed, target, percent, rawPer
                     <div class="bar-front ${type}" style="width: ${percent}%; background: ${color};"></div>
                 </div>
                 <div class="text-wrapper">
-                    <span class="consumed ${type}" style="color: ${increaseFontColor}; animation: blinkFontOpacity 1.5s infinite ease-in-out">${newConsumed}g</span>
+                    <span class="consumed ${type}" 
+                        data-from="${consumed}" 
+                        data-to="${newConsumed}" 
+                        data-type="${type}"
+                        style="color: ${increaseFontColor};">
+                        ${newConsumed}g
+                    </span>
                     <span class="divide">/</span>
                     <span class="target ${type}">${target}g</span>
                 </div>
@@ -143,6 +162,34 @@ function getMessageFormat(userConsumedData, registFoodData) {
 
     return `<span class="cpf-kcal-left-message">아래와 같이 추가될 거에요</span>`;
 }
+
+function animateCountUp($element, from, to, duration = 1200) {
+    const start = performance.now();
+    
+    function update(timestamp) {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const current = Math.floor(from + (to - from) * progress);
+        $element.text(`${current}g`);
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+export function runAllCountAnimations() {
+    $('.home-meal-bar-wrapper .consumed').each(function () {
+        const $el = $(this);
+        const from = Number($el.data('from'));
+        const to = Number($el.data('to'));
+
+        if (!isNaN(from) && !isNaN(to)) {
+            animateCountUp($el, from, to);
+        }
+    });
+}
+
 
 function getTailSvg() {
     return `
