@@ -1,9 +1,9 @@
-import { onPopstate } from '/administrate/js/router.js';
+import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/components/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
 
 
-export function renderUserInfo(){
+export function renderUserInfo({ imageURL, username, email, birth, goal, goalCalorie, streakDay}) {
     let userInfoHtml = `
         <div id="userInfo">
             <div class="nav-top">
@@ -17,34 +17,34 @@ export function renderUserInfo(){
             <div class="user-info-container">
                 <div class="user-info-wrapper">
                     <div class="user-profile-image">
-                        <img src="/administrate/images/icon_human_blue.png"></img>
+                        <img src="${imageURL}"></img>
                     </div>
 
-                    <div class="user-name">김예현</div>
+                    <div class="user-name">${username}</div>
 
                     <div class="user-meta-wrapper">
-                        <div class="email">insidesy4@gmail.com</div>
+                        <div class="email">${email}</div>
                         <div class="divider"></div>
-                        <div class="birth">1995.04.30</div>
+                        <div class="birth">${birth}</div>
                     </div>
 
                     <div class="user-goal-wrapper">
                         <div class="text-wrapper">
-                            <div class="value">근육증량</div>
+                            <div class="value">${goal}</div>
                             <div class="label">유저 목표</div>
                         </div>
 
                         <div class="divider"></div>                    
 
                         <div class="text-wrapper">
-                            <div class="value">2024Kcal</div>
+                            <div class="value">${goalCalorie}</div>
                             <div class="label">목표 Kcal</div>
                         </div>
 
                         <div class="divider"></div>
 
                         <div class="streak-wrapper">
-                            <div class="value">13일째</div>
+                            <div class="value">${streakDay}</div>
                             <div class="label">연속 기록</div>
                         </div>
                     </div>
@@ -82,25 +82,6 @@ function loadUserInfoTable() {
     })
 }
 
-function getUserDataForUserInfo() {
-    return [{
-        id: 1,
-        imageURL: "/administrate/images/icon_human_blue.png",
-        name: `김예현`,
-        mealCount: Math.floor(Math.random() * 200),
-        joined: "2025.03.16",
-        left: "-",
-        gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
-    }]
-}
-
-onPopstate(loadDailyCalorieTable);
-
-$(document).on('click', `.back-button-wrapper`, function () {
-    history.back();
-});
-
 
 
 function loadDailyCalorieTable(){
@@ -117,6 +98,32 @@ function loadDailyCalorieTable(){
         enablePagination: true
     })
 }
+
+export function getUserInfo() {
+    return {
+        imageURL: "/administrate/images/icon_human_blue.png",
+        username: `김예현`,
+        email: "insidesy4@gmail.com",
+        birth: "1995.04.30",
+        goal: "체중 감량",
+        goalCalorie: 2024,
+        streakDay: 13
+    }
+}
+
+function getUserDataForUserInfo() {
+    return [{
+        id: 1,
+        imageURL: "/administrate/images/icon_human_blue.png",
+        name: `김예현`,
+        mealCount: Math.floor(Math.random() * 200),
+        joined: "2025.03.16",
+        left: "-",
+        gymUser: Math.random() > 0.5,
+        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
+    }]
+}
+
 
 function getDailyCaloriData() {
     return [
@@ -147,3 +154,30 @@ function getDailyCaloriData() {
         { id: 25, date: '2023-10-25', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 }
     ];
 }
+
+
+onPopstate(loadDailyCalorieTable);
+
+
+// 뒤로가기 버튼 클릭
+$(document).on('click', `.back-button-wrapper`, function () {
+    updateURL('user-management/pt');
+});
+
+
+// 칼로리 테이블 row 클릭
+$(document).on('click', `#dailyCalorieTable tr`, function () {
+    console.log("칼로리 row 클릭됨", $(this).find('.td-id').text());
+});
+
+
+$(document).ready(function () {
+    const pathSegments = window.location.pathname.split('/');
+    const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
+    console.log($(`#userInfo`).length);
+    console.log(getCurrentContent());
+    if(getCurrentContent() == 'userInfo' && userId && $(`#userInfo`).length === 0) { 
+        console.log("Asdfasdf");
+        renderUserInfo(getUserInfo());
+    }
+});

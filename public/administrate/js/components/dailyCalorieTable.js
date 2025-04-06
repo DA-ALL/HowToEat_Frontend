@@ -46,8 +46,7 @@ export function renderCalorieTableWithOptionalPagination({
     enablePagination = true
 }) {
     const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
-    console.log(pageFromURL);
+    const pageFromURL = getPageFromURL();
     const page = enablePagination ? pageFromURL : 1;
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
@@ -78,12 +77,9 @@ export function renderCalorieTableWithOptionalPagination({
 }
 
 
-export function getPageFromURL(contentId) {
+export function getPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(getCurrentContent());
-    if (getCurrentContent() == contentId) {
-        return parseInt(urlParams.get('page')) || 1;
-    } else {
-        return 1;
-    }
+    
+    return parseInt(urlParams.get('page')) || 1;
+    
 }

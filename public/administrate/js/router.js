@@ -118,7 +118,7 @@ function showCurrentContent() {
         'dashboard': 'dashboardChart',
         'user-management': 'userManagement',
         'user-management/pt' : 'ptUserManagement',
-        'user-management/pt/user': 'ptUserManagement',
+        'user-management/pt/user': 'userInfo',
         'food-management': 'foodManagement',
         'food-management/user-regist': 'userFoodManagement',
         'food-management/recommend-food': 'recommendFoodManagement',

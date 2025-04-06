@@ -1,6 +1,6 @@
 import { onPopstate, updateURL } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/components/userTable.js';
-import { renderUserInfo } from '/administrate/js/userInfo.js';
+import { renderUserInfo, getUserInfo} from '/administrate/js/userInfo.js';
 
 const containerId = 'ptUserTable';
 const bodyId = 'ptUserTableBody';
@@ -34,7 +34,7 @@ $(document).on('click', `#${bodyId} tr`, function () {
     const page = `user-management/pt/user/${userId}`;
     updateURL(page);
 
-    renderUserInfo();
+    renderUserInfo(getUserInfo());
 });
 
 onPopstate(loadPtUserTable);
