@@ -3,7 +3,6 @@ import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 20;
-let currentPage = 1;
 
 export function createUserRow({ id, imageURL, name, mealCount, joined, left, gymUser, role }) {
     return `
@@ -53,37 +52,50 @@ export function renderUserTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderPageData(getUserData, bodyId, contentId) {
-    const users = getUserData();
-    const start = (currentPage - 1) * usersPerPage;
+export function renderTableWithOptionalPagination({
+    getData,         // 데이터 함수
+    bodyId,
+    contentId,
+    enablePagination = true
+}) {
+    const allData = getData();
+    const pageFromURL = getPageFromURL(contentId);
+    const page = enablePagination ? pageFromURL : 1;
+    const start = (page - 1) * usersPerPage;
     const end = start + usersPerPage;
-    
-    $(`#${bodyId}`).html(users.slice(start, end).map(createUserRow).join(""));
+    const rows = enablePagination ? allData.slice(start, end) : allData;
 
-    renderPagination({
-        contentId,
-        totalItems: users.length,
-        itemsPerPage: usersPerPage,
-        currentPage,
-        onPageChange: (newPage) => {
-            updateQueryParam({ page: newPage });
-            currentPage = newPage;
-            renderPageData(getUserData, bodyId, contentId);
-        }
-    });
+    $(`#${bodyId}`).html(rows.map(createUserRow).join(""));
+
+    if (enablePagination) {
+        renderPagination({
+            contentId,
+            totalItems: allData.length,
+            itemsPerPage: usersPerPage,
+            currentPage: page,
+            onPageChange: (newPage) => {
+                updateQueryParam({ page: newPage });
+                renderTableWithOptionalPagination({
+                    getData,
+                    bodyId,
+                    contentId,
+                    enablePagination
+                });
+            }
+        });
+    } else {
+        $(`#${bodyId}`).closest('table').parent().find('.pagination').remove();
+    }
 }
 
-export function getPageFromURL(contentId) {
+
+function getPageFromURL(contentId) {
     const urlParams = new URLSearchParams(window.location.search);
     if(getCurrentContent() == contentId) {
         return parseInt(urlParams.get('page')) || 1;
     } else {
         return 1;
     }
-}
-
-export function setCurrentPage(page){
-    currentPage = page;
 }
 
 // 유저권한 변경 버튼

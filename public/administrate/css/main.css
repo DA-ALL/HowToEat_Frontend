@@ -9,9 +9,11 @@
 @import url("/administrate/css/components/filter.css");
 @import url("/administrate/css/total-user-table.css");
 @import url("/administrate/css/pt-user-table.css");
+@import url("/administrate/css/user-info.css");
 @import url("/administrate/css/components/custom-alert.css");
 @import url("/administrate/css/components/pagination.css");
 @import url("/administrate/css/components/user-table.css");
+@import url("/administrate/css/components/daily-calorie-table.css");
 
 html, body {
     min-height: 100vh;
