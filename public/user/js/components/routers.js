@@ -1,7 +1,7 @@
 import { renderMealDetail } from '../homeMeal.js';
 import { initHeaderNav } from '../headerNav.js';
 import { renderMealSearch } from '../homeMealSearch.js';
-import { renderIncreaseCPFbar, renderMealRegist, runAllCountAnimations } from '../homeMealRegist.js';
+import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations } from '../homeMealRegist.js';
 
 const userConsumedDataTest = {
     date: "2025-04-08",
@@ -57,10 +57,11 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
         // /main/morning/search
         if ($('#homeMealRegist').children().length === 0) {
             console.log("=========정보출력=========")
-            console.log("userConsumedData = ", userConsumedData);
-            console.log("registFoodData = ", registFoodData);
+            console.log("userConsumedData = ", userConsumedDataTest);
+            console.log("registFoodData = ", registFoodDataTest);
             $('#homeMealRegist').html(renderIncreaseCPFbar(meal, userConsumedDataTest, registFoodDataTest));
             $('#homeMealRegist').append(renderMealRegist(meal, userConsumedDataTest, registFoodDataTest));
+            $('#homeMealRegist').append(renderMealAdjust(meal, userConsumedDataTest, registFoodDataTest));
             initHeaderNav($('#homeMealRegist'));
             runAllCountAnimations();
         }
