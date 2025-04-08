@@ -4,7 +4,7 @@ import { renderMealSearch } from '../homeMealSearch.js';
 import { renderIncreaseCPFbar, renderMealRegist, runAllCountAnimations } from '../homeMealRegist.js';
 
 const userConsumedDataTest = {
-    date: "2025-04-05",
+    date: "2025-04-08",
     carbo: { consumed: 70, target: 220 },
     protein: { consumed: 42, target: 90 },
     fat: { consumed: 20, target: 50 }
@@ -17,7 +17,7 @@ const registFoodDataTest = {
     detail: "수입산(미국산)",
     weight: 100,
     kcal: 217,
-    carbo: 42,
+    carbo: 442,
     protein: 26,
     fat: 12
 }

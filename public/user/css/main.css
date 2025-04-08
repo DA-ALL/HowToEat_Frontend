@@ -45,6 +45,12 @@ html, body {
     margin-bottom: clamp(24px, 9.6vw, 48px);
 }
 
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .root-container {
     position: relative;
     width: 100vw;

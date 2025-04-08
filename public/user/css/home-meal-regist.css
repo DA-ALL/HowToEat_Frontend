@@ -107,6 +107,27 @@
     filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.11));
   }
 
+  #homeMealRegist .home-meal-regist-container .text-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: clamp(24px, 9.6vw, 48px);
+  }
+
+  #homeMealRegist .home-meal-regist-container .text-wrapper .title {
+    font-size: clamp(16px, 5.336vw, 26.67px);
+    font-weight: 600;
+    color: var(--black100);
+    white-space: nowrap;
+  }
+
+  #homeMealRegist .home-meal-regist-container .text-wrapper .sub-title {
+    font-size: clamp(13.6px, 3.2vw + 4px, 20px);
+    font-weight: 500;
+    color: var(--red500);
+  }
+
   #homeMealRegist .home-meal-regist-container .image-container {
     display: flex;
     width: 100%;
@@ -120,24 +141,45 @@
     border-radius: 12px;
     overflow: hidden;
     position: relative;
+    margin-bottom: clamp(15.8px, 5.6vw - 1px, 27px);
+
   }
 
-  #homeMealRegist .home-meal-regist-container .image-container .preview-image {
-    width: clamp(22px, 8vw - 8px, 32px);
-  }
-
-  .image-container .new-image {
+  #homeMealRegist .home-meal-regist-container .image-container .new-image {
     position: absolute;
     top: 0; left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  
-  .image-container .new-image {
-    display: none; /* 처음에는 숨김 */
+    display: none;
   }
 
-.image-container .preview-image {
+  #homeMealRegist .home-meal-regist-container .image-container .preview-image {
+    width: clamp(22px, 8vw - 8px, 32px);
     z-index: 1;
+  }
+
+  #homeMealRegist .home-meal-regist-container .food-info-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #homeMealRegist .home-meal-regist-container .food-info-container .food-info-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(3.22px, 1.04vw + 0.1px, 5.3px);
+  }
+
+  #homeMealRegist .home-meal-regist-container .food-info-container .food-info-wrapper .title {
+    font-size: clamp(10.6px, 3.2vw + 1px, 17px);
+    font-weight: 400;
+    color: var(--black100);
+  }
+
+  #homeMealRegist .home-meal-regist-container .food-info-container .food-info-wrapper .amount {
+    font-size: clamp(13px, 4vw + 1px, 21px);
+    font-weight: 500;
+    color: var(--red500);
   }

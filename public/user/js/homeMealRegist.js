@@ -1,4 +1,5 @@
 export function renderIncreaseCPFbar(mealKey, userConsumedData, registFoodData) {
+    console.log(registFoodData);
     const mealKor = mealToKor(mealKey);
     const commonHeader = `
         <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
@@ -21,11 +22,41 @@ export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
     const mealKor = mealToKor(mealKey);
     const commonHeader = `
         <div class="home-meal-regist-container padding">
-            <div class="title-format">${registFoodData.name}</div>
+            <div class="text-wrapper">
+                <div class="title">${registFoodData.name}</div>
+                <div class="sub-title truncate">${registFoodData.weight}g</div>
+            </div>
             <div class="image-container">
                 <img class="new-image" src="">
                 <img class="preview-image" src="/user/images/icon_camera.png">
                 <input type="file" accept="image/*" class="image-input" style="display: none;">
+            </div>
+            <div class="food-info-container">
+                <div class="food-info-wrapper">
+                    <span class="title">칼로리</span>
+                    <span class="amount">${registFoodData.kcal}kcal</span>
+                </div>
+
+                <div class="divider column"></div>
+
+                <div class="food-info-wrapper">
+                    <span class="title">탄수화물</span>
+                    <span class="amount">${registFoodData.carbo}g</span>
+                </div>
+
+                <div class="divider column"></div>
+
+                <div class="food-info-wrapper">
+                    <span class="title">단백질</span>
+                    <span class="amount">${registFoodData.protein}g</span>
+                </div>
+
+                <div class="divider column"></div>
+
+                <div class="food-info-wrapper">
+                    <span class="title">지방</span>
+                    <span class="amount">${registFoodData.fat}g</span>
+                </div>
             </div>
         </div>
         <div class="divider large"></div>
