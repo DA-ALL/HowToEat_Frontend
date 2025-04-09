@@ -63,3 +63,57 @@
     font-weight: 300;
     color: var(--gray300);
 }
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(14px, 2px + 3.2vw, 18px) clamp(6px, 1.6vw, 8px);
+
+    border-bottom: 1px solid #eee;
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-title {
+    font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
+    font-weight: 300;
+    color: var(--black100);
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .text-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .text-wrapper .weight {
+    font-size: clamp(13px, 2.4vw + 4px, 16px);
+    font-weight: 400;
+    color: var(--gray300);
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .text-wrapper .divide {
+    font-size: clamp(13px, 2.4vw + 4px, 16px);
+    font-weight: 400;
+    color: var(--gray300);
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .text-wrapper .kcal {
+    font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
+    font-weight: 500;
+    color: var(--gray300);
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .text-wrapper .kcal {
+
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .image-arrow {
+    display: flex;
+    margin-left: clamp(14px, 3.2vw + 2px, 18px);
+
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .image-arrow img {
+    width: clamp(16px, 3.2vw + 4px, 20px);
+}

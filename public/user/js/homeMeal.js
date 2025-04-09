@@ -26,7 +26,11 @@ export function renderMealDetail(mealKey, data) {
             ${commonHeader}
             <div class="meal-list-container padding">
                 <div class="title-format">${mealKor}의 식단</div>
+                <div class="meal-list-wrapper">
+                    ${renderMealListHTML(mealKey)}
+                </div>
             </div>
+
             <div class="button-container">
                 <div class="next-button home-meal ${buttonClass}">추가</div>
             </div>
@@ -112,4 +116,29 @@ function mealToKor(meal) {
         case 'snack': return '간식';
         default: return '';
     }
+}
+
+// 테스트용 mealData 로부터 리스트 아이템 생성
+function renderMealListHTML(mealKey) {
+    const saved = localStorage.getItem(`mealData_${mealKey}`);
+    if (!saved) return '';
+
+    const item = JSON.parse(saved);
+    return renderMealListItem(item);
+}
+
+function renderMealListItem(item) {
+    return `
+        <div class="meal-list-item">
+                <div class="meal-title">${item.name}</div>
+            <div class="text-wrapper">
+                <span class="weight">${item.weight}g</span>
+                <span class="divide">/</span>
+                <span class="kcal">${item.kcal}g</span>
+                <div class="image-arrow">
+                    <img src="/user/images/icon_arrow_front.png">
+                </div>
+            </div>
+        </div>
+    `;
 }
