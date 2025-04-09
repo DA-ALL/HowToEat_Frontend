@@ -76,3 +76,11 @@
 #gymUserDropdown .gym-user-item img{
     width: 30px;
 }
+
+#totalUserTable #userTableBody tr {
+    cursor: pointer;
+}
+
+#totalUserTable #userTableBody tr:hover {
+    background-color: #fff7f6;
+}

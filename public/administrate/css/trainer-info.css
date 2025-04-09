@@ -1,0 +1,180 @@
+
+#trainerInfo {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white300);
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+
+/* 뒤로가기 bar */
+#trainerInfo .nav-top {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 73px;
+    border-bottom: 1px solid #E7E7E7;
+}
+
+#trainerInfo .nav-top .back-button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    margin-left: 40px;
+}
+
+#trainerInfo .nav-top .back-button-wrapper .icon-back {
+    width: 15px;
+    height: 15px;
+}
+
+#trainerInfo .nav-top .back-button-wrapper .icon-back img{
+    width: 15px;
+    height: 15px;
+}
+
+#trainerInfo .nav-top .back-button-wrapper .label-back {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+
+/* 유저 정보 메인 */
+#trainerInfo .trainer-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 1520px;
+    gap: 80px;
+    padding: 80px 0px;
+}
+
+#trainerInfo .trainer-info-container .trainer-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 33px;
+}
+
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 200px;
+    overflow: hidden;
+}
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-profile-image img{
+    width: 150px;
+    height: 150px;
+}
+
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-name {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+
+
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-detail-wrapper {
+    display: flex;
+    width: 498px;
+    align-items: center;
+    justify-content: center;
+}
+
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-detail-wrapper .divider{
+    width: 0.5px;
+    height: 21px;
+    background-color: #D9D9D9;
+}
+
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-detail-wrapper .text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
+}
+
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-detail-wrapper .text-wrapper .value{
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--red500);
+}
+#trainerInfo .trainer-info-container .trainer-info-wrapper .trainer-detail-wrapper .text-wrapper .label{
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gray500);
+}
+
+
+#trainerInfo .trainer-info-container .table-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    width: 100%;
+    gap: 34px;
+}
+
+#trainerInfo .trainer-info-container .table-wrapper .table-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+}
+
+#trainerInfo .trainer-info-container .table-wrapper .table-title-wrapper .table-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#trainerInfo .trainer-info-container .table-wrapper .table-title-wrapper .add-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 39px;
+    border: 1px solid var(--red600);
+    background-color: var(--red10);
+}
+
+#trainerInfo .trainer-info-container .table-wrapper .table-title-wrapper .add-button-wrapper .label-add {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--red600);
+}
+
+#trainerInfo .trainer-info-container .table-wrapper .table-title-wrapper .add-button-wrapper .icon-add{
+    width: 18px;
+    height: 18px;
+}
+
+#trainerInfo .trainer-info-container .table-wrapper .table-title-wrapper .add-button-wrapper .icon-add img{
+    width: 18px;
+    height: 18px;
+}
+
+
+/* user Table */
+#trainerInfo #ptUserTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 100%;
+}
+
+#trainerInfo #ptUserTable table {
+    width: 100%;
+    border-spacing: 0px;
+}
+

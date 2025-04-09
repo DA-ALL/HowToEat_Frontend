@@ -1,5 +1,6 @@
-import { onPopstate } from '/administrate/js/router.js';
+import { onPopstate, updateURL } from '/administrate/js/router.js';
 import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/components/userTable.js';
+import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
 
 const containerId = 'totalUserTable';
 const bodyId = 'userTableBody';
@@ -27,5 +28,14 @@ function getUserDataForTotalUsers() {
         role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
     }));
 }
+
+$(document).on('click', `#userTableBody tr`, function () {
+    const userId = $(this).find('.td-id').text();
+    const page = `user-management/user/${userId}`;
+    updateURL(page);
+
+    renderUserInfo(getUserInfo(), 'user-management');
+});
+
 
 onPopstate(loadTotalUserTable);

@@ -3,68 +3,71 @@ import { renderUserTable, renderTableWithOptionalPagination } from '/administrat
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
 
 
-export function renderUserInfo({ imageURL, username, email, birth, goal, goalCalorie, streakDay}) {
+export function renderUserInfo({ imageURL, username, email, birth, goal, goalCalorie, streakDay }, previousContent) {
     let userInfoHtml = `
-        <div id="userInfo">
-            <div class="nav-top">
-                <div class="back-button-wrapper">
-                    <div class="icon-back">
-                        <img src="/administrate/images/icon_arrow_back_black.png"></img>
-                    </div>
-                    <div class="label-back">뒤로가기</div>
+        <div class="nav-top">
+            <div class="back-button-wrapper">
+                <div class="icon-back">
+                    <img src="/administrate/images/icon_arrow_back_black.png"></img>
                 </div>
-            </div>
-            <div class="user-info-container">
-                <div class="user-info-wrapper">
-                    <div class="user-profile-image">
-                        <img src="${imageURL}"></img>
-                    </div>
-
-                    <div class="user-name">${username}</div>
-
-                    <div class="user-meta-wrapper">
-                        <div class="email">${email}</div>
-                        <div class="divider"></div>
-                        <div class="birth">${birth}</div>
-                    </div>
-
-                    <div class="user-goal-wrapper">
-                        <div class="text-wrapper">
-                            <div class="value">${goal}</div>
-                            <div class="label">유저 목표</div>
-                        </div>
-
-                        <div class="divider"></div>                    
-
-                        <div class="text-wrapper">
-                            <div class="value">${goalCalorie}</div>
-                            <div class="label">목표 Kcal</div>
-                        </div>
-
-                        <div class="divider"></div>
-
-                        <div class="streak-wrapper">
-                            <div class="value">${streakDay}</div>
-                            <div class="label">연속 기록</div>
-                        </div>
-                    </div>
-                </div>
-            
-                <div id="userInfoTable"></div>
-
-                <div id="dailyCalorieTable"></div>
+                <div class="label-back">뒤로가기</div>
             </div>
         </div>
+        <div class="user-info-container">
+            <div class="user-info-wrapper">
+                <div class="user-profile-image">
+                    <img src="${imageURL}"></img>
+                </div>
+
+                <div class="user-name">${username}</div>
+
+                <div class="user-meta-wrapper">
+                    <div class="email">${email}</div>
+                    <div class="divider"></div>
+                    <div class="birth">${birth}</div>
+                </div>
+
+                <div class="user-goal-wrapper">
+                    <div class="text-wrapper">
+                        <div class="value">${goal}</div>
+                        <div class="label">유저 목표</div>
+                    </div>
+
+                    <div class="divider"></div>                    
+
+                    <div class="text-wrapper">
+                        <div class="value">${goalCalorie}</div>
+                        <div class="label">목표 Kcal</div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="streak-wrapper">
+                        <div class="value">${streakDay}</div>
+                        <div class="label">연속 기록</div>
+                    </div>
+                </div>
+            </div>
+        
+            <div id="userInfoTable"></div>
+
+            <div id="dailyCalorieTable"></div>
+        </div>
+    
     `;
 
     
-    let elem = document.querySelector('.content-container');
-    if (elem) {
-        elem.insertAdjacentHTML('beforeend', userInfoHtml);
-    }
+    let userInfo = $('#userInfo');
+    userInfo.html(userInfoHtml);
 
     loadUserInfoTable();
     loadDailyCalorieTable();
+
+
+    // 뒤로가기 버튼 클릭
+    $(document).on('click', `#userInfo .back-button-wrapper`, function () {
+        updateURL(previousContent);
+    });
 }
 
 
@@ -159,10 +162,6 @@ function getDailyCaloriData() {
 onPopstate(loadDailyCalorieTable);
 
 
-// 뒤로가기 버튼 클릭
-$(document).on('click', `.back-button-wrapper`, function () {
-    updateURL('user-management/pt');
-});
 
 
 // 칼로리 테이블 row 클릭
@@ -174,10 +173,8 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
 $(document).ready(function () {
     const pathSegments = window.location.pathname.split('/');
     const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
-    console.log($(`#userInfo`).length);
-    console.log(getCurrentContent());
-    if(getCurrentContent() == 'userInfo' && userId && $(`#userInfo`).length === 0) { 
-        console.log("Asdfasdf");
+        
+    if(getCurrentContent() == 'userInfo' && userId ) {     
         renderUserInfo(getUserInfo());
     }
 });

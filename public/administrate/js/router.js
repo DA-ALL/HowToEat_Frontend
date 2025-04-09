@@ -94,46 +94,63 @@ function hideAllContents() {
     $('.content-wrapper').children().each(function (index) {
         $(this).css('display', 'none');
     });
+
+    $('#detailPage').children().each(function (index) {
+        $(this).css('display', 'none');
+    });
 }
 
 function showCurrentContent() {
-    let pathSegments = window.location.pathname.split("/").slice(2); // ["user-management", "pt", "user-id", "1"]
-    let lastSegment = pathSegments[pathSegments.length - 1];
+    const pathSegments = window.location.pathname.split("/").slice(2);
+    const fullPath = pathSegments.join("/");
 
-    // 마지막 값이 숫자인 경우 해당 부분 제거
-    if (!isNaN(lastSegment)) {
-        pathSegments.pop();
+    // 간단한 경로
+    if (pathSegments.length < 3) {
+        const contentMap = {
+            'dashboard': 'dashboardChart',
+            'user-management': 'userManagement',
+            'user-management/pt': 'ptUserManagement',
+            'food-management': 'foodManagement',
+            'food-management/user-regist': 'userFoodManagement',
+            'food-management/recommend-food': 'recommendFoodManagement',
+            'food-management/add-food': 'addFood',
+            'notice': 'notice',
+            'admin-management': 'adminManagement',
+            'admin-management/trainer': 'trainerManagement',
+            'admin-management/gym': 'gymManagement',
+        };
+        currentContent = contentMap[fullPath];
+    } else {
+        // 복잡한 경로
+        const contentPatterns = [
+            { pattern: /^user-management\/user\/\d+$/, contentId: 'userInfo' },
+            { pattern: /^user-management\/pt\/\d+$/, contentId: 'trainerInfo' },
+            { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, contentId: 'userInfo' },
+        ];
+
+        for (const item of contentPatterns) {
+            if (item.pattern.test(fullPath)) {
+                currentContent = item.contentId;
+                break;
+            }
+        }
     }
 
-    const currentPage = pathSegments.join("/"); // user-management/pt or user-management
-    
-    if(currentPage == 'user-management/pt/user'){
+    if (!currentContent) {
+        console.log("currentContent is null");
+        return;
+    }
+
+    console.log("현재 콘텐츠: ", currentContent);
+    if(currentContent == 'userInfo' || currentContent == 'trainerInfo'){
         $('.content-section').css('display', 'none');
+        $('#detailPage').css('display', 'block');
     } else {
         $('.content-section').css('display', 'block');
-        $('#userInfo').remove();
+        $('#detailPage').css('display', 'none');
     }
 
-    const contentMap = {
-        'dashboard': 'dashboardChart',
-        'user-management': 'userManagement',
-        'user-management/pt' : 'ptUserManagement',
-        'user-management/pt/user': 'userInfo',
-        'food-management': 'foodManagement',
-        'food-management/user-regist': 'userFoodManagement',
-        'food-management/recommend-food': 'recommendFoodManagement',
-        'food-management/add-food': 'addFood',
-        'notice': 'notice',
-        'admin-management': 'adminManagement',
-        'admin-management/trainer': 'trainerManagement',
-        'admin-management/gym': 'gymManagement',    
-    };
-
-    currentContent = contentMap[currentPage];
-
-    if (currentContent) {
-        $(`#${currentContent}`).css('display', 'flex');
-    }
+    $(`#${currentContent}`).css('display', 'flex');
 }
 
 

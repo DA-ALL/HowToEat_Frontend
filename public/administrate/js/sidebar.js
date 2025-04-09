@@ -210,8 +210,13 @@ $(document).ready(function () {
 
         if (Array.isArray(page)) {
             const mainPage = page[0];
-            const subPage = page[1];
-    
+            let subPage = page[1];
+            
+            // url이 /user-management/user/1 인 경우 처리
+            if (mainPage === 'user-management' && subPage === 'user') {
+                subPage = 'all-user';
+            }
+
             $(`.nav-link[data-page="${mainPage}"]`).addClass("active");
     
             // 드롭다운 애니메이션 적용
