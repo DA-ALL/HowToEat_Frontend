@@ -67,7 +67,7 @@ $(document).ready(function () {
     
     // 아침 점심 저녁 별 섭취햇던 칼로리 데이터 이 데이터를 나중에 Ajax로 호출
     const userConsumedData = {
-        date: "2025-04-08",
+        date: "2025-04-09",
         carbo: { consumed: 70, target: 220 },
         protein: { consumed: 42, target: 90 },
         fat: { consumed: 20, target: 50 }

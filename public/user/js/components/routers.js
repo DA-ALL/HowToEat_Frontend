@@ -4,7 +4,7 @@ import { renderMealSearch } from '../homeMealSearch.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations } from '../homeMealRegist.js';
 
 const userConsumedDataTest = {
-    date: "2025-04-08",
+    date: "2025-04-09",
     carbo: { consumed: 70, target: 220 },
     protein: { consumed: 42, target: 90 },
     fat: { consumed: 20, target: 50 }
@@ -42,6 +42,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
         }
         $('#homeMeal').show();
     }
+
     if (meal && subpage === 'regist' && !type) {
         // /main/morning/search
         if ($('#homeMealSearch').children().length === 0) {
@@ -64,6 +65,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
             $('#homeMealRegist').append(renderMealAdjust(meal, userConsumedDataTest, registFoodDataTest));
             initHeaderNav($('#homeMealRegist'));
             runAllCountAnimations();
+            $('html, body').scrollTop(0); 
         }
 
         $('#homeMealRegist').show();

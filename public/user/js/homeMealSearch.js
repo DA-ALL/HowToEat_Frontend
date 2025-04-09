@@ -193,13 +193,19 @@ export function initMealSearchTab() {
 $(document).on('keydown', '.input-search', function (e) {
     if (e.key === 'Enter') {
         const keyword = $(this).val().trim();
+        $(this).blur(); // ✅ 키보드 내리기
         handleMealSearch(keyword);
     }
 });
 
 //검색 input 돋보기 클릭 시, 엔터와 같은 효과
 $(document).on('click', '.search-tool .label img', function () {
-    const keyword = $(this).closest('.search-tool').find('.input-search').val().trim();
+    const $input = $(this).closest('.search-tool').find('.input-search');
+    const keyword = $input.val().trim();
+
+    setTimeout(() => {
+        $input.blur();
+    }, 100);
     handleMealSearch(keyword);
 });
 
