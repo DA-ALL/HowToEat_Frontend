@@ -1,3 +1,6 @@
+import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from './components/routers.js';
+import { setLastMainPath } from './components/nav-bottom.js';
+
 // 탄단지 섹션 렌더링 (상단 메시지, 바 포함)
 export function renderIncreaseCPFbar(mealKey, userConsumedData, registFoodData) {
     const mealKor = mealToKor(mealKey);
@@ -73,6 +76,7 @@ export function renderMealAdjust(mealKey, userConsumedData, registFoodData) {
     window.userConsumedData = userConsumedData;
     window.mealKey = mealKey;
     window.lastPortionRatio = 1;
+    
     const mealKor = mealToKor(mealKey);
     const commonHeader = `
         <div class="home-meal-adjust-container padding">
@@ -99,14 +103,16 @@ export function renderMealAdjust(mealKey, userConsumedData, registFoodData) {
             </div>
         </div>
         <div class="button-container">
-            <div class="next-button favorite active">즐겨찾기에 추가</div>
-            <div class="next-button active">${mealKor} 등록</div>
+            <div id="favoriteButton" class="next-button favorite active">즐겨찾기에 추가</div>
+            <div id="registButton" class="next-button active">${mealKor} 등록</div>
         </div>
     `;
     return `
         ${commonHeader}
     `;
+    
 }
+
 
 // 영어 meal key를 한글로 변환
 function mealToKor(meal) {
@@ -311,6 +317,47 @@ function getTailSvg() {
     `;
 }
 
+//
+// regist 버튼 클릭 시
+$(document).on('click', '#registButton', function () {
+    const $btn = $(this);
+    const mealKey = window.mealKey;
+
+    const savedData = {
+        id: $btn.data('id'),
+        type: $btn.data('type'),
+        mealKey: mealKey,
+        name: $btn.data('name'),
+        detail: $btn.data('detail'),
+        weight: $btn.data('weight'),
+        kcal: $btn.data('kcal'),
+        carbo: $btn.data('carbo'),
+        protein: $btn.data('protein'),
+        fat: $btn.data('fat'),
+    };
+
+    localStorage.setItem(`mealData_${mealKey}`, JSON.stringify(savedData));
+
+    resetHomeMealView();
+    resetSearchView();
+    resetRegistView();
+
+    const targetPath = `/main/${mealKey}`;
+    history.pushState({ view: 'main' }, '', targetPath);
+    setLastMainPath(targetPath);
+    
+    // ✅ window에도 저장, 그리고 nav-bottom.js에서도 참조하도록
+    window.lastMainPath = targetPath;
+    if (typeof setLastMainPath === 'function') {
+        setLastMainPath(targetPath); // 전역 설정 함수 호출
+    }
+
+    showMain(mealKey);
+});
+
+
+
+
 // 주어진 비율로 전체 UI 업데이트 (amount, bar, message, 색상, consumed 텍스트 포함)
 function updateUIWithRatio(ratio) {
     const regist = window.registFoodData;
@@ -374,6 +421,37 @@ function updateUIWithRatio(ratio) {
     });
 }
 
+// 버튼에 최신 데이터 저장
+export function updateNextButtonData() {
+    const regist = window.registFoodData;
+
+    const id = regist.id;
+    const name = regist.name;
+    const type = regist.type;
+    const detail = regist.detail;
+    const weightText = $('.sub-title.truncate').text().replace('g', '').trim();
+
+    const kcal = $('.food-info-wrapper .amount.kcal').text().replace('kcal', '').trim();
+    const carbo = $('.food-info-wrapper .amount.carbo').text().replace('g', '').trim();
+    const protein = $('.food-info-wrapper .amount.protein').text().replace('g', '').trim();
+    const fat = $('.food-info-wrapper .amount.fat').text().replace('g', '').trim();
+
+    const $buttons = $('.next-button.favorite, .next-button.active');
+
+    $buttons.each(function () {
+        $(this)
+            .attr('data-id', id)
+            .attr('data-name', name)
+            .attr('data-type', type)
+            .attr('data-detail', detail)
+            .attr('data-weight', weightText)
+            .attr('data-kcal', kcal)
+            .attr('data-carbo', carbo)
+            .attr('data-protein', protein)
+            .attr('data-fat', fat);
+    });
+}
+
 
 // 이미지 클릭 시 파일 선택창 열기
 $(document).on('click', '.image-container', function (e) {
@@ -422,6 +500,7 @@ $(document).on('click', '.manual-input', function () {
     if (!isNaN(ratio) && ratio > 0) {
         $('.sub-title.truncate').text(`${Math.round(gram)}g`);
         updateUIWithRatio(ratio);
+        updateNextButtonData();
     }
 });
 
@@ -434,6 +513,7 @@ $(document).on('blur', '.manual-input-field', function () {
     if (!isNaN(ratio) && ratio > 0) {
         $('.sub-title.truncate').text(`${Math.round(gram)}g`);
         updateUIWithRatio(ratio);
+        updateNextButtonData();
     }
 });
 
@@ -445,6 +525,7 @@ $(document).on('click', '.easy-input', function () {
     const gram = Math.round(base * ratio);
     $('.sub-title.truncate').text(`${gram}g`);
     updateUIWithRatio(window.lastPortionRatio);
+    updateNextButtonData();
 });
 
 $(document).on('click', '.portion-item', function () {
@@ -466,6 +547,7 @@ $(document).on('click', '.portion-item', function () {
     // 이하 updateUIWithRatio 호출
     window.lastPortionRatio = ratio;
     updateUIWithRatio(ratio);
+    updateNextButtonData();
 });
 
 // portion-item 클릭 시 → 비율 저장 및 UI 갱신

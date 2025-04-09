@@ -1,5 +1,10 @@
-import { showMain, showReport, resetHomeMealView, resetSearchView } from './routers.js';
+import { showMain, showReport, resetHomeMealView, resetSearchView, resetRegistView } from './routers.js';
 
+window.lastMainPath = '/main';
+
+export function setLastMainPath(path) {
+    window.lastMainPath = path;
+}
 $(document).ready(function () {
     let lastMainPath = '/main';
     const navMap = {
@@ -84,65 +89,39 @@ $(document).ready(function () {
     });
 
     // nav 클릭 이벤트
+
     Object.entries(navMap).forEach(([key, { selector }]) => {
         $(selector).on('click', function (e) {
             e.preventDefault();
             const currentPath = window.location.pathname;
-            let targetPath;
-
+    
             if (key === '/main') {
-                // 여기에 두 번 눌렀을 때 /main 이동 조건 추가
                 if (currentPath.startsWith('/main')) {
                     if (currentPath === lastMainPath && currentPath !== '/main') {
-                        // 두 번 눌렀을 때 초기화
                         lastMainPath = '/main';
                         history.pushState({ view: 'main' }, '', '/main');
                         showPage('/main');
                         resetHomeMealView();
                         resetSearchView();
+                        resetRegistView();
                         return;
-                    }
-                }
-
-                if (!currentPath.startsWith('/main')) {
-                    const savedLastMainPath = lastMainPath;
-                
-                    history.replaceState({ view: 'main' }, '', '/main');
-                
-                    const parts = savedLastMainPath.split('/');
-                    const meal = parts[2];
-                    const subpage = parts[3];
-                    const type = parts[4];
-                    const itemId = parts[5];
-                
-                    if (meal && subpage && type && itemId) {
-                        // ex: /main/morning/regist/processed/87
-                        const registPath = `/main/${meal}/regist`;
-                        const fullPath = savedLastMainPath;
-                
-                        history.pushState({ view: 'main' }, '', `/main/${meal}`);
-                        history.pushState({ view: 'main' }, '', registPath);
-                        history.pushState({ view: 'main' }, '', fullPath);
-                    } else if (meal && subpage) {
-                        // ex: /main/morning/regist
-                        history.pushState({ view: 'main' }, '', `/main/${meal}`);
-                        history.pushState({ view: 'main' }, '', savedLastMainPath);
                     } else {
-                        history.pushState({ view: 'main' }, '', savedLastMainPath);
+                        lastMainPath = currentPath;
                     }
-                
-                    showPage(savedLastMainPath);
                 } else {
-                    // 그냥 다시 진입
                     history.pushState({ view: 'main' }, '', lastMainPath);
                     showPage(lastMainPath);
                 }
             } else {
+                if (currentPath.startsWith('/main')) {
+                    lastMainPath = currentPath;
+                }
                 history.pushState({ view: key.slice(1) }, '', key);
                 showPage(key);
             }
         });
     });
+    
 
     
 
@@ -171,39 +150,40 @@ $(document).ready(function () {
         if (parts.length < 3) return;
       
         const meal = parts[2]; // 'morning', 'lunch', etc
-      
+        
         // ---------------------------------------------
         // 1. /main/{meal}/regist → from home-meal
         // ---------------------------------------------
         if ($btn.hasClass('home-meal')) {
-          const newPath = `/main/${meal}/regist`;
-          history.pushState({ view: 'main', meal }, '', newPath);
-          showPage(newPath);
+            const newPath = `/main/${meal}/regist`;
+            history.pushState({ view: 'main', meal }, '', newPath);
+            showPage(newPath);
         }
-      
+        
         // ---------------------------------------------
         // 2. /main/{meal}/regist/{id} → from home-meal-regist
         // ---------------------------------------------
         else if ($btn.hasClass('home-meal-search')) {
             const registFoodData = {
-              id: $btn.attr('data-id'),
-              type: $btn.attr('data-type'),
-              name: $btn.attr('data-name'),
-              weight: $btn.attr('data-weight'),
-              kcal: $btn.attr('data-kcal'),
-              carbo: $btn.attr('data-carbo'),
-              protein: $btn.attr('data-protein'),
-              fat: $btn.attr('data-fat'),
+                id: $btn.attr('data-id'),
+                type: $btn.attr('data-type'),
+                name: $btn.attr('data-name'),
+                weight: $btn.attr('data-weight'),
+                kcal: $btn.attr('data-kcal'),
+                carbo: $btn.attr('data-carbo'),
+                protein: $btn.attr('data-protein'),
+                fat: $btn.attr('data-fat'),
             };
-          
+            
             if (!registFoodData.id || !registFoodData.type) return;
-          
+            
             // `_food` 제거
             const pureType = registFoodData.type.replace('_food', '');
-          
+            
             const newPath = `/main/${meal}/regist/${pureType}/${registFoodData.id}`;
             history.pushState({ view: 'main', meal, itemId: registFoodData.id }, '', newPath);
             showPage(newPath, userConsumedData, registFoodData);
+            console.log(newPath);
           }
           
       });

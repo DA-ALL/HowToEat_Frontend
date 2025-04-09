@@ -190,10 +190,10 @@ export function initMealSearchTab() {
 }
 
 // 검색 input에서 엔터나 검색 버튼 클릭 시, 조회 시작
-$(document).on('keydown', '.input-search', function (e) {
+$(document).on('keyup', '.input-search', function (e) {
     if (e.key === 'Enter') {
         const keyword = $(this).val().trim();
-        $(this).blur(); // ✅ 키보드 내리기
+        $(this).blur();
         handleMealSearch(keyword);
     }
 });

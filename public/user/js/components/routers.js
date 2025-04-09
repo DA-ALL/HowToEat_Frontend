@@ -1,7 +1,7 @@
 import { renderMealDetail } from '../homeMeal.js';
 import { initHeaderNav } from '../headerNav.js';
 import { renderMealSearch } from '../homeMealSearch.js';
-import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations } from '../homeMealRegist.js';
+import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../homeMealRegist.js';
 
 const userConsumedDataTest = {
     date: "2025-04-09",
@@ -33,15 +33,24 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
         $('#home').show(); // /main
         return;
     }
-
+    
     if (meal && !subpage && !type) {
         if ($('#homeMeal').children().length === 0) {
-            // 한 번만 렌더링
-            $('#homeMeal').html(renderMealDetail(meal, userConsumedData));
+            // 저장된 데이터 불러오기
+            const saved = localStorage.getItem(`mealData_${meal}`);
+            const savedFood = saved ? JSON.parse(saved) : null;
+    
+            // userConsumedDataTest 사용 + food 데이터 합산
+            const merged = mergeConsumedData(userConsumedDataTest, savedFood);
+    
+
+            $('#homeMeal').html(renderMealDetail(meal, merged));
             initHeaderNav($('#homeMeal'));
         }
         $('#homeMeal').show();
     }
+    
+    
 
     if (meal && subpage === 'regist' && !type) {
         // /main/morning/search
@@ -57,15 +66,14 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     if (meal && subpage === 'regist' && type) {
         // /main/morning/search
         if ($('#homeMealRegist').children().length === 0) {
-            console.log("=========정보출력=========")
-            console.log("userConsumedData = ", userConsumedDataTest);
-            console.log("registFoodData = ", registFoodDataTest);
             $('#homeMealRegist').html(renderIncreaseCPFbar(meal, userConsumedDataTest, registFoodDataTest));
             $('#homeMealRegist').append(renderMealRegist(meal, userConsumedDataTest, registFoodDataTest));
             $('#homeMealRegist').append(renderMealAdjust(meal, userConsumedDataTest, registFoodDataTest));
             initHeaderNav($('#homeMealRegist'));
             runAllCountAnimations();
-            $('html, body').scrollTop(0); 
+            $('html, body').scrollTop(0);
+
+            updateNextButtonData();
         }
 
         $('#homeMealRegist').show();
@@ -79,9 +87,35 @@ export function showReport() {
 }
 
 export function resetHomeMealView() {
-    $('#homeMeal').html('');
+    $('#homeMeal').empty();
 }
 
 export function resetSearchView() {
-    $('#homeMealSearch').html('');
+    $('#homeMealSearch').empty();
+}
+
+export function resetRegistView() {
+    $('#homeMealRegist').empty();
+}
+
+function mergeConsumedData(user, food) {
+    if (!food) return user;
+
+    console.log(user.date);
+    console.log(food);
+    return {
+        date: user.date,
+        carbo: {
+            consumed: user.carbo.consumed + food.carbo,
+            target: user.carbo.target
+        },
+        protein: {
+            consumed: user.protein.consumed + food.protein,
+            target: user.protein.target
+        },
+        fat: {
+            consumed: user.fat.consumed + food.fat,
+            target: user.fat.target
+        }
+    };
 }
