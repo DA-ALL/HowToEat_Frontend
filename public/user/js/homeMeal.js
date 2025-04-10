@@ -134,7 +134,7 @@ function renderMealListItem(item) {
             <div class="text-wrapper">
                 <span class="weight">${item.weight}g</span>
                 <span class="divide">/</span>
-                <span class="kcal">${item.kcal}g</span>
+                <span class="kcal">${item.kcal}kcal</span>
                 <div class="image-arrow">
                     <img src="/user/images/icon_arrow_front.png">
                 </div>

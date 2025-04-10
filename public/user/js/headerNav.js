@@ -1,4 +1,6 @@
 // headerNav.js
+import { showPage } from './components/nav-bottom.js';
+
 export function initHeaderNav(parentSelector = 'body') {
     const $container = $(parentSelector);
     const $headerNav = $container.find('#headerNav');
@@ -62,7 +64,22 @@ export function initHeaderNav(parentSelector = 'body') {
 
     // 이벤트 바인딩 (SPA에서도 작동하도록 매번 재바인딩)
     $headerNav.find('.button-prev').on('click', function () {
-        window.history.back(); // 이전 페이지로 돌아가기
+        const currentPath = window.location.pathname;
+    
+        if (currentPath.startsWith('/main/') && currentPath.split('/').length === 3) {
+            // 예: /main/morning → 홈으로
+            history.pushState({ view: 'main' }, '', '/main');
+            showPage('/main');
+        } else if (currentPath.startsWith('/main/') && currentPath.includes('/regist')) {
+            // 예: /main/morning/regist → 아침 식단 목록으로
+            const meal = currentPath.split('/')[2];
+            history.pushState({ view: 'main' }, '', `/main/${meal}`);
+            showPage(`/main/${meal}`);
+        } else {
+            // 기본 동작: 브라우저 history 사용
+            window.history.back();
+        }
+    
         if (parentSelector != 'body') {
             $container.empty();
         }

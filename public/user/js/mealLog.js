@@ -1,8 +1,8 @@
-export function getMealLog() {
+export function getMealLog(date) {
     return `
         <div class="meal-log-title">식사기록</div>
         <div class="log-container">
-            <div class="log-wrapper">
+            <div class="log-wrapper" data-date="${date}">
                 <div class="meal-time">아침</div>
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">542</div>
@@ -13,7 +13,7 @@ export function getMealLog() {
                     </div>
                 </div>
             </div>
-            <div class="log-wrapper">
+            <div class="log-wrapper" data-date="${date}">
                 <div class="meal-time">점심</div>
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">542</div>
@@ -24,7 +24,7 @@ export function getMealLog() {
                     </div>
                 </div>
             </div>
-            <div class="log-wrapper">
+            <div class="log-wrapper" data-date="${date}">
                 <div class="meal-time">저녁</div>
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">542</div>
@@ -35,7 +35,7 @@ export function getMealLog() {
                     </div>
                 </div>
             </div>
-            <div class="log-wrapper">
+            <div class="log-wrapper" data-date="${date}">
                 <div class="meal-time">간식</div>
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">0</div>

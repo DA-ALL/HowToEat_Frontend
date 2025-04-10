@@ -45,7 +45,10 @@ $(document).ready(function () {
         "2025-04-05": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
         "2025-04-06": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
         "2025-04-07": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-        "2025-04-08": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 }
+        "2025-04-09": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
+        "2025-04-10": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
+        "2025-04-11": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
+        "2025-04-12": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 }
     };
 
 
@@ -131,7 +134,7 @@ $(document).ready(function () {
                 info.fatRawPercent, info.fatPercent
             ));
 
-            $("#mealLog").html(getMealLog());
+            $("#mealLog").html(getMealLog(selected));
         });
 
         if(updateCPF) {            

@@ -5,25 +5,60 @@ window.lastMainPath = '/main';
 export function setLastMainPath(path) {
     window.lastMainPath = path;
 }
+
+const navMap = {
+    '/main': {
+        selector: '.item-wrapper.home',
+        defaultIcon: '/user/images/icon_home.png',
+        activeIcon: '/user/images/icon_home_active.png'
+    },
+    '/report': {
+        selector: '.item-wrapper.report',
+        defaultIcon: '/user/images/icon_report.png',
+        activeIcon: '/user/images/icon_report_active.png'
+    },
+    '/my-page': {
+        selector: '.item-wrapper.mypage',
+        defaultIcon: '/user/images/icon_mypage.png',
+        activeIcon: '/user/images/icon_mypage_active.png'
+    }
+};
+
+// 뷰 전환 함수
+export function showPage(path, userConsumedData = null, registFoodData = null) {
+    $('#main, #report').hide();
+
+    if (path.startsWith('/main')) {
+        lastMainPath = path;
+        $('#main').show();
+
+        const parts = path.split('/');
+        const meal = parts[2];      // morning
+        const regist = parts[3];   // regist 등
+        const type = parts[4];     // ingredient 등
+
+        showMain(meal, regist, type, userConsumedData, registFoodData);
+    }
+    else if (path.startsWith('/report')) {
+        $('#report').show();
+        showReport();
+    }
+
+    updateNavActive(path);
+}
+
+// 활성 nav 설정
+function updateNavActive(path) {
+    Object.entries(navMap).forEach(([key, { selector, defaultIcon, activeIcon }]) => {
+        const $el = $(selector);
+        const isActive = path.startsWith(key);
+        $el.toggleClass('active', isActive);
+        $el.find('.icon img').attr('src', isActive ? activeIcon : defaultIcon);
+    });
+}
+
 $(document).ready(function () {
     let lastMainPath = '/main';
-    const navMap = {
-        '/main': {
-            selector: '.item-wrapper.home',
-            defaultIcon: '/user/images/icon_home.png',
-            activeIcon: '/user/images/icon_home_active.png'
-        },
-        '/report': {
-            selector: '.item-wrapper.report',
-            defaultIcon: '/user/images/icon_report.png',
-            activeIcon: '/user/images/icon_report_active.png'
-        },
-        '/my-page': {
-            selector: '.item-wrapper.mypage',
-            defaultIcon: '/user/images/icon_mypage.png',
-            activeIcon: '/user/images/icon_mypage_active.png'
-        }
-    };
 
     // 이미지 프리로드
     Object.values(navMap).forEach(({ defaultIcon, activeIcon }) => {
@@ -37,39 +72,6 @@ $(document).ready(function () {
         lastMainPath = currentPath;
     }
 
-    // 활성 nav 설정
-    function updateNavActive(path) {
-        Object.entries(navMap).forEach(([key, { selector, defaultIcon, activeIcon }]) => {
-            const $el = $(selector);
-            const isActive = path.startsWith(key);
-            $el.toggleClass('active', isActive);
-            $el.find('.icon img').attr('src', isActive ? activeIcon : defaultIcon);
-        });
-    }
-
-    // 뷰 전환 함수
-    function showPage(path, userConsumedData = null, registFoodData = null) {
-        $('#main, #report').hide();
-    
-        if (path.startsWith('/main')) {
-            lastMainPath = path;
-            $('#main').show();
-    
-            const parts = path.split('/');
-            const meal = parts[2];      // morning
-            const regist = parts[3];   // regist 등
-            const type = parts[4];     // ingredient 등
-    
-            showMain(meal, regist, type, userConsumedData, registFoodData);
-        } 
-        else if (path.startsWith('/report')) {
-            $('#report').show();
-            showReport();
-        }
-    
-        updateNavActive(path);
-    }
-    
     // 아침 점심 저녁 별 섭취햇던 칼로리 데이터 이 데이터를 나중에 Ajax로 호출
     const userConsumedData = {
         date: "2025-04-09",
@@ -83,9 +85,14 @@ $(document).ready(function () {
         const mealMap = { '아침': 'morning', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
         const meal = mealMap[mealKor] || 'morning';
         const newPath = `/main/${meal}`;
-
+        const selectedDate = $('.day.active').data('date') || userConsumedData.date;
+        const updatedConsumedData = {
+            ...userConsumedData,
+            date: selectedDate
+        };
+        console.log(selectedDate);
         history.pushState({ view: 'main', meal }, '', newPath);
-        showPage(newPath, userConsumedData);
+        showPage(newPath, updatedConsumedData);
     });
 
     // nav 클릭 이벤트
@@ -94,7 +101,7 @@ $(document).ready(function () {
         $(selector).on('click', function (e) {
             e.preventDefault();
             const currentPath = window.location.pathname;
-    
+
             if (key === '/main') {
                 if (currentPath.startsWith('/main')) {
                     if (currentPath === lastMainPath && currentPath !== '/main') {
@@ -121,36 +128,36 @@ $(document).ready(function () {
             }
         });
     });
-    
 
-    
+
+
 
     // 뒤로가기 이벤트 처리
     window.addEventListener('popstate', () => {
         const path = window.location.pathname;
-    
+
         // 강제 초기화 -> 안하면 페이지 새로 안그려줌
         if (path.includes('/regist')) {
             $('#homeMealRegist').empty();
         }
-    
+
         if (path.startsWith('/main')) {
             lastMainPath = path;
         }
-    
+
         showPage(path);
     });
-    
+
 
     $(document).on('click', '.next-button.active', function () {
         let $btn = $(this);
         const currentPath = window.location.pathname; // ex: /main/morning
         const parts = currentPath.split('/');
-      
+
         if (parts.length < 3) return;
-      
+
         const meal = parts[2]; // 'morning', 'lunch', etc
-        
+
         // ---------------------------------------------
         // 1. /main/{meal}/regist → from home-meal
         // ---------------------------------------------
@@ -159,7 +166,7 @@ $(document).ready(function () {
             history.pushState({ view: 'main', meal }, '', newPath);
             showPage(newPath);
         }
-        
+
         // ---------------------------------------------
         // 2. /main/{meal}/regist/{id} → from home-meal-regist
         // ---------------------------------------------
@@ -174,20 +181,20 @@ $(document).ready(function () {
                 protein: $btn.attr('data-protein'),
                 fat: $btn.attr('data-fat'),
             };
-            
+
             if (!registFoodData.id || !registFoodData.type) return;
-            
+
             // `_food` 제거
             const pureType = registFoodData.type.replace('_food', '');
-            
+
             const newPath = `/main/${meal}/regist/${pureType}/${registFoodData.id}`;
             history.pushState({ view: 'main', meal, itemId: registFoodData.id }, '', newPath);
             showPage(newPath, userConsumedData, registFoodData);
             console.log(newPath);
-          }
-          
-      });
-      
+        }
+
+    });
+
 
     // 초기 렌더링
     showPage(currentPath);
