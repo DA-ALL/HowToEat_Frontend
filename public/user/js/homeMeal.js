@@ -8,7 +8,7 @@ export function renderMealDetail(mealKey, data) {
     const commonHeader = `
         <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
         <div class="home-meal-container padding">
-            <div class="title-format">${mealKor}의 탄단지</div>
+            <div class="second-title-format">${mealKor}의 탄단지</div>
             ${createBarContainer(mealKey, data)}
         </div>
         <div class="divider large"></div>
@@ -18,14 +18,14 @@ export function renderMealDetail(mealKey, data) {
         return `
             ${commonHeader}
             <div class="meal-list-container padding">
-                <div class="title-format">${mealKor} 리스트</div>
+                <div class="second-title-format">${mealKor} 리스트</div>
             </div>
         `;
     } else {
         return `
             ${commonHeader}
             <div class="meal-list-container padding">
-                <div class="title-format">${mealKor}의 식단</div>
+                <div class="second-title-format">${mealKor}의 식단</div>
                 <div class="meal-list-wrapper">
                     ${renderMealListHTML(mealKey)}
                 </div>
@@ -130,7 +130,7 @@ function renderMealListHTML(mealKey) {
 function renderMealListItem(item) {
     return `
         <div class="meal-list-item">
-                <div class="meal-title">${item.name}</div>
+            <div class="meal-title">${item.name}</div>
             <div class="text-wrapper">
                 <span class="weight">${item.weight}g</span>
                 <span class="divide">/</span>

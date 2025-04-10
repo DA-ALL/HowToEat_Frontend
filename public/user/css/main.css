@@ -45,6 +45,13 @@ html, body {
     margin-bottom: clamp(24px, 9.6vw, 48px);
 }
 
+.second-title-format {
+    font-size: clamp(16px, 5.336vw, 26.67px);
+    font-weight: 600;
+    color: var(--black100);
+    margin-bottom: clamp(20px, 6.4vw, 28px);
+}
+
 .truncate {
   overflow: hidden;
   white-space: nowrap;

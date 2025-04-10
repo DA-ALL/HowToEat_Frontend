@@ -252,6 +252,7 @@ function createBar(mealKey, type, consumed, newConsumed, target, percent, rawPer
             </style>
         </div>
     `;
+    
 }
 
 // 메시지 텍스트 생성 (과섭취 여부에 따라 문구 다름)
@@ -356,8 +357,6 @@ $(document).on('click', '#registButton', function () {
 });
 
 
-
-
 // 주어진 비율로 전체 UI 업데이트 (amount, bar, message, 색상, consumed 텍스트 포함)
 function updateUIWithRatio(ratio) {
     const regist = window.registFoodData;
@@ -435,7 +434,6 @@ export function updateNextButtonData() {
     const carbo = $('.food-info-wrapper .amount.carbo').text().replace('g', '').trim();
     const protein = $('.food-info-wrapper .amount.protein').text().replace('g', '').trim();
     const fat = $('.food-info-wrapper .amount.fat').text().replace('g', '').trim();
-
     const $buttons = $('.next-button.favorite, .next-button.active');
 
     $buttons.each(function () {

@@ -90,7 +90,9 @@ $(document).ready(function () {
             ...userConsumedData,
             date: selectedDate
         };
-        console.log(selectedDate);
+        resetHomeMealView();
+        resetSearchView();
+        resetRegistView();
         history.pushState({ view: 'main', meal }, '', newPath);
         showPage(newPath, updatedConsumedData);
     });
@@ -190,7 +192,6 @@ $(document).ready(function () {
             const newPath = `/main/${meal}/regist/${pureType}/${registFoodData.id}`;
             history.pushState({ view: 'main', meal, itemId: registFoodData.id }, '', newPath);
             showPage(newPath, userConsumedData, registFoodData);
-            console.log(newPath);
         }
 
     });

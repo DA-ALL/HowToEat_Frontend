@@ -69,8 +69,8 @@
     justify-content: space-between;
     align-items: center;
     padding: clamp(14px, 2px + 3.2vw, 18px) clamp(6px, 1.6vw, 8px);
-
     border-bottom: 1px solid #eee;
+    cursor: pointer;
 }
 
 #homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-title {
@@ -102,10 +102,6 @@
     font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
     font-weight: 500;
     color: var(--gray300);
-}
-
-#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .text-wrapper .kcal {
-
 }
 
 #homeMeal .meal-list-container .meal-list-wrapper .image-arrow {

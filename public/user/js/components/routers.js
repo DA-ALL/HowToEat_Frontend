@@ -23,6 +23,12 @@ const registFoodDataTest = {
 }
 
 export function showMain(meal = null, subpage = null, type = null, userConsumedData = null, registFoodData = null) {
+    const saved = localStorage.getItem(`mealData_${meal}`);
+    const savedFood = saved ? JSON.parse(saved) : null;
+    const merged = mergeConsumedData(userConsumedDataTest, savedFood);
+    console.log(merged);
+
+
     $('#report').hide();
     $('#main').show();
 
@@ -37,12 +43,6 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     if (meal && !subpage && !type) {
         if ($('#homeMeal').children().length === 0) {
             // 저장된 데이터 불러오기
-            const saved = localStorage.getItem(`mealData_${meal}`);
-            const savedFood = saved ? JSON.parse(saved) : null;
-    
-            // userConsumedDataTest 사용 + food 데이터 합산
-            const merged = mergeConsumedData(userConsumedDataTest, savedFood);
-    
 
             $('#homeMeal').html(renderMealDetail(meal, merged));
             initHeaderNav($('#homeMeal'));
@@ -56,7 +56,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
         // /main/morning/search
         if ($('#homeMealSearch').children().length === 0) {
 
-            $('#homeMealSearch').html(renderMealSearch(meal));
+            $('#homeMealSearch').html(renderMealSearch(meal, merged, registFoodDataTest));
             initHeaderNav($('#homeMealSearch'));
         }
 
@@ -64,20 +64,22 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     }
 
     if (meal && subpage === 'regist' && type) {
-        // /main/morning/search
         if ($('#homeMealRegist').children().length === 0) {
             $('#homeMealRegist').html(renderIncreaseCPFbar(meal, userConsumedDataTest, registFoodDataTest));
             $('#homeMealRegist').append(renderMealRegist(meal, userConsumedDataTest, registFoodDataTest));
             $('#homeMealRegist').append(renderMealAdjust(meal, userConsumedDataTest, registFoodDataTest));
             initHeaderNav($('#homeMealRegist'));
             runAllCountAnimations();
-            $('html, body').scrollTop(0);
+            $(".bar-front.bar-increase").hide();
+            $(".bar-front.bar-increase").show();
 
+            $('html, body').scrollTop(0);
             updateNextButtonData();
         }
-
+    
         $('#homeMealRegist').show();
     }
+    
 }
 
 
