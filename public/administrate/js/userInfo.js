@@ -167,6 +167,15 @@ onPopstate(loadDailyCalorieTable);
 // 칼로리 테이블 row 클릭
 $(document).on('click', `#dailyCalorieTable tr`, function () {
     console.log("칼로리 row 클릭됨", $(this).find('.td-id').text());
+
+    let calorieDetailHtml = `
+        <div id="calorieDetail">
+            <div class="detail-wrapper">sra</div>
+        </div>
+    `;
+
+    $("body").append(calorieDetailHtml);
+
 });
 
 

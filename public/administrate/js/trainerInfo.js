@@ -1,6 +1,7 @@
 import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
-import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/components/userTable.js';
-import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
+import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/components/userTableWithDelete.js';
+import { showAddPtMember } from '/administrate/js/components/addPtMember.js';
+import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
 
 
 export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranch }, previousContent) {
@@ -39,7 +40,7 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
             <div class="table-wrapper">
                 <div class="table-title-wrapper">
                     <div class="table-title">PT 회원 목록</div>
-                    <div class="add-button-wrapper">
+                    <div id="memberAddButton" class="add-button-wrapper">
                         <div class="label-add">회원 추가하기</div>
                         <div class="icon-add">
                             <img src="/administrate/images/icon_add_red.png"></img>
@@ -64,12 +65,11 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
     });
 }
 
+const containerId = 'ptUserTable';
+const bodyId = 'ptUserTableBody';
+const contentId = 'trainerInfo';
 
 function loadUserTable() {
-    const containerId = 'ptUserTable';
-    const bodyId = 'ptUserTableBody';
-    const contentId = 'trainerInfo';
-
     renderUserTable(containerId, bodyId);
     renderTableWithOptionalPagination({
         getData: getUserDataForUserTable,
@@ -79,6 +79,16 @@ function loadUserTable() {
     })
 }
 
+// ptUserTableBody row 클릭시 
+$(document).on('click', `#${bodyId} tr`, function () {
+    const userId = $(this).find('.td-id').text();
+    const pathSegments = window.location.pathname.split("/").slice(2);
+    const fullPath = pathSegments.join("/");
+    const page = fullPath + `/user/${userId}`;
+    updateURL(page);
+
+    renderUserInfo(getUserInfo(), 'user-management/pt');
+});
 
 
 export function getTrainerInfo() {
@@ -104,15 +114,19 @@ function getUserDataForUserTable() {
 }
 
 
-onPopstate(loadUserTable);
-
+onPopstate(renderTrainerInfo(getTrainerInfo(), getCurrentContent()));
 
 
 $(document).ready(function () {
     const pathSegments = window.location.pathname.split('/');
     const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
-    
-    
-    console.log("Asdfasdf");
-    renderTrainerInfo(getTrainerInfo(), getCurrentContent());    
+    if(userId) {
+        renderTrainerInfo(getTrainerInfo(), getCurrentContent());    
+    }      
+});
+
+
+// 회원 추가하기 클릭시
+$(document).on('click', `#memberAddButton`, function () {
+    showAddPtMember();
 });

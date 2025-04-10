@@ -27,13 +27,19 @@ export function createUserRow({ id, imageURL, name, mealCount, joined, left, gym
                     <div class="user-role-button ${role}">${role == 'super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
                 </div>
             </td>
+            <td class="td-delete">
+                <div class="delete-user-button-wrapper">
+                    <div class="delete-user-button" data-user-id="${id}">삭제</div>
+                </div>
+            </td>
+
         </tr>
     `;
 }
 
 export function renderUserTable(containerId, bodyId) {
     const tableHTML = `
-        <table class="user-table">
+        <table class="user-table-with-delete">
             <thead>
                 <tr>
                     <th class="th-id">ID</th>
@@ -43,6 +49,7 @@ export function renderUserTable(containerId, bodyId) {
                     <th class="th-account-closed-at">탈퇴일</th>
                     <th class="th-gym-user">넥스트짐 등록 여부</th>
                     <th class="th-user-role">권한</th>
+                    <th class="th-delete">삭제</th>
                 </tr>
             </thead>
             <tbody id="${bodyId}"></tbody>
@@ -71,7 +78,7 @@ export function renderTableWithOptionalPagination({
         renderPagination({
             contentId,
             totalItems: allData.length,
-            itemsPerPage: usersPerPage,
+            itemsPerPage: usersPerPage, 
             currentPage: page,
             onPageChange: (newPage) => {
                 updateQueryParam({ page: newPage });
@@ -98,103 +105,15 @@ function getPageFromURL(contentId) {
     }
 }
 
-// 유저권한 변경 버튼
-$(document).on('click', '.user-role-button', function (e) {
+
+// 삭제 버튼 클릭 시
+$(document).on('click', '.delete-user-button', function (e) {
     e.stopPropagation();
+    const userId = $(this).data('user-id');
+    console.log(`사용자 ID ${userId} 삭제 요청`);
 
-    let dropdownMaster =`
-        <div id="roleChangeDropdown">
-            <div class="role-item master">Master</div>
-        </div>
-    `
-    let dropdownOther = `
-        <div id="roleChangeDropdown">
-            <div class="role-item admin">Admin</div>
-            <div class="role-item user">User</div>
-            <div class="role-item super-user">SuperUser</div>
-        </div>
-    `
-    const $button = $(this);
-    const offset = $button.offset(); // 버튼의 위치 가져오기
-
-    // 기존 dropdown이 있으면 삭제 (토글 효과)
-    if ($('#roleChangeDropdown').length) {
-        $('#roleChangeDropdown').remove();
-        return;
-    }
-
-    // 버튼이 master 클래스인지 확인 후 드롭다운 선택
-    const dropdownHTML = $button.hasClass('master') ? dropdownMaster : dropdownOther;
-
-    // Dropdown 생성 및 위치 지정
-    const $dropdown = $(dropdownHTML).css({
-        position: 'absolute',
-        top: offset.top + $button.outerHeight() + 5, // 버튼 아래에 배치
-        left: offset.left - 10,
-        zIndex: 1000
-    });
-
-    $('body').append($dropdown);
-
-    showCustomAlert(1);
+    // TODO: 실제 삭제 API 호출
     
-    // 다른 곳 클릭 시 닫기
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('.user-role-button, #roleChangeDropdown').length) {
-            $('#roleChangeDropdown').remove();
-        }
-    });
-});
-
-$(document).on('click', '.role-item', function () {
-    // TODO: role 변경 API 호출
-    console.log("role변경 API 호출");
-
-    const isOk = true;
-    
-    if(isOk){
-        
-    }
-    
-    $('#roleChangeDropdown').remove();
-});
-
-// 넥스트짐 유저 여부 변경 UI
-$(document).on('click', '.image-gym-user', function (e) {
-    e.stopPropagation();
-    console.log("gym-user 버튼 클릭");
-    let dropdownHTML =`
-        <div id="gymUserDropdown">
-            <div class="gym-user-item gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>
-            <div class="gym-user-item not-gym-user">-</div>
-        </div>
-    `
-    const $button = $(this);
-    const offset = $button.offset(); // 버튼의 위치 가져오기
-
-    if ($('#gymUserDropdown').length) {
-        $('#gymUserDropdown').remove();
-        return;
-    }
-
-    const $dropdown = $(dropdownHTML).css({
-        position: 'absolute',
-        top: offset.top + $button.outerHeight() + 5, // 버튼 아래에 배치
-        left: offset.left - 10,
-        zIndex: 1000
-    });
-
-    $('body').append($dropdown);
-
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('.image-gym-user, #gymUserDropdown').length) {
-            $('#gymUserDropdown').remove();
-        }
-    });
-});
-
-$(document).on('click', '.gym-user-item', function () {
-    // TODO: role 변경 API 호출
-    console.log("gymuser 변경 API 호출");
-    $('#gymUserDropdown').remove();
+    showCustomAlert(2); 
+    // 예시: 삭제 후 테이블 다시 렌더링할 경우 필요한 콜백 추가 가능
 });

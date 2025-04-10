@@ -16,7 +16,7 @@
     flex-direction: column;
     align-items: center;
     gap: 25px;
-    padding: 36px 14px;
+    padding: 49px 60px;
     background-color: var(--white300);
     border-radius: 16px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
@@ -45,17 +45,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
 #customAlert .alert-text-wrapper .alert-text-title {
-    font-size: 17px;
+    font-size: 24px;
     font-weight: 600;
     color: var(--black100);
+    text-align: center;
 }
 
 #customAlert .alert-text-wrapper .alert-text-sub {
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 400;
     color: var(--gray400);
 }
@@ -66,9 +68,12 @@
     color: var(--red500);
 }
 
-#customAlert .alert-wrapper .alert-button-wrapper {
-    display: flex;
-    gap: 12px;
+#customAlert .alert-wrapper .alert-button-wrapper .alert-button-one-ok{
+    width: 100%;
+    color: var(--white300);
+    background-color: var(--red500);
+    padding: 12px 98px;
+    border-radius: 8px;
 }
 
 #customAlert .alert-wrapper .alert-button-wrapper .alert-button-ok{
@@ -81,8 +86,23 @@
 
 #customAlert .alert-wrapper .alert-button-wrapper .alert-button-cancel{
     width: 100%;
-    color: var(--white300);
-    background-color: var(--gray200);
-    padding: 11px 0px;
+    background-color: var(--gray100);
+    padding: 12px 0px;
     border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white300);
+    text-align: center;
+}
+
+
+#customAlert .alert-wrapper .alert-button-wrapper .alert-button-delete{
+    width: 100%;
+    background-color: var(--red500);
+    padding: 12px 0px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white300);
+    text-align: center;
 }
