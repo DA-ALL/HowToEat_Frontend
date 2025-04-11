@@ -1,10 +1,14 @@
 import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
-import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/components/userTableWithDelete.js';
-import { showAddPtMember } from '/administrate/js/components/addPtMember.js';
+import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/ptUserManagement/userTableWithDelete.js';
+import { showAddPtMember } from '/administrate/js/ptUserManagement/addPtMember.js';
 import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
 
 
 export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranch }, previousContent) {
+    if (previousContent) {
+        sessionStorage.setItem('previousContentTrainer', previousContent);
+    }
+
     let trainerInfoHtml = `
         <div class="nav-top">
             <div class="back-button-wrapper">
@@ -61,7 +65,13 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
 
     // 뒤로가기 버튼 클릭
     $(document).on('click', `#trainerInfo .back-button-wrapper`, function () {
-        updateURL(previousContent);
+        const prev = sessionStorage.getItem('previousContentTrainer');
+        if (prev) {
+            updateURL(prev);
+        } else {
+            // fallback
+            window.history.back();
+        }
     });
 }
 
@@ -82,12 +92,15 @@ function loadUserTable() {
 // ptUserTableBody row 클릭시 
 $(document).on('click', `#${bodyId} tr`, function () {
     const userId = $(this).find('.td-id').text();
+    
     const pathSegments = window.location.pathname.split("/").slice(2);
+    const lastSegment = pathSegments[pathSegments.length - 1]; // 마지막 값 추출
+
     const fullPath = pathSegments.join("/");
     const page = fullPath + `/user/${userId}`;
     updateURL(page);
 
-    renderUserInfo(getUserInfo(), 'user-management/pt');
+    renderUserInfo(getUserInfo(), `user-management/pt/${lastSegment}`);
 });
 
 
@@ -96,7 +109,7 @@ export function getTrainerInfo() {
         imageURL: "/administrate/images/icon_human_blue.png",
         trainername: `김예현`,
         memberCount: 13,
-         gymBranch: '용인기흥구청점'
+        gymBranch: '용인기흥구청점'
     }
 }
 
@@ -114,14 +127,14 @@ function getUserDataForUserTable() {
 }
 
 
-onPopstate(renderTrainerInfo(getTrainerInfo(), getCurrentContent()));
+onPopstate(loadUserTable);
 
 
 $(document).ready(function () {
     const pathSegments = window.location.pathname.split('/');
     const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
     if(userId) {
-        renderTrainerInfo(getTrainerInfo(), getCurrentContent());    
+        renderTrainerInfo(getTrainerInfo(), 'user-management/pt');    
     }      
 });
 

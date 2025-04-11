@@ -1,5 +1,5 @@
 import { onPopstate, updateURL } from '/administrate/js/router.js';
-import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/components/userTable.js';
+import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/userManagement/userTable.js';
 import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
 
 const containerId = 'totalUserTable';

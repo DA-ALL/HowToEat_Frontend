@@ -1,9 +1,13 @@
 import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
-import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/components/userTable.js';
+import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/userManagement/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
 
 
 export function renderUserInfo({ imageURL, username, email, birth, goal, goalCalorie, streakDay }, previousContent) {
+    if (previousContent) {
+        sessionStorage.setItem('previousContent', previousContent);
+    }
+
     let userInfoHtml = `
         <div class="nav-top">
             <div class="back-button-wrapper">
@@ -64,10 +68,16 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
     loadDailyCalorieTable();
 
 
-    // 뒤로가기 버튼 클릭
     $(document).on('click', `#userInfo .back-button-wrapper`, function () {
-        updateURL(previousContent);
+        const prev = sessionStorage.getItem('previousContent');
+        if (prev) {
+            updateURL(prev);
+        } else {
+            // fallback
+            window.history.back();
+        }
     });
+
 }
 
 

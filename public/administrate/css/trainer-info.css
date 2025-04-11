@@ -117,7 +117,7 @@
 #trainerInfo .trainer-info-container .table-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: baseline;
+    align-items: center;
     width: 100%;
     gap: 34px;
 }
@@ -125,7 +125,8 @@
 #trainerInfo .trainer-info-container .table-wrapper .table-title-wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    width: 1440px;
     gap: 34px;
 }
 
@@ -178,3 +179,10 @@
     border-spacing: 0px;
 }
 
+#ptUserTable #ptUserTableBody tr {
+    cursor: pointer;
+}
+
+#ptUserTable #ptUserTableBody tr:hover {
+    background-color: #fff7f6;
+}

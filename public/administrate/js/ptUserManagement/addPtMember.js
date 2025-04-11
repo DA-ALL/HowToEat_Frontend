@@ -1,5 +1,5 @@
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
-import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/components/userTableAddPtMember.js';
+import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/ptUserManagement/userTableAddPtMember.js';
 
 export function showAddPtMember() {
 
