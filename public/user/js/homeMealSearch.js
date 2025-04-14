@@ -493,7 +493,7 @@ function createBar(mealKey, type, consumed, target, percent, rawPercent) {
                          style="width: ${percent}%; background: ${color};"></div>
                 </div>
                 <div class="text-wrapper">
-                    <span class="consumed ${type}" 
+                    <span class="consumed ${type} favorite" 
                           data-from="${consumed}" 
                           data-to="${consumed}" 
                           data-type="${type}" 
@@ -587,7 +587,7 @@ function updateCPFIncreaseBar(selectedItems) {
         `);
 
         // 숫자도 변경
-        const $el = $(`.consumed.${type}`);
+        const $el = $(`.consumed.${type}.favorite`);
         const from = parseFloat($el.attr('data-from')) || 0;
         const to = Math.round(newValue * 10) / 10;
         $el.attr({ 'data-from': from, 'data-to': to }).css('color', fontColor);

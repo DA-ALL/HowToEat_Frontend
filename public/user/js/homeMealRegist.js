@@ -224,7 +224,7 @@ function createBar(mealKey, type, consumed, newConsumed, target, percent, rawPer
                     <div class="bar-front ${type}" style="width: ${percent}%; background: ${color};"></div>
                 </div>
                 <div class="text-wrapper">
-                    <span class="consumed ${type}" 
+                    <span class="consumed ${type} search" 
                         data-from="${consumed}" 
                         data-to="${newConsumed}" 
                         data-type="${type}"
@@ -411,7 +411,7 @@ function updateUIWithRatio(ratio) {
         `);
 
         // consumed 텍스트 및 애니메이션
-        const $el = $(`.consumed.${type}`);
+        const $el = $(`.consumed.${type}.search`);
         const from = parseFloat($el.attr('data-from')) || 0;
         const to = Math.round(newValue * 10) / 10;
 
