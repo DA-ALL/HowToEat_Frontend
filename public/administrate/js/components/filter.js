@@ -1,4 +1,4 @@
-import { onPopstate, updateQueryParam, updateURLWithActiveElements} from '/administrate/js/router.js';
+import { onPopstate, updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
 
 export function renderFilters() {
     $('.filter-group').children().each(function () {
@@ -83,6 +83,19 @@ export function renderFilters() {
                         </div>
                     `;
                 break;
+            case 8:
+
+                const gyms = getGyms();
+
+                filterTemplate = `
+                        <div class="filter-title">헬스장</div>
+                        <div class="filter-option-wrapper" data-key="gym">
+                            ${gyms.map(gym => `
+                                <div class="filter-option" data-query="${gym.name == '전체' ? 'all' : gym.name}">${gym.name}(${gym.trainerCount})</div>
+                            `).join('')}
+                        </div>
+                    `;
+                break;
         }
 
         $filter.html(filterTemplate);
@@ -96,7 +109,7 @@ $(document).on('click', '.filter-option', function () {
     let queryValue = $(this).data('query');
 
     if (queryKey) {
-        updateQueryParam(queryKey, queryValue);
+        updateQueryParam({[queryKey] : queryValue});
     }
 
     $parent.find('.filter-option').removeClass('active');
@@ -106,7 +119,22 @@ $(document).on('click', '.filter-option', function () {
 
 export function loadFilter(){
     renderFilters();
-    updateURLWithActiveElements('userManagement');
+    syncFiltersWithURL();
+    // updateURLWithActiveFilters();
 }
 
 onPopstate(loadFilter);  
+
+
+function getGyms(){
+
+    return [
+        { name: '전체', trainerCount: 28},
+        { name: '용인기흥구청점', trainerCount: 7},
+        { name: '처인구청점', trainerCount: 6},
+        { name: '수원권선동점', trainerCount: 3},
+        { name: '이천마장점', trainerCount: 4},
+        { name: '이천중앙점', trainerCount: 5},
+        { name: '평택미전점', trainerCount: 6}
+    ]
+}

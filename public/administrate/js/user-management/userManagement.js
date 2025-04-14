@@ -1,7 +1,7 @@
 
-import { loadTotalUserTable } from '/administrate/js/totalUserTable.js';
-import { loadSearchBar } from '/administrate/js/searchbar.js';
-import { loadFilter } from '/administrate/js/filter.js';
+import { loadTotalUserTable } from '/administrate/js/user-management/totalUserTable.js';
+import { loadSearchBar } from '/administrate/js/components/searchbar.js';
+import { loadFilter } from '/administrate/js/components/filter.js';
 
 $(document).ready(function () {
     loadContent();
@@ -12,7 +12,7 @@ function loadContent() {
 
     let totalUserManagementHTML = `        
         <div class="title">전체 유저 관리</div>
-        <div id="searchbar" data-placeholder="유저명 검색"></div>
+        <div id="userManagementSearchbar" class="searchbar" data-placeholder="유저명 검색"></div>
 
         <div class="filter-group">
             <div id="filter" data-type="1"></div>
@@ -28,5 +28,3 @@ function loadContent() {
     loadSearchBar();
     loadFilter();
 }
-
-// onPopstate(loadContent);

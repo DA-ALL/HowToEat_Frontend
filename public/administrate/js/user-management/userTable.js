@@ -1,10 +1,10 @@
-import { onPopstate, updateQueryParam } from '/administrate/js/router.js';
-import { showCustomAlert } from '/administrate/js/customAlert.js';
+import { updateQueryParam , getCurrentContent} from '/administrate/js/router.js';
+import { showCustomAlert } from '/administrate/js/components/customAlert.js';
+import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 20;
-let currentPage = getPageFromURL() || 1; // URL에서 page 값 가져오기
 
-function createUserRow({ id, imageURL, name, mealCount, joined, left, gymUser, role }) {
+export function createUserRow({ id, imageURL, name, mealCount, joined, left, gymUser, role }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
@@ -24,17 +24,16 @@ function createUserRow({ id, imageURL, name, mealCount, joined, left, gymUser, r
             </td>
             <td class="td-user-role">
                 <div class="user-role-wrapper">
-                    <div class="user-role-button ${role}">${role=='super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
+                    <div class="user-role-button ${role}">${role == 'super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
                 </div>
             </td>
         </tr>
     `;
 }
 
-
-function renderUserTable() {
+export function renderUserTable(containerId, bodyId) {
     const tableHTML = `
-        <table>
+        <table class="user-table">
             <thead>
                 <tr>
                     <th class="th-id">ID</th>
@@ -46,87 +45,63 @@ function renderUserTable() {
                     <th class="th-user-role">권한</th>
                 </tr>
             </thead>
-            <tbody id="userTableBody"></tbody>
+            <tbody id="${bodyId}"></tbody>
         </table>
-        <div id="pagination"></div>`;
+        <div class="pagination"></div>`;
 
-    $('#totalUserTable').html(tableHTML);
-    renderPageData();
+    $(`#${containerId}`).html(tableHTML);
 }
 
-function renderPageData() {
-    const users = getUserData();
-    const start = (currentPage - 1) * usersPerPage;
+export function renderTableWithOptionalPagination({
+    getData,         // 데이터 함수
+    bodyId,
+    contentId,
+    enablePagination = true
+}) {
+    const allData = getData();
+    const pageFromURL = getPageFromURL(contentId);
+    const page = enablePagination ? pageFromURL : 1;
+    const start = (page - 1) * usersPerPage;
     const end = start + usersPerPage;
-    $('#userTableBody').html(users.slice(start, end).map(createUserRow).join(""));
-    renderPagination(users.length);
+    const rows = enablePagination ? allData.slice(start, end) : allData;
+
+    $(`#${bodyId}`).html(rows.map(createUserRow).join(""));
+
+    if (enablePagination) {
+        renderPagination({
+            contentId,
+            totalItems: allData.length,
+            itemsPerPage: usersPerPage,
+            currentPage: page,
+            onPageChange: (newPage) => {
+                updateQueryParam({ page: newPage });
+                renderTableWithOptionalPagination({
+                    getData,
+                    bodyId,
+                    contentId,
+                    enablePagination
+                });
+            }
+        });
+    } else {
+        $(`#${bodyId}`).closest('table').parent().find('.pagination').remove();
+    }
 }
 
-function renderPagination(totalUsers) {
-    const totalPages = Math.ceil(totalUsers / usersPerPage);
-    let paginationHTML = "<div class='pagination'>";
 
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.max(1, currentPage - 10)}"><<</div>`;
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.max(1, currentPage - 1)}"><</div>`;
-
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, currentPage + 2);
-
-    if (currentPage <= 3) {
-        startPage = 1;
-        endPage = Math.min(5, totalPages);
-    } else if (currentPage >= totalPages - 2) {
-        startPage = Math.max(1, totalPages - 4);
-        endPage = totalPages;
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-        paginationHTML += `<div class="pagination-button ${i === currentPage ? 'active' : ''}" data-key="page" data-page="${i}">${i}</div>`;
-    }
-
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.min(totalPages, currentPage + 1)}">></div>`;
-    paginationHTML += `<div class="pagination-button" data-key="page" data-page="${Math.min(totalPages, currentPage + 10)}">>></div>`;
-    paginationHTML += "</div>";
-
-    $('#pagination').html(paginationHTML);
-
-    $('.pagination-button').click(function () {
-        const key = $(this).data('key');
-        const newPage = parseInt($(this).data("page"));
-        if (newPage !== currentPage) {
-            updateQueryParam(key, newPage);
-            currentPage = newPage;
-            renderPageData();
-        }
-    });
-}
-
-function getPageFromURL() {
+function getPageFromURL(contentId) {
     const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
-function getUserData() {
-    //TODO: data 요청 api
-    return Array.from({ length: 200 }, (_, i) => ({
-        id: i + 1,
-        imageURL: "/administrate/images/icon_human_green.png",
-        name: `사용자${i + 1}`,
-        mealCount: Math.floor(Math.random() * 200),
-        joined: "2025.03.16",
-        left: "-",
-        gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
-    }));
-}
-
-export function loadTotalUserTable() {
-    currentPage = getPageFromURL(); // URL에서 페이지 값 다시 읽기
-    renderUserTable();
+    if(getCurrentContent() == contentId) {
+        return parseInt(urlParams.get('page')) || 1;
+    } else {
+        return 1;
+    }
 }
 
 // 유저권한 변경 버튼
-$(document).on('click', '.user-role-button', function () {
+$(document).on('click', '.user-role-button', function (e) {
+    e.stopPropagation();
+
     let dropdownMaster =`
         <div id="roleChangeDropdown">
             <div class="role-item master">Master</div>
@@ -161,7 +136,7 @@ $(document).on('click', '.user-role-button', function () {
 
     $('body').append($dropdown);
 
-    showCustomAlert();
+    showCustomAlert(1);
     
     // 다른 곳 클릭 시 닫기
     $(document).on('click', function (e) {
@@ -185,7 +160,8 @@ $(document).on('click', '.role-item', function () {
 });
 
 // 넥스트짐 유저 여부 변경 UI
-$(document).on('click', '.image-gym-user', function () {
+$(document).on('click', '.image-gym-user', function (e) {
+    e.stopPropagation();
     console.log("gym-user 버튼 클릭");
     let dropdownHTML =`
         <div id="gymUserDropdown">
@@ -222,6 +198,3 @@ $(document).on('click', '.gym-user-item', function () {
     console.log("gymuser 변경 API 호출");
     $('#gymUserDropdown').remove();
 });
-
-
-onPopstate(loadTotalUserTable);
