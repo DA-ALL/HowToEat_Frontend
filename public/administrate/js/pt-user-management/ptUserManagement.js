@@ -1,9 +1,9 @@
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 import { loadSearchDropdown } from '/administrate/js/components/searchDropdown.js';
-import { renderTrainerTable, renderTableWithOptionalPagination } from '/administrate/js/ptUserManagement/trainerTable.js';
+import { renderTrainerTable, renderTableWithOptionalPagination } from '/administrate/js/pt-user-management/trainerTable.js';
 import { updateURL } from '/administrate/js/router.js';
-import { renderTrainerInfo, getTrainerInfo} from '/administrate/js/ptUserManagement/trainerInfo.js';
+import { renderTrainerInfo, getTrainerInfo} from '/administrate/js/pt-user-management/trainerInfo.js';
 
 
 $(document).ready(function () {

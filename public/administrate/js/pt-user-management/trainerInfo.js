@@ -1,6 +1,6 @@
 import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
-import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/ptUserManagement/userTableWithDelete.js';
-import { showAddPtMember } from '/administrate/js/ptUserManagement/addPtMember.js';
+import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/pt-user-management/userTableWithDelete.js';
+import { showAddPtMember } from '/administrate/js/pt-user-management/addPtMember.js';
 import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
 
 

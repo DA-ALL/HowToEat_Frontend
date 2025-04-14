@@ -1,5 +1,5 @@
 import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
-import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/userManagement/userTable.js';
+import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
 
 

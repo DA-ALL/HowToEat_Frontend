@@ -7,18 +7,18 @@
 @import url("/administrate/css/dashboard-chart.css");
 @import url("/administrate/css/components/searchbar.css");
 @import url("/administrate/css/components/filter.css");
-@import url("/administrate/css/total-user-table.css");
+@import url("/administrate/css/user-management/total-user-table.css");
 @import url("/administrate/css/user-info.css");
-@import url("/administrate/css/trainer-info.css");
+@import url("/administrate/css/pt-user-management/trainer-info.css");
 @import url("/administrate/css/components/custom-alert.css");
 @import url("/administrate/css/components/button.css");
 @import url("/administrate/css/components/pagination.css");
-@import url("/administrate/css/components/user-table.css");
-@import url("/administrate/css/components/user-table-with-delete.css");
-@import url("/administrate/css/components/trainer-table.css");
+@import url("/administrate/css/user-management/user-table.css");
+@import url("/administrate/css/pt-user-management/user-table-with-delete.css");
+@import url("/administrate/css/pt-user-management/trainer-table.css");
 @import url("/administrate/css/components/daily-calorie-table.css");
-@import url("/administrate/css/components/add-pt-member.css");
-@import url("/administrate/css/components/user-table-add-pt-member.css");
+@import url("/administrate/css/pt-user-management/add-pt-member.css");
+@import url("/administrate/css/pt-user-management/user-table-add-pt-member.css");
 @import url("/administrate/css/components/calorie-detail.css");
 
 html, body {

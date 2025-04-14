@@ -1,4 +1,4 @@
-import { updateQueryParam , getCurrentContent} from '/administrate/js/router.js';
+
 import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 10;

@@ -1,5 +1,5 @@
 
-import { loadTotalUserTable } from '/administrate/js/userManagement/totalUserTable.js';
+import { loadTotalUserTable } from '/administrate/js/user-management/totalUserTable.js';
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 
