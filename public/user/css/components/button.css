@@ -35,6 +35,24 @@
   }  
   
 
+.button-container.meal-favorite {
+    position: fixed;
+    bottom: clamp(70.8px, 17.6vw + 18px, 106px); /* 화면 하단 기준 위치 */
+    left: 50%;
+    transform: translate(-50%, 0); /* 좌우 가운데 정렬 + translateY(0%) 유지 */
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 992;
+  }
+  
+  /* 숨김 시 translateY로 아래로 내려가게 */
+  .button-container.meal-favorite.hidden {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+    pointer-events: auto;
+  }  
+  
+
 .button-container .next-button {
     display: flex;
     justify-content: center;

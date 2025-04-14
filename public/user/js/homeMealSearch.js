@@ -1,3 +1,6 @@
+import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from './components/routers.js';
+import { setLastMainPath } from './components/nav-bottom.js';
+
 const mealSearchData = [
     {
         id: 42,
@@ -175,6 +178,7 @@ const mealFavoriteData = [
 
 export function renderMealSearch(mealKey, userConsumedDataTest, registFoodDataTest) {
     window.userConsumedData = userConsumedDataTest;
+    window.mealKey = mealKey;
     const mealKor = mealToKor(mealKey);
     return `
       <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
@@ -241,6 +245,9 @@ export function renderMealSearch(mealKey, userConsumedDataTest, registFoodDataTe
                         </div>
                       `).join('')}
                     </div>
+                </div>
+                <div class="button-container meal-favorite hidden">
+                    <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
                 </div>
             </div>
             
@@ -357,7 +364,6 @@ $(document).on('click', '.meal-item', function () {
 
     }
 });
-
 
 function handleMealSearch(keyword) {
     const $list = $('.meal-search-list');
@@ -523,7 +529,6 @@ function updateCPFIncreaseBar(selectedItems) {
     const user = window.userConsumedData;
     const mealKey = window.mealKey;
 
-    console.log(user);
     const total = selectedItems.reduce((acc, item) => {
         acc.carbo += Number(item.carbo || 0);
         acc.protein += Number(item.protein || 0);
@@ -634,7 +639,48 @@ $(document).on('click', '.favorite-meal-item', function () {
     } else {
         selectedFavorites = selectedFavorites.filter(item => item.id !== data.id);
     }
-    console.log(selectedFavorites);
+    
+
+    //즐겨찾기에서 음식 선택시 버튼 active
+    const $buttonContainer = $('.button-container.meal-favorite');
+    const $nextButton = $buttonContainer.find('.next-button');
+
+    if (selectedFavorites.length > 0) {
+        $buttonContainer.removeClass('hidden');
+        $nextButton.removeClass('disabled').addClass('active');
+    } else {
+        $buttonContainer.addClass('hidden');
+        $nextButton.removeClass('active').addClass('disabled');
+    }
     
     updateCPFIncreaseBar(selectedFavorites); // 바 애니메이션 적용
+});
+
+// regist 버튼 클릭 시
+$(document).on('click', '#registFavoriteButton', function () {
+    const $btn = $(this);
+    const mealKey = window.mealKey;
+
+    console.log('선택된 즐겨찾기 항목:', selectedFavorites);
+
+    resetHomeMealView();
+    resetSearchView();
+    resetRegistView();
+
+    $(`style[data-keyframe="protein"]`).remove(); 
+    $(`style[data-keyframe="fat"]`).remove(); 
+    $(`style[data-keyframe="carbo"]`).remove(); 
+    selectedFavorites = [];
+
+    const targetPath = `/main/${mealKey}`;
+    history.pushState({ view: 'main' }, '', targetPath);
+    setLastMainPath(targetPath);
+    
+    // ✅ window에도 저장, 그리고 nav-bottom.js에서도 참조하도록
+    window.lastMainPath = targetPath;
+    if (typeof setLastMainPath === 'function') {
+        setLastMainPath(targetPath); // 전역 설정 함수 호출
+    }
+
+    showMain(mealKey);
 });
