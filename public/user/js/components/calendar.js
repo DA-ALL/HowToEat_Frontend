@@ -1,5 +1,5 @@
-import { getTodaysCPF } from '../todaysCPF.js';
-import { getMealLog } from '../mealLog.js';
+import { getTodaysCPF } from '../main/todaysCPF.js';
+import { getMealLog } from '../main/meal-log.js';
 
 $(document).ready(function () {
     let currentDate = new Date();

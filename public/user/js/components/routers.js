@@ -1,10 +1,10 @@
-import { renderMealDetail } from '../homeMeal.js';
-import { initHeaderNav } from '../headerNav.js';
-import { renderMealSearch } from '../homeMealSearch.js';
-import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../homeMealRegist.js';
+import { renderMealDetail } from '../main/homeMeal.js';
+import { initHeaderNav } from './header-nav.js';
+import { renderMealSearch } from '../main/homeMealSearch.js';
+import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
 
 const userConsumedDataTest = {
-    date: "2025-04-14",
+    date: "2025-04-15",
     carbo: { consumed: 70, target: 220 },
     protein: { consumed: 42, target: 90 },
     fat: { consumed: 20, target: 50 }
