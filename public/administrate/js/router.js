@@ -105,27 +105,32 @@ function showCurrentContent() {
     const fullPath = pathSegments.join("/");
 
     // 간단한 경로
-    if (pathSegments.length < 3) {
-        const contentMap = {
-            'dashboard': 'dashboardChart',
-            'user-management': 'userManagement',
-            'user-management/pt': 'ptUserManagement',
-            'food-management': 'adminFood',
-            'food-management/user-regist': 'userFood',
-            'food-management/recommend-food': 'recommendFood',
-            'food-management/add-food': 'addFood',
-            'notice': 'notice',
-            'admin-management': 'adminManagement',
-            'admin-management/trainer': 'trainerManagement',
-            'admin-management/gym': 'gymManagement',
-        };
-        currentContent = contentMap[fullPath];
-    } else {
-        // 복잡한 경로
+ 
+    const contentMap = {
+        'dashboard': 'dashboardChart',
+        'user-management': 'userManagement',
+        'user-management/pt': 'ptUserManagement',
+        'food-management': 'adminFood',
+        'food-management/user-regist': 'userFood',
+        'food-management/recommend': 'recommendFood',
+        'food-management/add': 'addFood',
+        'notice': 'notice',
+        'admin-management': 'adminManagement',
+        'admin-management/trainer': 'trainerManagement',
+        'admin-management/gym': 'gymManagement',
+    };
+
+    currentContent = contentMap[fullPath];
+
+    if (!currentContent) {
         const contentPatterns = [
             { pattern: /^user-management\/user\/\d+$/, contentId: 'userInfo' },
             { pattern: /^user-management\/pt\/\d+$/, contentId: 'trainerInfo' },
             { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, contentId: 'userInfo' },
+
+            { pattern: /^food-management\/\d+$/, contentId: 'foodDetail' },
+            { pattern: /^food-management\/user-regist\/\d+$/, contentId: 'foodDetail' },
+            { pattern: /^food-management\/recommend\/\d+$/, contentId: 'foodDetail' },
         ];
 
         for (const item of contentPatterns) {

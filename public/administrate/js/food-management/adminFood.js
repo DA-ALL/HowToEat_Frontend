@@ -1,3 +1,4 @@
+import { updateURL } from '/administrate/js/router.js';
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 import { renderTable, renderTableWithOptionalPagination } from '/administrate/js/food-management/adminFoodTable.js';
@@ -61,6 +62,14 @@ function getAdminFoodDatas() {
         foodWeight: Math.floor(Math.random() * 200),
         foodWeightUnit: ["g", "ml"][Math.floor(Math.random() * 2)],
         isRecommended: ["O", "X"][Math.floor(Math.random() * 2)],
-        source: ["유저", "원재료DB", "음식DB", "가공식품DB"][Math.floor(Math.random() * 4)],
+        source: ["custom", "ingredient", "cooked", "processed"][Math.floor(Math.random() * 4)],
     }));
 }
+
+
+$(document).on('click', `#adminFoodTableBody tr`, function () {
+    const foodId = $(this).find('.td-id').text();
+    const page = `food-management/${foodId}`;
+    updateURL(page);
+
+});

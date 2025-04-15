@@ -58,11 +58,11 @@ app.get('/admin/food-management/user-regist', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
-app.get('/admin/food-management/recommend-food', (req, res) => {
+app.get('/admin/food-management/recommend', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
-app.get('/admin/food-management/add-food', (req, res) => {
+app.get('/admin/food-management/add', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
@@ -88,10 +88,9 @@ app.listen(port, () => {
 
 
 app.get([
-  '/admin/food-management/recommend-food',
-  '/admin/food-management/:type(cooked|ingredient|processed|custom)/:id(\\d+)',
-  '/admin/food-management/user-regist/:type(cooked|ingredient|processed|custom)/:id(\\d+)',
-  '/admin/food-management/recommend-food/:type(cooked|ingredient|processed|custom)/:id(\\d+)',
-], (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
-});
+    '/admin/food-management/:id(\\d+)',
+    '/admin/food-management/user-regist/:id(\\d+)',
+    '/admin/food-management/recommend/:id(\\d+)',
+  ], (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
+  });

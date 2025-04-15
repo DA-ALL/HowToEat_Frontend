@@ -16,7 +16,12 @@ function createRows({ id, foodName, foodCode, mainFoodName, calorie, carbohydrat
             <td class="td-fat">${fat}g</td>
             <td class="td-food-weight">${foodWeight}${foodWeightUnit}</td>
             <td class="td-is-recommended">${isRecommended}</td>
-            <td class="td-source">${source}</td> 
+            <td class="td-source" data-source="${source}">
+                ${source === 'processed' ? '가공식품DB' :
+                    source === 'cooked' ? '음식DB' :
+                    source === 'ingredient' ? '원재료DB' :
+                    source === 'custom' ? '유저' : ''}
+            </td>
         </tr>
     `;
 }
