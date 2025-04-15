@@ -85,3 +85,13 @@ app.get('/admin/admin-management/gym', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
+
+
+app.get([
+  '/admin/food-management/recommend-food',
+  '/admin/food-management/:type(cooked|ingredient|processed|custom)/:id(\\d+)',
+  '/admin/food-management/user-regist/:type(cooked|ingredient|processed|custom)/:id(\\d+)',
+  '/admin/food-management/recommend-food/:type(cooked|ingredient|processed|custom)/:id(\\d+)',
+], (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
+});

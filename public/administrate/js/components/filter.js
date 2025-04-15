@@ -45,9 +45,9 @@ export function renderFilters() {
                         <div class="filter-option-wrapper" data-key="data-source">
                             <div class="filter-option" data-query="all">전체</div>
                             <div class="filter-option" data-query="processed">가공식품DB</div>
-                            <div class="filter-option" data-query="food">음식DB</div>
-                            <div class="filter-option" data-query="raw">원재료DB</div>
-                            <div class="filter-option" data-query="user">유저 등록</div>
+                            <div class="filter-option" data-query="cooked">음식DB</div>
+                            <div class="filter-option" data-query="ingredient">원재료DB</div>
+                            <div class="filter-option" data-query="custom">유저 등록</div>
                         </div>
                     `;
                 break;

@@ -1,11 +1,12 @@
 
-.user-table .user-table{
+table {
     width: 100%;
     border-spacing: 0px;
 }
 
+
 /* table head */
-.user-table th {
+th {
     min-width: 150px;
     padding: 14px 0px;
     background-color: var(--red75);
@@ -33,13 +34,16 @@
 }
 
 /* table data */
-.user-table td {
+td {
     min-width: 150px;
     padding: 0px;
     height: 76px;
     color: var(--black100);
     font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .user-table .td-id{

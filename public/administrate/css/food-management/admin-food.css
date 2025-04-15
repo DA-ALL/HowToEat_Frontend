@@ -1,0 +1,122 @@
+#adminFood {
+    display: flex;
+    flex-direction: column;   
+    width: 100%;
+}
+
+#adminFoodTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 37px;
+}
+
+#adminFoodTable .th-id {
+    padding-left: 24px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    min-width: 100px;
+    max-width: 114px;
+}
+
+#adminFoodTable .th-source {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+#adminFoodTable .th-food-name {
+    min-width: 150px;
+    max-width: 150px;
+}
+
+#adminFoodTable .th-food-code {
+    min-width: 180px;    
+}
+
+#adminFoodTable .th-calorie {
+    min-width: 90px;
+    max-width: 90px;    
+}
+
+#adminFoodTable .th-carbohydrates {
+    min-width: 100px;
+    max-width: 120px;    
+}
+
+#adminFoodTable .th-protein {
+    min-width: 100px;
+    max-width: 120px;    
+}
+
+#adminFoodTable .th-fat {
+    min-width: 100px;
+    max-width: 120px;    
+}
+
+#adminFoodTable .th-food-weight {
+    min-width: 120px;
+    max-width: 120px;    
+}
+
+
+
+#adminFoodTable .td-id {
+    padding-left: 24px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    min-width: 100px;
+    max-width: 114px;
+}
+
+#adminFoodTable .td-source {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+#adminFoodTable .td-food-name {
+    min-width: 150px;
+    max-width: 150px;
+}
+
+#adminFoodTable .td-food-code {
+    min-width: 180px;    
+}
+
+#adminFoodTable .td-calorie {
+    min-width: 90px;
+    max-width: 90px;    
+}
+
+#adminFoodTable .td-carbohydrates {
+    min-width: 100px;
+    max-width: 120px;    
+    color: #949494;
+}
+
+#adminFoodTable .td-protein {
+    min-width: 100px;
+    max-width: 120px;    
+    color: #949494;
+}
+
+#adminFoodTable .td-fat {
+    min-width: 100px;
+    max-width: 120px;    
+    color: #949494;
+}
+
+#adminFoodTable .td-food-weight {
+    min-width: 120px;
+    max-width: 120px;    
+}
+
+
+#adminFoodTable #adminFoodTableBody tr {
+    cursor: pointer;
+}
+
+#adminFoodTable #adminFoodTableBody tr:hover {
+    background-color: #fff7f6;
+}
