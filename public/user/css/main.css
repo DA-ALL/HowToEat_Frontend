@@ -11,6 +11,10 @@
 @import url("/user/css/color.css");
 @import url("/user/css/todays-cpf.css");
 @import url("/user/css/meal-log.css");
+@import url("/user/css/components/nav-bottom.css");
+@import url("/user/css/home-meal.css");
+@import url("/user/css/home-meal-search.css");
+@import url("/user/css/home-meal-regist.css");
 
 html, body {
     height: 100%;
@@ -34,21 +38,42 @@ html, body {
     z-index: 1;
 }
 
+.title-format {
+    font-size: clamp(16px, 5.336vw, 26.67px);
+    font-weight: 600;
+    color: var(--black100);
+    margin-bottom: clamp(24px, 9.6vw, 48px);
+}
+
+.second-title-format {
+    font-size: clamp(16px, 5.336vw, 26.67px);
+    font-weight: 600;
+    color: var(--black100);
+    margin-bottom: clamp(20px, 6.4vw, 28px);
+}
+
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .root-container {
+    position: relative;
     width: 100vw;
     max-width: 100vw;
-    min-width: 300px;
-    overflow-x: hidden;
-    background: #ffffff;
-}
-
-@media (min-width: 500px) {
+    min-height: 100vh;
+    background: white;
+    overflow: hidden;
+  }
+  
+  @media (min-width: 500px) {
     .root-container {
-        width: 500px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      width: 500px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
-}
-
+  }
+  
 .padding {
-    padding : 30px 16px 40px 16px;
+    padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.26vw, 21.33px);
 }

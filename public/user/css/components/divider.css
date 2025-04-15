@@ -3,3 +3,9 @@
     height: 6px;
     background-color: #F0F0F0;
 }
+
+.divider.column {
+    width: 1px;
+    height: auto;
+    background-color: #F0F0F0;
+}

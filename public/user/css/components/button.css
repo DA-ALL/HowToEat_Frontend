@@ -8,20 +8,58 @@
 
 .button-container {
     width: 100%;
-    bottom: 20px;
     box-sizing: border-box;
     padding: 0 16px;
+}
+
+.button-container.bottom {
+    bottom: 20px;
     position: absolute;
 }
 
+.button-container.meal-search {
+    position: fixed;
+    bottom: clamp(70.8px, 17.6vw + 18px, 106px); /* 화면 하단 기준 위치 */
+    left: 50%;
+    transform: translate(-50%, 0); /* 좌우 가운데 정렬 + translateY(0%) 유지 */
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 992;
+  }
+  
+  /* 숨김 시 translateY로 아래로 내려가게 */
+  .button-container.meal-search.hidden {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+    pointer-events: auto;
+  }  
+  
+
+.button-container.meal-favorite {
+    position: fixed;
+    bottom: clamp(70.8px, 17.6vw + 18px, 106px); /* 화면 하단 기준 위치 */
+    left: 50%;
+    transform: translate(-50%, 0); /* 좌우 가운데 정렬 + translateY(0%) 유지 */
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 992;
+  }
+  
+  /* 숨김 시 translateY로 아래로 내려가게 */
+  .button-container.meal-favorite.hidden {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+    pointer-events: auto;
+  }  
+  
 
 .button-container .next-button {
     display: flex;
     justify-content: center;
     width: 100%;
-    font-size: 18px;
+    font-size: clamp(14.4px, 4.8vw, 24px);
     font-weight: 500;
-    padding: 13px 0px;
+    padding: clamp(10.4px, 3.46vw, 17.33px) 0;
     border-radius: 8px;
 }
 
@@ -35,6 +73,7 @@
     color: var(--white300);
     background-color: var(--red500);
     cursor: pointer;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.25);
 }
 
 .button-container .next-button.signup {
