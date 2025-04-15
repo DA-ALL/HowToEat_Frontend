@@ -1,0 +1,60 @@
+
+.daily-calorie-table{
+    width: 100%;
+    border-spacing: 0px;
+}
+
+/* table head */
+.daily-calorie-table th {
+    min-width: 150px;
+    padding: 14px 0px;
+    background-color: var(--gray50);
+    border: 0px;
+    text-align: left;
+    color: var(--black100);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.daily-calorie-table .th-id{
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    padding-left: 24px;
+}
+
+
+.daily-calorie-table .th-total {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    text-align: center;
+}
+
+/* table data */
+.daily-calorie-table td {
+    min-width: 150px;
+    padding: 0px;
+    height: 76px;
+    color: var(--black100);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.daily-calorie-table .td-id{
+    padding-left: 24px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.daily-calorie-table .td-total {
+    text-align: center;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.daily-calorie-table tr {
+    cursor: pointer;
+}
+
+.daily-calorie-table tr:hover {
+    background-color: var(--gray10);
+}

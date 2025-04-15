@@ -55,10 +55,15 @@
     visibility: visible;
 }
 
-#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .icon-trending img{
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .icon-trending {
     width: 24px;
     height: 24px;
     margin-right: 8px;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .icon-trending img{
+    width: 24px;
+    height: 24px;
 }
 
 #cardList #cardItem .card-content-wrapper .trend-difference-wrapper .trend-difference-value{
