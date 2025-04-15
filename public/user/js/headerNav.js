@@ -1,12 +1,13 @@
-$(document).ready(function () {
-    //  [type에 따른 header 구성]
-    //  - type 1 =  뒤로가기 O / 타이틀 X  / 추가하기버튼 X
-    //  - type 2 =  뒤로가기 O / 타이틀 O / 추가하기버튼 X
-    //  - type 3 =  뒤로가기 O / 타이틀 O / 추가하기버튼 O
+// headerNav.js
+import { showPage } from './components/nav-bottom.js';
 
-    let $headerNav = $('#headerNav');
-    let title = $headerNav.data('title');
-    let type = $headerNav.data('type');
+export function initHeaderNav(parentSelector = 'body') {
+    const $container = $(parentSelector);
+    const $headerNav = $container.find('#headerNav');
+    if ($headerNav.length === 0) return;
+
+    const title = $headerNav.data('title');
+    const type = $headerNav.data('type');
 
     let headerTemplate = '';
 
@@ -29,13 +30,12 @@ $(document).ready(function () {
 
         case 2:
             headerTemplate = `
-                <div class="header-nav">
+                <div class="header-nav header-nav-relative">
                     <div class="button-prev">
                         <img src="/user/images/icon_arrow_back.png">
                     </div>
 
                     <div class="title">${title}</div>
-
 
                     <div class="button-add hidden">
                         <img src="/user/images/icon_add.png">
@@ -44,9 +44,9 @@ $(document).ready(function () {
             `;
             break;
 
-        default:
+        default: // type 3
             headerTemplate = `
-                <div class="header-nav">
+                <div class="header-nav header-nav-relative">
                     <div class="button-prev">
                         <img src="/user/images/icon_arrow_back.png">
                     </div>
@@ -62,8 +62,26 @@ $(document).ready(function () {
 
     $headerNav.html(headerTemplate);
 
-    // 뒤로가기 버튼 클릭 이벤트 처리
-    $('.button-prev').on('click', function () {
-        window.history.back(); // 이전 페이지로 돌아가기
+    // 이벤트 바인딩 (SPA에서도 작동하도록 매번 재바인딩)
+    $headerNav.find('.button-prev').on('click', function () {
+        const currentPath = window.location.pathname;
+    
+        if (currentPath.startsWith('/main/') && currentPath.split('/').length === 3) {
+            // 예: /main/morning → 홈으로
+            history.pushState({ view: 'main' }, '', '/main');
+            showPage('/main');
+        } else if (currentPath.startsWith('/main/') && currentPath.includes('/regist')) {
+            // 예: /main/morning/regist → 아침 식단 목록으로
+            const meal = currentPath.split('/')[2];
+            history.pushState({ view: 'main' }, '', `/main/${meal}`);
+            showPage(`/main/${meal}`);
+        } else {
+            // 기본 동작: 브라우저 history 사용
+            window.history.back();
+        }
+    
+        if (parentSelector != 'body') {
+            $container.empty();
+        }
     });
-});
+}

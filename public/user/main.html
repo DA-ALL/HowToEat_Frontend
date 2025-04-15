@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/user/js/loginPage.js" defer></script>
+    <link rel="preload" as="image" href="/user/images/icon_home_active.png">
+    <link rel="preload" as="image" href="/user/images/icon_report_active.png">
+    <link rel="preload" as="image" href="/user/images/icon_mypage_active.png">
     <script type="module" src="/user/js/components/calendar.js" defer></script>
+    <script type="module" src="/user/js/components/nav-bottom.js" defer></script>
+    <script type="module" src="/user/js/headerNav.js" defer></script>
     <title>하잇</title>
 
     <link rel="stylesheet" href="/user/css/main.css">
@@ -14,30 +19,75 @@
 <body>
     <div id="main">
         <div class="root-container">
-            <div class="calendar-container">
-                <div class="calendar-header">
-                    <div id="prev">
-                        <img src="/user/images/icon_arrow_back_black.png">
+            <div id="home">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <div id="prev">
+                            <img src="/user/images/icon_arrow_back_black.png">
+                        </div>
+                        <span id="current-date">2025년 01월</span>
+                        <div id="next">
+                            <img src="/user/images/icon_arrow_front_black.png">
+                        </div>
                     </div>
-                    <span id="current-date">2025년 01월</span>
-                    <div id="next">
-                        <img src="/user/images/icon_arrow_front_black.png">
+                    <div class="toggle-wrapper">
+                        <div id="toggle-view">주단위</div>
                     </div>
+                    <div id="calendar"></div>
                 </div>
-                <div class="toggle-wrapper">
-                    <div id="toggle-view">주단위</div>
-                </div>
-                <div id="calendar"></div>
+
+                <div class="divider large"></div>
+
+                <div id="todaysCPF" class="padding"></div>
+                
+                <div class="divider large"></div>
+
+                <div id="mealLog" class="padding"></div>
+            </div>
+            
+            <div id="homeMeal">
+                
             </div>
 
-            <div class="divider large"></div>
+            <div id="homeMealSearch">
+                
+            </div>
 
-            <div id="todaysCPF" class="padding"></div>
-            
-            <div class="divider large"></div>
-
-            <div id="mealLog" class="padding"></div>
+            <div id="homeMealRegist">
+                
+            </div>
         </div>
     </div>
+
+
+    <div id="report" style="display: none;">
+        <div class="root-container">안녕하세요</div>
+    </div>
+
+    <div id="navBottom">
+        <div class="nav-bottom-container">
+            <div class="item-wrapper home">
+                <div class="icon">
+                    <img src="/user/images/icon_home.png">
+                </div>
+                <div class="nav-item-title">홈</div>
+            </div>
+
+            <div class="item-wrapper report">
+                <div class="icon report">
+                    <img src="/user/images/icon_report.png">
+                </div>
+                <div class="nav-item-title">리포트</div>
+            </div>
+
+            <div class="item-wrapper mypage">
+                <div class="icon">
+                    <img src="/user/images/icon_mypage.png">
+                </div>
+                <div class="nav-item-title">마이</div>
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>
