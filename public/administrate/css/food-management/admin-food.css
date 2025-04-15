@@ -21,9 +21,10 @@
     max-width: 114px;
 }
 
-#adminFoodTable .th-source {
+#adminFoodTable .th-is-recommended {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
+    text-align: center;
 }
 
 #adminFoodTable .th-food-name {
@@ -70,9 +71,10 @@
     max-width: 114px;
 }
 
-#adminFoodTable .td-source {
+#adminFoodTable .td-is-recommended {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
+    text-align: center;
 }
 
 #adminFoodTable .td-food-name {
@@ -111,6 +113,36 @@
     min-width: 120px;
     max-width: 120px;    
 }
+
+#adminFoodTable .td-source{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+}
+
+#adminFoodTable .td-source .source-label{
+    padding: 2px 10px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 400;
+}
+#adminFoodTable .td-source.processed .source-label{
+    color: var(--red500);
+    border: 1px solid var(--red500);
+}
+#adminFoodTable .td-source.cooked .source-label{
+    color: var(--purple300);
+    border: 1px solid var(--purple300);
+}
+#adminFoodTable .td-source.ingredient .source-label{
+    color: var(--blue300);
+    border: 1px solid var(--blue300);
+}
+#adminFoodTable .td-source.custom .source-label{
+    color: var(--orange300);
+    border: 1px solid var(--orange300);
+}
+
 
 
 #adminFoodTable #adminFoodTableBody tr {
