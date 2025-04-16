@@ -1,6 +1,7 @@
 import { renderMealDetail } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
+import { renderReportPage } from '../report/report.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
 
 const userConsumedDataTest = {
@@ -26,11 +27,10 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     const saved = localStorage.getItem(`mealData_${meal}`);
     const savedFood = saved ? JSON.parse(saved) : null;
     const merged = mergeConsumedData(userConsumedDataTest, savedFood);
-    console.log(merged);
 
-
-    $('#report').hide();
+    // $('#report').hide();
     $('#main').show();
+    $('#report').hide();
 
     // 초기 상태: 모든 하위 뷰 숨기고 시작
     $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
@@ -49,7 +49,6 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
         }
         $('#homeMeal').show();
     }
-    
     
 
     if (meal && subpage === 'regist' && !type) {
@@ -79,6 +78,11 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     
         $('#homeMealRegist').show();
     }
+
+    //리포트 페이지
+    if ($('#reportPage').children().length === 0) {
+        $("#reportPage").html(renderReportPage());
+    }
     
 }
 
@@ -86,6 +90,11 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 export function showReport() {
     $('#main').hide();
     $('#report').show();
+
+    //리포트 페이지
+    if ($('#reportPage').children().length === 0) {
+        $("#reportPage").html(renderReportPage());
+    }
 }
 
 export function resetHomeMealView() {

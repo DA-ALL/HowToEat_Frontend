@@ -40,7 +40,6 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
         showMain(meal, regist, type, userConsumedData, registFoodData);
     }
     else if (path.startsWith('/report')) {
-        $('#report').show();
         showReport();
     }
 
