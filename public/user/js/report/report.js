@@ -70,7 +70,22 @@ export function renderReportPage() {
                 </div>
             </div>
         </div>
-        <div id="weightReport" style="display:none">몸무게</div>
+
+
+        <div id="weightReport" style="display:none">
+            <div class="date">2025.04.30</div>
+            <div class="amount-wrapper">
+                <div class="amount">74</div>
+                <div class="unit">kg</div>
+            </div>
+            <div class="feedback-comment">조금 더 드셔야 해요</div>
+            <div class="recommend-wrapper">
+                <div class="recommend-food">뭄무게 기록하기</div>
+                <div class="icon">
+                    <img src="/user/images/icon_arrow_red.png">
+                </div>
+            </div>
+        </div>
     `;
 }
 
