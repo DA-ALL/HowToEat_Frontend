@@ -1,5 +1,5 @@
-import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from './components/routers.js';
-import { setLastMainPath } from './components/nav-bottom.js';
+import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '../components/routers.js';
+import { setLastMainPath } from '../components/nav-bottom.js';
 
 // 탄단지 섹션 렌더링 (상단 메시지, 바 포함)
 export function renderIncreaseCPFbar(mealKey, userConsumedData, registFoodData) {

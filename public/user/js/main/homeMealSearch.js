@@ -1,5 +1,5 @@
-import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from './components/routers.js';
-import { setLastMainPath } from './components/nav-bottom.js';
+import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '../components/routers.js';
+import { setLastMainPath } from '../components/nav-bottom.js';
 
 const mealSearchData = [
     {

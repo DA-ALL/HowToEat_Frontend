@@ -1,5 +1,5 @@
 // headerNav.js
-import { showPage } from './components/nav-bottom.js';
+import { showPage } from './nav-bottom.js';
 
 export function initHeaderNav(parentSelector = 'body') {
     const $container = $(parentSelector);

@@ -1,0 +1,128 @@
+#report {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+#report .content-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    background-color: #FFFDFD;
+    z-index: 1;
+}
+
+#report #reportPage .user-name {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    color: var(--black100);
+    font-weight: 500;
+    margin-top: clamp(24px, 6.4vw, 32px);
+    margin-left: clamp(16px, 4.266vw, 21.33px);
+    margin-right: clamp(16px, 4.266vw, 21.33px);
+    margin-bottom: clamp(16px, 4.266vw, 21.33px);
+}
+
+#report #reportPage .toggle-report-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-left: clamp(16px, 4.266vw, 21.33px);
+    margin-right: clamp(16px, 4.266vw, 21.33px);
+    margin-bottom: clamp(30px, 8vw, 40px);
+
+    gap: 10px;
+}
+
+#report #reportPage .toggle-report-wrapper .toggle-report {
+    display: flex;
+    align-items: center;
+    font-size: clamp(12px, 4vw, 20px);
+    padding: clamp(3.22px, 1.04vw + 1.36px, 5.3px) clamp(9.6px, 3.2vw + 4.88px, 16px);
+    border-radius: 30px;
+    background-color: var(--white300);
+    border: 1px solid var(--gray75);
+    color: var(--gray300);
+    cursor: pointer;
+}
+
+#report #reportPage .toggle-report-wrapper .toggle-report.active {
+    color: var(--white300);
+    background-color: var(--red500);
+    border: 1px solid (var(--red500));
+}
+
+#report #reportPage #mealReport, #weightReport {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: clamp(16px, 4.266vw, 21.33px);
+    padding-right: clamp(16px, 4.266vw, 21.33px);
+}
+
+#report #reportPage .date {
+    font-size: clamp(10.4px, 3.464vw + 0.01px, 17.33px);
+    font-weight: 400;
+    color: var(--gray500);
+    background-color: #F5F5F5;
+    padding: clamp(4px, 1.064vw + 0.01px, 5.33px) clamp(10px, 2.664vw + 0.01px, 13.33px);
+    border-radius: 30px;
+    margin-bottom: clamp(10px, 2.664vw + 0.01px, 13.33px);
+
+}
+
+#report #reportPage .amount-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-bottom: clamp(10.4px, 3.464vw + 0.01px, 17.33px);
+    gap: 6px;
+}
+
+#report #reportPage .amount-wrapper .amount {
+    font-size: clamp(24px, 8vw, 40px);
+    font-weight: 600;
+    color: var(--black100);
+    letter-spacing: 0.5px;
+}
+
+#report #reportPage .amount-wrapper .unit {
+    font-size: clamp(16.8px, 5.6vw, 28px);
+    font-weight: 300;
+    color: var(--black100);
+    margin-bottom: 2px;
+}
+
+#report #reportPage .feedback-comment {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 500;
+    color: var(--black100);
+    margin-bottom: clamp(4.8px, 1.6vw, 8px);
+
+}
+
+#report #reportPage .recommend-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+#report #reportPage .recommend-wrapper .recommend-food {
+    font-size: clamp(12px, 4vw, 20px);
+    font-weight: 400;
+    color: var(--red500);
+    margin-right: 4px;
+}
+
+#report #reportPage .recommend-wrapper .icon {
+    display: flex;
+    align-items: center;
+    margin-top: 1px;
+}
+
+#report #reportPage .recommend-wrapper .icon img {
+    width: clamp(9.6px, 3.2vw, 16px);
+}

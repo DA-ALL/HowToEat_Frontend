@@ -1,7 +1,7 @@
-import { updateButtonState, validateInput, checkInput } from './components/input-validate.js';
-import { populateDays, updateDays, validateDateInput, birthDropDown } from './components/date-picker-validate.js';
-import { updateProgressBar } from './components/header-processbar.js';
-import { initHeaderNav } from './headerNav.js';
+import { updateButtonState, validateInput, checkInput } from '/user/js/components/input-validate.js';
+import { populateDays, updateDays, validateDateInput, birthDropDown } from '/user/js/components/date-picker-validate.js';
+import { updateProgressBar } from '/user/js/components/header-processbar.js';
+import { initHeaderNav } from '/user/js/components/header-nav.js';
 
 let currentPage = 1;
 let surveyData = {
