@@ -22,6 +22,10 @@
 }
 
 #adminFoodTable .th-is-recommended {
+    text-align: center;
+}
+
+#adminFoodTable .th-delete {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
     text-align: center;
@@ -72,9 +76,30 @@
 }
 
 #adminFoodTable .td-is-recommended {
+    text-align: center;
+}
+
+#adminFoodTable .td-delete {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
     text-align: center;
+}
+
+#adminFoodTable .td-delete .delete-food-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#adminFoodTable .td-delete .delete-food-button-wrapper .delete-food-button {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray400);
+    background-color: var(--gray50);
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 39px;
+    border: 1px solid var(--gray300);
 }
 
 #adminFoodTable .td-food-name {

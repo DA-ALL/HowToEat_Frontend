@@ -1,7 +1,8 @@
-import { updateURL } from '/administrate/js/router.js';
+import { updateURL, onPopstate } from '/administrate/js/router.js';
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 import { renderTable, renderTableWithOptionalPagination } from '/administrate/js/food-management/adminFoodTable.js';
+import { loadFoodDetail } from '/administrate/js/food-management/foodDetail.js';
 
 $(document).ready(function () {
     loadContent();
@@ -72,4 +73,9 @@ $(document).on('click', `#adminFoodTableBody tr`, function () {
     const page = `food-management/${foodId}`;
     updateURL(page);
 
+    loadFoodDetail({
+        type: "edit",       
+    });
 });
+
+onPopstate(loadContent);

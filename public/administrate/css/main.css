@@ -21,6 +21,7 @@
 @import url("/administrate/css/pt-user-management/user-table-add-pt-member.css");
 @import url("/administrate/css/components/calorie-detail.css");
 @import url("/administrate/css/food-management/admin-food.css");
+@import url("/administrate/css/food-management/food-detail.css");
 
 html, body {
     min-height: 100vh;

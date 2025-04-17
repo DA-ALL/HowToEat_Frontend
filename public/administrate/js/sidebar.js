@@ -1,5 +1,5 @@
 import { updateURL, onPopstate } from '/administrate/js/router.js';
-
+import { loadFoodDetail } from '/administrate/js/food-management/foodDetail.js';
 
 $(document).ready(function () {
     // 사이드바 HTML 삽입
@@ -144,6 +144,7 @@ $(document).ready(function () {
             newUrl = `food-management/${page}`;
         } else if (page === 'add') {
             newUrl = `food-management/${page}`;
+            
         } else if (page === 'trainer') {
             newUrl = `admin-management/${page}`;
         } else if (page === 'gym') {
@@ -158,6 +159,10 @@ $(document).ready(function () {
         
         updateURL(newUrl);
         updateSideOptionActiveState(page);
+        
+        if (page === 'add') {
+            loadFoodDetail({type:"add"});
+        }
 
         $(this).addClass("active");
     })

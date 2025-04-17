@@ -113,7 +113,7 @@ function showCurrentContent() {
         'food-management': 'adminFood',
         'food-management/user-regist': 'userFood',
         'food-management/recommend': 'recommendFood',
-        'food-management/add': 'addFood',
+        'food-management/add': 'foodDetail',
         'notice': 'notice',
         'admin-management': 'adminManagement',
         'admin-management/trainer': 'trainerManagement',
@@ -154,7 +154,7 @@ function showCurrentContent() {
         $('.content-section').css('display', 'block');
         $('#detailPage').css('display', 'none');
     }
-
+    
     $(`#${currentContent}`).css('display', 'flex');
 }
 

@@ -13,7 +13,7 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
         <div class="nav-top">
             <div class="back-button-wrapper">
                 <div class="icon-back">
-                    <img src="/administrate/images/icon_arrow_back_black.png"></img>
+                    <img src="/administrate/images/icon_arrow_back_black.png">
                 </div>
                 <div class="label-back">뒤로가기</div>
             </div>
@@ -21,7 +21,7 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
         <div class="trainer-info-container">
             <div class="trainer-info-wrapper">
                 <div class="trainer-profile-image">
-                    <img src="${imageURL}"></img>
+                    <img src="${imageURL}">
                 </div>
 
                 <div class="trainer-name">${trainername}</div>
@@ -47,7 +47,7 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
                     <div id="memberAddButton" class="add-button-wrapper">
                         <div class="label-add">회원 추가하기</div>
                         <div class="icon-add">
-                            <img src="/administrate/images/icon_add_red.png"></img>
+                            <img src="/administrate/images/icon_add_red.png">
                         </div>
                     </div>
                 </div>

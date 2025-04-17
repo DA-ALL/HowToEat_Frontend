@@ -1,3 +1,4 @@
+import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateQueryParam , getCurrentContent} from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
 
@@ -24,6 +25,11 @@ function createRows({ id, foodName, foodCode, mainFoodName, calorie, carbohydrat
             <td class="td-fat">${fat}g</td>
             <td class="td-food-weight">${foodWeight}${foodWeightUnit}</td>
             <td class="td-is-recommended">${isRecommended}</td>
+            <td class="td-delete">
+                <div class="delete-food-button-wrapper">
+                    <div class="delete-food-button" data-food-id="${id}">삭제</div>
+                </div>
+            </td>
         </tr>
     `;
 }
@@ -44,6 +50,7 @@ export function renderTable(containerId, bodyId) {
                     <th class="th-fat">지방</th>
                     <th class="th-food-weight">식품중량</th>
                     <th class="th-is-recommended">추천음식</th>
+                    <th class="th-delete">선택</th>
                 </tr>
             </thead>
             <tbody id="${bodyId}"></tbody>
@@ -94,3 +101,15 @@ function getPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return parseInt(urlParams.get('page')) || 1;
 }
+
+// 삭제 버튼 클릭 시
+$(document).on('click', '.delete-food-button', function (e) {
+    e.stopPropagation();
+    const foodId = $(this).data('food-id');
+    console.log(`음식 ID ${foodId} 삭제 요청`);
+
+    // TODO: 실제 삭제 API 호출
+    
+    // showCustomAlert(2); 
+    // 예시: 삭제 후 테이블 다시 렌더링할 경우 필요한 콜백 추가 가능
+});
