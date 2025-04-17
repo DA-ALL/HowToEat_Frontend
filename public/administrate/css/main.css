@@ -22,6 +22,7 @@
 @import url("/administrate/css/components/calorie-detail.css");
 @import url("/administrate/css/food-management/admin-food.css");
 @import url("/administrate/css/food-management/food-detail.css");
+@import url("/administrate/css/food-management/user-food.css");
 
 html, body {
     min-height: 100vh;

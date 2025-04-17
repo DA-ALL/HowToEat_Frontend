@@ -52,18 +52,18 @@ td {
     border-bottom-left-radius: 12px;
 }
 
-.user-table .td-user-profile .td-user-profile-wrapper{
+.td-user-profile .td-user-profile-wrapper{
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.user-table .td-user-profile .td-user-profile-wrapper .image-user{
+.td-user-profile .td-user-profile-wrapper .image-user{
     width: 36px;
     height: 36px;
 }
 
-.user-table .td-user-profile .td-user-profile-wrapper .image-user img{
+.td-user-profile .td-user-profile-wrapper .image-user img{
     width: 36px;
     height: 36px;
     border-radius: 50px;

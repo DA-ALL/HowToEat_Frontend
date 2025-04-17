@@ -45,7 +45,7 @@
     max-width: 90px;    
 }
 
-#adminFoodTable .th-carbohydrates {
+#adminFoodTable .th-carbo {
     min-width: 100px;
     max-width: 120px;    
 }
@@ -116,7 +116,7 @@
     max-width: 90px;    
 }
 
-#adminFoodTable .td-carbohydrates {
+#adminFoodTable .td-carbo {
     min-width: 100px;
     max-width: 120px;    
     color: #949494;

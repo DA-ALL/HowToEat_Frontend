@@ -62,18 +62,18 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
     trainerInfo.html(trainerInfoHtml);
 
     loadUserTable();
-
-    // 뒤로가기 버튼 클릭
-    $(document).on('click', `#trainerInfo .back-button-wrapper`, function () {
-        const prev = sessionStorage.getItem('previousContentTrainer');
-        if (prev) {
-            updateURL(prev);
-        } else {
-            // fallback
-            window.history.back();
-        }
-    });
 }
+
+// 뒤로가기 버튼 클릭
+$(document).on('click', `#trainerInfo .back-button-wrapper`, function () {
+    const prev = sessionStorage.getItem('previousContentTrainer');
+    if (prev) {
+        updateURL(prev);
+    } else {
+        // fallback
+        window.history.back();
+    }
+});
 
 const containerId = 'ptUserTable';
 const bodyId = 'ptUserTableBody';
