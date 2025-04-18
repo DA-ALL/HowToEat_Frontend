@@ -23,6 +23,7 @@
 @import url("/administrate/css/food-management/admin-food.css");
 @import url("/administrate/css/food-management/food-detail.css");
 @import url("/administrate/css/food-management/user-food.css");
+@import url("/administrate/css/food-management/recommend-food.css");
 
 html, body {
     min-height: 100vh;
