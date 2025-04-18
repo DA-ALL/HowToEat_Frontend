@@ -1,7 +1,7 @@
 import { updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
 
-export function renderFilters() {
-    $('.filter-group').children().each(function () {
+export function renderFilters(contentId) {
+    $(`#${contentId} .filter-group`).children().each(function () {
         let $filter = $(this);
         let type = $filter.data('type');
         let filterTemplate = '';
@@ -117,10 +117,9 @@ $(document).on('click', '.filter-option', function () {
 });
 
 
-export function loadFilter(){
-    renderFilters();
+export function loadFilter(contentId){
+    renderFilters(contentId);
     syncFiltersWithURL();
-    // updateURLWithActiveFilters();
 }
 
 function getGyms(){

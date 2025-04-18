@@ -26,8 +26,8 @@ function loadContent() {
 
     container.html(adminFoodHTML);
     
-    loadSearchBar();
-    loadFilter();
+    loadSearchBar('adminFood');
+    loadFilter('adminFood');
     loadAdminFoodTable();
 }
 

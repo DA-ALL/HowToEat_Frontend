@@ -10,7 +10,7 @@ export function showAddPtMember() {
                     <div class="header-text">회원 추가하기</div>
                 </div>
 
-                <div class="searchbar"></div>
+                <div class="searchbar" data-placeholder="회원명 검색"></div>
 
                 <div id="addPtMemberTable"></div>
 
@@ -24,7 +24,7 @@ export function showAddPtMember() {
 
     $("body").append(addPtMemberHTML);
 
-    loadSearchBar(loadTotalUserTable);
+    loadSearchBar('addPtMember', loadTotalUserTable);
 }
 
 const containerId = 'addPtMemberTable';

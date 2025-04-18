@@ -27,8 +27,8 @@ function loadContent() {
 
     container.html(totalUserManagementHTML);
     loadTotalUserTable();
-    loadSearchBar();
-    loadFilter();
+    loadSearchBar('userManagement');
+    loadFilter('userManagement');
 }
 
 registerPopstateHandler('userManagement', loadContent);

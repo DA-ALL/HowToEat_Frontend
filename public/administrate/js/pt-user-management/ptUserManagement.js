@@ -26,11 +26,10 @@ function loadContent() {
 
     container.html(ptUserManagementHTML);
 
-    loadSearchBar();
-    loadFilter();
+    loadSearchBar('ptUserManagement');
+    loadFilter('ptUserManagement');
     
     loadTrainerTable();
-    loadSearchDropdown();
 }
 
 

@@ -25,8 +25,8 @@ function loadUserFood() {
 
     container.html(adminFoodHTML);
     
-    loadSearchBar();
-    loadFilter();
+    loadSearchBar('userFood');
+    loadFilter('userFood');
     loadUserFoodTable()
 }
 

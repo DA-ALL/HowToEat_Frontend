@@ -3,11 +3,11 @@ import { updateQueryParam, removeQueryParam, getCurrentContent, syncSearchbarWit
 
 let searchHandler = null;
 
-export function loadSearchBar(onSearch = null) {
-    let placeholder = $('.searchbar').data('placeholder'); // HTML의 data-placeholder 값 가져오기
+export function loadSearchBar(contentId, onSearch = null) {
+    let placeholder = $(`#${contentId} .searchbar`).data('placeholder'); // HTML의 data-placeholder 값 가져오기
     searchHandler = onSearch; 
 
-    $('.searchbar').html(`
+    $(`#${contentId} .searchbar`).html(`
         <div class="searchbar-wrapper">
             <div class="image-search">
                 <img src="/administrate/images/icon_search.png">
