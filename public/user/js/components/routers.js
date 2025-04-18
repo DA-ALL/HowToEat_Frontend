@@ -4,6 +4,7 @@ import { renderMealSearch } from '../main/homeMealSearch.js';
 import { renderReportPage } from '../report/report.js';
 import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
+import { renderUsersSetTime } from '../my-page/usersSetTime.js';
 
 const userConsumedDataTest = {
     date: "2025-04-15",
@@ -85,7 +86,10 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
     }
-    
+    //마이 페이지
+    if ($('#myPage').children().length === 0) {
+        $("#myPage").html(renderMyPage());
+    }   
 }
 
 
@@ -105,14 +109,22 @@ export function showMyPage(subpath = null) {
     $('#report').hide();
     $('#my').show();
 
-    // 기본 마이페이지 렌더링
-    if ($('#myPage').children().length === 0) {
-        $("#myPage").html(renderMyPage());
-    }
+    $('#myPage, #userSetTime').hide();
 
+    if (!subpath) {
+        // 기본 마이페이지 렌더링
+        if ($('#myPage').children().length === 0) {
+            $("#myPage").html(renderMyPage());
+        }   
+
+        $('#myPage').show(); // /main
+        return;
+    }
+    
     // 서브뷰 조건별 처리
     if (subpath === 'set-time') {
-        console.log('식사 시간 설정 뷰로 이동'); // 여기에 페이지 렌더 함수 추가
+        $("#usersSetTime").html(renderUsersSetTime());
+        $('#userSetTime').show();
     } else if (subpath === 'notice') {
         console.log('공지사항 뷰로 이동');
     } else if (subpath === 'question') {
@@ -135,6 +147,10 @@ export function resetSearchView() {
 
 export function resetRegistView() {
     $('#homeMealRegist').empty();
+}
+
+export function resetSetTimeView() {
+    $('#usersSetTime').empty();
 }
 
 function mergeConsumedData(user, food) {

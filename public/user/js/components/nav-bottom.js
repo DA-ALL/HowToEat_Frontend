@@ -27,8 +27,6 @@ const navMap = {
 
 // 뷰 전환 함수
 export function showPage(path, userConsumedData = null, registFoodData = null) {
-    $('#main, #report').hide();
-
     if (path.startsWith('/main')) {
         lastMainPath = path;
         $('#main').show();
@@ -145,8 +143,10 @@ $(document).ready(function () {
                 
                     history.pushState({ view: 'users' }, '', lastUsersPath);
                     showPage(lastUsersPath);
+                } else {
+                    history.pushState({ view: key.slice(1) }, '', key);
+                    showPage(key);
                 }
-                
             }
             
         });
