@@ -145,7 +145,7 @@
 }
 
 
-/* 알람영역 */
+/* 옵션영역 */
 #my #myPage .option-container {
     padding-left: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
     padding-right: clamp(12.8px, 4.264vw + 0.01px, 21.33px);

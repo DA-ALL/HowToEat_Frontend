@@ -7,7 +7,7 @@ import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAn
 import { renderUsersSetTime } from '../my-page/usersSetTime.js';
 
 const userConsumedDataTest = {
-    date: "2025-04-15",
+    date: "2025-04-18",
     carbo: { consumed: 70, target: 220 },
     protein: { consumed: 42, target: 90 },
     fat: { consumed: 20, target: 50 }
@@ -109,7 +109,7 @@ export function showMyPage(subpath = null) {
     $('#report').hide();
     $('#my').show();
 
-    $('#myPage, #userSetTime').hide();
+    $('#myPage, #usersSetTime').hide();
 
     if (!subpath) {
         // 기본 마이페이지 렌더링
@@ -124,7 +124,8 @@ export function showMyPage(subpath = null) {
     // 서브뷰 조건별 처리
     if (subpath === 'set-time') {
         $("#usersSetTime").html(renderUsersSetTime());
-        $('#userSetTime').show();
+        initHeaderNav($('#usersSetTime'));
+        $('#usersSetTime').show();
     } else if (subpath === 'notice') {
         console.log('공지사항 뷰로 이동');
     } else if (subpath === 'question') {

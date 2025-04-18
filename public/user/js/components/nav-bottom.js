@@ -28,22 +28,34 @@ const navMap = {
 // 뷰 전환 함수
 export function showPage(path, userConsumedData = null, registFoodData = null) {
     if (path.startsWith('/main')) {
+        if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
+        if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
+            window.mainHistoryStack.push(path);
+        }
+    
         lastMainPath = path;
-        $('#main').show();
-
+    
         const parts = path.split('/');
         const meal = parts[2];      // morning
         const regist = parts[3];   // regist 등
         const type = parts[4];     // ingredient 등
-
+    
         showMain(meal, regist, type, userConsumedData, registFoodData);
     }
     else if (path.startsWith('/report')) {
         showReport();
     }
     else if (path.startsWith('/users')) {
+        // 스택이 없으면 생성
+        if (!window.usersHistoryStack) window.usersHistoryStack = ['/users'];
+    
+        // 중복 푸시 방지
+        if (window.usersHistoryStack[window.usersHistoryStack.length - 1] !== path) {
+            window.usersHistoryStack.push(path);
+        }
+    
         const parts = path.split('/');
-        const subpath = parts[2]; // set-time, notice 등
+        const subpath = parts[2];
         showMyPage(subpath);
     }
 
@@ -131,7 +143,7 @@ $(document).ready(function () {
                 if (key === '/users') {
                     if (currentPath.startsWith('/users')) {
                         if (currentPath === lastUsersPath && currentPath !== '/users') {
-                            // ✅ 두 번 클릭 시 /users로 초기화
+                            // 두 번 클릭 시 /users로 초기화
                             lastUsersPath = '/users';
                             history.pushState({ view: 'users' }, '', '/users');
                             showPage('/users');
@@ -157,9 +169,9 @@ $(document).ready(function () {
         const path = window.location.pathname;
 
         // 강제 초기화 -> 안하면 페이지 새로 안그려줌
-        if (path.includes('/regist')) {
-            $('#homeMealRegist').empty();
-        }
+        // if (path.includes('/regist')) {
+        //     $('#homeMealRegist').empty();
+        // }
 
         if (path.startsWith('/main')) {
             lastMainPath = path;
