@@ -1,4 +1,4 @@
-import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
+import { registerPopstateHandler, updateURL, getCurrentContent } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
 
@@ -12,7 +12,7 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
         <div class="nav-top">
             <div class="back-button-wrapper">
                 <div class="icon-back">
-                    <img src="/administrate/images/icon_arrow_back_black.png"></img>
+                    <img src="/administrate/images/icon_arrow_back_black.png">
                 </div>
                 <div class="label-back">뒤로가기</div>
             </div>
@@ -20,7 +20,7 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
         <div class="user-info-container">
             <div class="user-info-wrapper">
                 <div class="user-profile-image">
-                    <img src="${imageURL}"></img>
+                    <img src="${imageURL}">
                 </div>
 
                 <div class="user-name">${username}</div>
@@ -169,7 +169,7 @@ function getDailyCaloriData() {
 }
 
 
-onPopstate(loadDailyCalorieTable);
+registerPopstateHandler('userInfo',loadDailyCalorieTable);
 
 
 

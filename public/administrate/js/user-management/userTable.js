@@ -37,7 +37,7 @@ export function renderUserTable(containerId, bodyId) {
             <thead>
                 <tr>
                     <th class="th-id">ID</th>
-                    <th class="th-user-profile">회원명</th>
+                    <th class="th-user-profile">유저명</th>
                     <th class="th-meal-log-count">식단 총 등록 수</th>
                     <th class="th-account-created-at">가입일</th>
                     <th class="th-account-closed-at">탈퇴일</th>
