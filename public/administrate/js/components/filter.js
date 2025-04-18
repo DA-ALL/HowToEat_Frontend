@@ -1,4 +1,4 @@
-import { onPopstate, updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
+import { updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
 
 export function renderFilters() {
     $('.filter-group').children().each(function () {
@@ -122,9 +122,6 @@ export function loadFilter(){
     syncFiltersWithURL();
     // updateURLWithActiveFilters();
 }
-
-onPopstate(loadFilter);  
-
 
 function getGyms(){
 

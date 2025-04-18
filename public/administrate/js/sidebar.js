@@ -1,5 +1,6 @@
-import { updateURL, onPopstate } from '/administrate/js/router.js';
+import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
 import { loadFoodDetail } from '/administrate/js/food-management/foodDetail.js';
+
 
 $(document).ready(function () {
     // 사이드바 HTML 삽입
@@ -144,7 +145,6 @@ $(document).ready(function () {
             newUrl = `food-management/${page}`;
         } else if (page === 'add') {
             newUrl = `food-management/${page}`;
-            
         } else if (page === 'trainer') {
             newUrl = `admin-management/${page}`;
         } else if (page === 'gym') {
@@ -185,10 +185,16 @@ $(document).ready(function () {
         $(this).find('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
     });
 
-    onPopstate(function (event) {
-        const pathParts = window.location.pathname.split("/").slice(2);
-        updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
-    });
+    // onPopstate(function (event) {
+    //     const pathParts = window.location.pathname.split("/").slice(2);
+    //     updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
+    // });
+    registerPopstateHandler('sidebar', popstateHandler);
+
+    function popstateHandler() {
+        updateActiveState(getCurrentPage()); // 사이드바 active 업데이트
+    }
+
 
     // 현재 페이지의 맨뒤에 url을 가져오기
     function getCurrentPage() {
@@ -224,6 +230,10 @@ $(document).ready(function () {
         const $optionsAdminManagementWrapper = $(".sidebar-item-options-wrapper.admin");
         var pageUrl = page;
 
+        $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {
+            $(this).css("display", "none");
+        });
+    
         if(Array.isArray(page)) {
             pageUrl = page[0];
         }

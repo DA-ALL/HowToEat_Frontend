@@ -1,5 +1,5 @@
 
-import { onPopstate, updateQueryParam, syncSearchDropdownWithURL } from '/administrate/js/router.js';
+import { updateQueryParam, syncSearchDropdownWithURL } from '/administrate/js/router.js';
 
 let data = getTrainerGymData();
 let currentDropdownItem = data[0];
@@ -104,5 +104,3 @@ function getParamsFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return [urlParams.get('trainer') , urlParams.get('gym')];
 }
-
-onPopstate(loadSearchDropdown);

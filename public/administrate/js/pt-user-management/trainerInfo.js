@@ -1,4 +1,4 @@
-import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
+import { registerPopstateHandler, updateURL } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/pt-user-management/userTableWithDelete.js';
 import { showAddPtMember } from '/administrate/js/pt-user-management/addPtMember.js';
 import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
@@ -127,7 +127,7 @@ function getUserDataForUserTable() {
 }
 
 
-onPopstate(loadUserTable);
+registerPopstateHandler('trainerInfo',loadUserTable);
 
 
 $(document).ready(function () {

@@ -1,5 +1,5 @@
 
-import { onPopstate,  updateQueryParam, removeQueryParam, getCurrentContent, syncSearchbarWithURL} from '/administrate/js/router.js';
+import { updateQueryParam, removeQueryParam, getCurrentContent, syncSearchbarWithURL} from '/administrate/js/router.js';
 
 let searchHandler = null;
 
@@ -48,5 +48,3 @@ $(document).on('keyup', '.searchbar input', function (event) {
         $(this).closest('.searchbar').find('.button-search').click();
     }
 });
-
-onPopstate(loadSearchBar);

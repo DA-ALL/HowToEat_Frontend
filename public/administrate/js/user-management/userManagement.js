@@ -2,6 +2,8 @@
 import { loadTotalUserTable } from '/administrate/js/user-management/totalUserTable.js';
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
+import { registerPopstateHandler } from '/administrate/js/router.js';
+
 
 $(document).ready(function () {
     loadContent();
@@ -28,3 +30,5 @@ function loadContent() {
     loadSearchBar();
     loadFilter();
 }
+
+registerPopstateHandler('userManagement', loadContent);

@@ -1,4 +1,4 @@
-import { updateURL, onPopstate } from '/administrate/js/router.js';
+import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 import { renderTable, renderTableWithOptionalPagination } from '/administrate/js/food-management/adminFoodTable.js';
@@ -78,4 +78,4 @@ $(document).on('click', `#adminFoodTableBody tr`, function () {
     });
 });
 
-onPopstate(loadContent);
+registerPopstateHandler('adminFood', loadContent);

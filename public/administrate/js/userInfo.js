@@ -1,4 +1,4 @@
-import { onPopstate, updateURL, getCurrentContent } from '/administrate/js/router.js';
+import { registerPopstateHandler, updateURL, getCurrentContent } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
 
@@ -169,7 +169,7 @@ function getDailyCaloriData() {
 }
 
 
-onPopstate(loadDailyCalorieTable);
+registerPopstateHandler('userInfo',loadDailyCalorieTable);
 
 
 
