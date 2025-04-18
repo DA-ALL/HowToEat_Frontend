@@ -2,10 +2,12 @@ import { renderMealDetail } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
 import { renderReportPage } from '../report/report.js';
+import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
+import { renderUsersSetTime } from '../my-page/usersSetTime.js';
 
 const userConsumedDataTest = {
-    date: "2025-04-15",
+    date: "2025-04-18",
     carbo: { consumed: 70, target: 220 },
     protein: { consumed: 42, target: 90 },
     fat: { consumed: 20, target: 50 }
@@ -31,6 +33,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     // $('#report').hide();
     $('#main').show();
     $('#report').hide();
+    $('#my').hide();
 
     // 초기 상태: 모든 하위 뷰 숨기고 시작
     $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
@@ -83,12 +86,16 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
     }
-    
+    //마이 페이지
+    if ($('#myPage').children().length === 0) {
+        $("#myPage").html(renderMyPage());
+    }   
 }
 
 
 export function showReport() {
     $('#main').hide();
+    $('#my').hide();
     $('#report').show();
 
     //리포트 페이지
@@ -96,6 +103,40 @@ export function showReport() {
         $("#reportPage").html(renderReportPage());
     }
 }
+
+export function showMyPage(subpath = null) {
+    $('#main').hide();
+    $('#report').hide();
+    $('#my').show();
+
+    $('#myPage, #usersSetTime').hide();
+
+    if (!subpath) {
+        // 기본 마이페이지 렌더링
+        if ($('#myPage').children().length === 0) {
+            $("#myPage").html(renderMyPage());
+        }   
+
+        $('#myPage').show(); // /main
+        return;
+    }
+    
+    // 서브뷰 조건별 처리
+    if (subpath === 'set-time') {
+        $("#usersSetTime").html(renderUsersSetTime());
+        initHeaderNav($('#usersSetTime'));
+        $('#usersSetTime').show();
+    } else if (subpath === 'notice') {
+        console.log('공지사항 뷰로 이동');
+    } else if (subpath === 'question') {
+        console.log('문의 뷰로 이동');
+    } else if (subpath === 'terms') {
+        console.log('약관 및 이용동의 뷰로 이동');
+    } else if (subpath === 'privacy') {
+        console.log('개인정보 보호정책 뷰로 이동');
+    }
+}
+
 
 export function resetHomeMealView() {
     $('#homeMeal').empty();
@@ -107,6 +148,10 @@ export function resetSearchView() {
 
 export function resetRegistView() {
     $('#homeMealRegist').empty();
+}
+
+export function resetSetTimeView() {
+    $('#usersSetTime').empty();
 }
 
 function mergeConsumedData(user, food) {

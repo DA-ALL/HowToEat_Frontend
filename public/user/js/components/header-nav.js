@@ -66,22 +66,36 @@ export function initHeaderNav(parentSelector = 'body') {
     $headerNav.find('.button-prev').on('click', function () {
         const currentPath = window.location.pathname;
     
-        if (currentPath.startsWith('/main/') && currentPath.split('/').length === 3) {
-            // 예: /main/morning → 홈으로
-            history.pushState({ view: 'main' }, '', '/main');
-            showPage('/main');
-        } else if (currentPath.startsWith('/main/') && currentPath.includes('/regist')) {
-            // 예: /main/morning/regist → 아침 식단 목록으로
-            const meal = currentPath.split('/')[2];
-            history.pushState({ view: 'main' }, '', `/main/${meal}`);
-            showPage(`/main/${meal}`);
-        } else {
-            // 기본 동작: 브라우저 history 사용
-            window.history.back();
+        if (currentPath.startsWith('/users')) {
+            const stack = window.usersHistoryStack || ['/users'];
+        
+            if (stack.length > 1) {
+                stack.pop();
+                const prev = stack[stack.length - 1];
+                window.usersHistoryStack = stack; // 다시 저장
+                history.pushState({ view: 'users' }, '', prev);
+                showPage(prev);
+                return;
+            }
         }
     
-        if (parentSelector != 'body') {
-            $container.empty();
+        if (currentPath.startsWith('/main/')) {
+            const parts = currentPath.split('/');
+            if (parts.length === 3) {
+                // 예: /main/morning → 홈으로
+                history.pushState({ view: 'main' }, '', '/main');
+                showPage('/main');
+                return;
+            } else if (parts.includes('regist')) {
+                const meal = parts[2];
+                history.pushState({ view: 'main' }, '', `/main/${meal}`);
+                showPage(`/main/${meal}`);
+                return;
+            }
         }
+    
+        // 기본: 브라우저 히스토리 사용
+        window.history.back();
     });
+    
 }

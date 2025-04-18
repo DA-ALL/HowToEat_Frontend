@@ -1,6 +1,7 @@
-import { showMain, showReport, resetHomeMealView, resetSearchView, resetRegistView } from './routers.js';
+import { showMain, showReport, showMyPage, resetHomeMealView, resetSearchView, resetRegistView } from './routers.js';
 
 window.lastMainPath = '/main';
+window.lastUsersPath = '/users';
 
 export function setLastMainPath(path) {
     window.lastMainPath = path;
@@ -17,7 +18,7 @@ const navMap = {
         defaultIcon: '/user/images/icon_report.png',
         activeIcon: '/user/images/icon_report_active.png'
     },
-    '/my-page': {
+    '/users': {
         selector: '.item-wrapper.mypage',
         defaultIcon: '/user/images/icon_mypage.png',
         activeIcon: '/user/images/icon_mypage_active.png'
@@ -26,21 +27,36 @@ const navMap = {
 
 // 뷰 전환 함수
 export function showPage(path, userConsumedData = null, registFoodData = null) {
-    $('#main, #report').hide();
-
     if (path.startsWith('/main')) {
+        if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
+        if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
+            window.mainHistoryStack.push(path);
+        }
+    
         lastMainPath = path;
-        $('#main').show();
-
+    
         const parts = path.split('/');
         const meal = parts[2];      // morning
         const regist = parts[3];   // regist 등
         const type = parts[4];     // ingredient 등
-
+    
         showMain(meal, regist, type, userConsumedData, registFoodData);
     }
     else if (path.startsWith('/report')) {
         showReport();
+    }
+    else if (path.startsWith('/users')) {
+        // 스택이 없으면 생성
+        if (!window.usersHistoryStack) window.usersHistoryStack = ['/users'];
+    
+        // 중복 푸시 방지
+        if (window.usersHistoryStack[window.usersHistoryStack.length - 1] !== path) {
+            window.usersHistoryStack.push(path);
+        }
+    
+        const parts = path.split('/');
+        const subpath = parts[2];
+        showMyPage(subpath);
     }
 
     updateNavActive(path);
@@ -97,7 +113,6 @@ $(document).ready(function () {
     });
 
     // nav 클릭 이벤트
-
     Object.entries(navMap).forEach(([key, { selector }]) => {
         $(selector).on('click', function (e) {
             e.preventDefault();
@@ -124,23 +139,39 @@ $(document).ready(function () {
                 if (currentPath.startsWith('/main')) {
                     lastMainPath = currentPath;
                 }
-                history.pushState({ view: key.slice(1) }, '', key);
-                showPage(key);
+            
+                if (key === '/users') {
+                    if (currentPath.startsWith('/users')) {
+                        if (currentPath === lastUsersPath && currentPath !== '/users') {
+                            // 두 번 클릭 시 /users로 초기화
+                            lastUsersPath = '/users';
+                            history.pushState({ view: 'users' }, '', '/users');
+                            showPage('/users');
+                            return;
+                        } else {
+                            lastUsersPath = currentPath;
+                        }
+                    }
+                
+                    history.pushState({ view: 'users' }, '', lastUsersPath);
+                    showPage(lastUsersPath);
+                } else {
+                    history.pushState({ view: key.slice(1) }, '', key);
+                    showPage(key);
+                }
             }
+            
         });
     });
-
-
-
 
     // 뒤로가기 이벤트 처리
     window.addEventListener('popstate', () => {
         const path = window.location.pathname;
 
         // 강제 초기화 -> 안하면 페이지 새로 안그려줌
-        if (path.includes('/regist')) {
-            $('#homeMealRegist').empty();
-        }
+        // if (path.includes('/regist')) {
+        //     $('#homeMealRegist').empty();
+        // }
 
         if (path.startsWith('/main')) {
             lastMainPath = path;

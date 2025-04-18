@@ -1,0 +1,85 @@
+#my #usersSetTime .item-container {
+    padding-left: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    padding-right: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    padding-bottom: clamp(19.2px, 6.4vw, 32px);
+}
+
+#my #usersSetTime .item-container .title {
+    font-size: clamp(9.6px, 3.2vw, 16px);
+    color: var(--black100);
+    font-weight: 700;
+    margin-bottom: clamp(6.2px, 2.4vw, 11px);
+}
+
+#my #usersSetTime .item-container .time {
+    display: flex;
+    justify-content: center;
+    font-size: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    padding: clamp(9.6px, 3.2vw, 16px) 0;
+    color: #404040;
+    font-weight: 500;
+    border-radius: 16px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+}
+
+#my #usersSetTime .item-container .time.disabled {
+    color: var(--gray300);
+    background-color: var(--gray50);
+    border: 1px solid var(--gray50);
+    cursor: default;
+}
+
+#my #usersSetTime .recommend-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    padding-right: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+}
+
+#my #usersSetTime .recommend-container .title {
+    font-size: clamp(9.6px, 3.2vw, 16px);
+    color: var(--black100);
+    font-weight: 700;
+    margin-bottom: clamp(3.22px, 1.04vw + 0.1px, 5.3px);
+}
+
+#my #usersSetTime .recommend-container .sub-title {
+    font-size: clamp(9.6px, 3.2vw, 16px);
+    color: var(--gray400);
+    font-weight: 400;
+}
+
+#my #usersSetTime .recommend-container .recommend-set-time-toggle {
+    width: clamp(36.8px, 12.264vw, 61.33px);
+    height: clamp(20.45px, 6.808vw, 34.07px);
+    border-radius: 999px;
+    background: #dcdcdc;
+    position: relative;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  
+  #my #usersSetTime .recommend-container .recommend-set-time-toggle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    width: clamp(15.8px, 5.6vw + 0px, 27px);
+    height: clamp(15.8px, 5.6vw + 0px, 27px);
+    background: #fff;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: left 0.3s ease;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+  }
+  
+  #my #usersSetTime .recommend-container .recommend-set-time-toggle.active {
+    background: #f36f6f;
+  }
+  
+  #my #usersSetTime .recommend-container .recommend-set-time-toggle.active::before {
+    left: calc(100% - clamp(15.8px, 5.6vw + 0px, 27px) - 3px);
+  }
