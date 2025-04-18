@@ -1,3 +1,5 @@
+import { showPage } from '../components/nav-bottom.js'
+
 export function renderMyPage() {
     return `
         <div class="mypage-info-container">
@@ -45,7 +47,7 @@ export function renderMyPage() {
 
         <div class="mypage-alarm-container option-container">
             <div class="title">알람 설정</div>
-            <div class="set-time item-option">
+            <div class="set-time item-option" data-path="set-time">
                 <div class="option-title">식사 시간 설정</div>
                 <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
             </div>
@@ -57,11 +59,11 @@ export function renderMyPage() {
 
         <div class="mypage-customer-service-container option-container">
             <div class="title">고객 센터</div>
-            <div class="notice item-option">
+            <div class="notice item-option" data-path="notice">
                 <div class="option-title">공지사항</div>
                 <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
             </div>
-            <div class="question item-option">
+            <div class="question item-option" data-path="question">
                 <div class="option-title">문의</div>
                 <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
             </div>
@@ -69,11 +71,11 @@ export function renderMyPage() {
 
         <div class="mypage-TermsAndPolicies-container option-container">
             <div class="title">약관 및 정책</div>
-            <div class="terms-of-use item-option">
+            <div class="terms-of-use item-option" data-path="terms">
                 <div class="option-title">약관 및 이용동의</div>
                 <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
             </div>
-            <div class="privacy-policy item-option">
+            <div class="privacy-policy item-option" data-path="privacy">
                 <div class="option-title">개인정보 보호정책</div>
                 <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
             </div>
@@ -90,9 +92,18 @@ export function renderMyPage() {
 
 $(document).on('click', '.alarm-toggle', function () {
     $(this).toggleClass('active');
-    
+
     // 상태 확인용 로그 (on/off)
     const isOn = $(this).hasClass('active');
-    console.log('알림 권한:', isOn ? 'ON' : 'OFF');
-  });
-  
+});
+
+
+$(document).on('click', '.item-option[data-path]', function () {
+    const path = $(this).data('path');
+    const newPath = `/users/${path}`;
+
+    window.lastUsersPath = newPath; // ✅ 꼭 같이 업데이트 해줘야 함!
+
+    history.pushState({ view: 'users', path }, '', newPath);
+    showPage(newPath);
+});
