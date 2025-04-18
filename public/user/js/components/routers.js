@@ -2,6 +2,7 @@ import { renderMealDetail } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
 import { renderReportPage } from '../report/report.js';
+import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
 
 const userConsumedDataTest = {
@@ -31,6 +32,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     // $('#report').hide();
     $('#main').show();
     $('#report').hide();
+    $('#my').hide();
 
     // 초기 상태: 모든 하위 뷰 숨기고 시작
     $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
@@ -89,6 +91,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 
 export function showReport() {
     $('#main').hide();
+    $('#my').hide();
     $('#report').show();
 
     //리포트 페이지
@@ -96,6 +99,31 @@ export function showReport() {
         $("#reportPage").html(renderReportPage());
     }
 }
+
+export function showMyPage(subpath = null) {
+    $('#main').hide();
+    $('#report').hide();
+    $('#my').show();
+
+    // 기본 마이페이지 렌더링
+    if ($('#myPage').children().length === 0) {
+        $("#myPage").html(renderMyPage());
+    }
+
+    // 서브뷰 조건별 처리
+    if (subpath === 'set-time') {
+        console.log('식사 시간 설정 뷰로 이동'); // 여기에 페이지 렌더 함수 추가
+    } else if (subpath === 'notice') {
+        console.log('공지사항 뷰로 이동');
+    } else if (subpath === 'question') {
+        console.log('문의 뷰로 이동');
+    } else if (subpath === 'terms') {
+        console.log('약관 및 이용동의 뷰로 이동');
+    } else if (subpath === 'privacy') {
+        console.log('개인정보 보호정책 뷰로 이동');
+    }
+}
+
 
 export function resetHomeMealView() {
     $('#homeMeal').empty();

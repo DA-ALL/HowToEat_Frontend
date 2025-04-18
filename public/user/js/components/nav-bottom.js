@@ -1,6 +1,7 @@
-import { showMain, showReport, resetHomeMealView, resetSearchView, resetRegistView } from './routers.js';
+import { showMain, showReport, showMyPage, resetHomeMealView, resetSearchView, resetRegistView } from './routers.js';
 
 window.lastMainPath = '/main';
+window.lastUsersPath = '/users';
 
 export function setLastMainPath(path) {
     window.lastMainPath = path;
@@ -17,7 +18,7 @@ const navMap = {
         defaultIcon: '/user/images/icon_report.png',
         activeIcon: '/user/images/icon_report_active.png'
     },
-    '/my-page': {
+    '/users': {
         selector: '.item-wrapper.mypage',
         defaultIcon: '/user/images/icon_mypage.png',
         activeIcon: '/user/images/icon_mypage_active.png'
@@ -41,6 +42,11 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
     }
     else if (path.startsWith('/report')) {
         showReport();
+    }
+    else if (path.startsWith('/users')) {
+        const parts = path.split('/');
+        const subpath = parts[2]; // set-time, notice 등
+        showMyPage(subpath);
     }
 
     updateNavActive(path);
@@ -97,7 +103,6 @@ $(document).ready(function () {
     });
 
     // nav 클릭 이벤트
-
     Object.entries(navMap).forEach(([key, { selector }]) => {
         $(selector).on('click', function (e) {
             e.preventDefault();
@@ -124,14 +129,28 @@ $(document).ready(function () {
                 if (currentPath.startsWith('/main')) {
                     lastMainPath = currentPath;
                 }
-                history.pushState({ view: key.slice(1) }, '', key);
-                showPage(key);
+            
+                if (key === '/users') {
+                    if (currentPath.startsWith('/users')) {
+                        if (currentPath === lastUsersPath && currentPath !== '/users') {
+                            // ✅ 두 번 클릭 시 /users로 초기화
+                            lastUsersPath = '/users';
+                            history.pushState({ view: 'users' }, '', '/users');
+                            showPage('/users');
+                            return;
+                        } else {
+                            lastUsersPath = currentPath;
+                        }
+                    }
+                
+                    history.pushState({ view: 'users' }, '', lastUsersPath);
+                    showPage(lastUsersPath);
+                }
+                
             }
+            
         });
     });
-
-
-
 
     // 뒤로가기 이벤트 처리
     window.addEventListener('popstate', () => {

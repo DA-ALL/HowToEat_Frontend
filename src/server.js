@@ -6,7 +6,7 @@ const port = 3000;
 
 app.use(express.static(path.join(__dirname, '../public')));
 // 메인 페이지 관련 경로는 모두 main.html로 응답
-app.get(['/main*', '/report*', '/my-page*'], (req, res) => {
+app.get(['/main*', '/report*', '/users*'], (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'main.html'));
 });
 
