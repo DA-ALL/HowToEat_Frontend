@@ -1,7 +1,14 @@
+@import url("/user/css/my-page/option-set-time.css");
+
 #my .divider {
     width: 0.5px;
     height: clamp(16.8px, 5.6vw, 28px);
     background-color: #D9D9D9;
+}
+
+#my .set-container {
+    padding-top: clamp(24px, 8vw, 40px);
+    padding-bottom: clamp(108px, 36vw, 180px);
 }
 
 #my {
