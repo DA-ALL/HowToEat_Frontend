@@ -1,7 +1,7 @@
-import { onPopstate, updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
+import { updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
 
-export function renderFilters() {
-    $('.filter-group').children().each(function () {
+export function renderFilters(contentId) {
+    $(`#${contentId} .filter-group`).children().each(function () {
         let $filter = $(this);
         let type = $filter.data('type');
         let filterTemplate = '';
@@ -45,9 +45,9 @@ export function renderFilters() {
                         <div class="filter-option-wrapper" data-key="data-source">
                             <div class="filter-option" data-query="all">전체</div>
                             <div class="filter-option" data-query="processed">가공식품DB</div>
-                            <div class="filter-option" data-query="food">음식DB</div>
-                            <div class="filter-option" data-query="raw">원재료DB</div>
-                            <div class="filter-option" data-query="user">유저 등록</div>
+                            <div class="filter-option" data-query="cooked">음식DB</div>
+                            <div class="filter-option" data-query="ingredient">원재료DB</div>
+                            <div class="filter-option" data-query="custom">유저 등록</div>
                         </div>
                     `;
                 break;
@@ -77,7 +77,7 @@ export function renderFilters() {
                         <div class="filter-title">조회 기준</div>
                         <div class="filter-option-wrapper" data-key="option">
                             <div class="filter-option" data-query="kcal">칼로리</div>
-                            <div class="filter-option" data-query="carbohydrate">탄수화물</div>
+                            <div class="filter-option" data-query="carbo">탄수화물</div>
                             <div class="filter-option" data-query="protein">단백질</div>
                             <div class="filter-option" data-query="province">지방</div>
                         </div>
@@ -117,14 +117,10 @@ $(document).on('click', '.filter-option', function () {
 });
 
 
-export function loadFilter(){
-    renderFilters();
+export function loadFilter(contentId){
+    renderFilters(contentId);
     syncFiltersWithURL();
-    // updateURLWithActiveFilters();
 }
-
-onPopstate(loadFilter);  
-
 
 function getGyms(){
 

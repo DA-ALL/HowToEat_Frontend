@@ -1,4 +1,5 @@
-import { updateURL, onPopstate } from '/administrate/js/router.js';
+import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
+import { loadFoodDetail } from '/administrate/js/food-management/foodDetail.js';
 
 
 $(document).ready(function () {
@@ -67,13 +68,13 @@ $(document).ready(function () {
                         </div>
                     </div>
                     <div class="sidebar-item-wrapper food">
-                        <div class="sidebar-item-option" data-page="recommend-food">
+                        <div class="sidebar-item-option" data-page="recommend">
                             <div class="dot"></div>
                             <div class="label">추천 음식</div>
                         </div>
                     </div>
                     <div class="sidebar-item-wrapper food">
-                        <div class="sidebar-item-option" data-page="add-food">
+                        <div class="sidebar-item-option" data-page="add">
                             <div class="dot"></div>
                             <div class="label">음식 추가</div>
                         </div>
@@ -140,9 +141,9 @@ $(document).ready(function () {
             newUrl = `user-management/${page}`;
         } else if (page === 'user-regist') {
             newUrl = `food-management/${page}`;
-        }  else if (page === 'recommend-food') {
+        }  else if (page === 'recommend') {
             newUrl = `food-management/${page}`;
-        } else if (page === 'add-food') {
+        } else if (page === 'add') {
             newUrl = `food-management/${page}`;
         } else if (page === 'trainer') {
             newUrl = `admin-management/${page}`;
@@ -158,6 +159,10 @@ $(document).ready(function () {
         
         updateURL(newUrl);
         updateSideOptionActiveState(page);
+        
+        if (page === 'add') {
+            loadFoodDetail({type:"add"});
+        }
 
         $(this).addClass("active");
     })
@@ -180,15 +185,36 @@ $(document).ready(function () {
         $(this).find('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
     });
 
-    onPopstate(function (event) {
-        const pathParts = window.location.pathname.split("/").slice(2);
-        updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
-    });
+    // onPopstate(function (event) {
+    //     const pathParts = window.location.pathname.split("/").slice(2);
+    //     updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
+    // });
+    registerPopstateHandler('sidebar', popstateHandler);
+
+    function popstateHandler() {
+        updateActiveState(getCurrentPage()); // 사이드바 active 업데이트
+    }
+
 
     // 현재 페이지의 맨뒤에 url을 가져오기
     function getCurrentPage() {
-        const pathParts = window.location.pathname.split("/").slice(2); // "/admin/user-management/pt" → ["user-management", "pt"]
-        return pathParts.length > 1 ? pathParts : pathParts[0]; // ["user-management", "pt"] or "dashboard"
+        const pathParts = window.location.pathname.split("/").slice(2); // "/admin/food-management/1" → ["food-management", "1"]
+    
+        if (pathParts[0] === 'food-management') {
+            if (pathParts.length === 2 && /^\d+$/.test(pathParts[1])) {
+                return ['food-management', 'all-food'];
+            }
+    
+            if (pathParts[1] === 'user-regist' && /^\d+$/.test(pathParts[2])) {
+                return ['food-management', 'user-regist'];
+            }
+    
+            if (pathParts[1] === 'recommend' && /^\d+$/.test(pathParts[2])) {
+                return ['food-management', 'recommend'];
+            }
+        }
+    
+        return pathParts.length > 1 ? pathParts : pathParts[0]; // fallback
     }
     
 
@@ -204,6 +230,10 @@ $(document).ready(function () {
         const $optionsAdminManagementWrapper = $(".sidebar-item-options-wrapper.admin");
         var pageUrl = page;
 
+        $optionsWrapper.stop(true, true).animate({ opacity: 0, height: 0 }, 300, function () {
+            $(this).css("display", "none");
+        });
+    
         if(Array.isArray(page)) {
             pageUrl = page[0];
         }

@@ -1,4 +1,4 @@
-import { onPopstate, updateURL } from '/administrate/js/router.js';
+import { updateURL } from '/administrate/js/router.js';
 import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
 
@@ -36,6 +36,3 @@ $(document).on('click', `#userTableBody tr`, function () {
 
     renderUserInfo(getUserInfo(), 'user-management');
 });
-
-
-onPopstate(loadTotalUserTable);

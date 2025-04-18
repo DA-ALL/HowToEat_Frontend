@@ -1,8 +1,24 @@
 let currentContent = "";
+const popstateHandlers = {};
 
 export function getCurrentContent(){
     return currentContent
 }
+export function registerPopstateHandler(contentId, callback) {
+    popstateHandlers[contentId] = callback;
+}
+
+window.addEventListener('popstate', function (event) {
+    hideAllContents();
+    showCurrentContent();
+
+    if (popstateHandlers[currentContent]) {
+        popstateHandlers[currentContent](event);
+        console.log("popstate 발생");
+    }
+    popstateHandlers['sidebar'](event);
+});
+
 
 // URL 변경
 export function updateURL(page) {
@@ -80,16 +96,6 @@ export function getQueryParams() {
     return Object.fromEntries(new URLSearchParams(window.location.search));
 }
 
-// popstate 발생시 처리
-export function onPopstate(callback){
-    window.addEventListener('popstate', function(event) {
-        hideAllContents();
-        showCurrentContent();
-        callback(event); 
-    });
-}
-
-
 function hideAllContents() {
     $('.content-wrapper').children().each(function (index) {
         $(this).css('display', 'none');
@@ -105,27 +111,32 @@ function showCurrentContent() {
     const fullPath = pathSegments.join("/");
 
     // 간단한 경로
-    if (pathSegments.length < 3) {
-        const contentMap = {
-            'dashboard': 'dashboardChart',
-            'user-management': 'userManagement',
-            'user-management/pt': 'ptUserManagement',
-            'food-management': 'foodManagement',
-            'food-management/user-regist': 'userFoodManagement',
-            'food-management/recommend-food': 'recommendFoodManagement',
-            'food-management/add-food': 'addFood',
-            'notice': 'notice',
-            'admin-management': 'adminManagement',
-            'admin-management/trainer': 'trainerManagement',
-            'admin-management/gym': 'gymManagement',
-        };
-        currentContent = contentMap[fullPath];
-    } else {
-        // 복잡한 경로
+ 
+    const contentMap = {
+        'dashboard': 'dashboardChart',
+        'user-management': 'userManagement',
+        'user-management/pt': 'ptUserManagement',
+        'food-management': 'adminFood',
+        'food-management/user-regist': 'userFood',
+        'food-management/recommend': 'recommendFood',
+        'food-management/add': 'foodDetail',
+        'notice': 'notice',
+        'admin-management': 'adminManagement',
+        'admin-management/trainer': 'trainerManagement',
+        'admin-management/gym': 'gymManagement',
+    };
+
+    currentContent = contentMap[fullPath];
+
+    if (!currentContent) {
         const contentPatterns = [
             { pattern: /^user-management\/user\/\d+$/, contentId: 'userInfo' },
             { pattern: /^user-management\/pt\/\d+$/, contentId: 'trainerInfo' },
             { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, contentId: 'userInfo' },
+
+            { pattern: /^food-management\/\d+$/, contentId: 'foodDetail' },
+            { pattern: /^food-management\/user-regist\/\d+$/, contentId: 'foodDetail' },
+            { pattern: /^food-management\/recommend\/\d+$/, contentId: 'foodDetail' },
         ];
 
         for (const item of contentPatterns) {
@@ -141,7 +152,6 @@ function showCurrentContent() {
         return;
     }
 
-    console.log("현재 콘텐츠: ", currentContent);
     if(currentContent == 'userInfo' || currentContent == 'trainerInfo'){
         $('.content-section').css('display', 'none');
         $('#detailPage').css('display', 'block');
@@ -149,7 +159,7 @@ function showCurrentContent() {
         $('.content-section').css('display', 'block');
         $('#detailPage').css('display', 'none');
     }
-
+    
     $(`#${currentContent}`).css('display', 'flex');
 }
 
@@ -238,33 +248,7 @@ export function syncSearchDropdownWithURL(){
     }
 }
 
-
-
-
 $(document).ready(function () {
     hideAllContents();
     showCurrentContent();
 });
-
-
-/*
-    1. pushstate - url, param 업데이트시
-    2. popstate - 뒤로가기, 앞으로가기 
-    3. 새로고침시에는 load~page 등을 활용
-
-    각 파일에서 (url 업데이트 하는 코드, popstate시 처리하는 코드)는 여기서 가져다 씀
-
-    새로고침시에 처리하는 코드는 각 파일에서 만듬
-    
-    /admin/dashboard        dashboardChart
-    /admin/user-management      userManagement
-    /admin/user-management/pt       ptUserManagement
-    /admin/food-management      foodManagement
-    /admin/food-management/user-regist      userFoodManagement
-    /admin/food-management/recommend-food       recommendFoodManagement
-    /admin/food-management/add-food         addFood
-    /admin/notice       notice
-    /admin/admin-management     adminManagement
-    /admin/admin-management/trainer     trainerManagement
-    /admin/admin-management/gym     gymManagement
-*/
