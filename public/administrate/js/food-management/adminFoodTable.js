@@ -109,7 +109,14 @@ $(document).on('click', '.delete-food-button', function (e) {
     console.log(`음식 ID ${foodId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
-    
-    // showCustomAlert(2); 
-    // 예시: 삭제 후 테이블 다시 렌더링할 경우 필요한 콜백 추가 가능
+    showCustomAlert({
+        type: 5,
+        onCancel: () => {
+            console.log("삭제 취소");
+        },
+        onNext: () => {
+            console.log("삭제 확인");
+        }
+    });
+
 });

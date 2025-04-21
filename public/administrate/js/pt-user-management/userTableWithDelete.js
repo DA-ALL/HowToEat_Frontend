@@ -114,6 +114,14 @@ $(document).on('click', '.delete-user-button', function (e) {
 
     // TODO: 실제 삭제 API 호출
     
-    showCustomAlert(2); 
+    showCustomAlert({
+        type: 2,
+        onCancel: () => {
+            console.log("삭제 취소");
+        },
+        onNext: () => {
+            console.log("삭제 확인");
+        }
+    }); 
     // 예시: 삭제 후 테이블 다시 렌더링할 경우 필요한 콜백 추가 가능
 });
