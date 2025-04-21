@@ -1,3 +1,5 @@
+import { showCustomAlert } from '/administrate/js/components/customAlert.js';
+
 export function loadFoodDetail({type}) {
     
     const container = $("#foodDetail");
@@ -630,6 +632,15 @@ $(document).on("click", "#foodDetailEdit", function () {
     
     const foodDetailValues = getFoodDetailValues();
     console.log("수정할 음식 정보:", foodDetailValues); 
+    showCustomAlert({
+        type: 4,
+        onCancel: function () {
+            console.log("수정 취소");
+        },
+        onNext: function () {
+            console.log("수정 완료");
+        }
+    });
 });
 
 //공유하기 버튼

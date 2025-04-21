@@ -136,7 +136,12 @@ $(document).on('click', '.user-role-button', function (e) {
 
     $('body').append($dropdown);
 
-    showCustomAlert(1);
+    showCustomAlert({
+        type: 1,
+        onNext: () => {
+            console.log("확인");
+        }
+    });
     
     // 다른 곳 클릭 시 닫기
     $(document).on('click', function (e) {
