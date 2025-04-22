@@ -23,6 +23,11 @@ export function initAlert($container, type) {
                         </div>
                     </div>
 
+                    <div class="alert-button-container flex-row">
+                        <div class="cancel-button">취소</div>
+                        <div class="next-button">확인</div>
+                    </div>
+
                 </div>
             `;
             break;

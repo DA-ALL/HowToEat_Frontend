@@ -20,7 +20,7 @@
 #alert .alert-container {
     display: flex;
     flex-direction: column;
-    width: clamp(235.2px, 78.4vw - 2.94px, 392px);
+    width: clamp(214px, 78.4vw - 2.94px, 352px);
     height: auto;
     background-color: var(--white300);
     border-radius: 16px;
@@ -41,6 +41,8 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    margin-bottom: clamp(30px, 8vw, 40px);
+
 }
 
 #alert .alert-container .set-time-wrapper .colon {
