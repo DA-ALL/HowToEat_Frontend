@@ -1,5 +1,8 @@
+import { initAlert } from '../components/alert.js';
+
 export function renderUsersSetTime() {
     return `
+    <div id="alert"></div>
     <div id="alertBackground"></div>
     <div class="set-container">
         <div id="headerNav" data-title="식사 시간 설정" data-type="2"></div>
@@ -70,4 +73,8 @@ $(document).on('click', '.recommend-set-time-toggle', function () {
 
         $toggle.removeClass('active');
     }
+});
+
+$(document).on('click', '.time', function () {
+    initAlert($('#usersSetTime'), "time");
 });
