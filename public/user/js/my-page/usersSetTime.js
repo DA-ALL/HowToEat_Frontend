@@ -1,5 +1,6 @@
 export function renderUsersSetTime() {
     return `
+    <div id="alertBackground"></div>
     <div class="set-container">
         <div id="headerNav" data-title="식사 시간 설정" data-type="2"></div>
         <div class="item-container">

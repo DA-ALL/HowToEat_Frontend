@@ -83,3 +83,96 @@
   #my #usersSetTime .recommend-container .recommend-set-time-toggle.active::before {
     left: calc(100% - clamp(15.8px, 5.6vw + 0px, 27px) - 3px);
   }
+
+
+  .time-picker-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .time-picker-popup {
+    background: #fff;
+    border-radius: 24px;
+    width: 85%;
+    max-width: 340px;
+    padding: 24px;
+    text-align: center;
+  }
+  .popup-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .picker-container {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .picker-container::before,
+  .picker-container::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ddd;
+    z-index: 2;
+  }
+  .picker-container::before {
+    top: 50%;
+    transform: translateY(-16px);
+  }
+  .picker-container::after {
+    top: 50%;
+    transform: translateY(16px);
+  }
+  .wheel {
+    height: 90px;
+    width: 60px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .wheel::-webkit-scrollbar {
+    display: none;
+  }
+  .wheel div {
+    height: 32px;
+    font-size: 20px;
+    line-height: 32px;
+    color: #999;
+    scroll-snap-align: center;
+  }
+  .wheel div.selected {
+    color: #000;
+    font-weight: bold;
+  }
+  .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  .cancel-button, .confirm-button {
+    flex: 1;
+    margin: 0 4px;
+    padding: 12px 0;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .cancel-button {
+    background: #ccc;
+    color: #fff;
+  }
+  .confirm-button {
+    background: #f36f6f;
+    color: #fff;
+  }
