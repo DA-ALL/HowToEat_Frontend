@@ -37,6 +37,7 @@ export function initAlert($container, type) {
 
     $alertContainer.css('display', 'block');
     $alertBg.css('display', 'block');
+    $('body').css('overflow', 'hidden');
 }
 
 function generateTimeDropdown($dropdown, type) {
@@ -66,7 +67,7 @@ $(document).on('click', '#minutePicker', function () {
 });
 
 // 값 선택
-$(document).on('click', '.dropdown-item', function (e) {
+$('#usersSetTime').on('click', '.dropdown-item', function (e) {
     e.stopPropagation();
     const value = $(this).data('value');
     const $dropdown = $(this).closest('.dropdown');
@@ -85,4 +86,16 @@ $('#usersSetTime').on('click', function (e) {
     if (!$(e.target).closest('.time-wrapper, .dropdown').length) {
         $(this).find('.dropdown').hide();
     }
+});
+
+$(document).on('click', '.cancel-button', function () {
+    $('#alert').hide();
+    $('#alertBackground').hide();
+    $('body').css('overflow', ''); // 스크롤 복원
+});
+
+$(document).on('click', '.next-button', function () {
+    $('#alert').hide();
+    $('#alertBackground').hide();
+    $('body').css('overflow', '');
 });
