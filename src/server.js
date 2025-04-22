@@ -70,6 +70,14 @@ app.get('/admin/notice', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
+app.get('/admin/notice/:id(\\d+)', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
+});
+
+app.get('/admin/notice/add', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
+});
+
 app.get('/admin/admin-management', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
