@@ -61,16 +61,13 @@
 #foodDetail .input-wrapper .input-title {
     font-size: 16px;
     font-weight: 400;
-    color: var(--blakc100);
-}
-
-#foodDetail .input-wrapper .input-title.description {
-    color: var(--gray300);
+    color: var(--black100);
 }
 
 #foodDetail #description {
     height: 145px;
 }
+
 #foodDetail textarea {
     padding: 10px;
     border-radius: 10px;
@@ -90,7 +87,7 @@
 #foodDetail .input-wrapper .input-title-unit {
     font-size: 14px;
     font-weight: 400;
-    color: var(--blakc100);
+    color: var(--black100);
 }
 
 #foodDetail .input-wrapper input {
@@ -149,8 +146,6 @@
     font-weight: 400;
     color: var(--gray300);
 }
-
-
 
 #foodDetail .button-wrapper {
     align-items: center;

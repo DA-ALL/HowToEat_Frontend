@@ -111,7 +111,6 @@ function showCurrentContent() {
     const fullPath = pathSegments.join("/");
 
     // 간단한 경로
- 
     const contentMap = {
         'dashboard': 'dashboardChart',
         'user-management': 'userManagement',
@@ -137,6 +136,9 @@ function showCurrentContent() {
             { pattern: /^food-management\/\d+$/, contentId: 'foodDetail' },
             { pattern: /^food-management\/user-regist\/\d+$/, contentId: 'foodDetail' },
             { pattern: /^food-management\/recommend\/\d+$/, contentId: 'foodDetail' },
+
+            { pattern: /^notice\/\d+$/, contentId: 'noticeDetail' },
+            { pattern: /^notice\/add$/, contentId: 'noticeDetail' },
         ];
 
         for (const item of contentPatterns) {

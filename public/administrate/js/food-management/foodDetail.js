@@ -346,7 +346,7 @@ function validateInput(input) {
 function isFormValid() {
     let isValid = true;
 
-    $(".input").each(function () {
+    $("#foodDetail .input").each(function () {
         const $input = $(this);
         const value = $input.val().trim();
         const isRequired = this.id === "foodName" || this.id === "foodWeight";
@@ -586,7 +586,7 @@ $(document).on("click", "#isRecommendedToggle", function () {
 });
 
 // 인풋 포커스아웃
-$(document).on("blur", ".input", function () {
+$(document).on("blur", "#foodDetail .input", function () {
     validateInput(this);
     updateFormNextButton()
 });
@@ -610,12 +610,12 @@ $(document).on("input", "#kcal", function () {
 });
 
 // 타입 옵션 버튼
-$(document).on("click", ".data-type-option", function () {
+$(document).on("click", "#foodDetail .data-type-option", function () {
     $(this).siblings().removeClass("active");
     $(this).addClass("active");
 });
 // 단위 옵션 버튼
-$(document).on("click", ".unit-option", function () {
+$(document).on("click", "#foodDetail .unit-option", function () {
     $(this).siblings().removeClass("active");
     $(this).addClass("active");
 });
