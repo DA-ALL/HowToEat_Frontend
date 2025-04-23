@@ -46,17 +46,16 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
         showReport();
     }
     else if (path.startsWith('/users')) {
-        // 스택이 없으면 생성
         if (!window.usersHistoryStack) window.usersHistoryStack = ['/users'];
-    
-        // 중복 푸시 방지
         if (window.usersHistoryStack[window.usersHistoryStack.length - 1] !== path) {
             window.usersHistoryStack.push(path);
         }
     
         const parts = path.split('/');
-        const subpath = parts[2];
-        showMyPage(subpath);
+        const subpath = parts[2];        // 예: 'notice'
+        const detailId = parts[3];       // 예: '4'
+    
+        showMyPage(subpath, detailId);
     }
 
     updateNavActive(path);
