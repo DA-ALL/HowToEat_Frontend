@@ -128,7 +128,10 @@ export function showMyPage(subpath = null) {
         initHeaderNav($('#usersSetTime'));
         $('#usersSetTime').show();
     } else if (subpath === 'notice') {
-        $("#usersNotice").html(renderUsersNotice());
+        let type = "업데이트";
+        let title = "하잇앱이 신규 업데이트 되었어요";
+        let date ="2025.04.32";
+        $("#noticeListContainer").append(renderUsersNotice(type, title, date));
         initHeaderNav($('#usersNotice'));
         $('#usersNotice').show();
     } else if (subpath === 'question') {
