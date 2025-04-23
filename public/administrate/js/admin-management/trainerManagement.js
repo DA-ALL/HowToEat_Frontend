@@ -63,7 +63,7 @@ function getDatas() {
 }
 
 
-$(document).on('click', `#adminTrainerTable tr`, function () {
+$(document).on('click', `#adminTrainerTableBody tr`, function () {
     const adminAccountId = $(this).find('.td-id').text();
     const page = `admin-management/trainer/${adminAccountId}`;
     updateURL(page);
