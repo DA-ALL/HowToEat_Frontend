@@ -23,7 +23,7 @@ function loadContent() {
                 </div>
             </div>
         </div>
-        <div id="trainerSearchbar" class="searchbar" data-placeholder="유저명 검색"></div>
+        <div id="trainerSearchbar" class="searchbar" data-placeholder="트레이너명 검색"></div>
         <div class="filter-group">
             <div id="filter" data-type="8"></div>
         </div>

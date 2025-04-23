@@ -150,6 +150,7 @@
 #foodDetail .button-wrapper {
     align-items: center;
     justify-content: center;
+    gap: 60px;
 }
 
 #foodDetail .button-wrapper .button-cancel {

@@ -206,6 +206,7 @@
 #adminAccountDetail .button-wrapper {
     align-items: center;
     justify-content: center;
+    gap: 60px;
 }
 
 #adminAccountDetail .button-wrapper .button-cancel {

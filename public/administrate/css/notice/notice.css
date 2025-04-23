@@ -243,6 +243,7 @@
 #noticeDetail .button-wrapper {
     align-items: center;
     justify-content: center;
+    gap: 60px;
 }
 
 #noticeDetail .button-wrapper .button-cancel {

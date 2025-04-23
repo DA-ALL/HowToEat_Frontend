@@ -111,6 +111,7 @@
 #trainerDetail .button-wrapper {
     align-items: center;
     justify-content: center;
+    gap: 60px;
 }
 
 #trainerDetail .button-wrapper .button-cancel {
