@@ -71,4 +71,4 @@ $(document).on('click', `#addAdminAccountButton`, function () {
 });
 
 
-registerPopstateHandler('notice', loadContent);
+registerPopstateHandler('adminManagement', loadContent);

@@ -33,7 +33,7 @@
     text-align: center;
 }
 
-#adminAccountTable .th-delete {
+.th-delete {
     text-align: center;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
