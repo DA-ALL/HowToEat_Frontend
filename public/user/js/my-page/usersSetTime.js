@@ -76,5 +76,11 @@ $(document).on('click', '.recommend-set-time-toggle', function () {
 });
 
 $(document).on('click', '.time', function () {
-    initAlert($('#usersSetTime'), "time");
+    if (!$(this).hasClass('disabled')) {
+        const timeText = $(this).text();
+        const [hour, minute] = timeText.split(':');
+        const $target = $(this);
+
+        initAlert($('#usersSetTime'), "time", hour, minute, $target);
+    }
 });

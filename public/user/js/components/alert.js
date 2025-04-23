@@ -1,6 +1,8 @@
-export function initAlert($container, type) {
+export function initAlert($container, type, hour = '00', minute = '00', $target = null) {
     const $alertContainer = $container.find('#alert');
     const $alertBg = $container.find('#alertBackground');
+
+    window._timeTargetEl = $target;
 
     let alertTemplate = '';
 
@@ -12,13 +14,13 @@ export function initAlert($container, type) {
 
                     <div class="set-time-wrapper">
                         <div id="hourPicker" class="time-wrapper">
-                            <span id="hour">08</span>
+                            <span id="hour">${hour}</span>
                             <div class="dropdown hour-dropdown"></div>
                         </div>
 
                         <div class="colon">:</div>
                         <div id="minutePicker" class="time-wrapper">
-                            <span id="minute">20</span>
+                            <span id="minute">${minute}</span>
                             <div class="dropdown minute-dropdown"></div>
                         </div>
                     </div>
@@ -40,6 +42,7 @@ export function initAlert($container, type) {
     $('body').css('overflow', 'hidden');
 }
 
+//[case 1] 알람 설정
 function generateTimeDropdown($dropdown, type) {
     $dropdown.empty();
 
@@ -53,13 +56,12 @@ function generateTimeDropdown($dropdown, type) {
     }
 }
 
-
-// 열기
 $(document).on('click', '#hourPicker', function () {
     $('.dropdown').hide(); // 다른 드롭다운 닫기
     $('.hour-dropdown').toggle().css('top', 'calc(100% + 8px)');
     generateTimeDropdown($('.hour-dropdown'), 'hour');
 });
+
 $(document).on('click', '#minutePicker', function () {
     $('.dropdown').hide();
     $('.minute-dropdown').toggle().css('top', 'calc(100% + 8px)');
@@ -81,7 +83,6 @@ $('#usersSetTime').on('click', '.dropdown-item', function (e) {
     $dropdown.hide();
 });
 
-
 $('#usersSetTime').on('click', function (e) {
     if (!$(e.target).closest('.time-wrapper, .dropdown').length) {
         $(this).find('.dropdown').hide();
@@ -95,7 +96,18 @@ $(document).on('click', '.cancel-button', function () {
 });
 
 $(document).on('click', '.next-button', function () {
+    const selectedHour = $('#hour').text();
+    const selectedMinute = $('#minute').text();
+
+    if (window._timeTargetEl) {
+        window._timeTargetEl.text(`${selectedHour}:${selectedMinute}`);
+        window._timeTargetEl = null;
+    }
+
     $('#alert').hide();
     $('#alertBackground').hide();
     $('body').css('overflow', '');
 });
+
+
+//[case 2] 알람 설정
