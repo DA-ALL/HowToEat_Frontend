@@ -5,6 +5,7 @@ import { renderReportPage } from '../report/report.js';
 import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
 import { renderUsersSetTime } from '../my-page/usersSetTime.js';
+import { renderUsersNotice } from '../my-page/usersNotice.js';
 
 const userConsumedDataTest = {
     date: "2025-04-18",
@@ -109,7 +110,7 @@ export function showMyPage(subpath = null) {
     $('#report').hide();
     $('#my').show();
 
-    $('#myPage, #usersSetTime').hide();
+    $('#myPage, #usersSetTime, #usersNotice').hide();
 
     if (!subpath) {
         // 기본 마이페이지 렌더링
@@ -127,7 +128,9 @@ export function showMyPage(subpath = null) {
         initHeaderNav($('#usersSetTime'));
         $('#usersSetTime').show();
     } else if (subpath === 'notice') {
-        console.log('공지사항 뷰로 이동');
+        $("#usersNotice").html(renderUsersNotice());
+        initHeaderNav($('#usersNotice'));
+        $('#usersNotice').show();
     } else if (subpath === 'question') {
         console.log('문의 뷰로 이동');
     } else if (subpath === 'terms') {
