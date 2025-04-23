@@ -12,7 +12,16 @@ function loadContent() {
     const container = $("#notice");
 
     let adminFoodHTML = `
-        <div class="title">공지사항 전체보기</div>
+        <div class="add-title-wrapper">
+            <div class="add-title">공지사항 전체보기</div>
+            <div id="addNoticeButton" class="add-button-wrapper">
+                <div class="label">추가하기</div>
+                <div class="icon-add">
+                    <img src="/administrate/images/icon_add_red.png">
+                </div>
+            </div>
+        </div>
+
         <div id="noticeSearchbar" class="searchbar" data-placeholder="공지사항 제목 검색"></div>
 
         <div class="filter-group">
@@ -20,9 +29,6 @@ function loadContent() {
         </div>
 
         <div id="noticeTable"></div>
-        <div class="button-wrapper">
-            <div id="createNoticeButton" class="button-next">공지사항 추가하기</div>
-        </div>
     `;
 
     container.html(adminFoodHTML);
@@ -68,7 +74,7 @@ $(document).on('click', `#noticeTableBody tr`, function () {
     loadNoticeDetail({type:'edit'});
 });
 
-$(document).on('click', `#createNoticeButton`, function () {
+$(document).on('click', `#addNoticeButton`, function () {
     console.log('create notice');
     updateURL('notice/add');
 

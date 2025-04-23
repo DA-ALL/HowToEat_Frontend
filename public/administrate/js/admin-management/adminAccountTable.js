@@ -4,31 +4,35 @@ import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 20;
 
-function createRows({ id, noticeType, noticeTitle, createdAt }) {
+function createRows({ id, accountId, createdAt, role }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
-            <td class="td-notice-type">${noticeType}</td>
-            <td class="td-notice-title">${noticeTitle}</td>
+            <td class="td-account-id">${accountId}</td>
             <td class="td-created-at">${createdAt}</td>
+            <td class="td-role">
+                <div class="role-wrapper">
+                    <div class="role-button ${role}">${role == 'super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
+                </div>
+            </td>
             <td class="td-delete">
-                <div class="delete-notice-button-wrapper">
-                    <div class="delete-notice-button" data-notice-id="${id}">삭제</div>
+                <div class="table-delete-button-wrapper">
+                    <div class="table-delete-button" data-id="${id}">삭제</div>
                 </div>
             </td>
         </tr>
     `;
 }
 
-export function renderNoticeTable(containerId, bodyId) {
+export function renderAdminAccountTable(containerId, bodyId) {
     const tableHTML = `
-        <table class="notice-table">
+        <table class="admin-account-table">
             <thead>
                 <tr>
                     <th class="th-id">ID</th>
-                    <th class="th-notice-type">타입</th>
-                    <th class="th-notice-title">제목</th>
-                    <th class="th-created-at">작성일자</th>   
+                    <th class="th-account-id">아이디</th>
+                    <th class="th-created-at">생성일자</th>
+                    <th class="th-role">권한</th>
                     <th class="th-delete">선택</th>
                 </tr>
             </thead>
@@ -84,10 +88,10 @@ function getPageFromURL() {
 
 
 // 삭제 버튼 클릭 시
-$(document).on('click', '.delete-notice-button', function (e) {
+$(document).on('click', '#adminAccountTable .table-delete-button', function (e) {
     e.stopPropagation();
-    const noticeId = $(this).data('notice-id');
-    console.log(`notice ID ${noticeId} 삭제 요청`);
+    const adminAccountId = $(this).data('id');
+    console.log(`adminAccount ID ${adminAccountId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
     showCustomAlert({
