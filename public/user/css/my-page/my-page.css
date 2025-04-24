@@ -44,6 +44,7 @@
     box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.15);
     border-radius: 16px;
     gap: clamp(19.2px, 6.4vw, 32px);
+    cursor: pointer;
 }
 
 #my #myPage .mypage-info-container .mypage-info-goal-wrapper .mypage-info-wrapper {

@@ -3,7 +3,7 @@ import { showPage } from '../components/nav-bottom.js'
 export function renderMyPage() {
     return `
         <div class="mypage-info-container">
-            <div class="mypage-info-goal-wrapper">
+            <div class="mypage-info-goal-wrapper" data-path="info">
                 <div class="mypage-info-wrapper">
 
                     <div class="profile-image">
@@ -99,6 +99,16 @@ $(document).on('click', '.alarm-toggle', function () {
 
 
 $(document).on('click', '.item-option[data-path]', function () {
+    const path = $(this).data('path');
+    const newPath = `/users/${path}`;
+
+    window.lastUsersPath = newPath; // ✅ 꼭 같이 업데이트 해줘야 함!
+
+    history.pushState({ view: 'users', path }, '', newPath);
+    showPage(newPath);
+});
+
+$(document).on('click', '.mypage-info-goal-wrapper', function () {
     const path = $(this).data('path');
     const newPath = `/users/${path}`;
 
