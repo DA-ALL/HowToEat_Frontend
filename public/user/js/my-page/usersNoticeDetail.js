@@ -21,6 +21,5 @@ export function renderUsersNoticeDetail(id) {
             
             </div>
             </div>
-    
     `;
-} 
+}
