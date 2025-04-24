@@ -131,6 +131,7 @@ $(document).ready(function () {
 
     // 페이지 로드 시 현재 URL 기준으로 active 상태 설정
     const currentPage = getCurrentPage();
+    console.log(currentPage);
     updateActiveState(currentPage);
 
     $('.sidebar-item-option').on('click', function (event) {
@@ -212,6 +213,10 @@ $(document).ready(function () {
             if (pathParts[1] === 'recommend' && /^\d+$/.test(pathParts[2])) {
                 return ['food-management', 'recommend'];
             }
+        }
+
+        if (pathParts[0] === 'admin-management' && (/^\d+$/.test(pathParts[1]) || pathParts[1] == 'add')) {
+            return('admin-management');
         }
     
         return pathParts.length > 1 ? pathParts : pathParts[0]; // fallback

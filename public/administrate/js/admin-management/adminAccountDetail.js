@@ -24,7 +24,7 @@ export function loadAdminAccountDetail({type}) {
 
                 <div class="input-wrapper">
                     <div class="input-title">비밀번호</div>
-                    <input type="text" class="input" id="adminAccountPW" placeholder="새로운 비밀번호를 입력해주세요" />
+                    <input type="password" class="input" id="adminAccountPW" placeholder="새로운 비밀번호를 입력해주세요" />
                     <div class="input-info">* 필수 항목입니다</div>
                 </div>
 
@@ -51,7 +51,7 @@ export function loadAdminAccountDetail({type}) {
 
                 <div class="input-wrapper">
                     <div class="input-title">비밀번호</div>
-                    <input type="text" class="input" id="adminAccountPW" placeholder="비밀번호를 입력해주세요" />
+                    <input type="password" class="input" id="adminAccountPW" placeholder="비밀번호를 입력해주세요" />
                     <div class="input-info">* 필수 항목입니다</div>
                 </div>
 
@@ -181,16 +181,34 @@ $(document).ready(function () {
 
 
 // input 포커스 아웃시 확인
+// $(document).on("blur", "#adminAccountDetail input.input", function () {
+//     const $this = $(this);
+//     const value = $this.val().trim();
+
+//     if (value === "") {
+//         $this.addClass("error");
+//         $this.removeClass("valid");
+//     } else {
+//         $this.removeClass("error");
+//         $this.addClass("valid");
+//     }
+
+//     updateFormNextButton();
+// });
+
 $(document).on("blur", "#adminAccountDetail input.input", function () {
     const $this = $(this);
     const value = $this.val().trim();
+    const isAccountIdField = $this.attr("id") === "adminAccountId";
+    const pattern = /^[A-Za-z0-9!@#$%^&*()_\-+=~`[\]{}|\\:;"'<>,.?/]*$/;
 
     if (value === "") {
-        $this.addClass("error");
-        $this.removeClass("valid");
+        $this.addClass("error").removeClass("valid");
+    } else if (isAccountIdField && !pattern.test(value)) {
+        // adminAccountId 필드에 유효하지 않은 문자가 포함되어 있을 때
+        $this.addClass("error").removeClass("valid");
     } else {
-        $this.removeClass("error");
-        $this.addClass("valid");
+        $this.removeClass("error").addClass("valid");
     }
 
     updateFormNextButton();
@@ -223,4 +241,3 @@ $(document).on("click", "#adminAccountDetailAdd", function () {
         }
     })
 });
-
