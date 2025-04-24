@@ -1,38 +1,38 @@
-#usersNotice #noticeListContainer {
+#noticeListContainer {
     display: flex;
     flex-direction: column;
     padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.264vw, 21.33px);
 }
 
-#usersNotice .notice-container:first-child {
+.notice-container:first-child {
     padding-top: 0px;
 }
 
-#usersNotice .notice-container:last-child {
+.notice-container:last-child {
     border-bottom: none;
 }
 
-#usersNotice .notice-container {
+.notice-container {
     cursor: pointer;
     padding: clamp(14.4px, 4.8vw, 26px) 0;
     border-bottom: 1px solid #F3F3F3;
 }
 
-#usersNotice .notice-container .notice-type {
+.notice-container .notice-type {
     font-size: clamp(9.6px, 3.2vw, 16px);
     font-weight: 600;
     color: var(--black100);
     margin-bottom: clamp(7.2px, 2.4vw, 11px);
 }
 
-#usersNotice .notice-container .notice-title {
+.notice-container .notice-title {
     font-size: clamp(12.8px, 4.26vw, 21.33px);
     font-weight: 400;
     color: var(--black100);
     margin-bottom: clamp(4.8px, 1.6vw, 8px);
 }
 
-#usersNotice .notice-container .notice-date {
+.notice-container .notice-date {
     font-size: clamp(10.42px, 3.44vw, 17.3px);
     font-weight: 300;
     color: var(--gray300);

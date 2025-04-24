@@ -1,5 +1,6 @@
 @import url("/user/css/my-page/option-set-time.css");
 @import url("/user/css/my-page/option-notice.css");
+@import url("/user/css/my-page/option-notice-detail.css");
 
 #my .divider {
     width: 0.5px;
