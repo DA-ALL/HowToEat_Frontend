@@ -7,6 +7,8 @@ import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAn
 import { renderUsersSetTime } from '../my-page/usersSetTime.js';
 import { renderUsersNotice } from '../my-page/usersNotice.js';
 import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
+import { renderUsersTerms } from '../my-page/usersTerms.js';
+import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 
 const userConsumedDataTest = {
     date: "2025-04-18",
@@ -111,7 +113,7 @@ export function showMyPage(subpath = null, detailId = null) {
     $('#report').hide();
     $('#my').show();
 
-    $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail').hide();
+    $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy').hide();
 
     if (!subpath) {
         if ($('#myPage').children().length === 0) {
@@ -146,9 +148,13 @@ export function showMyPage(subpath = null, detailId = null) {
     } else if (subpath === 'question') {
         console.log('문의 뷰로 이동');
     } else if (subpath === 'terms') {
-        console.log('약관 및 이용동의 뷰로 이동');
+        $("#usersTerms").html(renderUsersTerms());
+        initHeaderNav($('#usersTerms'));
+        $('#usersTerms').show();
     } else if (subpath === 'privacy') {
-        console.log('개인정보 보호정책 뷰로 이동');
+        $("#usersPrivacy").html(renderUsersPrivacy());
+        initHeaderNav($('#usersPrivacy'));
+        $('#usersPrivacy').show();
     }
 }
 
