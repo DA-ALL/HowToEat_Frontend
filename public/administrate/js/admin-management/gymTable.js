@@ -4,31 +4,29 @@ import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 20;
 
-function createRows({ id, noticeType, noticeTitle, createdAt }) {
+export function createRows({ id, gymName, createdAt }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
-            <td class="td-notice-type">${noticeType}</td>
-            <td class="td-notice-title">${noticeTitle}</td>
+            <td class="td-gym-name">${gymName}</td>
             <td class="td-created-at">${createdAt}</td>
             <td class="td-delete">
-                <div class="delete-notice-button-wrapper">
-                    <div class="delete-notice-button" data-notice-id="${id}">삭제</div>
+                <div class="table-delete-button-wrapper">
+                    <div class="table-delete-button" data-id="${id}">삭제</div>
                 </div>
             </td>
         </tr>
     `;
 }
 
-export function renderNoticeTable(containerId, bodyId) {
+export function renderGymTable(containerId, bodyId) {
     const tableHTML = `
-        <table class="notice-table">
+        <table class="gym-table">
             <thead>
                 <tr>
                     <th class="th-id">ID</th>
-                    <th class="th-notice-type">타입</th>
-                    <th class="th-notice-title">제목</th>
-                    <th class="th-created-at">작성일자</th>   
+                    <th class="th-gym-name">지점</th>
+                    <th class="th-created-at">등록일</th>
                     <th class="th-delete">선택</th>
                 </tr>
             </thead>
@@ -46,7 +44,7 @@ export function renderTableWithOptionalPagination({
     enablePagination = true
 }) {
     const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
+    const pageFromURL = getPageFromURL();
     const page = enablePagination ? pageFromURL : 1;
     const start = (page - 1) * usersPerPage;
     const end = start + usersPerPage;
@@ -82,12 +80,11 @@ function getPageFromURL() {
 }
 
 
-
 // 삭제 버튼 클릭 시
-$(document).on('click', '.delete-notice-button', function (e) {
+$(document).on('click', '#gymTable .table-delete-button', function (e) {
     e.stopPropagation();
-    const noticeId = $(this).data('notice-id');
-    console.log(`notice ID ${noticeId} 삭제 요청`);
+    const gymId = $(this).data('id');
+    console.log(`gym ID ${gymId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
     showCustomAlert({

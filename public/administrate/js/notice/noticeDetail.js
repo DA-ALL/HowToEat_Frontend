@@ -1,7 +1,7 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 
 export function loadNoticeDetail({type}) {
-    console.log("noticeDetail:" , type);
+    
     const container = $("#noticeDetail");
 
     let noticeDetailHTML = ``;

@@ -139,6 +139,15 @@ function showCurrentContent() {
 
             { pattern: /^notice\/\d+$/, contentId: 'noticeDetail' },
             { pattern: /^notice\/add$/, contentId: 'noticeDetail' },
+
+            { pattern: /^admin-management\/\d+$/, contentId: 'adminAccountDetail' },
+            { pattern: /^admin-management\/add$/, contentId: 'adminAccountDetail' },
+
+            { pattern: /^admin-management\/trainer\/\d+$/, contentId: 'trainerDetail' },
+            { pattern: /^admin-management\/trainer\/add$/, contentId: 'trainerDetail' },
+
+            { pattern: /^admin-management\/gym\/\d+$/, contentId: 'gymDetail' },
+            { pattern: /^admin-management\/gym\/add$/, contentId: 'gymDetail' },
         ];
 
         for (const item of contentPatterns) {

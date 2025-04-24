@@ -66,27 +66,25 @@ app.get('/admin/food-management/add', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
-app.get('/admin/notice', (req, res) => {
+app.get([
+    '/admin/notice',
+    '/admin/notice/add',
+    '/admin/notice/:id(\\d+)',
+], (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 
-app.get('/admin/notice/:id(\\d+)', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
-});
-
-app.get('/admin/notice/add', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
-});
-
-app.get('/admin/admin-management', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
-});
-
-app.get('/admin/admin-management/trainer', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
-});
-
-app.get('/admin/admin-management/gym', (req, res) => {
+app.get([
+    '/admin/admin-management',
+    '/admin/admin-management/add',
+    '/admin/admin-management/:id(\\d+)',
+    '/admin/admin-management/trainer',
+    '/admin/admin-management/trainer/add',
+    '/admin/admin-management/trainer/:id(\\d+)',
+    '/admin/admin-management/gym',
+    '/admin/admin-management/gym/add',
+    '/admin/admin-management/gym/:id(\\d+)',
+], (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
 });
 

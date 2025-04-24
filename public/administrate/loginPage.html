@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/administrate/css/font.css">
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
 
 <style>
@@ -100,7 +101,7 @@ html, body {
 
             <div class="input input-pw">
                 <div class="label">비밀번호</div>
-                <input type="text" name="st_name" placeholder="password"><br>
+                <input type="password" name="st_name" placeholder="password"><br>
             </div>
         </div>
 
@@ -110,3 +111,33 @@ html, body {
     </div>
 </body>
 </html>
+
+<script>
+function getLoginInputValues() {
+    const accountId = $('#loginPage .input-id input').val().trim();
+    const password = $('#loginPage .input-pw input').val().trim();
+
+    return {
+        accountId,
+        password
+    };
+}
+
+$(document).on("click", ".button-login", function () {
+    const loginData = getLoginInputValues();
+    console.log("로그인 버튼 클릭됨:", loginData);
+
+    // 백엔드 로그인 호출
+    if(true) {
+        window.location.href = "http://localhost:3000/admin/dashboard";
+    }
+});
+
+$('input').on('keyup', function (e) {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        $('.button-login').click();
+      }
+});
+
+
+</script>
