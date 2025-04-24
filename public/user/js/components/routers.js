@@ -5,6 +5,10 @@ import { renderReportPage } from '../report/report.js';
 import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
 import { renderUsersSetTime } from '../my-page/usersSetTime.js';
+import { renderUsersNotice } from '../my-page/usersNotice.js';
+import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
+import { renderUsersTerms } from '../my-page/usersTerms.js';
+import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 
 const userConsumedDataTest = {
     date: "2025-04-18",
@@ -104,36 +108,53 @@ export function showReport() {
     }
 }
 
-export function showMyPage(subpath = null) {
+export function showMyPage(subpath = null, detailId = null) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
 
-    $('#myPage, #usersSetTime').hide();
+    $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy').hide();
 
     if (!subpath) {
-        // 기본 마이페이지 렌더링
         if ($('#myPage').children().length === 0) {
             $("#myPage").html(renderMyPage());
-        }   
-
-        $('#myPage').show(); // /main
+        }
+        $('#myPage').show();
         return;
     }
-    
-    // 서브뷰 조건별 처리
-    if (subpath === 'set-time') {
+
+    if (subpath === 'notice') {
+        if (detailId) {
+            // /users/notice/4 같은 경우
+            $('#usersNoticeDetail').html(renderUsersNoticeDetail(detailId));
+            initHeaderNav($('#usersNoticeDetail'));
+            $('#usersNoticeDetail').show();
+        } else {
+            // /users/notice
+            if ($('#noticeListContainer').children().length === 0) {
+                let id = 4;
+                let type = "업데이트";
+                let title = "하잇앱이 신규 업데이트 되었어요";
+                let date = "2025.04.32";
+                $("#noticeListContainer").append(renderUsersNotice(id, type, title, date));
+                initHeaderNav($('#usersNotice'));
+            }
+                $('#usersNotice').show();
+        }
+    } else if (subpath === 'set-time') {
         $("#usersSetTime").html(renderUsersSetTime());
         initHeaderNav($('#usersSetTime'));
         $('#usersSetTime').show();
-    } else if (subpath === 'notice') {
-        console.log('공지사항 뷰로 이동');
     } else if (subpath === 'question') {
         console.log('문의 뷰로 이동');
     } else if (subpath === 'terms') {
-        console.log('약관 및 이용동의 뷰로 이동');
+        $("#usersTerms").html(renderUsersTerms());
+        initHeaderNav($('#usersTerms'));
+        $('#usersTerms').show();
     } else if (subpath === 'privacy') {
-        console.log('개인정보 보호정책 뷰로 이동');
+        $("#usersPrivacy").html(renderUsersPrivacy());
+        initHeaderNav($('#usersPrivacy'));
+        $('#usersPrivacy').show();
     }
 }
 

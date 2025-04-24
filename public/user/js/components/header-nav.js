@@ -70,9 +70,15 @@ export function initHeaderNav(parentSelector = 'body') {
             const stack = window.usersHistoryStack || ['/users'];
         
             if (stack.length > 1) {
+
                 stack.pop();
                 const prev = stack[stack.length - 1];
                 window.usersHistoryStack = stack; // 다시 저장
+
+                // if ($container.attr('id') === 'usersNotice') {
+                //     $('#usersNotice #noticeListContainer').empty();
+                // }
+
                 history.pushState({ view: 'users' }, '', prev);
                 showPage(prev);
                 return;

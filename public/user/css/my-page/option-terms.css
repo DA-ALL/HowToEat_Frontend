@@ -1,0 +1,12 @@
+.terms-container {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.264vw, 21.33px);
+    gap: clamp(8px, 2.664vw, 13.33px);
+}
+
+.terms-container .title {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 600;
+    color: var(--black100);
+}

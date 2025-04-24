@@ -1,0 +1,3 @@
+.privacy-container {
+    padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.264vw, 21.33px);
+}

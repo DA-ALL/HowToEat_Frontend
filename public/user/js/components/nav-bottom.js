@@ -46,17 +46,16 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
         showReport();
     }
     else if (path.startsWith('/users')) {
-        // 스택이 없으면 생성
         if (!window.usersHistoryStack) window.usersHistoryStack = ['/users'];
-    
-        // 중복 푸시 방지
         if (window.usersHistoryStack[window.usersHistoryStack.length - 1] !== path) {
             window.usersHistoryStack.push(path);
         }
     
         const parts = path.split('/');
-        const subpath = parts[2];
-        showMyPage(subpath);
+        const subpath = parts[2];        // 예: 'notice'
+        const detailId = parts[3];       // 예: '4'
+    
+        showMyPage(subpath, detailId);
     }
 
     updateNavActive(path);
@@ -117,7 +116,7 @@ $(document).ready(function () {
         $(selector).on('click', function (e) {
             e.preventDefault();
             const currentPath = window.location.pathname;
-
+    
             if (key === '/main') {
                 if (currentPath.startsWith('/main')) {
                     if (currentPath === lastMainPath && currentPath !== '/main') {
@@ -139,30 +138,30 @@ $(document).ready(function () {
                 if (currentPath.startsWith('/main')) {
                     lastMainPath = currentPath;
                 }
-            
+    
+                // ✅ 수정된 users 블럭
                 if (key === '/users') {
-                    if (currentPath.startsWith('/users')) {
-                        if (currentPath === lastUsersPath && currentPath !== '/users') {
-                            // 두 번 클릭 시 /users로 초기화
-                            lastUsersPath = '/users';
-                            history.pushState({ view: 'users' }, '', '/users');
-                            showPage('/users');
-                            return;
-                        } else {
-                            lastUsersPath = currentPath;
-                        }
+                    const isUsers = currentPath.startsWith('/users');
+                    const isDoubleClick = isUsers && (currentPath === lastUsersPath && currentPath !== '/users');
+    
+                    if (isDoubleClick) {
+                        lastUsersPath = '/users';
+                    } else if (isUsers) {
+                        lastUsersPath = currentPath;
                     }
-                
+    
                     history.pushState({ view: 'users' }, '', lastUsersPath);
                     showPage(lastUsersPath);
-                } else {
-                    history.pushState({ view: key.slice(1) }, '', key);
-                    showPage(key);
+                    return;
                 }
+    
+                // ✅ report 등 나머지 경로 처리
+                history.pushState({ view: key.slice(1) }, '', key);
+                showPage(key);
             }
-            
         });
     });
+    
 
     // 뒤로가기 이벤트 처리
     window.addEventListener('popstate', () => {
