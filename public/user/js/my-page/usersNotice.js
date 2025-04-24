@@ -14,6 +14,8 @@ $(document).on('click', '.notice-container', function () {
     const id = $(this).data('id');
     const newPath = `/users/notice/${id}`;
 
-    history.pushState({ view: 'users' }, '', newPath);
+    window.lastUsersPath = newPath;
+
+    history.pushState({ view: 'users', noticeId: id }, '', newPath);
     showPage(newPath);
 });

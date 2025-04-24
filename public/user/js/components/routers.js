@@ -129,13 +129,15 @@ export function showMyPage(subpath = null, detailId = null) {
             $('#usersNoticeDetail').show();
         } else {
             // /users/notice
-            let id = 4;
-            let type = "업데이트";
-            let title = "하잇앱이 신규 업데이트 되었어요";
-            let date = "2025.04.32";
-            $("#noticeListContainer").append(renderUsersNotice(id, type, title, date));
-            initHeaderNav($('#usersNotice'));
-            $('#usersNotice').show();
+            if ($('#noticeListContainer').children().length === 0) {
+                let id = 4;
+                let type = "업데이트";
+                let title = "하잇앱이 신규 업데이트 되었어요";
+                let date = "2025.04.32";
+                $("#noticeListContainer").append(renderUsersNotice(id, type, title, date));
+                initHeaderNav($('#usersNotice'));
+            }
+                $('#usersNotice').show();
         }
     } else if (subpath === 'set-time') {
         $("#usersSetTime").html(renderUsersSetTime());
