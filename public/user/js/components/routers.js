@@ -9,7 +9,7 @@ import { renderUsersNotice } from '../my-page/usersNotice.js';
 import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
 import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
-import { renderUsersInfo } from '../my-page/usersInfo.js';
+import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 
 const userConsumedDataTest = {
     date: "2025-04-18",
@@ -143,10 +143,12 @@ export function showMyPage(subpath = null, detailId = null) {
                 $('#usersNotice').show();
         }
 
-    } else if (subpath === 'info') {
+     } else if (subpath === 'info') {
         $("#usersInfo").html(renderUsersInfo());
         initHeaderNav($('#usersInfo'));
         $('#usersInfo').show();
+    
+        bindUsersInfoEvents(); //페이지를 그리고 난 후, 인풋 유효성 검사 진행을 위해 추가한 함수
     } else if (subpath === 'set-time') {
         $("#usersSetTime").html(renderUsersSetTime());
         initHeaderNav($('#usersSetTime'));

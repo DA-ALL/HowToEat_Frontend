@@ -74,7 +74,7 @@
 }
 
 
-/* 나의 키와 몸무게 영역 */
+/* 나의 목표 영역 */
 #usersInfo .select-container .select-item {
     font-size: clamp(11.21px, 3.736vw, 18.67px);
     padding: clamp(10.39px, 3.464vw, 17.33px) clamp(12.8px, 4.264vw, 21.33px);
@@ -92,4 +92,65 @@
     font-weight: 600;
     border: 1px solid var(--red50);
     background-color: #FFF6F5;
+}
+
+/* 나의 키와 몸무게 영역 */
+
+#usersInfo .input-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+
+#usersInfo .input-wrapper .input-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--black100);
+    margin-left: 5px;
+}
+
+#usersInfo .input-wrapper .input {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 14px 20px;
+    border-radius: 16px;
+    border: 1px solid #E8E8E8;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+}
+
+#usersInfo .input-wrapper .input.valid {
+    color: var(--gray500);
+    border: 1px solid var(--gray200);
+}
+
+#usersInfo .input-wrapper .input.error {
+    color: red;
+    border : 1px solid red
+}
+
+#usersInfo .input-wrapper .input input {
+    width: 100%;
+    font-size: 16px;
+    color: var(--black100);
+    border: none;
+    outline: none;
+    padding: 0;
+}
+
+#usersInfo .input-wrapper .input:focus {
+    outline: none;
+}
+
+#usersInfo .input-wrapper .input:focus-within {
+    border-color: var(--black100);
+}
+
+#usersInfo .input-wrapper .input input::placeholder {
+    color: #999;  /* 원하는 색상 */
+    font-size: 15px;  /* 원하는 크기 */
 }

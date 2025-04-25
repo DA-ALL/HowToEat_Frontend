@@ -163,9 +163,9 @@ export function checkInput($input) {
     var $inputId = $inputType.attr('id');
     var value = $inputType.val();
     var $wrapper = $inputType.closest('.input');
+    console.log(value);
 
-    if(value.length > 0) {
+    if (value !== null && value !== undefined && String(value).length > 0) {
         $wrapper.addClass('valid');
     }
-
 }
