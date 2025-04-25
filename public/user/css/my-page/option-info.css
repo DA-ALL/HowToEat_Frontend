@@ -1,3 +1,27 @@
+#usersInfo .info-title {
+    font-size: clamp(11.21px, 3.736vw, 18.67px);
+    font-weight: 600;
+    color: var(--black100);
+}
+
+#usersInfo .padding {
+    padding: clamp(12.8px, 4.264vw, 21.33px);
+}
+
+#usersInfo .container-format {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 2.664vw, 13.33px);
+    padding: clamp(12.8px, 4.264vw, 21.33px);
+}
+
+#usersInfo .inner-container-format {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 2.664vw, 13.33px);
+}
+
+/* 상단 이미지 영역 */
 #usersInfo .profile-container {
     display: flex;
     flex-direction: column;
@@ -47,4 +71,25 @@
     font-size: clamp(12px, 4vw, 20px);
     font-weight: 300;
     color: var(--black100);
+}
+
+
+/* 나의 키와 몸무게 영역 */
+#usersInfo .select-container .select-item {
+    font-size: clamp(11.21px, 3.736vw, 18.67px);
+    padding: clamp(10.39px, 3.464vw, 17.33px) clamp(12.8px, 4.264vw, 21.33px);
+    border-radius: clamp(12.8px, 4.264vw, 21.33px);
+    border: 1px solid #E8E8E8;
+    color: var(--gray400);
+    background-color: var(--white300);
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+#usersInfo .select-container .select-item.valid {
+    color: var(--red500);
+    font-weight: 600;
+    border: 1px solid var(--red50);
+    background-color: #FFF6F5;
 }
