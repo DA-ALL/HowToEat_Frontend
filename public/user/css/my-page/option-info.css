@@ -1,0 +1,50 @@
+#usersInfo .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: clamp(31.2px, 10.4vw, 53px);
+    padding-bottom: clamp(24px, 8vw, 40px);
+}
+
+#usersInfo .profile-container .profile-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: clamp(14.4px, 4.8vw, 26px);
+    width: clamp(72px, 24vw, 120px);
+    height: clamp(72px, 24vw, 120px);
+    border-radius: 100%;
+    background-color: var(--gray50);
+    cursor: pointer;
+}
+
+#usersInfo .profile-container .profile-image .new-image,
+#usersInfo .profile-container .profile-image .preview-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 100%;
+    z-index: 1;
+}
+
+#usersInfo .profile-container .profile-image .new-image {
+    display: none; /* 기본 숨김 */
+}
+
+#usersInfo .profile-container .profile-name {
+    font-size: clamp(12.8px, 4.264vw, 21.33px);
+    font-weight: 500;
+    color: var(--black100);
+    margin-bottom: clamp(8px, 2.664vw, 13.33px);
+}
+
+#usersInfo .profile-container .profile-email {
+    font-size: clamp(12px, 4vw, 20px);
+    font-weight: 300;
+    color: var(--black100);
+}
