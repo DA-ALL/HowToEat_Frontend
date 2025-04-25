@@ -95,7 +95,6 @@
 }
 
 /* 나의 키와 몸무게 영역 */
-
 #usersInfo .input-wrapper {
     width: 100%;
     display: flex;
@@ -153,4 +152,48 @@
 #usersInfo .input-wrapper .input input::placeholder {
     color: #999;  /* 원하는 색상 */
     font-size: 15px;  /* 원하는 크기 */
+}
+
+/* 나의 활동량 영역 */
+
+#usersInfo .select-container.activity{
+    height: 80vh;
+}
+
+#usersInfo .select-container .select-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E8E8E8;
+    background-color: var(--white300);
+    box-sizing: border-box;
+    padding: clamp(10.39px, 3.464vw, 17.33px) clamp(12.8px, 4.264vw, 21.33px);
+    border-radius: clamp(12.8px, 4.264vw, 21.33px);
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+    gap: 6px;
+}
+
+#usersInfo .select-container .select-wrapper .main-text {
+    font-size: clamp(11.21px, 3.736vw, 18.67px);
+    font-weight: 400;
+    color: var(--gray400);
+}
+
+#usersInfo .select-container .select-wrapper .sub-text {
+    font-size: clamp(8.21px, 3.736vw, 15.67px);
+    font-weight: 300;
+    line-height: 150%;
+    color: #8F8F8F;
+}
+
+#usersInfo .select-container .select-wrapper.valid {
+    color: var(--red500);
+    font-weight: 600;
+    border: 1px solid var(--red50);
+    background-color: #FFF6F5;
+}
+
+#usersInfo .select-container .select-wrapper.valid .main-text {
+    color: var(--red500);
+    font-weight: 600;
 }

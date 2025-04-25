@@ -4,8 +4,10 @@ export function renderUsersInfo() {
     let goal = "체중감량";
     let height = 176;
     let weight = 74;
+    let activity = "very-active";
     // 유틸 함수로 valid 클래스 조건 처리
     const isValid = (label) => goal === label ? 'valid' : '';
+    const isActivityValid = (label) => activity === label ? 'valid' : '';
 
     return `
         <div id="headerNav" data-title="나의 정보" data-type="2"></div>
@@ -45,6 +47,32 @@ export function renderUsersInfo() {
                         <input type="number" inputmode="numeric" id="weight" name="weight" placeholder="몸무게" ime-mode="active" data-text="" value=${weight}>
                     </div>
                 </div>
+            </div> 
+        </div>
+
+        <div class="activity-container container-format">
+            <div class="info-title">나의 활동량</div>
+            <div class="select-container activity inner-container-format">
+                <div class="select-wrapper very-active ${isActivityValid("very-active")}" data-text="5">
+                    <div class="main-text">매우 활동적</div>
+                    <div class="sub-text">주 6~7회 이상 고강도 운동 (운동 선수) <br> 업무 형태가 활동적</div>
+                </div>
+                <div class="select-wrapper active ${isActivityValid("active")}" data-text="4">
+                    <div class="main-text">활동적</div>
+                    <div class="sub-text">주 4~6회 운동 (웨이트 트레이닝) <br> 주 150분 이상 유산소 운동</div>
+                </div>
+                <div class="select-wrapper moderate ${isActivityValid("moderate")}" data-text="3">
+                    <div class="main-text">보통</div>
+                    <div class="sub-text">주 2~3회 운동 (유산소 + 웨이트 트레이닝)</div>
+                </div>
+                <div class="select-wrapper low ${isActivityValid("low")}" data-text="2">
+                    <div class="main-text">적음</div>
+                    <div class="sub-text">주 2회 미만의 운동 <br> 웨이트 트레이닝 / 유산소 운동 선택적 진행</div>
+                </div>
+                <div class="select-wrapper very-low ${isActivityValid("very-low")}" data-text="1">
+                    <div class="main-text">매우 적음</div>
+                    <div class="sub-text">평소 운동을 하지 않음 <br> 업무 형태가 주로 앉아서 진행</div>
+                </div>
             </div>
         </div>
     `;
@@ -82,6 +110,13 @@ $(document).off('change', '.profile-image-input').on('change', 'profile-image-in
 $(document).on('click', '.goal-container .select-item', function () {
     $('.goal-container .select-item').removeClass('valid');
     $(this).addClass('valid');
+});
+
+$(document).on('click', '.select-wrapper', function () {
+    $('.select-wrapper').removeClass('valid');
+    $(this).addClass('valid');
+
+    // updateButtonState(currentPage);
 });
 
 //키와 몸무게 인풋 확인 함수
