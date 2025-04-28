@@ -126,3 +126,32 @@
 #report #reportPage .recommend-wrapper .icon img {
     width: clamp(9.6px, 3.2vw, 16px);
 }
+
+#report .period-button-wrapper {
+    display: flex;
+    padding: clamp(11.4px, 4.114vw, 21px) 0px;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(4.8px, 1.6vw, 8px);
+}
+
+#report .period-button-wrapper .period-button {
+    font-size: clamp(10.4px, 3.466vw, 17.33px);
+    font-weight: 400;
+    padding: clamp(2.4px, 0.8vw, 4px) clamp(9.6px, 3.2vw, 16px);
+    border-radius: clamp(12.8px, 4.266vw, 21.33px);
+    border: clamp(0.8px, 0.266vw, 1.33px) solid #F0F0F0;
+    color: #B9B9B9;
+    cursor: pointer;
+}
+
+#report .period-button-wrapper .period-button.active{
+    color: var(--white300);
+    background-color: var(--red500);
+    font-weight: 600;
+}
+
+#report .chart-container {
+    width: 100%;
+}

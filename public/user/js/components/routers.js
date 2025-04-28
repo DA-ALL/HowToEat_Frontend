@@ -1,7 +1,7 @@
 import { renderMealDetail } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
-import { renderReportPage } from '../report/report.js';
+import { renderReportPage, initCalorieChart } from '../report/report.js';
 import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
 import { renderUsersSetTime } from '../my-page/usersSetTime.js';
@@ -105,6 +105,7 @@ export function showReport() {
     //리포트 페이지
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
+        initCalorieChart();
     }
 }
 
