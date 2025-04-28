@@ -173,10 +173,12 @@ registerPopstateHandler('userInfo',loadDailyCalorieTable);
 
 
 
-
 // 칼로리 테이블 row 클릭
 $(document).on('click', `#dailyCalorieTable tr`, function () {
     console.log("칼로리 row 클릭됨", $(this).find('.td-id').text());
+    
+    let currentDateStr = "2025.04.23"; // 아작스를 통해서 date를 가져온것 예시
+    let currentDate = parseDateFromText(currentDateStr); // 문자열을 Date로 변환
 
     let calorieDetailHtml = `
         <div id="calorieDetail">
@@ -194,8 +196,12 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
 
                 <div class="date-wrapper">
                     <div class="prev-image nav-button"><img class="prev-date-button" src="/administrate/images/icon_arrow_back_black.png"></div>
-                    <div class="date">2025.04.30</div>
+                    <div class="date">${formatDate(currentDate)}</div> <!-- ✅ 여기 Date로 변환된 것 -->
                     <div class="next-image nav-button"><img class="next-date-button" src="/administrate/images/icon_arrow_front_black.png"></div>
+                </div>
+
+                <div id="consumedDataWrapper">
+                    ${renderConsumedData(formatDate(currentDate))}
                 </div>
             
             </div>
@@ -203,8 +209,14 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
     `;
 
     $("body").append(calorieDetailHtml);
-
 });
+
+function renderConsumedData(date) {
+    return `
+    <div class="testtest">${date}</div>
+    
+    `
+}
 
 
 $(document).ready(function () {
@@ -215,3 +227,44 @@ $(document).ready(function () {
         renderUserInfo(getUserInfo());
     }
 });
+
+// 날짜 포맷을 Date 객체로 변환하는 함수
+function parseDateFromText(dateText) {
+    const [year, month, day] = dateText.split('.').map(num => parseInt(num, 10));
+    return new Date(year, month - 1, day);
+}
+
+// 날짜를 yyyy.MM.dd 포맷으로 변환하는 함수
+function formatDate(dateObj) {
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${year}.${month}.${day}`;
+}
+
+// calorieDetail 날짜 < > 버튼 클릭 시
+$(document).on('click', '.prev-date-button', function () {
+    let dateText = $('.date').text(); // 현재 표시된 날짜 가져오기
+    let parsedDate = parseDateFromText(dateText);
+
+    parsedDate.setDate(parsedDate.getDate() - 1); // 하루 빼기
+
+    updateDateAndConsumedData(parsedDate);
+});
+
+$(document).on('click', '.next-date-button', function () {
+    let dateText = $('.date').text();
+    let parsedDate = parseDateFromText(dateText);
+
+    parsedDate.setDate(parsedDate.getDate() + 1); // 하루 더하기
+
+    updateDateAndConsumedData(parsedDate);
+});
+
+// 날짜와 ConsumedData 업데이트
+function updateDateAndConsumedData(newDate) {
+    const formattedDate = formatDate(newDate);
+
+    $('.date').text(formattedDate); // 날짜 텍스트 업데이트
+    $('#consumedDataWrapper').html(renderConsumedData(formattedDate)); // ConsumedData 다시 그리기
+}
