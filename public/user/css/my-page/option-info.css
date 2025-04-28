@@ -1,3 +1,8 @@
+#usersInfo .button-container {
+    padding: clamp(14.4px, 4.8vw + 6px, 30px) clamp(12.8px, 4.264vw, 21.33px) !important;
+    margin-bottom: clamp(60px, 20vw, 105px) !important;
+}
+
 #usersInfo .info-title {
     font-size: clamp(11.21px, 3.736vw, 18.67px);
     font-weight: 600;
@@ -157,7 +162,7 @@
 /* 나의 활동량 영역 */
 
 #usersInfo .select-container.activity{
-    height: 80vh;
+    /* height: 80vh; */
 }
 
 #usersInfo .select-container .select-wrapper {

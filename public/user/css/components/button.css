@@ -47,7 +47,7 @@
 .button-container {
     width: 100%;
     box-sizing: border-box;
-    padding: 0 16px;
+    padding: 0 clamp(12.8px, 4.264vw, 21.33px);
 }
 
 .button-container.bottom {

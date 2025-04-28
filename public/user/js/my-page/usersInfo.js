@@ -75,6 +75,10 @@ export function renderUsersInfo() {
                 </div>
             </div>
         </div>
+
+        <div class="button-container">
+            <div class="next-button disabled">수정하기</div>
+        </div>
     `;
 }
 
@@ -107,26 +111,68 @@ $(document).off('change', '.profile-image-input').on('change', 'profile-image-in
 });
 
 // 나의 키와 몸무게
+let originalInputValue = {};
+
 $(document).on('click', '.goal-container .select-item', function () {
     $('.goal-container .select-item').removeClass('valid');
     $(this).addClass('valid');
+    updateNextButtonState();
 });
 
 $(document).on('click', '.select-wrapper', function () {
     $('.select-wrapper').removeClass('valid');
     $(this).addClass('valid');
+    updateNextButtonState();
 
     // updateButtonState(currentPage);
 });
 
+
 //키와 몸무게 인풋 확인 함수
 export function bindUsersInfoEvents() {
-    // blur 시 validateInput 호출
-    $('input').off('blur').on('blur', function () {
-        validateInput($(this));
+    const originalInputValue = {};
+
+    // focus 시 원래 값 저장
+    $('input').off('focus').on('focus', function () {
+        const id = $(this).attr('id');
+        originalInputValue[id] = $(this).val();
     });
 
-    // 페이지 진입 시점에 이미 값이 있으면 valid 처리
+    // blur 시 실제 값이 바뀐 경우에만 처리
+    $('input').off('blur').on('blur', function () {
+        const $input = $(this);
+        const id = $input.attr('id');
+        const currentVal = $input.val();
+
+        if (originalInputValue[id] !== currentVal) {
+            validateInput($input);
+            updateNextButtonState();
+        }
+    });
+
+    // 진입 시점에 이미 값이 있으면 valid 처리
     checkInput($('#height'));
     checkInput($('#weight'));
+
+    // 버튼 상태도 초기 상태 기준으로 업데이트
+    // updateNextButtonState();
+}
+
+
+function updateNextButtonState() {
+    const $goalValid = $('.goal-container .select-container .valid').length >= 1;
+    const $activityValid = $('.activity-container .select-container .valid').length >= 1;
+
+    const $heightInput = $('#height').closest('.input');
+    const $weightInput = $('#weight').closest('.input');
+    const $bodyStatsValid = $heightInput.hasClass('valid') && $weightInput.hasClass('valid') &&
+                            !$heightInput.hasClass('error') && !$weightInput.hasClass('error');
+
+    const $nextButton = $('.next-button');
+
+    if ($goalValid && $bodyStatsValid && $activityValid) {
+        $nextButton.removeClass('disabled').addClass('active');
+    } else {
+        $nextButton.removeClass('active').addClass('disabled');
+    }
 }
