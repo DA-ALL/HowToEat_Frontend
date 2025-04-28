@@ -236,7 +236,7 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
                 </div>
 
                 <div id="consumedDataWrapper">
-                    ${updateDateAndConsumedData(currentDate)}
+                    
                 </div>
             
             </div>
@@ -244,6 +244,7 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
     `;
 
     $("body").append(calorieDetailHtml);
+    updateDateAndConsumedData(currentDate);
 });
 
 // 칼로리 테이블 그래프 렌더링
@@ -489,7 +490,7 @@ function parseDateFromText(dateText) {
     return new Date(year, month - 1, day);
 }
 
-// 날짜를 yyyy.MM.dd 포맷으로 변환하는 함수
+// 날짜를 yyyy-MM-dd 포맷으로 변환하는 함수
 function formatDate(dateObj) {
     const year = dateObj.getFullYear();
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -523,6 +524,7 @@ function updateDateAndConsumedData(newDate) {
     $('.date').text(formattedDate); // 날짜 텍스트 업데이트
 
     const info = getCalorieInfo(formattedDate); // 요걸 꼭 formattedDate로 넘겨야 함!
+    console.log(info);
 
     $('#consumedDataWrapper').html(renderConsumedData(
         formattedDate,    // 요것도 문자열
