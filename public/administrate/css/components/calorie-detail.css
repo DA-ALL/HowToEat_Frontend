@@ -94,7 +94,7 @@
 #calorieDetail .detail-wrapper .date-wrapper .date {
     display: flex;
     justify-content: center;
-    width: 148px;
+    width: 160px;
     font-size: 26px;
     font-weight: 600;
     color: var(--black100);
