@@ -191,6 +191,12 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
                         <div class="name-label">님</div>
                     </div>
                 </div>
+
+                <div class="date-wrapper">
+                    <div class="prev-image nav-button"><img class="prev-date-button" src="/administrate/images/icon_arrow_back_black.png"></div>
+                    <div class="date">2025.04.30</div>
+                    <div class="next-image nav-button"><img class="next-date-button" src="/administrate/images/icon_arrow_front_black.png"></div>
+                </div>
             
             </div>
         </div>
