@@ -180,7 +180,19 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
 
     let calorieDetailHtml = `
         <div id="calorieDetail">
-            <div class="detail-wrapper">sra</div>
+            <div class="detail-wrapper">
+            
+                <div class="profile-wrapper">
+                    <div class="profile-image">
+                        <img src="/administrate/images/icon_human_red.png">
+                    </div>
+                    <div class="name-wrapper">
+                        <div class="profile-name">하잇</div>
+                        <div class="name-label">님</div>
+                    </div>
+                </div>
+            
+            </div>
         </div>
     `;
 
