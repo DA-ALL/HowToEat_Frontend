@@ -1,3 +1,66 @@
 .privacy-container {
+    display: flex;
+    flex-direction: column;
     padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.264vw, 21.33px);
+    gap: clamp(8px, 2.664vw, 13.33px);
+    margin-bottom: clamp(51.4px, 17.03vw, 85px);
+}
+
+.privacy-container .title {
+    font-size: clamp(12px, 4vw, 20px);
+    font-weight: 600;
+    color: var(--black100);
+    /* padding-bottom: clamp(16px, 5.333vw, 26.67px); */
+}
+
+
+.privacy-container .privacy-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 5.333vw, 26.67px);
+    padding-bottom: clamp(24px, 8vw, 40px);
+}
+
+.privacy-container .content-body-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4.8px, 1.6vw, 8px);
+}
+
+.privacy-container .content-body-wrapper .content-body {
+    font-size: clamp(10.4px, 3.466vw, 17.33px);
+    line-height: 150%;
+    color: var(--black100);
+}
+
+.privacy-container .content-numbered-wrapper {
+    display: flex;
+    gap: clamp(2.02px, 0.672vw, 3.36px);
+}
+
+.privacy-container .content-numbered-wrapper .content-numbered {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(10.4px, 3.466vw, 17.33px);
+    line-height: 150%;
+    color: var(--black100);
+    gap: clamp(4.8px, 1.6vw, 8px);
+}
+
+.privacy-container .content-korean-wrapper {
+    display: flex;
+    gap: clamp(2.02px, 0.672vw, 3.36px);
+}
+
+.privacy-container .content-korean-wrapper .content-korean{
+    font-size: clamp(10.4px, 3.466vw, 17.33px);
+    line-height: 150%;
+    color: var(--black100);
+}
+
+.privacy-container .privacy-manager-text {
+    font-size: clamp(10.4px, 3.466vw, 17.33px);
+    line-height: 150%;
+    color: var(--black100);
+    padding-left: clamp(15.8px, 5.37vw, 27px);
 }
