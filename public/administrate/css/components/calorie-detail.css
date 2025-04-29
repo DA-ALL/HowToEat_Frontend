@@ -116,7 +116,7 @@
     gap: 60px;
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper {
     position: relative;
     display: flex;
     justify-content: center;
@@ -125,7 +125,7 @@
     margin-bottom: 10px
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .target-kcal-wrapper {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .target-kcal-wrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -134,37 +134,37 @@
     bottom: 0px;
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .target-kcal-wrapper .target-label {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .target-kcal-wrapper .target-label {
     font-size: 16px;
     font-weight: 300;
     color: var(--gray300);
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .target-kcal-wrapper .target-kcal {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .target-kcal-wrapper .target-kcal {
     font-size: 20px;
     font-weight: 400;
     color: var(--gray300);
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .cpf-kcal-bar {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-bar {
     position: absolute;
     z-index: 1;
     filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.25));
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .cpf-kcal-bar svg{
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-bar svg{
     margin-left: 10px;
     width: 100%;
     max-width: 298px;
     min-width: 208px;
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .cpf-kcal-bar.background {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-bar.background {
     z-index: 0;
     filter: none;
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .cpf-kcal-consumed-wrapper {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-consumed-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -176,24 +176,24 @@
     transform: translate(-50%, -50%);
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .cpf-kcal-consumed {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-consumed {
     font-size: 40px;
     font-weight: 500;
 }
 
-#calorieDetail .cpf-kcal-bar-wrapper .sub {
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .sub {
     font-size: 20px;
     font-weight: 300;
     color: var(--gray200);
 }
 
-  #calorieDetail .cpf-bar-container {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper {
     display: flex;
     width: 120px;
     flex-direction: column;
@@ -202,41 +202,41 @@
     gap: 4px;
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper .cpf-bar-title {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar-title {
     font-size: 18px;
     font-weight: 400;
     color: var(--black100);
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper .cpf-bar .target, .divide {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .target, .divide {
     font-size: 16px;
     font-weight: 300;
     color: var(--gray300);
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper .cpf-bar {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar {
     margin-bottom: 2px;
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper .cpf-bar .consumed {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .consumed {
     font-size: 22px;
     font-weight: 500;
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper .bar-wrapper {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-wrapper {
     width: 100%;
     height: clamp(5.8px, 1.85vw, 9.5px);
     position: relative;
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper .bar-front {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-front {
     width: 81%;
     height: clamp(5.8px, 1.85vw, 9.5px);
     position: absolute;
     border-radius: 10px;
   }
 
-  #calorieDetail .cpf-bar-container .cpf-bar-wrapper .bar-back {
+  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-back {
     width: 100%;
     height: clamp(5.8px, 1.85vw, 9.5px);
     position: absolute;
