@@ -284,6 +284,7 @@ function renderConsumedData(
     `;
 
     return `
+    <div class="cpf-kcal-bar-container">
         <div class="cpf-kcal-bar-wrapper">
             ${percent === 0
                 ? `<div class="cpf-kcal-bar background">${backgroundSvg}</div>`
@@ -292,9 +293,14 @@ function renderConsumedData(
                 <div class="cpf-kcal-consumed">${formattedConsumed}</div>
                 <div class="sub">kcal</div>
             </div>
+            <div class="target-kcal-wrapper">
+                <div class="target-label">목표 칼로리</div>
+                <div class="target-kcal">${formattedTarget}</div>
+            </div>
         </div>
-        <div class="target-kcal">${formattedTarget}</div>
+        
         ${barContainer}
+    </div>
     `
 }
 
