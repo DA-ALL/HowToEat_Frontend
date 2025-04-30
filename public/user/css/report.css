@@ -152,6 +152,65 @@
     font-weight: 600;
 }
 
-#report .chart-container {
+
+
+#report .y-label {
+    font-size: clamp(8.8px, 2.933vw, 14.67px); 
+    font-weight: 300;
+    color: #9E9E9E;
+}
+
+#report .legend-wrapper {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(7.2px, 2.4vw, 12px);
+    margin-bottom: clamp(9.4px, 3.236vw, 16.33px);
+}
+
+#report .legend-wrapper .legend-box{
+    width: clamp(19.2px, 6.4vw, 32px);
+    height: clamp(2.4px, 0.8vw, 4px);
+    background-color: #FFEDED;
+}
+
+#report .legend-wrapper .legend-label{
+    font-size: clamp(10.4px, 3.466vw, 17.33px);
+    color: var(--black100);
+}
+
+
+#report .chart-container {    
+    width: 100%;    
+    overflow: hidden;
+}
+
+
+#tooltip {
+    position: absolute;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 25px;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#tooltip .tooltip-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#tooltip .tooltip-date {
+    color: #838383;
+    white-space: nowrap;
+    font-size: clamp(8px, 2.666vw, 13.33px);
+    font-weight: 400;
+}
+
+#tooltip .vertical-bar {
+    width: 1px;
+    background: #838383;
 }
