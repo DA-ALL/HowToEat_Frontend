@@ -171,6 +171,61 @@ const calorieData = {
     "2025-04-31": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
 };
 
+const userConsumedMealData = {
+    "2025-04-20" : { mealType:"breakfast", id:2, type: "cooked", name:"소고기 채끝살(생것)", providedBy:"수입산(미국산)", foodWeight:85, unit:"g", kcal:230, carbo: 237, protein: 16, fat: 15, targetCarbo: 90 },
+    "2025-04-20" : { mealType:"breakfast",carbo:{consumed:237,target:220},protein:{consumed:84,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-20" : { mealType:"breakfast",carbo:{consumed:237,target:220},protein:{consumed:84,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-20" : { mealType:"lunch",carbo:{consumed:219,target:220},protein:{consumed:73,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-20" : { mealType:"lunch",carbo:{consumed:219,target:220},protein:{consumed:73,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-20" : { mealType:"lunch",carbo:{consumed:219,target:220},protein:{consumed:73,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-20" : { mealType:"dinner",carbo:{consumed:198,target:220},protein:{consumed:93,target:90},fat:{consumed:23,target:24}} ,
+    "2025-04-20" : { mealType:"dinner",carbo:{consumed:198,target:220},protein:{consumed:93,target:90},fat:{consumed:23,target:24}} ,
+    "2025-04-20" : { mealType:"dinner",carbo:{consumed:198,target:220},protein:{consumed:93,target:90},fat:{consumed:23,target:24}} ,
+    "2025-04-20" : { mealType:"snack",carbo:{consumed:191,target:220},protein:{consumed:85,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-20" : { mealType:"snack",carbo:{consumed:191,target:220},protein:{consumed:85,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-20" : { mealType:"snack",carbo:{consumed:191,target:220},protein:{consumed:85,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-21" : { mealType:"breakfast",carbo:{consumed:217,target:220},protein:{consumed:98,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-21" : { mealType:"lunch",carbo:{consumed:230,target:220},protein:{consumed:85,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-21" : { mealType:"dinner",carbo:{consumed:235,target:220},protein:{consumed:83,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-21" : { mealType:"snack",carbo:{consumed:232,target:220},protein:{consumed:91,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-22" : { mealType:"breakfast",carbo:{consumed:192,target:220},protein:{consumed:80,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-22" : { mealType:"lunch",carbo:{consumed:238,target:220},protein:{consumed:98,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-22" : { mealType:"dinner",carbo:{consumed:229,target:220},protein:{consumed:95,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-22" : { mealType:"snack",carbo:{consumed:228,target:220},protein:{consumed:74,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-23" : { mealType:"breakfast",carbo:{consumed:206,target:220},protein:{consumed:90,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-23" : { mealType:"lunch",carbo:{consumed:193,target:220},protein:{consumed:87,target:90},fat:{consumed:26,target:24}} ,
+    "2025-04-23" : { mealType:"dinner",carbo:{consumed:201,target:220},protein:{consumed:84,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-23" : { mealType:"snack",carbo:{consumed:192,target:220},protein:{consumed:72,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-24" : { mealType:"breakfast",carbo:{consumed:210,target:220},protein:{consumed:96,target:90},fat:{consumed:26,target:24}} ,
+    "2025-04-24" : { mealType:"lunch",carbo:{consumed:191,target:220},protein:{consumed:85,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-24" : { mealType:"dinner",carbo:{consumed:240,target:220},protein:{consumed:99,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-24" : { mealType:"snack",carbo:{consumed:205,target:220},protein:{consumed:99,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-25" : { mealType:"breakfast",carbo:{consumed:231,target:220},protein:{consumed:91,target:90},fat:{consumed:22,target:24}} ,
+    "2025-04-25" : { mealType:"lunch",carbo:{consumed:232,target:220},protein:{consumed:74,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-25" : { mealType:"dinner",carbo:{consumed:226,target:220},protein:{consumed:99,target:90},fat:{consumed:26,target:24}} ,
+    "2025-04-25" : { mealType:"snack",carbo:{consumed:224,target:220},protein:{consumed:84,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-26" : { mealType:"breakfast",carbo:{consumed:233,target:220},protein:{consumed:86,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-26" : { mealType:"lunch",carbo:{consumed:217,target:220},protein:{consumed:73,target:90},fat:{consumed:21,target:24}} ,
+    "2025-04-26" : { mealType:"dinner",carbo:{consumed:230,target:220},protein:{consumed:82,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-26" : { mealType:"snack",carbo:{consumed:230,target:220},protein:{consumed:76,target:90},fat:{consumed:22,target:24}} ,
+    "2025-04-27" : { mealType:"breakfast",carbo:{consumed:205,target:220},protein:{consumed:85,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-27" : { mealType:"lunch",carbo:{consumed:211,target:220},protein:{consumed:85,target:90},fat:{consumed:25,target:24}} ,
+    "2025-04-27" : { mealType:"dinner",carbo:{consumed:231,target:220},protein:{consumed:84,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-27" : { mealType:"snack",carbo:{consumed:180,target:220},protein:{consumed:83,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-28" : { mealType:"breakfast",carbo:{consumed:176,target:220},protein:{consumed:74,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-28" : { mealType:"lunch",carbo:{consumed:234,target:220},protein:{consumed:76,target:90},fat:{consumed:26,target:24}} ,
+    "2025-04-28" : { mealType:"dinner",carbo:{consumed:187,target:220},protein:{consumed:75,target:90},fat:{consumed:19,target:24}} ,
+    "2025-04-28" : { mealType:"snack",carbo:{consumed:238,target:220},protein:{consumed:74,target:90},fat:{consumed:22,target:24}} ,
+    "2025-04-29" : { mealType:"breakfast",carbo:{consumed:242,target:220},protein:{consumed:95,target:90},fat:{consumed:20,target:24}} ,
+    "2025-04-29" : { mealType:"lunch",carbo:{consumed:200,target:220},protein:{consumed:80,target:90},fat:{consumed:22,target:24}} ,
+    "2025-04-29" : { mealType:"dinner",carbo:{consumed:224,target:220},protein:{consumed:83,target:90},fat:{consumed:26,target:24}} ,
+    "2025-04-29" : { mealType:"snack",carbo:{consumed:177,target:220},protein:{consumed:86,target:90},fat:{consumed:26,target:24}} ,
+    "2025-04-30" : { mealType:"breakfast",carbo:{consumed:199,target:220},protein:{consumed:94,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-30" : { mealType:"lunch",carbo:{consumed:231,target:220},protein:{consumed:82,target:90},fat:{consumed:21,target:24}} ,
+    "2025-04-30" : { mealType:"dinner",carbo:{consumed:181,target:220},protein:{consumed:89,target:90},fat:{consumed:24,target:24}} ,
+    "2025-04-30" : { mealType:"snack",carbo:{consumed:198,target:220},protein:{consumed:81,target:90},fat:{consumed:25,target:24}}
+};
+
 
 
 function getDailyCaloriData() {
@@ -235,9 +290,8 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
                     <div class="next-image nav-button"><img class="next-date-button" src="/administrate/images/icon_arrow_front_black.png"></div>
                 </div>
 
-                <div id="consumedDataWrapper">
-                    
-                </div>
+                <div id="consumedDataWrapper"></div>
+                <div id="consumedMealDataWrapper"></div>
             
             </div>
         </div>
@@ -246,6 +300,11 @@ $(document).on('click', `#dailyCalorieTable tr`, function () {
     $("body").append(calorieDetailHtml);
     updateDateAndConsumedData(currentDate);
 });
+
+
+/////////////////////////    START   ///////////////////////////////
+//[[consumedDataWrapper]] 영역 코드 - 전체 칼로리 및 전체 탄단지 섭취 그래프//
+///////////////////////////////////////////////////////////////////
 
 // 칼로리 테이블 그래프 렌더링
 function renderConsumedData(
@@ -305,7 +364,6 @@ function renderConsumedData(
 }
 
 
-
 function createBar(type, consumed, target, percent, rawPercent) {
     const labelMap = {
         carbo: "탄수화물",
@@ -351,7 +409,7 @@ function createBar(type, consumed, target, percent, rawPercent) {
     `;
 }
 
-
+//
 function getCalorieInfo(dateStr) {
     const data = calorieData[dateStr];
     if (!data) return { rawPercent: 0, percent: 0, target: null };
@@ -480,6 +538,51 @@ function createCalorieArc(rawPercent, percent) {
     </svg>`;
 }
 
+// 날짜와 ConsumedData 업데이트
+function updateDateAndConsumedData(newDate) {
+    const formattedDate = formatDate(newDate); // 여기서 formattedDate는 yyyy-MM-dd 문자열
+
+    $('.date').text(formattedDate); // 날짜 텍스트 업데이트
+
+    const info = getCalorieInfo(formattedDate); // 요걸 꼭 formattedDate로 넘겨야 함!
+    console.log(info);
+
+    $('#consumedDataWrapper').html(renderConsumedData(
+        formattedDate,    // 요것도 문자열
+        info.target, 
+        info.rawPercent, 
+        info.percent, 
+        info.consumed, 
+        info.caloriesLeft,
+        info.targetCarbo, 
+        info.targetProtein, 
+        info.targetFat,
+        info.consumedCarbo, 
+        info.consumedProtein, 
+        info.consumedFat,
+        info.carboRawPercent, 
+        info.carboPercent,
+        info.proteinRawPercent, 
+        info.proteinPercent,
+        info.fatRawPercent, 
+        info.fatPercent
+    ));
+}
+
+/////////////////////////     END    ///////////////////////////////
+//[[consumedDataWrapper]] 영역 코드 - 전체 칼로리 및 전체 탄단지 섭취 그래프//
+///////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+/////////////////////////    START   ///////////////////////////////
+//[[consumedMealDataWrapper]] 영역 코드 - 아침 점심 저녁별 탄단지 그래프 영역//
+///////////////////////////////////////////////////////////////////
+
+
 
 $(document).ready(function () {
     const pathSegments = window.location.pathname.split('/');
@@ -523,33 +626,3 @@ $(document).on('click', '.next-date-button', function () {
     updateDateAndConsumedData(parsedDate);
 });
 
-// 날짜와 ConsumedData 업데이트
-function updateDateAndConsumedData(newDate) {
-    const formattedDate = formatDate(newDate); // 여기서 formattedDate는 yyyy-MM-dd 문자열
-
-    $('.date').text(formattedDate); // 날짜 텍스트 업데이트
-
-    const info = getCalorieInfo(formattedDate); // 요걸 꼭 formattedDate로 넘겨야 함!
-    console.log(info);
-
-    $('#consumedDataWrapper').html(renderConsumedData(
-        formattedDate,    // 요것도 문자열
-        info.target, 
-        info.rawPercent, 
-        info.percent, 
-        info.consumed, 
-        info.caloriesLeft,
-        info.targetCarbo, 
-        info.targetProtein, 
-        info.targetFat,
-        info.consumedCarbo, 
-        info.consumedProtein, 
-        info.consumedFat,
-        info.carboRawPercent, 
-        info.carboPercent,
-        info.proteinRawPercent, 
-        info.proteinPercent,
-        info.fatRawPercent, 
-        info.fatPercent
-    ));
-}

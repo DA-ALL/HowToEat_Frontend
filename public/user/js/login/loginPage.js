@@ -8,7 +8,7 @@ $(document).ready(function () {
     //네이버 로그인
     $("#SS0-NAVER").on("click", function() {
         console.log("naver 로그인");
-        window.location.href = '/survey?page=1';
+        window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
     });
 
     //애플 로그인

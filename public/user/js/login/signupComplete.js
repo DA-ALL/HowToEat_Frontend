@@ -2,8 +2,36 @@ $(document).ready(function () {
     showWelcomeMessage();
     triggerConfettiEffect();
 
-    $(".next-button.signup").on('click', function(){
-        window.location.href = '/main';
+    $(".next-button.signup").on('click', function () {
+        // console.log("testeststtset");
+        // const storedData = JSON.parse(localStorage.getItem('surveyData'));
+
+        // const requestData = {
+        //     email: storedData.email,
+        //     name: storedData.name,
+        //     birthday: `${storedData.birthYear}-${pad2(storedData.birthMonth)}-${pad2(storedData.birthDay)}`, // yyyy-MM-dd
+        //     gender: convertGender(storedData.gender), // 'M' or 'F' → 'MALE' or 'FEMALE'
+        //     height: parseFloat(storedData.height),
+        //     weight: parseFloat(storedData.weight),
+        //     goal: storedData.goal,
+        //     activityLevel: storedData.activity,
+        //     isNextGym: storedData.isNextGym === 'true' // 문자열로 저장됐을 가능성 있음
+        // };
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: "http://localhost:8080/signup",
+        //     contentType: "application/json",
+        //     data: JSON.stringify(requestData),
+        //     success: function () {
+        //         console.log("test");
+        //         window.location.href = "/main";
+        //     },
+        //     error: function (err) {
+        //         console.error("회원가입 실패", err);
+        //         alert("회원가입 중 문제가 발생했습니다.");
+        //     }
+        // });
     });
 });
 
@@ -33,6 +61,7 @@ const createGoalMessage = () => `
 `;
 
 function animateKcalCounter() {
+    showFinalButton();
     let targetValue = 2562, duration = 3000, startTime = performance.now();
 
     function easeOutExpo(t) {
@@ -75,9 +104,9 @@ function fadeOutFinalMessage() {
     $(".goal-text-wrapper, .sub-text").fadeOut(1000, function () {
         $(".goal-text-wrapper").html(createFinalMessage1());
         $(".goal-text-sub").html(createFinalMessage2());
-        $(".goal-text-wrapper, .goal-text-sub").hide().fadeIn(1000, function () {
-            setTimeout(showFinalButton, 2000);
-        });
+        // $(".goal-text-wrapper, .goal-text-sub").hide().fadeIn(1000, function () {
+        //     setTimeout(showFinalButton, 2000);
+        // });
     });
 }
 
@@ -97,7 +126,34 @@ function showFinalButton() {
     $button.fadeIn(1000); // 1초 동안 서서히 나타나도록 설정
 
     $(document).on('click', '.next-button.signup', function () {
-        window.location.href = '/main';
+        const storedData = JSON.parse(localStorage.getItem('surveyData'));
+
+        const requestData = {
+            email: storedData.email,
+            name: storedData.name,
+            birthday: `${storedData.birthYear}-${storedData.birthMonth}-${storedData.birthDay}`, // yyyy-MM-dd
+            gender: storedData.gender, // 'M' or 'F' → 'MALE' or 'FEMALE'
+            height: parseFloat(storedData.height),
+            weight: parseFloat(storedData.weight),
+            goal: storedData.goal,
+            activityLevel: storedData.activity,
+            isNextGym: storedData.isNextGym === 'true' // 문자열로 저장됐을 가능성 있음
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/signup",
+            contentType: "application/json",
+            data: JSON.stringify(requestData),
+            success: function () {               
+                console.log("test");
+                window.location.href = "/main";
+            },
+            error: function (err) {
+                console.error("회원가입 실패", err);
+                alert("회원가입 중 문제가 발생했습니다.");
+            }
+        });
     });
 }
 const createMotivationMessage1 = () => `

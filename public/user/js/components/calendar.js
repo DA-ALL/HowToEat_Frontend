@@ -2,6 +2,26 @@ import { getTodaysCPF } from '../main/todaysCPF.js';
 import { getMealLog } from '../main/meal-log.js';
 
 $(document).ready(function () {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/test",
+        contentType: "application/json",
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (data, status, xhr) {
+            const accessToken = xhr.getResponseHeader('Authorization');
+            const refreshToken = xhr.getResponseHeader('RefreshToken');
+    
+            localStorage.setItem('Authorization', accessToken);
+            localStorage.setItem('RefreshToken', refreshToken);
+        },
+        error: function (err) {
+            console.error("회원가입 실패", err);
+            alert("회원가입 중 문제가 발생했습니다.");
+        }
+    });
+
     let currentDate = new Date();
     let viewMode = 'week';
     let activeDate = formatDate(new Date()); // ✅ 선택된 날짜 기억

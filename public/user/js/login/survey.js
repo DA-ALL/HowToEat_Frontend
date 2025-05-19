@@ -5,6 +5,7 @@ import { initHeaderNav } from '/user/js/components/header-nav.js';
 
 let currentPage = 1;
 let surveyData = {
+    email: '',
     name: '',
     birthYear: '',
     birthMonth: '',
@@ -30,11 +31,51 @@ window.onpopstate = function (event) {
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const savedPage = parseInt(urlParams.get('page')) || 1;
+    const token = urlParams.get("token");
+    const user = getPayloadFromToken(token);
+
+    // 생일이 "MM-DD" 형식이면 나눠서 넣기
+    const birthMonth = user.birthday?.split('-')[0] || '';
+    const birthDay = user.birthday?.split('-')[1] || '';
+
+    // surveyData 초기화
+    surveyData = {
+        email: user.email || '',
+        name: user.name || '',
+        birthYear: user.birthyear || '',
+        birthMonth,
+        birthDay,
+        height: user.height || '',
+        weight: user.weight || '',
+        gender: user.gender || '',
+        goal: '',
+        activity: '',
+        isNextGym: ''
+    };
+
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
 
     currentPage = savedPage;
     initHeaderNav();
     loadPage(currentPage);
 });
+
+function getPayloadFromToken(token) {
+    try {
+        const base64Payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64Payload)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error('JWT 파싱 에러:', e);
+        return null;
+    }
+}
+
 
 function getSurveyTemplate(pageNumber) {
     switch (pageNumber) {
@@ -107,8 +148,8 @@ function getSurveyTemplate(pageNumber) {
                 </div>
 
                 <div class="select-container">
-                    <div class="select-item male" data-text="male">남자</div>
-                    <div class="select-item female" data-text="female">여자</div>
+                    <div class="select-item male" data-text="MALE">남자</div>
+                    <div class="select-item female" data-text="FEMALE">여자</div>
                 </div>
 
                 <div class="button-container bottom">
@@ -277,9 +318,9 @@ function restoreSurveyData() {
         $('#weight').val(surveyData.weight);
     }
     if (surveyData.gender) {
-        if(surveyData.gender === 'male') {
+        if(surveyData.gender === 'male' || surveyData.gender === 'M') {
             $('.select-item.male').addClass('valid');
-        } else {
+        } else if(surveyData.gender === 'female' || surveyData.gender === 'F') {
             $('.select-item.female').addClass('valid');
         }
     }

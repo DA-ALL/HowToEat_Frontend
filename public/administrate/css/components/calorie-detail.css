@@ -243,3 +243,10 @@
     border-radius: 10px;
     background-color: #F0F0F0;
   }
+
+
+  /* 아침, 점심, 저녁 별 탄단지 섭취 영역 */
+
+  #calorieDetail #consumedMealDataWrapper {
+    
+  }
