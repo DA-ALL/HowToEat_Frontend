@@ -9,9 +9,7 @@ $(document).ready(function () {
         type: "GET",
         url: "http://localhost:8080/test",
         contentType: "application/json",
-        xhrFields: {
-            withCredentials: true
-        },
+
         success: function (data, status, xhr) {
 
         },

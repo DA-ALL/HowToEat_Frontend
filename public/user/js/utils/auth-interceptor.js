@@ -1,5 +1,8 @@
 export function setupAjaxAuthInterceptor() {
     $.ajaxSetup({
+        xhrFields: {
+            withCredentials: true
+        },
         beforeSend: function (xhr, settings) {
             const accessToken = localStorage.getItem("Authorization");
             if (accessToken) {

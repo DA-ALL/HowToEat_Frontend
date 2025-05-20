@@ -2,6 +2,7 @@ import { updateButtonState, validateInput, checkInput } from '/user/js/component
 import { populateDays, updateDays, validateDateInput, birthDropDown } from '/user/js/components/date-picker-validate.js';
 import { updateProgressBar } from '/user/js/components/header-processbar.js';
 import { initHeaderNav } from '/user/js/components/header-nav.js';
+import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
 let currentPage = 1;
 let surveyData = {
@@ -29,6 +30,7 @@ window.onpopstate = function (event) {
 };
 
 $(document).ready(function () {
+    setupAjaxAuthInterceptor();
     const urlParams = new URLSearchParams(window.location.search);
     const savedPage = parseInt(urlParams.get('page')) || 1;
     const token = urlParams.get("token");
