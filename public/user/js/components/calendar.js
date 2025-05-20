@@ -1,7 +1,24 @@
 import { getTodaysCPF } from '../main/todaysCPF.js';
 import { getMealLog } from '../main/meal-log.js';
 
+import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
+
 $(document).ready(function () {
+    setupAjaxAuthInterceptor();
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/test",
+        contentType: "application/json",
+
+        success: function (data, status, xhr) {
+
+        },
+        error: function (err) {
+            alert("다시 로그인해주세요");
+            window.location.href="/login-page"
+        }
+    });
+
     let currentDate = new Date();
     let viewMode = 'week';
     let activeDate = formatDate(new Date()); // ✅ 선택된 날짜 기억
