@@ -1,7 +1,10 @@
 import { getTodaysCPF } from '../main/todaysCPF.js';
 import { getMealLog } from '../main/meal-log.js';
 
+import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
+
 $(document).ready(function () {
+    setupAjaxAuthInterceptor();
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/test",
@@ -10,15 +13,11 @@ $(document).ready(function () {
             withCredentials: true
         },
         success: function (data, status, xhr) {
-            const accessToken = xhr.getResponseHeader('Authorization');
-            const refreshToken = xhr.getResponseHeader('RefreshToken');
-    
-            localStorage.setItem('Authorization', accessToken);
-            localStorage.setItem('RefreshToken', refreshToken);
+
         },
         error: function (err) {
-            console.error("회원가입 실패", err);
-            alert("회원가입 중 문제가 발생했습니다.");
+            alert("다시 로그인해주세요");
+            window.location.href="/login-page"
         }
     });
 
