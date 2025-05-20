@@ -163,10 +163,10 @@ function getSurveyTemplate(pageNumber) {
                 </div>
 
                 <div class="select-container">
-                    <div class="select-item weight-loss" data-text="1">체중 감량</div>
-                    <div class="select-item weight-maintain" data-text="2">체중 유지</div>
-                    <div class="select-item weight-gain" data-text="3">체중 증량</div>
-                    <div class="select-item muscle-gain" data-text="4">근육 증량</div>
+                    <div class="select-item weight-loss" data-text="LOSE_WEIGHT">체중 감량</div>
+                    <div class="select-item weight-maintain" data-text="MAINTAIN_WEIGHT">체중 유지</div>
+                    <div class="select-item weight-gain" data-text="GAIN_WEIGHT">체중 증량</div>
+                    <div class="select-item muscle-gain" data-text="GAIN_MUSCLE">근육 증량</div>
                 </div>
 
                 <div class="button-container bottom">
@@ -180,23 +180,23 @@ function getSurveyTemplate(pageNumber) {
                 </div>
 
                 <div class="select-container activity">
-                    <div class="select-wrapper very-active" data-text="5">
+                    <div class="select-wrapper very-active" data-text="VERY_HIGH">
                         <div class="main-text">매우 활동적</div>
                         <div class="sub-text">주 6~7회 이상 고강도 운동 (운동 선수) <br> 업무 형태가 활동적</div>
                     </div>
-                    <div class="select-wrapper active" data-text="4">
+                    <div class="select-wrapper active" data-text="HIGH">
                         <div class="main-text">활동적</div>
                         <div class="sub-text">주 4~6회 운동 (웨이트 트레이닝) <br> 주 150분 이상 유산소 운동</div>
                     </div>
-                    <div class="select-wrapper moderate" data-text="3">
+                    <div class="select-wrapper moderate" data-text="NORMAL">
                         <div class="main-text">보통</div>
                         <div class="sub-text">주 2~3회 운동 (유산소 + 웨이트 트레이닝)</div>
                     </div>
-                    <div class="select-wrapper low" data-text="2">
+                    <div class="select-wrapper low" data-text="LOW">
                         <div class="main-text">적음</div>
                         <div class="sub-text">주 2회 미만의 운동 <br> 웨이트 트레이닝 / 유산소 운동 선택적 진행</div>
                     </div>
-                    <div class="select-wrapper very-low" data-text="1">
+                    <div class="select-wrapper very-low" data-text="VERY_LOW">
                         <div class="main-text">매우 적음</div>
                         <div class="sub-text">평소 운동을 하지 않음 <br> 업무 형태가 주로 앉아서 진행</div>
                     </div>
@@ -291,8 +291,37 @@ function nextPage(pageNumber) {
         saveSurveyData('activity', $('.select-wrapper.valid').data('text'));
     } else if(pageNumber === 6) {
         saveSurveyData('isNextGym', $('.select-item.valid').data('text'));
-        window.location.href = '/signup-complete';
-        return; // 리다이렉션 후 다음 페이지 로딩을 막기 위해 리턴
+        
+        const storedData = JSON.parse(localStorage.getItem('surveyData'));
+
+        const requestData = {
+            email: storedData.email,
+            name: storedData.name,
+            birthday: `${storedData.birthYear}-${storedData.birthMonth}-${storedData.birthDay}`, // yyyy-MM-dd
+            gender: storedData.gender,
+            height: parseFloat(storedData.height),
+            weight: parseFloat(storedData.weight),
+            goal: storedData.goal,
+            activityLevel: storedData.activity,
+            isNextGym: storedData.isNextGym === 'true'
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/signup",
+            contentType: "application/json",
+            data: JSON.stringify(requestData),
+            success: function () {
+                
+                window.location.href = "/signup-complete";
+            },
+            error: function (err) {
+                console.error("회원가입 실패", err);
+                alert("회원가입 중 문제가 발생했습니다.");
+            }
+        });
+
+        return;
     }
     currentPage++;
     loadPage(currentPage);
