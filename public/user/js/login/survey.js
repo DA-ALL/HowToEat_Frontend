@@ -277,11 +277,16 @@ function bindEvents(pageNumber) {
 
 
 function nextPage(pageNumber) {
-    if(pageNumber === 1) {
+    if (pageNumber === 1) {
         saveSurveyData('name', $('#name').val());
         saveSurveyData('birthYear', $('#year-text').data('text'));
-        saveSurveyData('birthMonth', $('#month-text').data('text'));
-        saveSurveyData('birthDay', $('#day-text').data('text'));
+    
+        // 👇 두 자리 형식으로 보정
+        const month = String($('#month-text').data('text')).padStart(2, '0');
+        const day = String($('#day-text').data('text')).padStart(2, '0');
+    
+        saveSurveyData('birthMonth', month);
+        saveSurveyData('birthDay', day);
     } else if(pageNumber === 2) {
         saveSurveyData('height', $('#height').val());
         saveSurveyData('weight', $('#weight').val());
