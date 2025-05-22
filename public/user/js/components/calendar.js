@@ -292,6 +292,7 @@ $(document).ready(function () {
             currentDate.setMonth(currentDate.getMonth() - 1);
         }
         updateCalendar(false);
+        getVisibleDateRangeFromCalendar();
     });
 
     $("#next").click(function () {
@@ -301,6 +302,11 @@ $(document).ready(function () {
             currentDate.setMonth(currentDate.getMonth() + 1);
         }
         updateCalendar(false);
+        getVisibleDateRangeFromCalendar();
+    //     getVisibleDateRangeFromCalendar();
+    //         setTimeout(() => {
+    //     getVisibleDateRangeFromCalendar();
+    // }, 0);
     });
 
     // [월단위]/[주단위] 전환
@@ -317,6 +323,7 @@ $(document).ready(function () {
         }
 
         updateCalendar();
+        getVisibleDateRangeFromCalendar();
     });
 
 
@@ -325,4 +332,30 @@ $(document).ready(function () {
     }
 
     updateCalendar();
+    getVisibleDateRangeFromCalendar();
+    
+    function getVisibleDateRangeFromCalendar() {
+        const todayStr = formatDate(new Date());
+        const validDates = [];
+    
+        $(".day").each(function () {
+            const dateStr = $(this).data("date");
+            const isFuture = $(this).hasClass("disabled");
+            if (!isFuture && dateStr <= todayStr) {
+                validDates.push(dateStr);
+            }
+        });
+    
+        if (validDates.length === 0) {
+            console.warn("화면에 유효한 날짜가 없습니다.");
+            return;
+        }
+    
+        validDates.sort(); // 오름차순 정렬
+        const start = validDates[0];
+        const end = validDates[validDates.length - 1];
+    
+        console.log(start + " | " + end);
+    }
+    
 });
