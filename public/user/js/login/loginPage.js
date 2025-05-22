@@ -2,7 +2,7 @@ $(document).ready(function () {
     //카카오 로그인
     $("#SS0-KAKAO").on("click", function() {
         console.log("kakao 로그인");
-        window.location.href = '/survey?page=1';
+        window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
     });
 
     //네이버 로그인
