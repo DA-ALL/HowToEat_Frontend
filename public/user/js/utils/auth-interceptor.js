@@ -10,9 +10,6 @@ export function setupAjaxAuthInterceptor() {
             }
         },
         complete: function (xhr, status) {
-            
-
-
             const accessToken = xhr.getResponseHeader('Authorization');
 
             if(accessToken) {

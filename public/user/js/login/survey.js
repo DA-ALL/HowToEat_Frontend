@@ -315,7 +315,7 @@ function nextPage(pageNumber) {
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/signup",
+            url: `${window.DOMAIN_URL}/signup`,
             contentType: "application/json",
             data: JSON.stringify(requestData),
             success: function () {
