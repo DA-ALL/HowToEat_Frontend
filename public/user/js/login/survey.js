@@ -52,7 +52,9 @@ $(document).ready(function () {
         gender: user.gender || '',
         goal: '',
         activity: '',
-        isNextGym: ''
+        isNextGym: '',
+        signupProvider: user.signup_provider || '',
+        profileImageUrl: user.profile_image_url || '',
     };
 
     localStorage.setItem('surveyData', JSON.stringify(surveyData));
@@ -310,7 +312,9 @@ function nextPage(pageNumber) {
             weight: parseFloat(storedData.weight),
             goal: storedData.goal,
             activityLevel: storedData.activity,
-            isNextGym: storedData.isNextGym === 'true'
+            isNextGym: storedData.isNextGym === 'true',
+            signupProvider: storedData.signupProvider,
+            profileImageUrl: storedData.profileImageUrl,
         };
 
         $.ajax({
