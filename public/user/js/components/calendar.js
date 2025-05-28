@@ -13,8 +13,10 @@ $(document).ready(function () {
     let isFirstLoadPage = true;
 
     function updateCalendar() {
+        
         let today = new Date();
         let todayStr = formatDate(today);
+        let totalKcal = calorieData[todayStr];
 
         const shouldUpdateCPF = (activeDate === todayStr && isFirstLoadPage);
 
@@ -86,6 +88,8 @@ $(document).ready(function () {
             currentDate = new Date(selected);
 
             const info = getCalorieInfo(selected);
+
+            totalKcal = calorieData[selected];
             
             $("#todaysCPF").html(getTodaysCPF(
                 selected, info.target, info.rawPercent, info.percent, info.consumed, info.caloriesLeft,
@@ -96,10 +100,9 @@ $(document).ready(function () {
                 info.fatRawPercent, info.fatPercent
             ));
 
-            $("#mealLog").html(getMealLog(selected));
+            $("#mealLog").html(getMealLog(selected, totalKcal));
         });
 
-        console.log(shouldUpdateCPF);
         if(shouldUpdateCPF) {            
             const initialInfo = getCalorieInfo(activeDate);
             $("#todaysCPF").html(getTodaysCPF(
@@ -110,7 +113,7 @@ $(document).ready(function () {
                 initialInfo.proteinRawPercent, initialInfo.proteinPercent,
                 initialInfo.fatRawPercent, initialInfo.fatPercent
             ));
-            $("#mealLog").html(getMealLog());
+            $("#mealLog").html(getMealLog(todayStr, totalKcal));
         }
 
 
