@@ -10,6 +10,7 @@ $(document).ready(function () {
     let viewMode = 'week';
     let activeDate = formatDate(new Date());
     let calorieData = {};
+    let macrosData = {};
     let isFirstLoadPage = true;
 
     function updateCalendar() {
@@ -84,51 +85,99 @@ $(document).ready(function () {
             $(this).addClass("active");
 
             const selected = $(this).data("date");
-            activeDate = selected;
+            
             currentDate = new Date(selected);
 
-            const info = getCalorieInfo(selected);
-
-            totalKcal = calorieData[selected];
+            $.ajax({
+                type: "GET",
+                url: `${window.DOMAIN_URL}/daily-summary/${selected}/macros`,
             
-            $("#todaysCPF").html(getTodaysCPF(
-                selected, info.target, info.rawPercent, info.percent, info.consumed, info.caloriesLeft,
-                info.targetCarbo, info.targetProtein, info.targetFat,
-                info.consumedCarbo, info.consumedProtein, info.consumedFat,
-                info.carboRawPercent, info.carboPercent,
-                info.proteinRawPercent, info.proteinPercent,
-                info.fatRawPercent, info.fatPercent
-            ));
+                success: function (res) {
+                    // console.log("✅", selected, " | macros 성공 ", res);
 
-            $("#mealLog").html(getMealLog(selected, totalKcal));
+                    macrosData = {
+                        targetKcal: res.data.targetKcal,
+                        targetCarbo: res.data.targetCarbo,
+                        targetProtein: res.data.targetProtein,
+                        targetFat: res.data.targetFat,
+                        consumedKcal: res.data.consumedKcal,
+                        consumedCarbo: res.data.consumedCarbo,
+                        consumedProtein: res.data.consumedProtein,
+                        consumedFat: res.data.consumedFat,
+                        breakfastKcal: res.data.breakfastKcal,
+                        lunchKcal: res.data.lunchKcal,
+                        dinnerKcal: res.data.dinnerKcal,
+                        snackKcal: res.data.snackKcal
+                    };
+                    
+                    const info = getDailyMacrosInfo(macrosData);
+                    
+                    $("#todaysCPF").html(getTodaysCPF(
+                        selected, info.targetKcal, info.rawPercent, info.percent, info.consumedKcal, info.caloriesLeft,
+                        info.targetCarbo, info.targetProtein, info.targetFat,
+                        info.consumedCarbo, info.consumedProtein, info.consumedFat,
+                        info.carboRawPercent, info.carboPercent,
+                        info.proteinRawPercent, info.proteinPercent,
+                        info.fatRawPercent, info.fatPercent
+                    ));
+
+                    $("#mealLog").html(getMealLog(selected, res.data));
+                }
+            });
+
+
         });
 
         if(shouldUpdateCPF) {            
-            const initialInfo = getCalorieInfo(activeDate);
-            $("#todaysCPF").html(getTodaysCPF(
-                activeDate, initialInfo.target, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumed, initialInfo.caloriesLeft,
-                initialInfo.targetCarbo, initialInfo.targetProtein, initialInfo.targetFat,
-                initialInfo.consumedCarbo, initialInfo.consumedProtein, initialInfo.consumedFat,
-                initialInfo.carboRawPercent, initialInfo.carboPercent,
-                initialInfo.proteinRawPercent, initialInfo.proteinPercent,
-                initialInfo.fatRawPercent, initialInfo.fatPercent
-            ));
-            $("#mealLog").html(getMealLog(todayStr, totalKcal));
+            isFirstLoadPage = false;
+            $.ajax({
+                type: "GET",
+                url: `${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`,
+            
+                success: function (res) {
+                    console.log("✅", activeDate, " | macros 성공 ", res);
+
+                    macrosData = {
+                        targetKcal: res.data.targetKcal,
+                        targetCarbo: res.data.targetCarbo,
+                        targetProtein: res.data.targetProtein,
+                        targetFat: res.data.targetFat,
+                        consumedKcal: res.data.consumedKcal,
+                        consumedCarbo: res.data.consumedCarbo,
+                        consumedProtein: res.data.consumedProtein,
+                        consumedFat: res.data.consumedFat,
+                        breakfastKcal: res.data.breakfastKcal,
+                        lunchKcal: res.data.lunchKcal,
+                        dinnerKcal: res.data.dinnerKcal,
+                        snackKcal: res.data.snackKcal
+                    };
+                    
+                    const initialInfo = getDailyMacrosInfo(macrosData);
+                    
+                    $("#todaysCPF").html(getTodaysCPF(
+                        activeDate, initialInfo.targetKcal, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumedKcal, initialInfo.caloriesLeft,
+                        initialInfo.targetCarbo, initialInfo.targetProtein, initialInfo.targetFat,
+                        initialInfo.consumedCarbo, initialInfo.consumedProtein, initialInfo.consumedFat,
+                        initialInfo.carboRawPercent, initialInfo.carboPercent,
+                        initialInfo.proteinRawPercent, initialInfo.proteinPercent,
+                        initialInfo.fatRawPercent, initialInfo.fatPercent
+                    ));
+
+                    $("#mealLog").html(getMealLog(activeDate, res.data));
+                }
+            });
         }
-
-
     }
 
     function getCalorieInfo(dateStr) {
         const data = calorieData[dateStr];
+
         if (!data) return { rawPercent: 0, percent: 0, target: null };
 
-        const {
-            consumed, target,
-            consumedCarbo = 0, consumedProtein = 0, consumedFat = 0,
-            targetCarbo = Math.round((target * 0.5) / 4),
-            targetProtein = Math.round((target * 0.3) / 4),
-            targetFat = Math.round((target * 0.2) / 9)
+        const { consumed, target, consumedCarbo = 0, consumedProtein = 0, consumedFat = 0, 
+                targetCarbo = Math.round((target * 0.5) / 4),
+                targetProtein = Math.round((target * 0.3) / 4), 
+                targetFat = Math.round((target * 0.2) / 9)
         } = data;
 
         const rawPercent = Math.round((consumed / target) * 100);
@@ -165,6 +214,53 @@ $(document).ready(function () {
             fatRawPercent, fatPercent
         };
     }
+
+    function getDailyMacrosInfo(data) {
+        if (!data) return { rawPercent: 0, percent: 0, targetKcal: null };
+    
+        const {
+            consumedKcal, targetKcal,
+            consumedCarbo = 0, consumedProtein = 0, consumedFat = 0,
+            targetCarbo, targetProtein, targetFat
+        } = data;
+    
+    
+        const rawPercent = Math.round((consumedKcal / targetKcal) * 100);
+        const percent = Math.min(100, rawPercent);
+        const caloriesLeft = targetKcal - consumedKcal;
+    
+        const carboRawPercent = Math.round((consumedCarbo / targetCarbo) * 100);
+        const carboPercent = Math.min(100, carboRawPercent);
+        const proteinRawPercent = Math.round((consumedProtein / targetProtein) * 100);
+        const proteinPercent = Math.min(100, proteinRawPercent);
+        const fatRawPercent = Math.round((consumedFat / targetFat) * 100);
+        const fatPercent = Math.min(100, fatRawPercent);
+    
+        let color = "#EBEBEB";
+        let isGradient = false;
+    
+        if (rawPercent === 0) {
+            color = "#EBEBEB";
+        } else if (rawPercent > 0 && rawPercent <= 95) {
+            color = "#FFE1E4";
+        } else if (rawPercent > 95 && rawPercent <= 105) {
+            color = "url(#calorieGradient)";
+            isGradient = true;
+        } else if (rawPercent > 105) {
+            color = "#814949";
+        }
+    
+        return {
+            rawPercent, color, isGradient, percent, targetKcal, consumedKcal, caloriesLeft,
+            targetCarbo, targetProtein, targetFat,
+            consumedCarbo, consumedProtein, consumedFat,
+            carboRawPercent, carboPercent,
+            proteinRawPercent, proteinPercent,
+            fatRawPercent, fatPercent
+        };
+    }
+    
+
 
     function createDayHTML(date, disabledClass, isActive) {
         const dateStr = formatDate(date);
@@ -308,7 +404,7 @@ $(document).ready(function () {
                 start_date: start,
                 end_date: end
             },
-            // contentType: "application/json",
+
             success: function (res) {
                 console.log("✅ 성공:", res);
     
@@ -319,17 +415,7 @@ $(document).ready(function () {
                     };
                 });
                 
-
-                //첫번째 로드시에만 todayCPF 페이지 로드
-                if(isFirstLoadPage) {
-                    updateCalendar();
-                    isFirstLoadPage = false;
-                } else {
-                    updateCalendar();
-                }
-            },
-            error: function (err) {
-                // window.location.href="/login-page"
+                updateCalendar();
             }
         });
     }

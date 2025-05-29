@@ -11,6 +11,7 @@ export function getTodaysCPF(
     const todayStr = new Date().toISOString().slice(0, 10);
     if (target === null) target = 0;
 
+
     const formattedTarget = target.toLocaleString();
     const formattedConsumed = consumed.toLocaleString();
     const isToday = date === todayStr;
@@ -23,9 +24,9 @@ export function getTodaysCPF(
 
     const barContainer = `
         <div class="cpf-bar-container">
-            ${createBar("carbo", consumedCarbo, targetCarbo, carboPercent, carboRawPercent)}
-            ${createBar("protein", consumedProtein, targetProtein, proteinPercent, proteinRawPercent)}
-            ${createBar("fat", consumedFat, targetFat, fatPercent, fatRawPercent)}
+            ${createBar("carbo", Math.round(consumedCarbo), Math.round(targetCarbo), carboPercent, carboRawPercent)}
+            ${createBar("protein", Math.round(consumedProtein), Math.round(targetProtein), proteinPercent, proteinRawPercent)}
+            ${createBar("fat", Math.round(consumedFat), Math.round(targetFat), fatPercent, fatRawPercent)}        
         </div>
     `;
 
