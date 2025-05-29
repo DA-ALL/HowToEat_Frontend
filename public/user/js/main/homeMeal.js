@@ -122,6 +122,39 @@ function mealToKor(meal) {
 function renderMealListHTML(mealKey) {
     const saved = localStorage.getItem(`mealData_${mealKey}`);
     if (!saved) return '';
+    
+    $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/consumed-foods/kcals`,
+        data: {
+            date: date,
+            meal_time: end
+        },
+        // contentType: "application/json",
+        success: function (res) {
+            console.log("✅ 성공:", res);
+
+            res.data.forEach(item => {
+                calorieData[item.date] = {
+                    target: item.targetKcal,
+                    consumed: item.consumedKcal
+                };
+            });
+            
+
+            //첫번째 로드시에만 todayCPF 페이지 로드
+            if(isFirstLoadPage) {
+                updateCalendar();
+                isFirstLoadPage = false;
+            } else {
+                updateCalendar();
+            }
+        },
+        error: function (err) {
+            // window.location.href="/login-page"
+        }
+    });
+
 
     const item = JSON.parse(saved);
     return renderMealListItem(item);

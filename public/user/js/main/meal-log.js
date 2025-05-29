@@ -1,4 +1,11 @@
-export function getMealLog(date) {
+export function getMealLog(date, totalKcal) {
+    let target = totalKcal?.target || 0;
+
+    let breakfastTarget = Math.round(target * 0.3); // 3 / 10
+    let lunchTarget = Math.round(target * 0.4);     // 4 / 10
+    let dinnerTarget = target - breakfastTarget - lunchTarget; // 나머지
+
+
     return `
         <div class="meal-log-title">식사기록</div>
         <div class="log-container">
@@ -7,7 +14,7 @@ export function getMealLog(date) {
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">542</div>
                     <div class="divide">/</div>
-                    <div class="target-kcal">612kcal</div>
+                    <div class="target-kcal">${breakfastTarget}kcal</div>
                     <div class="icon-arrow">
                         <img src="/user/images/icon_arrow_front.png">
                     </div>
@@ -18,7 +25,7 @@ export function getMealLog(date) {
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">542</div>
                     <div class="divide">/</div>
-                    <div class="target-kcal">612kcal</div>
+                    <div class="target-kcal">${lunchTarget}kcal</div>
                     <div class="icon-arrow">
                         <img src="/user/images/icon_arrow_front.png">
                     </div>
@@ -29,7 +36,7 @@ export function getMealLog(date) {
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">542</div>
                     <div class="divide">/</div>
-                    <div class="target-kcal">612kcal</div>
+                    <div class="target-kcal">${dinnerTarget}kcal</div>
                     <div class="icon-arrow">
                         <img src="/user/images/icon_arrow_front.png">
                     </div>
