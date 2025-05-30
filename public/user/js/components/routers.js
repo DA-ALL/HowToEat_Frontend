@@ -10,6 +10,7 @@ import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
 import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
+import { initCalendarPage } from './calendar.js';
 
 const userConsumedDataTest = {
     date: "2025-04-18",
@@ -45,6 +46,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 
     if (!meal) {
         $('#home').show(); // /main
+        initCalendarPage(true);
         return;
     }
     
