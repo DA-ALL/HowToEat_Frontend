@@ -1,7 +1,6 @@
 export function renderMealDetail(mealKey, data) {
     const mealKor = mealToKor(mealKey);
 
-    console.log(data.date);
     const isToday = isTodayDate(data?.date);
     const buttonClass = isToday ? 'active' : 'disabled';
 

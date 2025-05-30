@@ -84,6 +84,11 @@
     color: var(--gray200);
 }
 
+@keyframes fillBarTemp {
+  from { width: 0%; }
+  to { width: 100%; } /* 실제 width는 JS에서 다시 지정되므로 100%로 둬도 무방 */
+}
+
 #todaysCPF .cpf-kcal-left-message-wrapper {
     display: flex;
     flex-direction: column;

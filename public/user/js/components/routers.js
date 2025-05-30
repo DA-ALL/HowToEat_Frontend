@@ -45,8 +45,8 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
 
     if (!meal) {
-        $('#home').show(); // /main
         initCalendarPage(true);
+        $('#home').show(); // /main
         return;
     }
     
@@ -57,6 +57,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
             $('#homeMeal').html(renderMealDetail(meal, merged));
             initHeaderNav($('#homeMeal'));
         }
+        
         $('#homeMeal').show();
     }
     
@@ -115,7 +116,6 @@ export function showMyPage(subpath = null, detailId = null) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
-
     $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo').hide();
 
     if (!subpath) {

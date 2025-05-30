@@ -51,6 +51,7 @@ export function initCalendarPage() {
 }
 
 function updateCalendar() {
+
     const today = new Date();
     const todayStr = formatDate(today);
     const shouldUpdateCPF = (activeDate === todayStr && !hasRenderedCPFOnce);
@@ -116,7 +117,7 @@ function updateCalendar() {
         const selected = $(this).data("date");
         activeDate = selected;
         currentDate = new Date(selected);
-
+        
         $.get(`${window.DOMAIN_URL}/daily-summary/${selected}/macros`, function (res) {
             macrosData = res.data;
             const info = getDailyMacrosInfo(macrosData);
@@ -128,10 +129,20 @@ function updateCalendar() {
 
     if (shouldUpdateCPF) {
         hasRenderedCPFOnce = true;
+
+        $('#kcalGraphPath').attr('d', ''); // 그래프 값을 0으로 설정해 깜빡임 해결
+
+        $('style').each(function () { //탄 단 지 그래프 바 스타일 초기화로 깜빡임 해결
+            const content = this.innerHTML;
+            if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+                this.remove();
+            }
+        });
+        
         $.get(`${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`, function (res) {
             macrosData = res.data;
             const info = getDailyMacrosInfo(macrosData);
-            // console.log(info)
+            
             $("#todaysCPF").html(getTodaysCPF(activeDate, info.targetKcal, info.rawPercent, info.percent, info.consumedKcal, info.caloriesLeft, info.targetCarbo, info.targetProtein, info.targetFat, info.consumedCarbo, info.consumedProtein, info.consumedFat, info.carboRawPercent, info.carboPercent, info.proteinRawPercent, info.proteinPercent, info.fatRawPercent, info.fatPercent));
             $("#mealLog").html(getMealLog(activeDate, res.data));
         });
