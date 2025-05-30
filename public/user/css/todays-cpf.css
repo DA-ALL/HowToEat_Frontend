@@ -45,7 +45,10 @@
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar {
     position: absolute;
     z-index: 1;
-    filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.45));
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar svg{
