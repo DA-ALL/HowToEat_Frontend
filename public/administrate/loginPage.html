@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/administrate/css/font.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/user/js/utils/url.js"></script>
 
 </head>
 
@@ -96,12 +97,12 @@ html, body {
         <div class="input-wrapper">
             <div class="input input-id">
                 <div class="label">아이디</div>
-                <input type="text" name="st_name" placeholder="account_id"><br>
+                <input type="text" id="email" placeholder="account_id"><br>
             </div>
 
             <div class="input input-pw">
                 <div class="label">비밀번호</div>
-                <input type="password" name="st_name" placeholder="password"><br>
+                <input type="password" id="password" placeholder="password"><br>
             </div>
         </div>
 
@@ -112,25 +113,47 @@ html, body {
 </body>
 </html>
 
-<script>
-function getLoginInputValues() {
-    const accountId = $('#loginPage .input-id input').val().trim();
-    const password = $('#loginPage .input-pw input').val().trim();
+<script type="module">
+    import { setupAjaxAuthInterceptor } from '/user/js/utils/auth-interceptor.js';
+    
+
+  function getLoginInputValues() {
+    const email = $('#email').val().trim();
+    const password = $('#password').val().trim();
 
     return {
-        accountId,
+        email,
         password
     };
 }
+
+$(document).ready(function () {
+    setupAjaxAuthInterceptor();
+});
+
 
 $(document).on("click", ".button-login", function () {
     const loginData = getLoginInputValues();
     console.log("로그인 버튼 클릭됨:", loginData);
 
-    // 백엔드 로그인 호출
-    if(true) {
-        window.location.href = "http://localhost:3000/admin/dashboard";
-    }
+    $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/login`,
+        contentType: "application/json",
+        data: JSON.stringify(loginData),
+        success: function () {
+            window.location.href = "/admin/dashboard";
+            // window.location.href = "http://localhost:3000/admin/dashboard";
+        },
+        error: function (err) {
+            console.error("로그인 실패", err.responseJSON);
+            if(err.responseJSON.errorType == "NOT_FOUND_AUTHENTICATION_INFO") {
+                alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+            } else {
+                alert("로그인 중 문제가 발생했습니다.");
+            }
+        }
+    });
 });
 
 $('input').on('keyup', function (e) {
