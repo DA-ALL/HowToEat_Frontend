@@ -26,18 +26,14 @@ export function renderMealDetail(mealKey, data, callback) {
                 ${commonHeader}
                 <div class="meal-list-container padding">
                     <div class="second-title-format">${mealKor} 리스트</div>
+                    <div class="meal-list-wrapper"></div>
                 </div>
                 ` :
                 `
                 ${commonHeader}
                 <div class="meal-list-container padding">
                     <div class="second-title-format">${mealKor}의 식단</div>
-                    <div class="meal-list-wrapper">
-                        ${renderMealListHTML(mealKey)}
-                    </div>
-                </div>
-                <div class="button-container">
-                    <div class="next-button home-meal ${buttonClass}">추가</div>
+                    <div class="meal-list-wrapper"></div>
                 </div>
                 `;
 
@@ -104,11 +100,6 @@ function createBarContainer(mealKey, data) {
                 const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
                 const percent = Math.min(rawPercent, 100);
 
-                console.log(consumed);
-                console.log(target);
-                console.log(rawPercent);
-                console.log(percent);
-
                 return createBar(mealKey, type, consumed, target, percent.toFixed(1), rawPercent);
             }).join('')}
         </div>
@@ -141,55 +132,41 @@ function mealToKor(meal) {
 }
 
 // 테스트용 mealData 로부터 리스트 아이템 생성
-function renderMealListHTML(mealKey) {
-    const saved = localStorage.getItem(`mealData_${mealKey}`);
-    if (!saved) return '';
-    
+export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
+    const isToday = isTodayDate(selectedDate);
+    const buttonClass = isToday ? 'active' : 'disabled';
+
     $.ajax({
         type: "GET",
-        url: `${window.DOMAIN_URL}/consumed-foods/kcals`,
+        url: `${window.DOMAIN_URL}/consumed-foods`,
         data: {
-            date: date,
-            meal_time: end
+            date: selectedDate,
+            meal_time: mealTime
         },
-        // contentType: "application/json",
         success: function (res) {
-            console.log("✅ 성공:", res);
+            const listHtml = res.data.map(renderMealListItem).join('');
+            const buttonHtml = `
+                <div class="button-container">
+                    <div class="next-button home-meal ${buttonClass}">추가</div>
+                </div>
+            `;
 
-            res.data.forEach(item => {
-                calorieData[item.date] = {
-                    target: item.targetKcal,
-                    consumed: item.consumedKcal
-                };
-            });
-            
-
-            //첫번째 로드시에만 todayCPF 페이지 로드
-            if(isFirstLoadPage) {
-                updateCalendar();
-                isFirstLoadPage = false;
-            } else {
-                updateCalendar();
-            }
-        },
-        error: function (err) {
-            // window.location.href="/login-page"
+            callback(listHtml, buttonHtml); // 🚀 데이터도 버튼도 콜백으로 넘김
         }
     });
-
-
-    const item = JSON.parse(saved);
-    return renderMealListItem(item);
 }
 
-function renderMealListItem(item) {
+
+
+
+function renderMealListItem(data) {
     return `
         <div class="meal-list-item">
-            <div class="meal-title">${item.name}</div>
+            <div class="meal-title">${data.foodName}</div>
             <div class="text-wrapper">
-                <span class="weight">${item.weight}g</span>
+                <span class="weight">${data.weight}${data.unit}</span>
                 <span class="divide">/</span>
-                <span class="kcal">${item.kcal}kcal</span>
+                <span class="kcal">${data.kcal}kcal</span>
                 <div class="image-arrow">
                     <img src="/user/images/icon_arrow_front.png">
                 </div>
