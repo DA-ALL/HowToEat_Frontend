@@ -1,41 +1,51 @@
-export function renderMealDetail(mealKey, data) {
+export function renderMealDetail(mealKey, data, callback) {
     const mealKor = mealToKor(mealKey);
-
-    const isToday = isTodayDate(data?.date);
+    const pathParts = window.location.pathname.split("/");
+    const selectedDate = pathParts[3];
+    const isToday = isTodayDate(selectedDate);
     const buttonClass = isToday ? 'active' : 'disabled';
+    const mealTime = mealKey.toUpperCase();
 
-    const commonHeader = `
-        <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
-        <div class="home-meal-container padding">
-            <div class="second-title-format">${mealKor}의 탄단지</div>
-            ${createBarContainer(mealKey, data)}
-        </div>
-        <div class="divider large"></div>
-    `;
+    $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/daily-summaries/${selectedDate}/meal-time/${mealTime}/macros`,
+        success: function (res) {
+            const data2 = res.data;
 
-    if (mealKey === 'snack') {
-        return `
-            ${commonHeader}
-            <div class="meal-list-container padding">
-                <div class="second-title-format">${mealKor} 리스트</div>
-            </div>
-        `;
-    } else {
-        return `
-            ${commonHeader}
-            <div class="meal-list-container padding">
-                <div class="second-title-format">${mealKor}의 식단</div>
-                <div class="meal-list-wrapper">
-                    ${renderMealListHTML(mealKey)}
+            const commonHeader = `
+                <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
+                <div class="home-meal-container padding">
+                    <div class="second-title-format">${mealKor}의 탄단지</div>
+                    ${createBarContainer(mealKey, data2)}
                 </div>
-            </div>
+                <div class="divider large"></div>
+            `;
 
-            <div class="button-container">
-                <div class="next-button home-meal ${buttonClass}">추가</div>
-            </div>
-        `;
-    }
+            const content = mealKey === 'snack' ?
+                `
+                ${commonHeader}
+                <div class="meal-list-container padding">
+                    <div class="second-title-format">${mealKor} 리스트</div>
+                </div>
+                ` :
+                `
+                ${commonHeader}
+                <div class="meal-list-container padding">
+                    <div class="second-title-format">${mealKor}의 식단</div>
+                    <div class="meal-list-wrapper">
+                        ${renderMealListHTML(mealKey)}
+                    </div>
+                </div>
+                <div class="button-container">
+                    <div class="next-button home-meal ${buttonClass}">추가</div>
+                </div>
+                `;
+
+            callback(content); // ✅ 콜백으로 결과 전달
+        }
+    });
 }
+
 
 
 function createBar(mealKey, type, consumed, target, percent, rawPercent) {
@@ -85,17 +95,30 @@ function createBar(mealKey, type, consumed, target, percent, rawPercent) {
 
 function createBarContainer(mealKey, data) {
     const types = ['carbo', 'protein', 'fat'];
+    console.log(data);
     return `
         <div class="home-meal-bar-container">
             ${types.map(type => {
-        const { consumed, target } = data[type];
-        const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
-        const percent = Math.min(rawPercent, 100);
-        return createBar(mealKey, type, consumed, target, percent.toFixed(1), rawPercent);
-    }).join('')}
+                const consumed = data[`consumed${capitalize(type)}`];
+                const target = data[`target${capitalize(type)}`];
+                const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
+                const percent = Math.min(rawPercent, 100);
+
+                console.log(consumed);
+                console.log(target);
+                console.log(rawPercent);
+                console.log(percent);
+
+                return createBar(mealKey, type, consumed, target, percent.toFixed(1), rawPercent);
+            }).join('')}
         </div>
     `;
 }
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 
 function isTodayDate(dateStr) {
     if (!dateStr) return false;
@@ -109,7 +132,7 @@ function isTodayDate(dateStr) {
 
 function mealToKor(meal) {
     switch (meal) {
-        case 'morning': return '아침';
+        case 'breakfast': return '아침';
         case 'lunch': return '점심';
         case 'dinner': return '저녁';
         case 'snack': return '간식';

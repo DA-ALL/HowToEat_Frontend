@@ -1,7 +1,6 @@
 // calendar.js
 import { getTodaysCPF } from '../main/todaysCPF.js';
 import { getMealLog } from '../main/meal-log.js';
-import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
 let currentDate = new Date();
 let viewMode = 'week';
@@ -12,7 +11,6 @@ let hasRenderedCPFOnce = false;
 
 export function initCalendarPage() {
     hasRenderedCPFOnce = false;
-    setupAjaxAuthInterceptor();
     updateCalendar();
     getVisibleDateRangeFromCalendar();
 

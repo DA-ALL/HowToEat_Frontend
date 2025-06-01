@@ -87,3 +87,5 @@ function clearAuthTokensAndRedirect() {
     // 2. 쿠키에서 리프레시토큰 제거 (유효기간을 과거로 설정)
     document.cookie = "RefreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 }
+
+setupAjaxAuthInterceptor();

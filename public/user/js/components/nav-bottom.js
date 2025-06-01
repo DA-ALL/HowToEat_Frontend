@@ -36,9 +36,9 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
         lastMainPath = path;
     
         const parts = path.split('/');
-        const meal = parts[2];      // morning
-        const regist = parts[3];   // regist 등
-        const type = parts[4];     // ingredient 등
+        const meal = parts[2];      // breakfast
+        const regist = parts[4];   // regist 등
+        const type = parts[5];     // ingredient 등
     
         showMain(meal, regist, type, userConsumedData, registFoodData);
     }
@@ -96,10 +96,10 @@ $(document).ready(function () {
 
     $(document).on('click', '.log-wrapper', function () {
         const mealKor = $(this).find('.meal-time').text(); // '아침' 등
-        const mealMap = { '아침': 'morning', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
-        const meal = mealMap[mealKor] || 'morning';
-        const newPath = `/main/${meal}`;
+        const mealMap = { '아침': 'breakfast', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
+        const meal = mealMap[mealKor] || 'breakfast';
         const selectedDate = $('.day.active').data('date') || userConsumedData.date;
+        const newPath = `/main/${meal}/${selectedDate}`;
         const updatedConsumedData = {
             ...userConsumedData,
             date: selectedDate
@@ -183,12 +183,12 @@ $(document).ready(function () {
 
     $(document).on('click', '.next-button.active', function () {
         let $btn = $(this);
-        const currentPath = window.location.pathname; // ex: /main/morning
+        const currentPath = window.location.pathname; // ex: /main/breakfast
         const parts = currentPath.split('/');
 
         if (parts.length < 3) return;
 
-        const meal = parts[2]; // 'morning', 'lunch', etc
+        const meal = parts[2]; // 'breakfast', 'lunch', etc
 
         // ---------------------------------------------
         // 1. /main/{meal}/regist → from home-meal

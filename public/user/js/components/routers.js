@@ -11,6 +11,7 @@ import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
+import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
 const userConsumedDataTest = {
     date: "2025-04-18",
@@ -51,12 +52,14 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     }
     
     if (meal && !subpage && !type) {
-        if ($('#homeMeal').children().length === 0) {
+    //     if ($('#homeMeal').children().length === 0) {
             // 저장된 데이터 불러오기
 
-            $('#homeMeal').html(renderMealDetail(meal, merged));
-            initHeaderNav($('#homeMeal'));
-        }
+            renderMealDetail(meal, merged, function (html) {
+                $('#homeMeal').html(html);
+                initHeaderNav($('#homeMeal'));
+            });
+        
         
         $('#homeMeal').show();
     }
