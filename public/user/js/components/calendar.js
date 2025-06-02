@@ -119,7 +119,6 @@ function updateCalendar() {
         $.get(`${window.DOMAIN_URL}/daily-summary/${selected}/macros`, function (res) {
             macrosData = res.data;
             const info = getDailyMacrosInfo(macrosData);
-            console.log(macrosData);
             $("#todaysCPF").html(getTodaysCPF(selected, info.targetKcal, info.rawPercent, info.percent, info.consumedKcal, info.caloriesLeft, info.targetCarbo, info.targetProtein, info.targetFat, info.consumedCarbo, info.consumedProtein, info.consumedFat, info.carboRawPercent, info.carboPercent, info.proteinRawPercent, info.proteinPercent, info.fatRawPercent, info.fatPercent));
             $("#mealLog").html(getMealLog(selected, res.data));
         });
@@ -179,7 +178,7 @@ function formatDate(date) {
 }
 
 function getDailyMacrosInfo(data) {
-    if (!data) {
+    if (data === undefined) {
         return {
             targetKcal: 0,
             consumedKcal: 0,

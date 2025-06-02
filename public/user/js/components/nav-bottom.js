@@ -95,7 +95,7 @@ $(document).ready(function () {
     }
 
     $(document).on('click', '.log-wrapper', function () {
-        const mealKor = $(this).find('.meal-time').text(); // '아침' 등
+        const mealKor = $(this).find('.meal-time').text();
         const mealMap = { '아침': 'breakfast', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
         const meal = mealMap[mealKor] || 'breakfast';
         const selectedDate = $('.day.active').data('date') || userConsumedData.date;
@@ -104,13 +104,19 @@ $(document).ready(function () {
             ...userConsumedData,
             date: selectedDate
         };
-        
+    
         resetHomeMealView();
         resetSearchView();
         resetRegistView();
-        history.pushState({ view: 'main', meal }, '', newPath);
+    
+        // ✅ 여기 추가
+        window.lastMainPath = newPath;
+    
+        history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
+        console.log("Test", newPath)
         showPage(newPath, updatedConsumedData);
     });
+    
 
     // nav 클릭 이벤트
     Object.entries(navMap).forEach(([key, { selector }]) => {
@@ -133,15 +139,18 @@ $(document).ready(function () {
                     }
                 } else {
                     history.pushState({ view: 'main' }, '', lastMainPath);
+
                     showPage(lastMainPath);
                 }
             } else {
                 if (currentPath.startsWith('/main')) {
+                    console.log("4");
                     lastMainPath = currentPath;
                 }
     
                 // ✅ 수정된 users 블럭
                 if (key === '/users') {
+                    console.log("5");
                     const isUsers = currentPath.startsWith('/users');
                     const isDoubleClick = isUsers && (currentPath === lastUsersPath && currentPath !== '/users');
     
@@ -151,11 +160,11 @@ $(document).ready(function () {
                         lastUsersPath = currentPath;
                     }
     
+                    console.log( window.location.pathname);
                     history.pushState({ view: 'users' }, '', lastUsersPath);
                     showPage(lastUsersPath);
                     return;
                 }
-    
                 // ✅ report 등 나머지 경로 처리
                 history.pushState({ view: key.slice(1) }, '', key);
                 showPage(key);
@@ -175,8 +184,9 @@ $(document).ready(function () {
 
         if (path.startsWith('/main')) {
             lastMainPath = path;
+            console.log("뒤로가기 1", path)
         }
-
+        console.log("뒤로가기2", path)
         showPage(path);
     });
 

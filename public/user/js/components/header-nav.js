@@ -87,7 +87,7 @@ export function initHeaderNav(parentSelector = 'body') {
     
         if (currentPath.startsWith('/main/')) {
             const parts = currentPath.split('/');
-            if (parts.length === 3) {
+            if (parts.length === 4) {
                 // 예: /main/morning → 홈으로
                 history.pushState({ view: 'main' }, '', '/main');
                 showPage('/main');
