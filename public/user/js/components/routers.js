@@ -1,4 +1,4 @@
-import { renderMealDetail } from '../main/homeMeal.js';
+import { renderMealDetail, renderMealListHTML } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
 import { renderReportPage } from '../report/report.js';
@@ -10,6 +10,8 @@ import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
 import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
+import { initCalendarPage } from './calendar.js';
+import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
 const userConsumedDataTest = {
     date: "2025-04-18",
@@ -44,19 +46,31 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
 
     if (!meal) {
+        initCalendarPage(true);
         $('#home').show(); // /main
         return;
     }
-    
-    if (meal && !subpage && !type) {
-        if ($('#homeMeal').children().length === 0) {
-            // 저장된 데이터 불러오기
 
-            $('#homeMeal').html(renderMealDetail(meal, merged));
+
+    if (meal && !subpage && !type) {
+        renderMealDetail(meal, merged, function (html) {
+            const pathParts = window.location.pathname.split("/");
+            const selectedDate = pathParts[3];
+            const mealTime = meal.toUpperCase();
+    
+            // 먼저 뼈대 렌더링
+            $('#homeMeal').html(html);
             initHeaderNav($('#homeMeal'));
-        }
-        $('#homeMeal').show();
+    
+            // 그 다음 비동기로 식단 + 버튼 렌더링
+            renderMealListHTML(meal, selectedDate, mealTime, function (listHtml, buttonHtml) {
+                $('.meal-list-wrapper').html(listHtml);
+                $('#homeMeal').append(buttonHtml);
+                $('#homeMeal').show();
+            });
+        });
     }
+    
     
 
     if (meal && subpage === 'regist' && !type) {
@@ -113,7 +127,6 @@ export function showMyPage(subpath = null, detailId = null) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
-
     $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo').hide();
 
     if (!subpath) {

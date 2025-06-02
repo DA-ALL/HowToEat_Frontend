@@ -1,5 +1,3 @@
-// 리팩터링된 getTodaysCPF.js 전체 코드
-
 export function getTodaysCPF(
     date, target, rawPercent = 0, percent = 0, consumed = 0, caloriesLeft = 0,
     targetCarbo = 0, targetProtein = 0, targetFat = 0,
@@ -179,7 +177,7 @@ function createCalorieArc(rawPercent, percent) {
 
     return `<svg width="100%" height="100%" viewBox="0 0 30 30">
         ${isGradient ? gradientDef : ''}
-        <path d="${pathD}"
+        <path id="kcalGraphPath" d="${pathD}"
               fill="none"
               stroke="${color}"
               stroke-width="4.5"

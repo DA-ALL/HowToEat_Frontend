@@ -1,5 +1,6 @@
 export function getMealLog(date, info) {
-    let target = info.targetKcal || 0;
+    console.log(info);
+    let target = Math.round(info.targetKcal || 0);
 
     let breakfastTarget = Math.round(target * 0.3); // 3 / 10
     let lunchTarget = Math.round(target * 0.4);     // 4 / 10
@@ -13,7 +14,7 @@ export function getMealLog(date, info) {
     return `
         <div class="meal-log-title">식사기록</div>
         <div class="log-container">
-            <div class="log-wrapper" data-date="${date}">
+            <div class="log-wrapper" data-date="${date}" data-targetKcal="${target}" data-breakfastTarget="${breakfastTarget}" data->
                 <div class="meal-time">아침</div>
                 <div class="meal-kcal-wrapper">
                     <div class="consumed-kcal">${breakfastKcal}</div>

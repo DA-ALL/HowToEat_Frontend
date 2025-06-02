@@ -323,7 +323,7 @@ function nextPage(pageNumber) {
             contentType: "application/json",
             data: JSON.stringify(requestData),
             success: function () {
-                
+
                 window.location.href = "/signup-complete";
             },
             error: function (err) {

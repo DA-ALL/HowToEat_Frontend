@@ -1,336 +1,20 @@
+// calendar.js
 import { getTodaysCPF } from '../main/todaysCPF.js';
 import { getMealLog } from '../main/meal-log.js';
 
-import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
+let currentDate = new Date();
+let viewMode = 'week';
+let activeDate = formatDate(new Date());
+let calorieData = {};
+let macrosData = {};
+let hasRenderedCPFOnce = false;
 
-$(document).ready(function () {
-    setupAjaxAuthInterceptor();
+export function initCalendarPage() {
+    hasRenderedCPFOnce = false;
+    updateCalendar();
+    getVisibleDateRangeFromCalendar();
 
-    let currentDate = new Date();
-    let viewMode = 'week';
-    let activeDate = formatDate(new Date());
-    let calorieData = {};
-    let macrosData = {};
-    let isFirstLoadPage = true;
-
-    function updateCalendar() {
-        
-        let today = new Date();
-        let todayStr = formatDate(today);
-        let totalKcal = calorieData[todayStr];
-
-        const shouldUpdateCPF = (activeDate === todayStr && isFirstLoadPage);
-
-        let year = currentDate.getFullYear();
-        let month = currentDate.getMonth();
-        $("#current-date").text(`${year}년 ${String(month + 1).padStart(2, '0')}월`);
-        $("#calendar").empty();
-
-        let daysHtml = '<div class="calendar-grid">';
-        let weekDays = ['월', '화', '수', '목', '금', '토', '일'];
-
-        daysHtml += '<div class="week-header">';
-        weekDays.forEach(day => {
-            if (day === '토') {
-                daysHtml += `<div class="day-header saturday">${day}</div>`;
-            } else if (day === '일') {
-                daysHtml += `<div class="day-header sunday">${day}</div>`;
-            } else {
-                daysHtml += `<div class="day-header">${day}</div>`;
-            }
-        });
-        daysHtml += '</div>';
-
-        if (viewMode === 'week') {
-            let weekStart = new Date(currentDate);
-            weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
-            daysHtml += '<div class="week-row">';
-            for (let i = 0; i < 7; i++) {
-                let tempDate = new Date(weekStart);
-                tempDate.setDate(weekStart.getDate() + i);
-                let dateStr = formatDate(tempDate);
-                let disabledClass = (dateStr > todayStr) ? 'disabled' : '';
-                let isActive = (dateStr === activeDate) ? 'active' : '';
-                daysHtml += createDayHTML(tempDate, disabledClass, isActive);
-            }
-            daysHtml += '</div>';
-        } else {
-            let firstDay = new Date(year, month, 1).getDay();
-            let lastDate = new Date(year, month + 1, 0).getDate();
-            let startDay = (firstDay === 0) ? 6 : firstDay - 1;
-
-            let tempDate = new Date(year, month, 1);
-            daysHtml += '<div class="month-grid">';
-            for (let i = 0; i < startDay; i++) {
-                daysHtml += '<div class="day empty"></div>';
-            }
-
-            for (let i = 1; i <= lastDate; i++) {
-                tempDate.setDate(i);
-                let dateStr = formatDate(tempDate);
-                let disabledClass = (dateStr > todayStr) ? 'disabled' : '';
-                let isActive = (dateStr === activeDate) ? 'active' : '';
-                daysHtml += createDayHTML(tempDate, disabledClass, isActive);
-            }
-            daysHtml += '</div>';
-        }
-
-        daysHtml += '</div>';
-        $("#calendar").html(daysHtml);
-
-        // ⬇️ 클릭 이벤트 시 percent도 넘겨줌
-        $(".day").click(function () {
-            if ($(this).hasClass("disabled")) return;
-            $(".day").removeClass("active");
-            $(this).addClass("active");
-
-            const selected = $(this).data("date");
-            
-            currentDate = new Date(selected);
-
-            $.ajax({
-                type: "GET",
-                url: `${window.DOMAIN_URL}/daily-summary/${selected}/macros`,
-            
-                success: function (res) {
-                    // console.log("✅", selected, " | macros 성공 ", res);
-
-                    macrosData = {
-                        targetKcal: res.data.targetKcal,
-                        targetCarbo: res.data.targetCarbo,
-                        targetProtein: res.data.targetProtein,
-                        targetFat: res.data.targetFat,
-                        consumedKcal: res.data.consumedKcal,
-                        consumedCarbo: res.data.consumedCarbo,
-                        consumedProtein: res.data.consumedProtein,
-                        consumedFat: res.data.consumedFat,
-                        breakfastKcal: res.data.breakfastKcal,
-                        lunchKcal: res.data.lunchKcal,
-                        dinnerKcal: res.data.dinnerKcal,
-                        snackKcal: res.data.snackKcal
-                    };
-                    
-                    const info = getDailyMacrosInfo(macrosData);
-                    
-                    $("#todaysCPF").html(getTodaysCPF(
-                        selected, info.targetKcal, info.rawPercent, info.percent, info.consumedKcal, info.caloriesLeft,
-                        info.targetCarbo, info.targetProtein, info.targetFat,
-                        info.consumedCarbo, info.consumedProtein, info.consumedFat,
-                        info.carboRawPercent, info.carboPercent,
-                        info.proteinRawPercent, info.proteinPercent,
-                        info.fatRawPercent, info.fatPercent
-                    ));
-
-                    $("#mealLog").html(getMealLog(selected, res.data));
-                }
-            });
-
-
-        });
-
-        if(shouldUpdateCPF) {            
-            isFirstLoadPage = false;
-            $.ajax({
-                type: "GET",
-                url: `${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`,
-            
-                success: function (res) {
-                    console.log("✅", activeDate, " | macros 성공 ", res);
-
-                    macrosData = {
-                        targetKcal: res.data.targetKcal,
-                        targetCarbo: res.data.targetCarbo,
-                        targetProtein: res.data.targetProtein,
-                        targetFat: res.data.targetFat,
-                        consumedKcal: res.data.consumedKcal,
-                        consumedCarbo: res.data.consumedCarbo,
-                        consumedProtein: res.data.consumedProtein,
-                        consumedFat: res.data.consumedFat,
-                        breakfastKcal: res.data.breakfastKcal,
-                        lunchKcal: res.data.lunchKcal,
-                        dinnerKcal: res.data.dinnerKcal,
-                        snackKcal: res.data.snackKcal
-                    };
-                    
-                    const initialInfo = getDailyMacrosInfo(macrosData);
-                    
-                    $("#todaysCPF").html(getTodaysCPF(
-                        activeDate, initialInfo.targetKcal, initialInfo.rawPercent, initialInfo.percent, initialInfo.consumedKcal, initialInfo.caloriesLeft,
-                        initialInfo.targetCarbo, initialInfo.targetProtein, initialInfo.targetFat,
-                        initialInfo.consumedCarbo, initialInfo.consumedProtein, initialInfo.consumedFat,
-                        initialInfo.carboRawPercent, initialInfo.carboPercent,
-                        initialInfo.proteinRawPercent, initialInfo.proteinPercent,
-                        initialInfo.fatRawPercent, initialInfo.fatPercent
-                    ));
-
-                    $("#mealLog").html(getMealLog(activeDate, res.data));
-                }
-            });
-        }
-    }
-
-    function getCalorieInfo(dateStr) {
-        const data = calorieData[dateStr];
-
-        if (!data) return { rawPercent: 0, percent: 0, target: null };
-
-        const { consumed, target, consumedCarbo = 0, consumedProtein = 0, consumedFat = 0, 
-                targetCarbo = Math.round((target * 0.5) / 4),
-                targetProtein = Math.round((target * 0.3) / 4), 
-                targetFat = Math.round((target * 0.2) / 9)
-        } = data;
-
-        const rawPercent = Math.round((consumed / target) * 100);
-        const percent = Math.min(100, rawPercent);
-        const caloriesLeft = target - consumed;
-
-        const carboRawPercent = Math.round((consumedCarbo / targetCarbo) * 100);
-        const carboPercent = Math.min(100, carboRawPercent);
-        const proteinRawPercent = Math.round((consumedProtein / targetProtein) * 100);
-        const proteinPercent = Math.min(100, proteinRawPercent);
-        const fatRawPercent = Math.round((consumedFat / targetFat) * 100);
-        const fatPercent = Math.min(100, fatRawPercent);
-
-        let color = "#EBEBEB";
-        let isGradient = false;
-    
-        if (rawPercent === 0) {
-            color = "#EBEBEB";
-        } else if (rawPercent > 0 && rawPercent <= 95) {
-            color = "#FFE1E4";
-        } else if (rawPercent > 95 && rawPercent <= 105) {
-            color = "url(#calorieGradient)";
-            isGradient = true;
-        } else if (rawPercent > 105) {
-            color = "#814949";
-        }
-
-        return {
-            rawPercent, color, isGradient, percent, target, consumed, caloriesLeft,
-            targetCarbo, targetProtein, targetFat,
-            consumedCarbo, consumedProtein, consumedFat,
-            carboRawPercent, carboPercent,
-            proteinRawPercent, proteinPercent,
-            fatRawPercent, fatPercent
-        };
-    }
-
-    function getDailyMacrosInfo(data) {
-        if (!data) return { rawPercent: 0, percent: 0, targetKcal: null };
-    
-        const {
-            consumedKcal, targetKcal,
-            consumedCarbo = 0, consumedProtein = 0, consumedFat = 0,
-            targetCarbo, targetProtein, targetFat
-        } = data;
-    
-    
-        const rawPercent = Math.round((consumedKcal / targetKcal) * 100);
-        const percent = Math.min(100, rawPercent);
-        const caloriesLeft = targetKcal - consumedKcal;
-    
-        const carboRawPercent = Math.round((consumedCarbo / targetCarbo) * 100);
-        const carboPercent = Math.min(100, carboRawPercent);
-        const proteinRawPercent = Math.round((consumedProtein / targetProtein) * 100);
-        const proteinPercent = Math.min(100, proteinRawPercent);
-        const fatRawPercent = Math.round((consumedFat / targetFat) * 100);
-        const fatPercent = Math.min(100, fatRawPercent);
-    
-        let color = "#EBEBEB";
-        let isGradient = false;
-    
-        if (rawPercent === 0) {
-            color = "#EBEBEB";
-        } else if (rawPercent > 0 && rawPercent <= 95) {
-            color = "#FFE1E4";
-        } else if (rawPercent > 95 && rawPercent <= 105) {
-            color = "url(#calorieGradient)";
-            isGradient = true;
-        } else if (rawPercent > 105) {
-            color = "#814949";
-        }
-    
-        return {
-            rawPercent, color, isGradient, percent, targetKcal, consumedKcal, caloriesLeft,
-            targetCarbo, targetProtein, targetFat,
-            consumedCarbo, consumedProtein, consumedFat,
-            carboRawPercent, carboPercent,
-            proteinRawPercent, proteinPercent,
-            fatRawPercent, fatPercent
-        };
-    }
-    
-
-
-    function createDayHTML(date, disabledClass, isActive) {
-        const dateStr = formatDate(date);
-        const todayStr = formatDate(new Date());
-
-        if (dateStr > todayStr) {
-            return `
-                <div class="day disabled ${isActive}" data-date="${dateStr}">
-                    <span>${date.getDate()}</span>
-                </div>`;
-        }
-
-        const { percent, color, isGradient, target } = getCalorieInfo(dateStr);
-
-        const centerX = 14;
-        const centerY = 14;
-        const radius = 11;
-        const arcStartAngle = -30;
-        const arcEndAngle = 210;
-        const dynamicEnd = arcStartAngle + (arcEndAngle - arcStartAngle) * (percent / 100);
-
-        const pathD = describeArc(centerX, centerY, radius, arcStartAngle, dynamicEnd);
-        const backgroundArc = describeArc(centerX, centerY, radius, arcStartAngle, arcEndAngle);
-
-        const gradientDef = `
-            <defs>
-                <linearGradient id="calorieGradient" x1="27.6665" y1="0.572756" x2="-1.03143" y2="1.32184" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#ED7777"/>
-                    <stop offset="71.52%" stop-color="#E387B3"/>
-                    <stop offset="100%" stop-color="#D896EF"/>
-                </linearGradient>
-            </defs>
-        `;
-        const svgStyle = isGradient ? `style="filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.25));"` : "";
-
-        const pathElement = percent === 0
-            ? `<path d="${backgroundArc}" fill="none" stroke="#EBEBEB" stroke-width="3" stroke-linecap="round"/>`
-            : `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>`;
-
-        return `
-            <div class="day ${disabledClass} ${isActive}" data-date="${dateStr}">
-                <svg width="30" height="30" viewBox="0 0 30 30" ${svgStyle}>
-                    ${isGradient ? gradientDef : ""}
-                    ${pathElement}
-                </svg>
-                <span>${date.getDate()}</span>
-            </div>`;
-    }
-
-    function describeArc(x, y, radius, startAngle, endAngle) {
-        const start = polarToCartesian(x, y, radius, endAngle);
-        const end = polarToCartesian(x, y, radius, startAngle);
-        const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-
-        return [
-            "M", start.x, start.y,
-            "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
-        ].join(" ");
-    }
-
-    function polarToCartesian(cx, cy, r, angleInDegrees) {
-        const angleInRadians = (angleInDegrees - 180) * Math.PI / 180.0;
-        return {
-            x: cx + r * Math.cos(angleInRadians),
-            y: cy + r * Math.sin(angleInRadians)
-        };
-    }
-
-    // 이전/다음 버튼
-    $("#prev").click(function () {
+    $("#prev").off('click').on("click", function () {
         if (viewMode === 'week') {
             currentDate.setDate(currentDate.getDate() - 7);
         } else {
@@ -340,7 +24,7 @@ $(document).ready(function () {
         getVisibleDateRangeFromCalendar();
     });
 
-    $("#next").click(function () {
+    $("#next").off('click').on("click", function () {
         if (viewMode === 'week') {
             currentDate.setDate(currentDate.getDate() + 7);
         } else {
@@ -350,75 +34,279 @@ $(document).ready(function () {
         getVisibleDateRangeFromCalendar();
     });
 
-    // [월단위]/[주단위] 전환
-    $("#toggle-view").click(function () {
+    $("#toggle-view").off('click').on("click", function () {
         if (viewMode === 'week') {
-            // 주단위 → 월단위: currentDate 유지
             viewMode = 'month';
             $(this).text('월단위');
         } else {
-            // 월단위 → 주단위: activeDate 기준으로 이동
             viewMode = 'week';
             $(this).text('주단위');
             currentDate = new Date(activeDate);
         }
-
         updateCalendar();
         getVisibleDateRangeFromCalendar();
     });
+}
 
+function updateCalendar() {
 
-    function formatDate(date) {
-        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    }
+    const today = new Date();
+    const todayStr = formatDate(today);
+    const shouldUpdateCPF = (activeDate === todayStr && !hasRenderedCPFOnce);
 
-    updateCalendar();
-    getVisibleDateRangeFromCalendar();
-    
+    let year = currentDate.getFullYear();
+    let month = currentDate.getMonth();
+    $("#current-date").text(`${year}년 ${String(month + 1).padStart(2, '0')}월`);
+    $("#calendar").empty();
 
-    function getVisibleDateRangeFromCalendar() {
-        const todayStr = formatDate(new Date());
-        const validDates = [];
-    
-        $(".day").each(function () {
-            const dateStr = $(this).data("date");
-            const isFuture = $(this).hasClass("disabled");
-            if (!isFuture && dateStr <= todayStr) {
-                validDates.push(dateStr);
-            }
-        });
-    
-        if (validDates.length === 0) {
-            console.warn("화면에 유효한 날짜가 없습니다.");
-            return;
+    let daysHtml = '<div class="calendar-grid">';
+    const weekDays = ['월', '화', '수', '목', '금', '토', '일'];
+    daysHtml += '<div class="week-header">';
+    weekDays.forEach(day => {
+        const cls = day === '토' ? 'saturday' : day === '일' ? 'sunday' : '';
+        daysHtml += `<div class="day-header ${cls}">${day}</div>`;
+    });
+    daysHtml += '</div>';
+
+    if (viewMode === 'week') {
+        let weekStart = new Date(currentDate);
+        weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+        daysHtml += '<div class="week-row">';
+        for (let i = 0; i < 7; i++) {
+            const tempDate = new Date(weekStart);
+            tempDate.setDate(weekStart.getDate() + i);
+            const dateStr = formatDate(tempDate);
+            const disabledClass = dateStr > todayStr ? 'disabled' : '';
+            const isActive = dateStr === activeDate ? 'active' : '';
+            daysHtml += createDayHTML(tempDate, disabledClass, isActive);
         }
-    
-        validDates.sort(); // 오름차순 정렬
-        const start = validDates[0];
-        const end = validDates[validDates.length - 1];
-    
-        $.ajax({
-            type: "GET",
-            url: `${window.DOMAIN_URL}/daily-summary/kcals`,
-            data: {
-                start_date: start,
-                end_date: end
-            },
+        daysHtml += '</div>';
+    } else {
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+        const startDay = (firstDay === 0) ? 6 : firstDay - 1;
+        let tempDate = new Date(year, month, 1);
 
-            success: function (res) {
-                console.log("✅ 성공:", res);
-    
-                res.data.forEach(item => {
-                    calorieData[item.date] = {
-                        target: item.targetKcal,
-                        consumed: item.consumedKcal
-                    };
-                });
-                
-                updateCalendar();
+        daysHtml += '<div class="month-grid">';
+        for (let i = 0; i < startDay; i++) {
+            daysHtml += '<div class="day empty"></div>';
+        }
+        for (let i = 1; i <= lastDate; i++) {
+            tempDate.setDate(i);
+            const dateStr = formatDate(tempDate);
+            const disabledClass = dateStr > todayStr ? 'disabled' : '';
+            const isActive = dateStr === activeDate ? 'active' : '';
+            daysHtml += createDayHTML(tempDate, disabledClass, isActive);
+        }
+        daysHtml += '</div>';
+    }
+
+    daysHtml += '</div>';
+    $("#calendar").html(daysHtml);
+
+    // ensure selected date remains active after re-render
+    $(`.day[data-date="${activeDate}"]`).addClass("active");
+
+    $(".day").off('click').on("click", function () {
+        if ($(this).hasClass("disabled")) return;
+        $(".day").removeClass("active");
+        $(this).addClass("active");
+
+        const selected = $(this).data("date");
+        activeDate = selected;
+        currentDate = new Date(selected);
+        
+        $.get(`${window.DOMAIN_URL}/daily-summary/${selected}/macros`, function (res) {
+            macrosData = res.data;
+            const info = getDailyMacrosInfo(macrosData);
+            $("#todaysCPF").html(getTodaysCPF(selected, info.targetKcal, info.rawPercent, info.percent, info.consumedKcal, info.caloriesLeft, info.targetCarbo, info.targetProtein, info.targetFat, info.consumedCarbo, info.consumedProtein, info.consumedFat, info.carboRawPercent, info.carboPercent, info.proteinRawPercent, info.proteinPercent, info.fatRawPercent, info.fatPercent));
+            $("#mealLog").html(getMealLog(selected, res.data));
+        });
+    });
+
+    if (shouldUpdateCPF) {
+        hasRenderedCPFOnce = true;
+
+        $('#kcalGraphPath').attr('d', ''); // 그래프 값을 0으로 설정해 깜빡임 해결
+
+        $('style').each(function () { //탄 단 지 그래프 바 스타일 초기화로 깜빡임 해결
+            const content = this.innerHTML;
+            if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+                this.remove();
             }
         });
+        
+        $.get(`${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`, function (res) {
+            macrosData = res.data;
+            const info = getDailyMacrosInfo(macrosData);
+            
+            $("#todaysCPF").html(getTodaysCPF(activeDate, info.targetKcal, info.rawPercent, info.percent, info.consumedKcal, info.caloriesLeft, info.targetCarbo, info.targetProtein, info.targetFat, info.consumedCarbo, info.consumedProtein, info.consumedFat, info.carboRawPercent, info.carboPercent, info.proteinRawPercent, info.proteinPercent, info.fatRawPercent, info.fatPercent));
+            $("#mealLog").html(getMealLog(activeDate, res.data));
+        });
     }
-    
-    
-});
+}
+
+
+function getVisibleDateRangeFromCalendar() {
+    const todayStr = formatDate(new Date());
+    const validDates = [];
+    $(".day").each(function () {
+        const dateStr = $(this).data("date");
+        if (!$(this).hasClass("disabled") && dateStr <= todayStr) {
+            validDates.push(dateStr);
+        }
+    });
+    if (validDates.length === 0) return;
+
+    validDates.sort();
+    const start = validDates[0];
+    const end = validDates[validDates.length - 1];
+
+    $.get(`${window.DOMAIN_URL}/daily-summary/kcals`, { start_date: start, end_date: end }, function (res) {
+        res.data.forEach(item => {
+            calorieData[item.date] = {
+                target: item.targetKcal,
+                consumed: item.consumedKcal
+            };
+        });
+        updateCalendar();
+    });
+}
+
+function formatDate(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function getDailyMacrosInfo(data) {
+    if (data === undefined) {
+        return {
+            targetKcal: 0,
+            consumedKcal: 0,
+            rawPercent: 0,
+            percent: 0,
+            caloriesLeft: 0,
+            targetCarbo: 0,
+            targetProtein: 0,
+            targetFat: 0,
+            consumedCarbo: 0,
+            consumedProtein: 0,
+            consumedFat: 0,
+            carboRawPercent: 0,
+            carboPercent: 0,
+            proteinRawPercent: 0,
+            proteinPercent: 0,
+            fatRawPercent: 0,
+            fatPercent: 0
+        };
+    }
+
+    const rawPercent = Math.round((data.consumedKcal / data.targetKcal) * 100);
+    return {
+        ...data,
+        rawPercent,
+        percent: Math.min(100, rawPercent),
+        caloriesLeft: data.targetKcal - data.consumedKcal,
+        carboRawPercent: Math.round((data.consumedCarbo / data.targetCarbo) * 100),
+        carboPercent: Math.min(100, Math.round((data.consumedCarbo / data.targetCarbo) * 100)),
+        proteinRawPercent: Math.round((data.consumedProtein / data.targetProtein) * 100),
+        proteinPercent: Math.min(100, Math.round((data.consumedProtein / data.targetProtein) * 100)),
+        fatRawPercent: Math.round((data.consumedFat / data.targetFat) * 100),
+        fatPercent: Math.min(100, Math.round((data.consumedFat / data.targetFat) * 100))
+    };
+}
+
+
+function polarToCartesian(cx, cy, r, angleInDegrees) {
+    const angleInRadians = (angleInDegrees - 180) * Math.PI / 180.0;
+    return {
+        x: cx + r * Math.cos(angleInRadians),
+        y: cy + r * Math.sin(angleInRadians)
+    };
+}
+
+function describeArc(x, y, radius, startAngle, endAngle) {
+    const start = polarToCartesian(x, y, radius, endAngle);
+    const end = polarToCartesian(x, y, radius, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+    return [
+        "M", start.x, start.y,
+        "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+    ].join(" ");
+}
+
+function getCalorieInfo(dateStr) {
+    const data = calorieData[dateStr];
+    if (!data) return { rawPercent: 0, percent: 0, target: null };
+    const rawPercent = Math.round((data.consumed / data.target) * 100);
+    let color = "#EBEBEB";
+    let isGradient = false;
+
+    if (rawPercent === 0) {
+        color = "#EBEBEB";
+    } else if (rawPercent > 0 && rawPercent <= 95) {
+        color = "#FFE1E4";
+    } else if (rawPercent > 95 && rawPercent <= 105) {
+        color = "url(#calorieGradient)";
+        isGradient = true;
+    } else if (rawPercent > 105) {
+        color = "#814949";
+    }
+
+    return {
+        rawPercent,
+        percent: Math.min(100, rawPercent),
+        color,
+        isGradient,
+        target: data.target,
+        consumed: data.consumed
+    };
+}
+
+function createDayHTML(date, disabledClass, isActive) {
+    const dateStr = formatDate(date);
+    const todayStr = formatDate(new Date());
+
+    if (dateStr > todayStr) {
+        return `
+            <div class="day disabled ${isActive}" data-date="${dateStr}">
+                <span>${date.getDate()}</span>
+            </div>`;
+    }
+
+    const { percent, color, isGradient } = getCalorieInfo(dateStr);
+
+    const centerX = 14;
+    const centerY = 14;
+    const radius = 11;
+    const arcStartAngle = -30;
+    const arcEndAngle = 210;
+    const dynamicEnd = arcStartAngle + (arcEndAngle - arcStartAngle) * (percent / 100);
+
+    const pathD = describeArc(centerX, centerY, radius, arcStartAngle, dynamicEnd);
+    const backgroundArc = describeArc(centerX, centerY, radius, arcStartAngle, arcEndAngle);
+
+    const gradientDef = `
+        <defs>
+            <linearGradient id="calorieGradient" x1="27.6665" y1="0.572756" x2="-1.03143" y2="1.32184" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#ED7777"/>
+                <stop offset="71.52%" stop-color="#E387B3"/>
+                <stop offset="100%" stop-color="#D896EF"/>
+            </linearGradient>
+        </defs>
+    `;
+    const svgStyle = isGradient ? `style="filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.25));"` : "";
+
+    const pathElement = percent === 0
+        ? `<path d="${backgroundArc}" fill="none" stroke="#EBEBEB" stroke-width="3" stroke-linecap="round"/>`
+        : `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>`;
+
+    return `
+        <div class="day ${disabledClass} ${isActive}" data-date="${dateStr}">
+            <svg width="30" height="30" viewBox="0 0 30 30" ${svgStyle}>
+                ${isGradient ? gradientDef : ""}
+                ${pathElement}
+            </svg>
+            <span>${date.getDate()}</span>
+        </div>`;
+}
