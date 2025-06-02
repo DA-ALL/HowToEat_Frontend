@@ -16,4 +16,7 @@ $(document).ready(function () {
         console.log("apple 로그인");
         window.location.href = '/survey?page=1';
     });
+
+    // 로그인 페이지 진입 시, 토큰 삭제 처리
+    localStorage.removeItem("Authorization");
 });
