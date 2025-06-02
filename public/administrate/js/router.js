@@ -1,5 +1,11 @@
 let currentContent = "";
 const popstateHandlers = {};
+const viewLoaders = {};
+
+// 뷰 별로 뷰 초기화 및 데이터 로딩 함수 등록
+export function registerViewLoader(contentId, callback) {
+    viewLoaders[contentId] = callback;
+}
 
 export function getCurrentContent(){
     return currentContent
@@ -172,6 +178,11 @@ function showCurrentContent() {
     }
     
     $(`#${currentContent}`).css('display', 'flex');
+
+    // 뷰 초기화 및 데이터 로딩
+    if(viewLoaders[currentContent]) {
+        viewLoaders[currentContent]();
+    }
 }
 
 

@@ -104,6 +104,7 @@ $(document).ready(function () {
             ...userConsumedData,
             date: selectedDate
         };
+        
         resetHomeMealView();
         resetSearchView();
         resetRegistView();
