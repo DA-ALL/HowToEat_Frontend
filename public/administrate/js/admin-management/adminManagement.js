@@ -48,12 +48,18 @@ async function loadAdminAccountTable(){
 }
 
 async function getAdminAccountDatas() {
+    const page = getPageFromURL();
     try {
-        const data = await getAdminAccountList(); // Promise가 resolve될 때까지 기다림
-        return data.content;
+        const data = await getAdminAccountList(page);
+        return data;
     } catch (err) {
         return [];
     }
+}
+
+function getPageFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
 }
 
 

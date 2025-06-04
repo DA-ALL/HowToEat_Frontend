@@ -66,21 +66,18 @@ export async function renderTableWithOptionalPagination({
     contentId,
     enablePagination = true
 }) {
-    const allData = await getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const data = await getData();
+    const pageFromURL = data.page + 1;
+    const rows = data.content;
     
     $(`#${bodyId}`).html(rows.map(createRows).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
+            totalItems: data.totalElements,
             itemsPerPage: usersPerPage,
-            currentPage: page,
+            currentPage: pageFromURL,
             onPageChange: (newPage) => {
                 updateQueryParam({ page: newPage });
                 renderTableWithOptionalPagination({
@@ -95,14 +92,6 @@ export async function renderTableWithOptionalPagination({
         $(`#${bodyId}`).closest('table').parent().find('.pagination').remove();
     }
 }
-
-
-function getPageFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
-
 
 // 삭제 버튼 클릭 시
 $(document).on('click', '#adminAccountTable .table-delete-button', function (e) {

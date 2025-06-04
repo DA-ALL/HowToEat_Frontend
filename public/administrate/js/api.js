@@ -14,10 +14,10 @@ export function adminLogin(loginData) {
     })
 }
 
-export function getAdminAccountList() {
+export function getAdminAccountList(page) {
     return $.ajax({
         type: "GET",
-        url: `${window.DOMAIN_URL}/admin/accounts`,
+        url: `${window.DOMAIN_URL}/admin/accounts?page=${page}&size=20`,
         contentType: "application/json",
     })
 }
