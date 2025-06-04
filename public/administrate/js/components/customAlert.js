@@ -1,4 +1,4 @@
-export function showCustomAlert({type, onCancel = {}, onNext = {}}) {
+export function showCustomAlert({ type, message, onCancel = {}, onNext = {} }) {
     let alertHTML = ``;
 
     switch (type) {
@@ -47,7 +47,7 @@ export function showCustomAlert({type, onCancel = {}, onNext = {}}) {
                             <img src="/administrate/images/icon_alarm.png">
                         </div>
                         <div class="alert-text-wrapper">
-                            <div class="alert-text-title">공지사항이 추가되었습니다.</div>
+                            <div class="alert-text-title">${message}</div>
                             <div class="alert-text-sub"></div>
                         </div>
                         <div class="button-wrapper">

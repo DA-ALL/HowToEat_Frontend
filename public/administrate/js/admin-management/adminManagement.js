@@ -11,6 +11,7 @@ function loadAdminManagementView() {
 }
 
 registerViewLoader('adminManagement', loadAdminManagementView);
+registerPopstateHandler('adminManagement', loadAdminManagementView);
 
 function loadContent() {
     const container = $("#adminManagement");
@@ -60,18 +61,11 @@ $(document).on('click', `#adminAccountTableBody tr`, function () {
     const adminAccountId = $(this).find('.td-id').text();
     const page = `admin-management/${adminAccountId}`;
     updateURL(page);
-    
-    // load admin account detail
-    loadAdminAccountDetail({type:'edit'});
 });
 
 // 추가하기 버튼 클릭
 $(document).on('click', `#addAdminAccountButton`, function () {
     console.log('create admin account');
     updateURL('admin-management/add');
-
-    loadAdminAccountDetail({type:'add'});
 });
 
-
-registerPopstateHandler('adminManagement', loadContent);

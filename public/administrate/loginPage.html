@@ -140,13 +140,6 @@
             .done(function () {
                 window.location.href = "/admin/dashboard";
             })
-            .fail(function (err) {
-                if (err.responseJSON?.errorType === "NOT_FOUND_AUTHENTICATION_INFO") {
-                    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-                } else {
-                    alert("로그인 중 문제가 발생했습니다.");
-                }
-            });
     });
 
     $('input').on('keyup', function (e) {

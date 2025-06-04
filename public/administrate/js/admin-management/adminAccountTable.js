@@ -1,6 +1,7 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateQueryParam } from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
+import { deleteAdminAccount } from '../api.js';
 
 const usersPerPage = 20;
 
@@ -116,6 +117,19 @@ $(document).on('click', '#adminAccountTable .table-delete-button', function (e) 
             console.log("삭제 취소");
         },
         onNext: () => {
+            try {
+                deleteAdminAccount(adminAccountId);
+                showCustomAlert({
+                    type: 3,
+                    message: "관리자 계정이 삭제되었습니다.",
+                    onNext: function () {
+                        //새로고침 
+                        location.reload();
+                    }
+                });
+            } catch (error) {
+                
+            }
             console.log("삭제 확인");
         }
     });

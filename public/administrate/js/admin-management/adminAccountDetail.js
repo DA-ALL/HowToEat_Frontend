@@ -1,4 +1,10 @@
-import { showCustomAlert } from '/administrate/js/components/customAlert.js';
+import { showCustomAlert } from '../components/customAlert.js';
+import { getAdminAccount } from '/administrate/js/api.js';
+import { registerViewLoader } from '/administrate/js/router.js';
+import { updateURL } from '../router.js';
+import { createAdminAccount, updateAdminAccount } from '../api.js';
+
+registerViewLoader('adminAccountDetail', loadAdminAccountDetail);
 
 export function loadAdminAccountDetail({type}) {
     
@@ -106,18 +112,6 @@ function updateFormNextButton() {
     }
 }
 
-function getDetailTypeFromUrl() {
-    const urlPath = window.location.pathname;
-
-    if (/\/admin\/admin-management\/add$/.test(urlPath)) {
-        return "add"; // 공지사항 추가
-    } else if (/\/admin\/admin-management\/\d+$/.test(urlPath)) {
-        return "edit"; // 공지사항 수정 (숫자 ID)
-    } else {
-        return null; // 그 외는 처리 안 함
-    }
-}
-
 function getIdFromUrl() {
     const urlPath = window.location.pathname;
     const regex = /\/(\d+)$/;  // 마지막 숫자 ID 추출
@@ -126,37 +120,17 @@ function getIdFromUrl() {
 }
 
 
-function generateDummyData(id) {
-    const dummyData = {
-        1: {
-            id: 1,
-            adminAccountId: "admin1",
-        },
-        2: {
-            id: 2,
-            adminAccountId: "admin2"
-        },
-        3: {
-            id: 3,
-            adminAccountId: "admin3"
-        },
-    };
-
-    return dummyData[id] || null;
-}
-
 function populateDetails(data) {
     if (!data) return;
 
     // 제목, 내용 채우기
-    $("#adminAccountId").val(data.adminAccountId || "");
+    $("#adminAccountId").val(data.accountId || "");
 }
 
 function getDetailValues(){
     const accountId = $("#adminAccountId").val().trim();
     const password = $("#adminAccountPW").val().trim();
     
-
     return {
         accountId: accountId,
         password: password,
@@ -164,37 +138,21 @@ function getDetailValues(){
 }
 
 
-function loadDetailData() {
+async function loadDetailData() {
     const id = getIdFromUrl();
-    if (id) {
-        const noticeData = generateDummyData(id);  // ID에 맞는 더미 데이터 가져오기
-        populateDetails(noticeData);  // 데이터를 필드에 채우기
+
+    if(!id){
+        return;
+    }
+
+    try {
+        const data = await getAdminAccount(id); // Promise가 resolve될 때까지 기다림
+        populateDetails(data.data);
+    } catch (err) {
+        return [];
     }
 }
 
-
-
-$(document).ready(function () {
-    const detailType = getDetailTypeFromUrl();
-    loadAdminAccountDetail({type: detailType});
-});
-
-
-// input 포커스 아웃시 확인
-// $(document).on("blur", "#adminAccountDetail input.input", function () {
-//     const $this = $(this);
-//     const value = $this.val().trim();
-
-//     if (value === "") {
-//         $this.addClass("error");
-//         $this.removeClass("valid");
-//     } else {
-//         $this.removeClass("error");
-//         $this.addClass("valid");
-//     }
-
-//     updateFormNextButton();
-// });
 
 $(document).on("blur", "#adminAccountDetail input.input", function () {
     const $this = $(this);
@@ -220,24 +178,45 @@ $(document).on("click", "#adminAccountDetailCancel", function () {
 });
 
 // 수정하기 버튼
-$(document).on("click", "#adminAccountDetailEdit", function () {
+$(document).on("click", "#adminAccountDetailEdit", async function () {
     if ($(this).hasClass("disabled")) return;
-
+    
+    const id = getIdFromUrl();
     const detailValues = getDetailValues();
-    console.log("수정하기 버튼", detailValues);
+    try{
+        await updateAdminAccount(id, detailValues);
+        
+        showCustomAlert({
+            type: 3,
+            message: "관리자 계정이 수정되었습니다.",
+            onNext: function () {
+                updateURL('admin-management');
+            }
+        });
+
+    } catch (err) {
+        console.log(err.responseJSON);
+    }
 });
 
 // 추가하기 버튼
-$(document).on("click", "#adminAccountDetailAdd", function () {
+$(document).on("click", "#adminAccountDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
-    const detailValues = getDetailValues();
-    console.log("추가하기 버튼", detailValues);
+    const accountData = getDetailValues();
+    
 
-    showCustomAlert({
-        type: 3,
-        onNext: function () {
-            console.log("관리자 계정 추가");
-        }
-    })
+    try {
+        await createAdminAccount(accountData); 
+
+        showCustomAlert({
+            type: 3,
+            message: "관리자 계정이 추가되었습니다.",
+            onNext: function () {
+                updateURL('admin-management');
+            }
+        })
+    } catch (err) {
+        console.log(err.responseJSON);
+    }
 });

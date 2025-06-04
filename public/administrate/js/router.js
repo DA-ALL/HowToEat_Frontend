@@ -181,11 +181,33 @@ function showCurrentContent() {
 
     // 뷰 초기화 및 데이터 로딩
     if(viewLoaders[currentContent]) {
+        // admin-management의 경우 URL에 따라 다른 타입으로 로드
+        if(currentContent == 'adminAccountDetail'){
+            if(getDetailTypeFromUrl() == 'add'){
+                viewLoaders[currentContent]({type: "add"});
+            } else {
+                viewLoaders[currentContent]({type: "edit"});
+            }    
+            return;
+        }
+
+
+
         viewLoaders[currentContent]();
     }
 }
 
+function getDetailTypeFromUrl(){
+    const urlPath = window.location.pathname;
 
+    if (/\/admin\/admin-management\/add$/.test(urlPath)) {
+        return "add"; // 관리자 계정 추가
+    } else if (/\/admin\/admin-management\/\d+$/.test(urlPath)) {
+        return "edit"; // 관리자 계정 수정 (숫자 ID)
+    } else {
+        return null; // 그 외는 처리 안 함
+    }
+}
 
 
 
