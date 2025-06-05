@@ -139,14 +139,14 @@ function getDetailValues(){
 
 
 async function loadDetailData() {
-    const id = getIdFromUrl();
+    const accountId = getIdFromUrl();
 
-    if(!id){
+    if(!accountId){
         return;
     }
 
     try {
-        const data = await getAdminAccount(id); // Promise가 resolve될 때까지 기다림
+        const data = await getAdminAccount(accountId); // Promise가 resolve될 때까지 기다림
         populateDetails(data.data);
     } catch (err) {
         return [];
@@ -204,7 +204,6 @@ $(document).on("click", "#adminAccountDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
     const accountData = getDetailValues();
-    
 
     try {
         await createAdminAccount(accountData); 

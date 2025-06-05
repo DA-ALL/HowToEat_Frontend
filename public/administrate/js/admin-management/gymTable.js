@@ -1,14 +1,15 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateQueryParam } from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
+import { deleteGym } from '../api.js';
 
 const usersPerPage = 20;
 
-export function createRows({ id, gymName, createdAt }) {
+export function createRows({ id, name, createdAt }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
-            <td class="td-gym-name">${gymName}</td>
+            <td class="td-gym-name">${name}</td>
             <td class="td-created-at">${createdAt}</td>
             <td class="td-delete">
                 <div class="table-delete-button-wrapper">
@@ -37,25 +38,22 @@ export function renderGymTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderTableWithOptionalPagination({
+export async function renderTableWithOptionalPagination({
     getData,         // 데이터 함수
     bodyId,
     contentId,
     enablePagination = true
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL();
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const response = await getData();
+    const page = response.page + 1;
+    const rows = response.content; 
 
     $(`#${bodyId}`).html(rows.map(createRows).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
+            totalItems: response.totalElements,
             itemsPerPage: usersPerPage,
             currentPage: page,
             onPageChange: (newPage) => {
@@ -73,13 +71,6 @@ export function renderTableWithOptionalPagination({
     }
 }
 
-
-function getPageFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
-
 // 삭제 버튼 클릭 시
 $(document).on('click', '#gymTable .table-delete-button', function (e) {
     e.stopPropagation();
@@ -92,8 +83,20 @@ $(document).on('click', '#gymTable .table-delete-button', function (e) {
         onCancel: () => {
             console.log("삭제 취소");
         },
-        onNext: () => {
-            console.log("삭제 확인");
+        onNext: async () => {
+            try {
+                const response = await deleteGym(gymId);
+                showCustomAlert({
+                    type: 3,
+                    message: response.message,
+                    onNext: function () {
+                        //새로고침 
+                        location.reload();
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
     });
 });

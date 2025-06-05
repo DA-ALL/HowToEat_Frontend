@@ -132,33 +132,40 @@ function showCurrentContent() {
     };
 
     currentContent = contentMap[fullPath];
-
+    let contentType = '';
     if (!currentContent) {
-        const contentPatterns = [
-            { pattern: /^user-management\/user\/\d+$/, contentId: 'userInfo' },
-            { pattern: /^user-management\/pt\/\d+$/, contentId: 'trainerInfo' },
-            { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, contentId: 'userInfo' },
 
-            { pattern: /^food-management\/\d+$/, contentId: 'foodDetail' },
-            { pattern: /^food-management\/user-regist\/\d+$/, contentId: 'foodDetail' },
-            { pattern: /^food-management\/recommend\/\d+$/, contentId: 'foodDetail' },
-
-            { pattern: /^notice\/\d+$/, contentId: 'noticeDetail' },
-            { pattern: /^notice\/add$/, contentId: 'noticeDetail' },
-
-            { pattern: /^admin-management\/\d+$/, contentId: 'adminAccountDetail' },
-            { pattern: /^admin-management\/add$/, contentId: 'adminAccountDetail' },
-
-            { pattern: /^admin-management\/trainer\/\d+$/, contentId: 'trainerDetail' },
-            { pattern: /^admin-management\/trainer\/add$/, contentId: 'trainerDetail' },
-
-            { pattern: /^admin-management\/gym\/\d+$/, contentId: 'gymDetail' },
-            { pattern: /^admin-management\/gym\/add$/, contentId: 'gymDetail' },
+        const patterns = [
+            // user-management
+            { pattern: /^user-management\/user\/\d+$/, id: 'userInfo' },
+            { pattern: /^user-management\/pt\/\d+$/, id: 'trainerInfo' },
+            { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, id: 'userInfo' },
+    
+            // food-management
+            { pattern: /^food-management\/\d+$/, id: 'foodDetail' },
+            { pattern: /^food-management\/user-regist\/\d+$/, id: 'foodDetail' },
+            { pattern: /^food-management\/recommend\/\d+$/, id: 'foodDetail' },
+    
+            // notice
+            { pattern: /^notice\/\d+$/, id: 'noticeDetail' },
+            { pattern: /^notice\/add$/, id: 'noticeDetail', type: 'add' },
+    
+            // admin-management
+            { pattern: /^admin-management\/\d+$/, id: 'adminAccountDetail', type: 'edit' },
+            { pattern: /^admin-management\/add$/, id: 'adminAccountDetail', type: 'add' },
+    
+            { pattern: /^admin-management\/trainer\/\d+$/, id: 'trainerDetail', type: 'edit' },
+            { pattern: /^admin-management\/trainer\/add$/, id: 'trainerDetail', type: 'add' },
+    
+            { pattern: /^admin-management\/gym\/\d+$/, id: 'gymDetail', type: 'edit' },
+            { pattern: /^admin-management\/gym\/add$/, id: 'gymDetail', type: 'add' },
         ];
-
-        for (const item of contentPatterns) {
-            if (item.pattern.test(fullPath)) {
-                currentContent = item.contentId;
+    
+        for (const { pattern, id, type } of patterns) {
+            if (pattern.test(fullPath)) {
+                currentContent = id;
+                contentType = type;
+                console.log(contentType);
                 break;
             }
         }
@@ -183,17 +190,14 @@ function showCurrentContent() {
     if(viewLoaders[currentContent]) {
         // admin-management의 경우 URL에 따라 다른 타입으로 로드
         if(currentContent == 'adminAccountDetail'){
-            if(getDetailTypeFromUrl() == 'add'){
-                viewLoaders[currentContent]({type: "add"});
-            } else {
-                viewLoaders[currentContent]({type: "edit"});
-            }    
-            return;
+            viewLoaders[currentContent]({type: contentType});
+        } 
+        else if(currentContent == 'gymDetail'){
+            viewLoaders[currentContent]({type: contentType});
         }
-
-
-
-        viewLoaders[currentContent]();
+        else {
+            viewLoaders[currentContent]();
+        }
     }
 }
 

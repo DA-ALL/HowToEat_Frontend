@@ -4,7 +4,8 @@
 
 
 
-// ================ Admin Accounts API ================
+// ================ Admin Login API ================
+
 export function adminLogin(loginData) {
     return $.ajax({
         type: "POST",
@@ -14,6 +15,8 @@ export function adminLogin(loginData) {
     })
 }
 
+// ================ Admin Accounts API ================
+
 export function getAdminAccountList(page) {
     return $.ajax({
         type: "GET",
@@ -22,10 +25,10 @@ export function getAdminAccountList(page) {
     })
 }
 
-export function getAdminAccount(id) {
+export function getAdminAccount(accountId) {
     return $.ajax({
         type: "GET",
-        url: `${window.DOMAIN_URL}/admin/accounts/${id}`,
+        url: `${window.DOMAIN_URL}/admin/accounts/${accountId}`,
         contentType: "application/json",
     })
 }
@@ -56,4 +59,55 @@ export function deleteAdminAccount(accountId) {
     })
 }
 
-// ================  API ================
+// ================  Gym API ================
+export function getGymList(page, name='') {
+    const params = new URLSearchParams({
+        page: page,
+        size: 20
+    });
+
+    if (name != null && name.trim() !== '') {
+        params.append('name', name);
+    }
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/gyms?${params.toString()}`,
+        contentType: "application/json",
+    });
+}
+
+
+export function getGym(gymId) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/gyms/${gymId}`,
+        contentType: "application/json",
+    })
+}
+
+export function createGym(accountData) {
+    return $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/gyms`,
+        contentType: "application/json",
+        data: JSON.stringify(accountData),
+    })
+}
+
+export function updateGym(gymId, accountData) {
+    return $.ajax({
+        type: "PUT",
+        url: `${window.DOMAIN_URL}/admin/gyms/${gymId}`,
+        contentType: "application/json",
+        data: JSON.stringify(accountData),
+    })
+}
+
+export function deleteGym(gymId) {
+    return $.ajax({
+        type: "DELETE",
+        url: `${window.DOMAIN_URL}/admin/gyms/${gymId}`,
+        contentType: "application/json",
+    })
+}
