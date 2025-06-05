@@ -92,13 +92,22 @@ export function initHeaderNav(parentSelector = 'body') {
                 history.pushState({ view: 'main' }, '', '/main');
                 showPage('/main');
                 return;
-            } else if (parts.includes('regist')) {
+            } else if (parts.length === 5) {
+                    const mealTime = parts[2];
+                    const selectedDate = parts[3];
+    
+                    const newPath = `/main/${mealTime}/${selectedDate}`;
+                    history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+                    showPage(`/main/${mealTime}/${selectedDate}`);
+                    return;
+                    
+            } else if (parts.length === 7) {
                 const mealTime = parts[2];
                 const selectedDate = parts[3];
 
-                const newPath = `/main/${mealTime}/${selectedDate}`;
+                const newPath = `/main/${mealTime}/${selectedDate}/regist`;
                 history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
-                showPage(`/main/${mealTime}/${selectedDate}`);
+                showPage(`/main/${mealTime}/${selectedDate}/regist`);
                 return;
             }
         }

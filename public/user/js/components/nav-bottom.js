@@ -194,20 +194,17 @@ $(document).ready(function () {
 
     $(document).on('click', '.next-button.active', function () {
         let $btn = $(this);
-        const currentPath = window.location.pathname; // ex: /main/breakfast
-        const parts = currentPath.split('/');
+        const pathParts = window.location.pathname.split("/");
+        const selectedDate = pathParts[3];
 
-        if (parts.length < 3) return;
+        if (pathParts.length < 3) return;
 
-        const meal = parts[2]; // 'breakfast', 'lunch', etc
+        const meal = pathParts[2]; // 'breakfast', 'lunch', etc
 
         // ---------------------------------------------
         // 1. /main/{meal}/regist → from home-meal
         // ---------------------------------------------
         if ($btn.hasClass('home-meal')) {
-            console.log("test");
-            const pathParts = window.location.pathname.split("/");
-            const selectedDate = pathParts[3];
             const newPath = `/main/${meal}/${selectedDate}/regist`;
             history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
             showPage(newPath);
@@ -227,14 +224,12 @@ $(document).ready(function () {
                 protein: $btn.attr('data-protein'),
                 fat: $btn.attr('data-fat'),
             };
+            const foodType = $btn.attr('data-type');
 
             if (!registFoodData.id || !registFoodData.type) return;
 
-            // `_food` 제거
-            const pureType = registFoodData.type.replace('_food', '');
-
-            const newPath = `/main/${meal}/regist/${pureType}/${registFoodData.id}`;
-            history.pushState({ view: 'main', meal, itemId: registFoodData.id }, '', newPath);
+            const newPath = `/main/${meal}/${selectedDate}/regist/${foodType}/${registFoodData.id}`;
+            history.pushState({ view: 'main', meal, date: selectedDate, itemId: registFoodData.id }, '', newPath);
             showPage(newPath, userConsumedData, registFoodData);
         }
 
