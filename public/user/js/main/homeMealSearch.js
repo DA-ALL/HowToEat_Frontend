@@ -1,118 +1,9 @@
 import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '../components/routers.js';
 import { setLastMainPath } from '../components/nav-bottom.js';
 
-const mealSearchData = [
-    {
-        id: 42,
-        type: "ingredient_food",
-        name: "소고기 채끝살 (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 217,
-        carbo: 0,
-        protein: 26,
-        fat: 12,
-    },
-    {
-        id: 87,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "(주)예현 소고기",
-        weight: 100,
-        kcal: 320,
-        carbo: 200,
-        protein: 21,
-        fat: 24,
-    },
-    {
-        id: 13,
-        type: "ingredient_food",
-        name: "소고기 1등급++ (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 245,
-        carbo: 0,
-        protein: 23,
-        fat: 17,
-    },
-    {
-        id: 74,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "청정원",
-        weight: 100,
-        kcal: 310,
-        carbo: 5,
-        protein: 20,
-        fat: 22,
-    },
-    {
-        id: 8,
-        type: "cooked_food",
-        name: "소고기 구이",
-        detail: "급식",
-        weight: 100,
-        kcal: 290,
-        carbo: 1,
-        protein: 24,
-        fat: 20,
-    },
-    {
-        id: 91,
-        type: "ingredient_food",
-        name: "소고기 채끝살 (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 217,
-        carbo: 0,
-        protein: 26,
-        fat: 12,
-    },
-    {
-        id: 56,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "(주)예현 소고기",
-        weight: 100,
-        kcal: 320,
-        carbo: 4,
-        protein: 21,
-        fat: 24,
-    },
-    {
-        id: 34,
-        type: "ingredient_food",
-        name: "소고기 1등급++ (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 245,
-        carbo: 0,
-        protein: 23,
-        fat: 17,
-    },
-    {
-        id: 99,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "청정원",
-        weight: 100,
-        kcal: 310,
-        carbo: 5,
-        protein: 20,
-        fat: 22,
-    },
-    {
-        id: 21,
-        type: "cooked_food",
-        name: "소고기 구이",
-        detail: "급식",
-        weight: 100,
-        kcal: 290,
-        carbo: 1,
-        protein: 24,
-        fat: 20,
-    },
-];
+let currentSearchKeyword = '';
+let currentPage = 0;
+let hasNext = true;
 
 const mealFavoriteData = [
     {
@@ -367,55 +258,59 @@ $(document).on('click', '.meal-item', function () {
 
 function handleMealSearch(keyword) {
     const $list = $('.meal-search-list');
-    $list.find('.meal-results').remove(); // 이전 검색 결과 제거
+    $list.find('.meal-results').remove();
+
+    currentSearchKeyword = keyword;
+    currentPage = 0;
+    hasNext = true;
 
     if (keyword) {
-        renderMealSearchResults(keyword);
+        fetchSearchResults(keyword, currentPage);
         $('.input-search').closest('.search-tool').css('border-color', 'var(--gray300)');
     } else {
         $('.input-search').closest('.search-tool').css('border-color', '');
     }
 }
 
-function renderMealSearchResults(keyword) {
-    const filtered = mealSearchData.filter(item =>
-        item.name.includes(keyword)
-    );
-
-    const html = filtered.map(item => `
+function renderMealSearchResults(items, isFirstPage) {
+    const html = items.map(item => `
       <div class="meal-item"
-           data-id="${item.id}"
+           data-id="${item.foodId}"
            data-type="${item.type}"
-           data-name="${item.name}"
-           data-weight="${item.weight}"
+           data-name="${item.foodName}"
+           data-weight="${item.foodWeight}"
            data-kcal="${item.kcal}"
            data-carbo="${item.carbo}"
            data-protein="${item.protein}"
            data-fat="${item.fat}">
         <div class="meal-wrapper">
           <div class="meal-type ${typeColorClass(item.type)}">${typeToKor(item.type)}</div>
-          <div class="meal-name">${item.name}</div>
-          <div class="meal-detail">${item.detail}</div>
+          <div class="meal-name">${item.foodName}</div>
+          <div class="meal-detail">${item.providedBy}</div>
         </div>
         <div class="meal-meta">
-          <div class="weight">${item.weight}g</div>
+          <div class="weight">${item.foodWeight}g</div>
           <div class="divide">/</div>
           <div class="kcal">${item.kcal}kcal</div>
         </div>
       </div>
     `).join('');
 
-    $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
+    if (isFirstPage) {
+        $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
+    } else {
+        $('.meal-results').append(html);
+    }
 }
 
 
 // type에 따라 색상 클래스 다르게
 function typeColorClass(type) {
     switch (type) {
-        case 'ingredient_food': return 'type-ingredient';
-        case 'processed_food': return 'type-processed';
-        case 'cooked_food': return 'type-cooked';
-        case 'custom_food': return 'type-custom';
+        case 'INGREDIENT': return 'type-ingredient';
+        case 'PROCESSED': return 'type-processed';
+        case 'COOKED': return 'type-cooked';
+        case 'CUSTOM': return 'type-custom';
         default: return '';
     }
 }
@@ -434,10 +329,10 @@ function mealToKor(meal) {
 
 function typeToKor(type) {
     switch (type) {
-        case 'ingredient_food': return '원재료';
-        case 'processed_food': return '가공식품';
-        case 'cooked_food': return '음식';
-        case 'custom_food': return '유저등록';
+        case 'INGREDIENT': return '원재료';
+        case 'PROCESSED': return '가공식품';
+        case 'COOKED': return '음식';
+        case 'CUSTOM': return '유저등록';
         default: return '';
     }
 }
@@ -625,8 +520,48 @@ function getTailSvg() {
     `;
 }
 
+//호출 API
+function fetchSearchResults(keyword, page) {
+    $.ajax({
+        url: `${window.DOMAIN_URL}/foods?name=${encodeURIComponent(keyword)}&page=${page}&size=10`,
+        method: 'GET',
+        success: function (res) {
+            const items = res.data.content;
+            hasNext = res.data.hasNext;
+            renderMealSearchResults(items, page === 0);
+        },
+        complete: function () {
+            isLoading = false; // 다시 호출 가능
+        }
+    });
+}
+
 
 let selectedFavorites = [];
+
+// $(document).on('scroll', '.meal-search-list', function () {
+//     console.log("scroll");
+//     const $this = $(this);
+//     const scrollBottom = $this[0].scrollHeight - $this.scrollTop() - $this.outerHeight();
+
+//     if (scrollBottom < 50 && hasNext) {
+//         currentPage++;
+//         fetchSearchResults(currentSearchKeyword, currentPage);
+//     }
+// });
+
+let isLoading = false;
+
+$(window).on('scroll', function () {
+    const scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();
+
+    if (scrollBottom < 100 && hasNext && !isLoading) {
+        isLoading = true; // 중복 호출 방지
+        currentPage++;
+        fetchSearchResults(currentSearchKeyword, currentPage);
+    }
+});
+
 
 $(document).on('click', '.favorite-meal-item', function () {
     const $this = $(this);

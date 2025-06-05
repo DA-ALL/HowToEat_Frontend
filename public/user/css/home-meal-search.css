@@ -91,7 +91,7 @@
 }
 
 .meal-item:last-child {
-    margin-bottom: clamp(107.2px, 3.04vw + 16px, 168px);
+    margin-bottom: clamp(72px, 7.64vw + 96px, 200px);
 
 }
 
