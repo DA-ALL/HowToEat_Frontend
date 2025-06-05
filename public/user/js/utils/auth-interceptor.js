@@ -26,7 +26,7 @@ export function setupAjaxAuthInterceptor() {
             console.log(errorResponse);
         
             // 인증 정보 에러
-            if (errorResponse?.errorType === "NOT_FOUND_AUTHENTICATION_INFO") {
+            if (errorResponse?.errorType === "NOT_FOUND_AUTHENTICATION_INFO" || errorResponse?.errorType === "MISSING_REFRESH_TOKEN") {
                 alert("인증 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
                 redirectToLogin();
             }

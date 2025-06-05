@@ -126,6 +126,7 @@ $(document).ready(function () {
     
             if (key === '/main') {
                 if (currentPath.startsWith('/main')) {
+
                     if (currentPath === lastMainPath && currentPath !== '/main') {
                         lastMainPath = '/main';
                         history.pushState({ view: 'main' }, '', '/main');
@@ -204,8 +205,11 @@ $(document).ready(function () {
         // 1. /main/{meal}/regist → from home-meal
         // ---------------------------------------------
         if ($btn.hasClass('home-meal')) {
-            const newPath = `/main/${meal}/regist`;
-            history.pushState({ view: 'main', meal }, '', newPath);
+            console.log("test");
+            const pathParts = window.location.pathname.split("/");
+            const selectedDate = pathParts[3];
+            const newPath = `/main/${meal}/${selectedDate}/regist`;
+            history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
             showPage(newPath);
         }
 
