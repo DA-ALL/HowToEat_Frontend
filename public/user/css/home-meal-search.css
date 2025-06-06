@@ -80,6 +80,36 @@
     border-color: var(--gray300);
 }
 
+.meal-results.not-found-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70vh;
+}
+
+
+.meal-results.not-found-result .text {
+    font-size: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    font-weight: 300;
+    margin-bottom: 2px;
+    color: var(--gray400);
+}
+
+.meal-results.not-found-result .add-button {
+    font-size: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--gray400);
+    padding: clamp(3.2px, 1.064vw + 0.01px, 5.33px) clamp(9.6px, 3.2vw, 16px);
+    margin-top: clamp(8.02px, 2.64vw + 0.1px, 13.3px);
+    background-color: #FFF6F5;
+    border-radius: 10px;
+}
+
+
+
 .meal-item {
     display: flex;
     flex-direction: row;

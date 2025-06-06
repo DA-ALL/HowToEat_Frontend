@@ -273,6 +273,9 @@ function handleMealSearch(keyword) {
 }
 
 function renderMealSearchResults(items, isFirstPage) {
+    let isItemEmpty = items.length === 0;
+
+
     const html = items.map(item => `
       <div class="meal-item"
            data-id="${item.foodId}"
@@ -296,10 +299,14 @@ function renderMealSearchResults(items, isFirstPage) {
       </div>
     `).join('');
 
-    if (isFirstPage) {
-        $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
+    if(!isItemEmpty) {
+        if (isFirstPage) {
+            $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
+        } else {
+            $('.meal-results').append(html);
+        }
     } else {
-        $('.meal-results').append(html);
+        $('.meal-search-list').append(`<div class="meal-results not-found-result"><div class="text">검색 결과가 없어요.</div><div class="text">원하는 음식을 직접 추가해보세요!</div><div class="add-button">추가하기</div></div>`);
     }
 }
 
@@ -538,18 +545,6 @@ function fetchSearchResults(keyword, page) {
 
 
 let selectedFavorites = [];
-
-// $(document).on('scroll', '.meal-search-list', function () {
-//     console.log("scroll");
-//     const $this = $(this);
-//     const scrollBottom = $this[0].scrollHeight - $this.scrollTop() - $this.outerHeight();
-
-//     if (scrollBottom < 50 && hasNext) {
-//         currentPage++;
-//         fetchSearchResults(currentSearchKeyword, currentPage);
-//     }
-// });
-
 let isLoading = false;
 
 $(window).on('scroll', function () {
