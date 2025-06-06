@@ -85,18 +85,15 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     }
 
     if (meal && subpage === 'regist' && type) {
-        if ($('#homeMealRegist').children().length === 0) {
-            $('#homeMealRegist').html(renderIncreaseCPFbar(meal, userConsumedDataTest, registFoodDataTest));
-            $('#homeMealRegist').append(renderMealRegist(meal, userConsumedDataTest, registFoodDataTest));
-            $('#homeMealRegist').append(renderMealAdjust(meal, userConsumedDataTest, registFoodDataTest));
+        
+        renderIncreaseCPFbar(function(html) {
+            $('#homeMealRegist').html(html);
             initHeaderNav($('#homeMealRegist'));
             runAllCountAnimations();
-            $(".bar-front.bar-increase").hide();
-            $(".bar-front.bar-increase").show();
-
+            $(".bar-front.bar-increase").hide().show();
             $('html, body').scrollTop(0);
             updateNextButtonData();
-        }
+        });
     
         $('#homeMealRegist').show();
     }

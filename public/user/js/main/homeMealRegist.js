@@ -2,33 +2,68 @@ import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '.
 import { setLastMainPath } from '../components/nav-bottom.js';
 
 // 탄단지 섹션 렌더링 (상단 메시지, 바 포함)
-export function renderIncreaseCPFbar(mealKey, userConsumedData, registFoodData) {
+export function renderIncreaseCPFbar(callback) {
+    const pathParts = window.location.pathname.split("/");
+    const mealKey = pathParts[2];
     const mealKor = mealToKor(mealKey);
-    const commonHeader = `
-        <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
-        <div class="home-meal-container padding">
-            <div class="title-format">${mealKor}의 탄단지</div>
-            <div class="cpf-kcal-left-message-wrapper">
-                ${getMessageFormat(userConsumedData, registFoodData)}
-                <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
+    const selectedDate = pathParts[3];
+    const mealTime = pathParts[2].toUpperCase();
+    const foodId = pathParts[6];
+
+    const macrosRequest = $.ajax({
+        url: `${window.DOMAIN_URL}/daily-summaries/${selectedDate}/meal-time/${mealTime}/macros`,
+        method: 'GET'
+    });
+
+    const foodRequest = $.ajax({
+        url: `${window.DOMAIN_URL}/food/${foodId}`,
+        method: 'GET'
+    });
+
+    $.when(macrosRequest, foodRequest).done(function (macrosRes, foodRes) {
+        const raw = macrosRes[0].data;
+        const userConsumedData = {
+        carbo: { consumed: raw.consumedCarbo, target: raw.targetCarbo },
+        protein: { consumed: raw.consumedProtein, target: raw.targetProtein },
+        fat: { consumed: raw.consumedFat, target: raw.targetFat }
+        };
+        const foodInfo = foodRes[0].data;
+        console.log(userConsumedData);
+        console.log(foodInfo);
+
+        const cpfBarHTML = `
+            <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
+            <div class="home-meal-container padding">
+                <div class="title-format">${mealKor}의 탄단지</div>
+                <div class="cpf-kcal-left-message-wrapper">
+                    ${getMessageFormat(userConsumedData, foodInfo)}
+                    <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
+                </div>
+                ${createBarContainer(mealKey, userConsumedData, foodInfo)}
             </div>
-            ${createBarContainer(mealKey, userConsumedData, registFoodData)}
-        </div>
-        <div class="divider large"></div>
-    `;
-    return `
-        ${commonHeader}
-    `;
+            <div class="divider large"></div>
+        `;
+
+        const mealRegistHTML = renderMealRegist(userConsumedData, foodInfo);
+        const mealAdjustHTML = renderMealAdjust(mealKor, userConsumedData, foodInfo);
+        const combinedHTML = cpfBarHTML + mealRegistHTML + mealAdjustHTML;
+
+        callback(combinedHTML);
+    }).fail(function () {
+        callback(`<div class="error">데이터를 불러오는 데 실패했습니다.</div>`);
+    });
 }
 
+
+
+
 // 음식 정보 등록 카드 렌더링 (이름, g, 이미지 업로드 등)
-export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
-    const mealKor = mealToKor(mealKey);
+export function renderMealRegist(userConsumedData, foodInfo) {
     const commonHeader = `
         <div class="home-meal-regist-container padding">
             <div class="text-wrapper">
-                <div class="title">${registFoodData.name}</div>
-                <div class="sub-title truncate">${registFoodData.weight}g</div>
+                <div class="title">${foodInfo.foodName}</div>
+                <div class="sub-title truncate">${Math.round(foodInfo.foodWeight)}g</div>
             </div>
             <div class="image-container">
                 <img class="new-image" src="">
@@ -38,28 +73,28 @@ export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
             <div class="food-info-container">
                 <div class="food-info-wrapper">
                     <span class="title">칼로리</span>
-                    <span class="amount kcal">${registFoodData.kcal}kcal</span>
+                    <span class="amount kcal">${Math.round(foodInfo.kcal)}kcal</span>
                 </div>
 
                 <div class="divider column"></div>
 
                 <div class="food-info-wrapper">
                     <span class="title">탄수화물</span>
-                    <span class="amount carbo">${registFoodData.carbo}g</span>
+                    <span class="amount carbo">${Math.round(foodInfo.carbo)}g</span>
                 </div>
 
                 <div class="divider column"></div>
 
                 <div class="food-info-wrapper">
                     <span class="title">단백질</span>
-                    <span class="amount protein">${registFoodData.protein}g</span>
+                    <span class="amount protein">${Math.round(foodInfo.protein)}g</span>
                 </div>
 
                 <div class="divider column"></div>
 
                 <div class="food-info-wrapper">
                     <span class="title">지방</span>
-                    <span class="amount fat">${registFoodData.fat}g</span>
+                    <span class="amount fat">${Math.round(foodInfo.fat)}g</span>
                 </div>
             </div>
         </div>
@@ -71,8 +106,8 @@ export function renderMealRegist(mealKey, userConsumedData, registFoodData) {
 }
 
 // 섭취량 조절 탭 렌더링 (간편/직접 입력 탭 포함)
-export function renderMealAdjust(mealKey, userConsumedData, registFoodData) {
-    window.registFoodData = registFoodData;
+export function renderMealAdjust(mealKey, userConsumedData, foodInfo) {
+    window.registFoodData = foodInfo;
     window.userConsumedData = userConsumedData;
     window.mealKey = mealKey;
     window.lastPortionRatio = 1;
@@ -91,7 +126,7 @@ export function renderMealAdjust(mealKey, userConsumedData, registFoodData) {
             </div>
 
             <div class="input-content easy-input-content">
-                 ${renderPortionItems(registFoodData)}
+                 ${renderPortionItems(foodInfo)}
             </div>
 
             <div class="input-content manual-input-content" style="display: none;">
@@ -113,11 +148,10 @@ export function renderMealAdjust(mealKey, userConsumedData, registFoodData) {
     
 }
 
-
 // 영어 meal key를 한글로 변환
 function mealToKor(meal) {
     switch (meal) {
-        case 'morning': return '아침';
+        case 'breakfast': return '아침';
         case 'lunch': return '점심';
         case 'dinner': return '저녁';
         case 'snack': return '간식';
@@ -492,7 +526,7 @@ $(document).on('click', '.toggle-tab .tab', function () {
 // [직접 입력] 탭 클릭 시 → 현재 g값 기준 UI 갱신
 $(document).on('click', '.manual-input', function () {
     const gram = parseFloat($('.manual-input-field').val()) || 0;
-    const base = window.registFoodData.weight;
+    const base = window.registFoodData.foodWeight;
     const ratio = gram / base;
 
     if (!isNaN(ratio) && ratio > 0) {
@@ -505,7 +539,7 @@ $(document).on('click', '.manual-input', function () {
 // [직접 입력] input에서 포커스 아웃 시 → 입력 g값 기준 UI 갱신
 $(document).on('blur', '.manual-input-field', function () {
     const gram = parseFloat($(this).val()) || 0;
-    const base = window.registFoodData.weight;
+    const base = window.registFoodData.foodWeight;
     const ratio = gram / base;
 
     if (!isNaN(ratio) && ratio > 0) {
@@ -519,7 +553,7 @@ $(document).on('blur', '.manual-input-field', function () {
 // [간편 입력] 탭 클릭 시 → 마지막 클릭했던 portion-item 비율로 UI 복원
 $(document).on('click', '.easy-input', function () {
     const ratio = window.lastPortionRatio;
-    const base = window.registFoodData.weight;
+    const base = window.registFoodData.foodWeight;
     const gram = Math.round(base * ratio);
     $('.sub-title.truncate').text(`${gram}g`);
     updateUIWithRatio(window.lastPortionRatio);
@@ -539,7 +573,7 @@ $(document).on('click', '.portion-item', function () {
     const user = window.userConsumedData;
     const mealKey = window.mealKey;
 
-    const adjustedWeight = Math.round(original.weight * ratio); // ✅ 추가
+    const adjustedWeight = Math.round(original.foodWeight * ratio); // ✅ 추가
     $('.sub-title.truncate').text(`${adjustedWeight}g`);        // ✅ 업데이트
 
     // 이하 updateUIWithRatio 호출
