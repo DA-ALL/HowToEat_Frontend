@@ -1,14 +1,15 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
+import { getGymList, getTrainer } from '../api.js';
 
-export function loadTrainertDetail({type}) {
+export async function loadTrainertDetail({type}) {
     
     const container = $("#trainerDetail");
 
     let trainerDetailHTML = ``;
 
-    let gyms = getGyms();
+    let gyms = await getGyms();
     let gymOptionsHTML = gyms.map((gym, index) => {
-        return `<div class="gym-type-option${index === 0 ? ' active' : ''}" data-query="${gym.name}">${gym.name}</div>`;
+        return `<div class="gym-type-option${index === 0 ? ' active' : ''}" data-query="${gym.name}" data-id=""${gym.id}>${gym.name}</div>`;
     }).join('');
 
     switch (type) {
@@ -179,14 +180,14 @@ function populateDetails(data) {
     $trainerDetail.find('#trainerName').val(data.name || '');
 
     // 이미지 설정
-    $trainerDetail.find('.image img').attr('src', data.imageURL || '/administrate/images/default_image.png');
+    $trainerDetail.find('.image img').attr('src', data.imageUrl || '/administrate/images/default_image.png');
 
 
     const $gymOptions = $trainerDetail.find('.gym-type-option');
     $gymOptions.removeClass('active');
     $gymOptions.each(function () {
         const $option = $(this);
-        if ($option.data('query') === data.gymBranch) {
+        if ($option.data('query') === data.gym.name) {
             $option.addClass('active');
         }
     });
@@ -208,34 +209,31 @@ function getDetailValues(){
 }
 
 
-function loadDetailData() {
-    const id = getIdFromUrl();
-    if (id) {
-        const noticeData = generateDummyData(id);  // ID에 맞는 더미 데이터 가져오기
-        populateDetails(noticeData);  // 데이터를 필드에 채우기
+async function loadDetailData() {
+    const trainerId = getIdFromUrl();
+
+    if (!trainerId) {
+        return;
+    }
+
+    try {
+        const response = await getTrainer(trainerId);
+        console.log("트레이너 정보:", response);
+        populateDetails(response.data);  // 데이터를 필드에 채우기
+    } catch (err) {
+        console.error("트레이너 정보를 불러오는 중 오류 발생:", err);
     }
 }
 
-function getGyms(){
 
-    return [
-        { name: '용인기흥구청점', trainerCount: 7},
-        { name: '처인구청점', trainerCount: 6},
-        { name: '수원권선동점', trainerCount: 3},
-        { name: '이천마장점', trainerCount: 4},
-        { name: '이천중앙점', trainerCount: 5},
-        { name: '평택미전점', trainerCount: 6}
-    ]
+async function getGyms(){
+    try{
+        const response = await getGymList(1);
+        return response.content;
+    } catch (err) {
+        console.error("헬스장 목록을 불러오는 중 오류 발생:", err);
+    }
 }
-
-
-
-
-
-
-
-
-
 
 
 $(document).ready(function () {

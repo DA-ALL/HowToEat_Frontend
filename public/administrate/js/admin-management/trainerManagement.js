@@ -5,6 +5,7 @@ import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
 import { renderAdminTrainerTable, renderTableWithOptionalPagination } from '/administrate/js/admin-management/adminTrainerTable.js';
 import { loadTrainertDetail } from '/administrate/js/admin-management/trainerDetail.js';
+import { getTrainerList } from '../api.js';
 
 $(document).ready(function () {
     loadContent();
@@ -44,24 +45,40 @@ function loadTable(){
 
     renderAdminTrainerTable(containerId, bodyId);
     renderTableWithOptionalPagination({
-        getData: getDatas,
+        getData: getTrainerDatas,
         bodyId,
         contentId,
         enablePagination: true
     });
 }
 
-function getDatas() {
-    return Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        imageURL: "/administrate/images/icon_human_red.png",
-        name: `트레이너 ${i + 1}`,
-        gymBranch: ['용인기흥구청점', '용인기흥구청점', '처인구청점', '수원권선동점', '이천마장점', '이천중앙점', '평택미전점'][Math.floor(Math.random() * 7)],
-        memberCount: Math.floor(Math.random() * 20),
-        joined: "2025.03.16"
-    }));
+async function getTrainerDatas(){
+    const page = getPageFromURL();
+    const searchValue = getSearchValueFromURL();
+    const gymName = getGymNameFromURL();
+    try{
+        const response = await getTrainerList(page, searchValue, gymName);
+        console.log(response);
+        return response;
+    } catch (error){
+        console.error(error);
+    }
 }
 
+function getPageFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
+}
+
+function getSearchValueFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('search');
+}
+
+function getGymNameFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('gym');
+}
 
 $(document).on('click', `#adminTrainerTableBody tr`, function () {
     const adminAccountId = $(this).find('.td-id').text();

@@ -1,11 +1,17 @@
 import { updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
+import { getGymList } from '../api.js';
 
-export function renderFilters(contentId) {
+export async function renderFilters(contentId) {
+    let gyms =  [];
+    if(contentId == 'trainerManagement' || contentId == 'ptUserManagement'){
+        gyms = await getGyms();
+    }
+    
     $(`#${contentId} .filter-group`).children().each(function () {
         let $filter = $(this);
         let type = $filter.data('type');
         let filterTemplate = '';
-
+        
         switch (type) {
             case 1:
                 filterTemplate = `
@@ -84,9 +90,6 @@ export function renderFilters(contentId) {
                     `;
                 break;
             case 8:
-
-                const gyms = getGyms();
-
                 filterTemplate = `
                         <div class="filter-title">헬스장</div>
                         <div class="filter-option-wrapper" data-key="gym">
@@ -117,20 +120,18 @@ $(document).on('click', '.filter-option', function () {
 });
 
 
-export function loadFilter(contentId){
+export async function loadFilter(contentId){
     renderFilters(contentId);
     syncFiltersWithURL();
 }
 
-function getGyms(){
 
-    return [
-        { name: '전체', trainerCount: 28},
-        { name: '용인기흥구청점', trainerCount: 7},
-        { name: '처인구청점', trainerCount: 6},
-        { name: '수원권선동점', trainerCount: 3},
-        { name: '이천마장점', trainerCount: 4},
-        { name: '이천중앙점', trainerCount: 5},
-        { name: '평택미전점', trainerCount: 6}
-    ]
+async function getGyms(){
+    try{
+        const response = await getGymList(1);
+        console.log("헬스장 목록:", response);
+        return response.content;
+    } catch (err) {
+        console.error("헬스장 목록을 불러오는 중 오류 발생:", err);
+    }
 }

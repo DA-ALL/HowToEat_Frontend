@@ -111,3 +111,59 @@ export function deleteGym(gymId) {
         contentType: "application/json",
     })
 }
+
+// ================  Trainer API ================
+export function getTrainerList(page, name='', gymName='') {
+    const params = new URLSearchParams({
+        page: page,
+        size: 20
+    });
+
+    if (name != null && name.trim() !== '') {
+        params.append('name', name);
+    }
+    if (gymName != null && gymName.trim() !== '') {
+        params.append('gym', gymName);
+    }
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/trainers?${params.toString()}`,
+        contentType: "application/json",
+    });
+}
+
+
+export function getTrainer(trainerId) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/trainers/${trainerId}`,
+        contentType: "application/json",
+    })
+}
+
+export function createTrainer(accountData) {
+    return $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/trainers`,
+        contentType: "application/json",
+        data: JSON.stringify(accountData),
+    })
+}
+
+export function updateTrainer(trainerId, accountData) {
+    return $.ajax({
+        type: "PUT",
+        url: `${window.DOMAIN_URL}/admin/trainers/${trainerId}`,
+        contentType: "application/json",
+        data: JSON.stringify(accountData),
+    })
+}
+
+export function deleteTrainer(trainerId) {
+    return $.ajax({
+        type: "DELETE",
+        url: `${window.DOMAIN_URL}/admin/trainers/${trainerId}`,
+        contentType: "application/json",
+    })
+}

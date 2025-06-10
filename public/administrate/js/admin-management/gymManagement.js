@@ -51,7 +51,7 @@ async function getGymDatas() {
     const searchValue = getSearchValueFromURL();
     try {
         const response = await getGymList(page, searchValue);
-        console.log(response);
+        console.log("헬스장", response);
         return response;
     } catch (error) {
         console.error(error);
