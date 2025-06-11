@@ -514,23 +514,48 @@ $(document).on('click', '.image-container', function (e) {
 });
 
 // 이미지 선택 시 미리보기 렌더링
-$(document).off('change', '.image-input').on('change', '.image-input', function (e) {
+$(document).off('change', '.image-input').on('change', '.image-input', async function (e) {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
     const $container = $(this).closest('.image-container');
     const $newImage = $container.find('.new-image');
     const $previewImage = $container.find('.preview-image');
 
-    reader.onload = () => {
-        $newImage.attr('src', reader.result).show();
-        $previewImage.hide();
-        updateNextButtonData();
+    const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 720,
+        useWebWorker: true,
+        maxIteration: 5,
+        initialQuality: 0.8
     };
-    
-    reader.readAsDataURL(file);
+
+    try {
+        const compressedFile = await imageCompression(file, options);
+        const compressedDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+
+        // 압축된 base64 이미지를 new-image src에 넣는다
+        $newImage.attr('src', compressedDataUrl).show();
+        $previewImage.hide();
+
+        // 버튼에도 이미지 반영
+        updateNextButtonData();
+
+        console.log("압축 성공:", (compressedFile.size / 1024).toFixed(1), "KB");
+    } catch (err) {
+        console.error("압축 실패:", err);
+
+        // 압축 실패 시 원본 처리
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $newImage.attr('src', e.target.result).show();
+            $previewImage.hide();
+            updateNextButtonData();
+        };
+        reader.readAsDataURL(file);
+    }
 });
+
 
 // 간편입력 / 직접입력 탭 전환 처리
 $(document).on('click', '.toggle-tab .tab', function () {
