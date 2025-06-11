@@ -139,7 +139,7 @@ export function renderMealAdjust(mealKey, userConsumedData, foodInfo) {
         </div>
         <div class="button-container">
             <div id="favoriteButton" class="next-button favorite active">즐겨찾기에 추가</div>
-            <div id="registButton" class="next-button active">${mealKor} 등록</div>
+            <div id="registButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button active">${mealKor} 등록</div>
         </div>
     `;
     return `
@@ -355,39 +355,56 @@ function getTailSvg() {
 //
 // regist 버튼 클릭 시
 $(document).on('click', '#registButton', function () {
+    const consumedFoodList = [];
     const $btn = $(this);
-    const mealKey = window.mealKey;
+    const pathParts = window.location.pathname.split("/");
+    const mealTime = pathParts[2];
+    const mealTimeUpper = mealTime.toUpperCase();
+    const selectedDate = pathParts[3];
+    
 
-    const savedData = {
-        id: $btn.data('id'),
-        type: $btn.data('type'),
-        mealKey: mealKey,
-        name: $btn.data('name'),
-        detail: $btn.data('detail'),
-        weight: $btn.data('weight'),
+    const consumedFood = {
+        id: $btn.data('food-id'),
+        foodCode: $btn.data('food-code'),
+        foodName: $btn.data('food-name'),
+        mealTime: mealTimeUpper,
+        foodWeight: $btn.data('weight'),
+        foodType: $btn.data('type'),
         kcal: $btn.data('kcal'),
         carbo: $btn.data('carbo'),
         protein: $btn.data('protein'),
         fat: $btn.data('fat'),
+        providedBy: $btn.data('provided-by'),
+        isPerServing: $btn.data('is-per-serving'),
+        unit: $btn.data('unit'),
+        foodImageUrl: $btn.data('img')
     };
 
-    localStorage.setItem(`mealData_${mealKey}`, JSON.stringify(savedData));
+    consumedFoodList.push(consumedFood);
 
-    resetHomeMealView();
-    resetSearchView();
-    resetRegistView();
-
-    const targetPath = `/main/${mealKey}`;
-    history.pushState({ view: 'main' }, '', targetPath);
-    setLastMainPath(targetPath);
-    
-    // ✅ window에도 저장, 그리고 nav-bottom.js에서도 참조하도록
-    window.lastMainPath = targetPath;
-    if (typeof setLastMainPath === 'function') {
-        setLastMainPath(targetPath); // 전역 설정 함수 호출
-    }
-
-    showMain(mealKey);
+    $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/consumed-foods`,
+        contentType: "application/json",
+        data: JSON.stringify(consumedFoodList),
+        success: function (res) {
+            resetHomeMealView();
+            resetSearchView();
+            resetRegistView();
+        
+            const targetPath = `/main/${mealTime}/${selectedDate}`;
+            history.pushState({ view: 'main' }, '', targetPath);
+            setLastMainPath(targetPath);
+            
+            // window에도 저장, 그리고 nav-bottom.js에서도 참조하도록
+            window.lastMainPath = targetPath;
+            if (typeof setLastMainPath === 'function') {
+                setLastMainPath(targetPath); // 전역 설정 함수 호출
+            }
+        
+            showMain(mealTime);
+        },
+    });
 });
 
 
@@ -466,9 +483,10 @@ export function updateNextButtonData() {
 
     const kcal = $('.food-info-wrapper .amount.kcal').text().replace('kcal', '').trim();
     const carbo = $('.food-info-wrapper .amount.carbo').text().replace('g', '').trim();
-    const protein = $('.food-info-wrapper .amount.protein').text().replace('g', '').trim();
+    const protein = $('.food-info-wrapper .amount.protein').text().replace('g', '').trim(); 
     const fat = $('.food-info-wrapper .amount.fat').text().replace('g', '').trim();
-    const $buttons = $('.next-button.favorite, .next-button.active');
+    const $buttons = $('.next-button.favorite, #registButton');
+    const foodImgUrl = $('.new-image').attr('src');
 
     $buttons.each(function () {
         $(this)
@@ -480,7 +498,8 @@ export function updateNextButtonData() {
             .attr('data-kcal', kcal)
             .attr('data-carbo', carbo)
             .attr('data-protein', protein)
-            .attr('data-fat', fat);
+            .attr('data-fat', fat)
+            .attr('data-img', foodImgUrl);
     });
 }
 
@@ -507,8 +526,9 @@ $(document).off('change', '.image-input').on('change', '.image-input', function 
     reader.onload = () => {
         $newImage.attr('src', reader.result).show();
         $previewImage.hide();
+        updateNextButtonData();
     };
-
+    
     reader.readAsDataURL(file);
 });
 
