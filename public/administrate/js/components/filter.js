@@ -1,4 +1,4 @@
-import { updateQueryParam, syncFiltersWithURL} from '/administrate/js/router.js';
+import { updateQueryParam, syncFiltersWithURL} from '../router.js';
 import { getGymList } from '../api.js';
 
 export async function renderFilters(contentId) {
@@ -121,7 +121,7 @@ $(document).on('click', '.filter-option', function () {
 
 
 export async function loadFilter(contentId){
-    renderFilters(contentId);
+    await renderFilters(contentId);
     syncFiltersWithURL();
 }
 
@@ -129,8 +129,13 @@ export async function loadFilter(contentId){
 async function getGyms(){
     try{
         const response = await getGymList(1);
-        console.log("헬스장 목록:", response);
-        return response.content;
+        let totalTrainerCount = 0;
+        response.content.forEach(gym => {
+            totalTrainerCount += gym.trainerCount;
+        });
+
+        const gyms = [{ id: 0, name: "전체" , trainerCount: totalTrainerCount}, ...response.content];
+        return gyms;
     } catch (err) {
         console.error("헬스장 목록을 불러오는 중 오류 발생:", err);
     }

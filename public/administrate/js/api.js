@@ -142,21 +142,31 @@ export function getTrainer(trainerId) {
     })
 }
 
-export function createTrainer(accountData) {
+// export function createTrainer(accountData) {
+//     return $.ajax({
+//         type: "POST",
+//         url: `${window.DOMAIN_URL}/admin/trainers`,
+//         contentType: "application/json",
+//         data: JSON.stringify(accountData),
+//     })
+// }
+export function createTrainer(formData) {
     return $.ajax({
         type: "POST",
         url: `${window.DOMAIN_URL}/admin/trainers`,
-        contentType: "application/json",
-        data: JSON.stringify(accountData),
-    })
+        processData: false, // 필수: jQuery가 FormData를 처리하지 않도록
+        contentType: false, // 필수: 브라우저가 자동으로 boundary 포함한 content-type 설정함
+        data: formData,
+    });
 }
 
-export function updateTrainer(trainerId, accountData) {
+export function updateTrainer(trainerId, formData) {
     return $.ajax({
         type: "PUT",
         url: `${window.DOMAIN_URL}/admin/trainers/${trainerId}`,
-        contentType: "application/json",
-        data: JSON.stringify(accountData),
+        processData: false, 
+        contentType: false, 
+        data: formData,
     })
 }
 

@@ -1,5 +1,6 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { getGymList, getTrainer } from '../api.js';
+import { createTrainer, updateTrainer } from '../api.js';
 
 export async function loadTrainertDetail({type}) {
     
@@ -9,7 +10,7 @@ export async function loadTrainertDetail({type}) {
 
     let gyms = await getGyms();
     let gymOptionsHTML = gyms.map((gym, index) => {
-        return `<div class="gym-type-option${index === 0 ? ' active' : ''}" data-query="${gym.name}" data-id=""${gym.id}>${gym.name}</div>`;
+        return `<div class="gym-type-option${index === 0 ? ' active' : ''}" data-query="${gym.name}" data-id="${gym.id}">${gym.name}</div>`;
     }).join('');
 
     switch (type) {
@@ -137,38 +138,6 @@ function getIdFromUrl() {
     return match ? match[1] : null;  // ID가 있으면 반환, 없으면 null
 }
 
-
-function generateDummyData(id) {
-    const dummyData = {
-        1: {
-            id: 1,
-            imageURL: "/administrate/images/icon_human_red.png",
-            name: `트레이너 1`,
-            gymBranch: ['용인기흥구청점', '용인기흥구청점', '처인구청점', '수원권선동점', '이천마장점', '이천중앙점', '평택미전점'][Math.floor(Math.random() * 7)],
-            memberCount: Math.floor(Math.random() * 20),
-            joined: "2025.03.16"
-        },
-        2: {
-            id: 2,
-            imageURL: "/administrate/images/icon_human_red.png",
-            name: `트레이너 2`,
-            gymBranch: ['용인기흥구청점', '용인기흥구청점', '처인구청점', '수원권선동점', '이천마장점', '이천중앙점', '평택미전점'][Math.floor(Math.random() * 7)],
-            memberCount: Math.floor(Math.random() * 20),
-            joined: "2025.03.16"
-        },
-        3: {
-            id: 3,
-            imageURL: "/administrate/images/icon_human_red.png",
-            name: `트레이너 3`,
-            gymBranch: ['용인기흥구청점', '용인기흥구청점', '처인구청점', '수원권선동점', '이천마장점', '이천중앙점', '평택미전점'][Math.floor(Math.random() * 7)],
-            memberCount: Math.floor(Math.random() * 20),
-            joined: "2025.03.16"
-        },
-    };
-
-    return dummyData[id] || null;
-}
-
 function populateDetails(data) {
     if (!data) {
         return;
@@ -199,12 +168,12 @@ function getDetailValues(){
 
     const name = $trainerDetail.find('#trainerName').val().trim();
     const imageURL = $trainerDetail.find('.image img').attr('src');
-    const gymBranch = $trainerDetail.find('.gym-type-option.active').data('query');
+    const gym = $trainerDetail.find('.gym-type-option.active').data('id');
 
     return {
         name,
         imageURL,
-        gymBranch
+        gym
     };
 }
 
@@ -271,48 +240,64 @@ $(document).on("click", "#trainerDetailCancel", function () {
 });
 
 // 수정하기 버튼
-$(document).on("click", "#trainerDetailEdit", function () {
+$(document).on("click", "#trainerDetailEdit", async function () {
     if ($(this).hasClass("disabled")) return;
 
+    const trainerId = getIdFromUrl();
     const detailValues = getDetailValues();
-    
-    console.log("수정하기 버튼", detailValues);
-    if (selectedImageFile) {
-        const formData = new FormData();
-        formData.append("name", detailValues.name);
-        formData.append("gymBranch", detailValues.gymBranch);
-        formData.append("image", selectedImageFile);
 
-        // 디버깅용 출력
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
+    const formData = new FormData();
+    formData.append("name", detailValues.name);
+    formData.append("gym", detailValues.gym);
+    
+    if (selectedImageFile) {
+        formData.append("image", selectedImageFile);
     }
+    
+    try {
+        const response = await updateTrainer(trainerId, formData);
+        console.log("트레이너 수정 성공:", response);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: () => {
+                window.history.back(); // 이전 페이지로 돌아가기
+            }
+        });
+    } catch (err) {
+        console.error("트레이너 수정 실패:", err);
+    }
+
 });
 
 // 추가하기 버튼
-$(document).on("click", "#trainerDetailAdd", function () {
+$(document).on("click", "#trainerDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
     const detailValues = getDetailValues();
-    console.log("추가하기 버튼", detailValues);
 
+    const formData = new FormData();
+    formData.append("name", detailValues.name);
+    formData.append("gym", detailValues.gym);
+    
     if (selectedImageFile) {
-        const formData = new FormData();
-        formData.append("name", detailValues.name);
-        formData.append("gymBranch", detailValues.gymBranch);
         formData.append("image", selectedImageFile);
+    }
 
-        // 디버깅용 출력
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
+    try {
+        const response = await createTrainer(formData);
+        console.log("트레이너 추가 성공:", response);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: () => {
+                window.history.back(); // 이전 페이지로 돌아가기
+            }
+        });
+    } catch (err) {
+        console.error("트레이너 추가 실패:", err);
     }
 });
-
-
-
-
 
 
 // 파일 선택된 이미지 저장용 전역 변수
@@ -329,21 +314,44 @@ $(document).on("click", "#trainerDetail .image img", function () {
     $('#trainerImageInput').click();
 });
 
-// 파일 선택 후 처리
-$(document).on("change", "#trainerImageInput", function (event) {
+// 이미지 파일 선택 시 처리
+$(document).on("change", "#trainerImageInput", async function (event) {
     const file = event.target.files[0];
     if (!file) return;
 
-    // 이미지 미리보기 갱신
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        $('#trainerDetail .image img').attr('src', e.target.result);
+    // 압축 옵션 설정
+    const options = {
+        maxSizeMB: 0.5,                // 최대 용량: 500KB
+        maxWidthOrHeight: 720,        // 최대 해상도: 720px (가로/세로 중 큰 값 기준)
+        useWebWorker: true,           // 웹 워커 사용 (성능 향상)
+        maxIteration: 5,              // 반복 압축 최대 5번까지 (속도와 품질 균형)
+        initialQuality: 0.8           // 초기 품질: 80%
     };
-    reader.readAsDataURL(file);
 
-    // 선택된 파일 저장
-    selectedImageFile = file;
+    try {
+        // 이미지 압축
+        const compressedFile = await imageCompression(file, options);
 
-    // 필요하면 여기서 서버 업로드도 가능
-    console.log("선택된 이미지 파일:", selectedImageFile);
+        // 이미지 미리보기 갱신 (압축된 파일 기준)
+        const compressedDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+        $('#trainerDetail .image img').attr('src', compressedDataUrl);
+
+        // 압축된 파일 저장
+        selectedImageFile = compressedFile;
+
+        console.log("압축 전 크기:", (file.size / 1024).toFixed(1), "KB");
+        console.log("압축 후 크기:", (compressedFile.size / 1024).toFixed(1), "KB");
+
+    } catch (error) {
+        console.error("이미지 압축 중 오류 발생:", error);
+        // 압축 실패 시 원본 저장
+        selectedImageFile = file;
+
+        // 미리보기 원본으로 표시
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#trainerDetail .image img').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
 });
