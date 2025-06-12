@@ -1,17 +1,20 @@
 import { updateQueryParam, syncFiltersWithURL} from '../router.js';
 import { getGymList } from '../api.js';
 
-export async function renderFilters(contentId) {
+export async function renderFilters(contentId, onclick = null) {
     let gyms =  [];
     if(contentId == 'trainerManagement' || contentId == 'ptUserManagement'){
         gyms = await getGyms();
     }
+    // onclick 함수 저장
+    $(`#${contentId} .filter-group`).data('onclick', onclick);
     
+
     $(`#${contentId} .filter-group`).children().each(function () {
         let $filter = $(this);
         let type = $filter.data('type');
-        let filterTemplate = '';
-        
+        let filterTemplate = '';        
+
         switch (type) {
             case 1:
                 filterTemplate = `
@@ -106,7 +109,7 @@ export async function renderFilters(contentId) {
 
 }
 
-$(document).on('click', '.filter-option', function () {
+$(document).on('click', '.filter-option', async function () {
     let $parent = $(this).closest('.filter-option-wrapper');
     let queryKey = $parent.data('key')
     let queryValue = $(this).data('query');
@@ -117,11 +120,18 @@ $(document).on('click', '.filter-option', function () {
 
     $parent.find('.filter-option').removeClass('active');
     $(this).addClass('active');
+    
+    const $filterGroup = $(this).closest('.filter-group');
+    const onclick = $filterGroup.data('onclick');
+    
+    if (typeof onclick === 'function') {
+        await onclick();
+    }
 });
 
 
-export async function loadFilter(contentId){
-    await renderFilters(contentId);
+export async function loadFilter(contentId, onclick = null) {
+    await renderFilters(contentId, onclick);
     syncFiltersWithURL();
 }
 

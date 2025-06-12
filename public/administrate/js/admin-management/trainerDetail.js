@@ -1,6 +1,6 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
-import { getGymList, getTrainer } from '../api.js';
-import { createTrainer, updateTrainer } from '../api.js';
+import { getGymList, getTrainer, createTrainer, updateTrainer} from '../api.js';
+import { registerViewLoader } from '../router.js';
 
 export async function loadTrainertDetail({type}) {
     
@@ -119,18 +119,6 @@ function updateFormNextButton() {
     }
 }
 
-function getDetailTypeFromUrl() {
-    const urlPath = window.location.pathname;
-
-    if (/\/admin\/admin-management\/trainer\/add$/.test(urlPath)) {
-        return "add"; // 공지사항 추가
-    } else if (/\/admin\/admin-management\/trainer\/\d+$/.test(urlPath)) {
-        return "edit"; // 공지사항 수정 (숫자 ID)
-    } else {
-        return null; // 그 외는 처리 안 함
-    }
-}
-
 function getIdFromUrl() {
     const urlPath = window.location.pathname;
     const regex = /\/(\d+)$/;  // 마지막 숫자 ID 추출
@@ -149,7 +137,7 @@ function populateDetails(data) {
     $trainerDetail.find('#trainerName').val(data.name || '');
 
     // 이미지 설정
-    $trainerDetail.find('.image img').attr('src', data.imageUrl || '/administrate/images/default_image.png');
+    $trainerDetail.find('.image img').attr('src', data.imageUrl || '/administrate/images/icon_human_red.png');
 
 
     const $gymOptions = $trainerDetail.find('.gym-type-option');
@@ -205,10 +193,10 @@ async function getGyms(){
 }
 
 
-$(document).ready(function () {
-    const detailType = getDetailTypeFromUrl();
-    loadTrainertDetail({type: detailType});
-});
+// $(document).ready(function () {
+//     const detailType = getDetailTypeFromUrl();
+//     loadTrainertDetail({type: detailType});
+// });
 
 
 // input 포커스 아웃시 확인
@@ -355,3 +343,6 @@ $(document).on("change", "#trainerImageInput", async function (event) {
         reader.readAsDataURL(file);
     }
 });
+
+
+registerViewLoader('trainerDetail', loadTrainertDetail);

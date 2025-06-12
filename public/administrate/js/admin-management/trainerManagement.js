@@ -6,10 +6,7 @@ import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
 import { renderAdminTrainerTable, renderTableWithOptionalPagination } from '/administrate/js/admin-management/adminTrainerTable.js';
 import { loadTrainertDetail } from '/administrate/js/admin-management/trainerDetail.js';
 import { getTrainerList } from '../api.js';
-
-$(document).ready(function () {
-    loadContent();
-});
+import { registerViewLoader } from '../router.js';
 
 function loadContent() {
     const container = $("#trainerManagement");
@@ -33,8 +30,8 @@ function loadContent() {
     `;
 
     container.html(trainerManagementHTML);
-    loadSearchBar('trainerManagement');
-    loadFilter('trainerManagement');
+    loadSearchBar('trainerManagement', loadTable);
+    loadFilter('trainerManagement', loadTable);
     loadTable();
 }
 
@@ -84,18 +81,14 @@ $(document).on('click', `#adminTrainerTableBody tr`, function () {
     const adminAccountId = $(this).find('.td-id').text();
     const page = `admin-management/trainer/${adminAccountId}`;
     updateURL(page);
-    
-    // load admin account detail
-    loadTrainertDetail({type:'edit'});
 });
 
 // 추가하기 버튼 클릭
 $(document).on('click', `#addTrainerButton`, function () {
     console.log('trainer 생성');
     updateURL('admin-management/trainer/add');
-
-    loadTrainertDetail({type:'add'});
 });
 
 
 registerPopstateHandler('trainerManagement', loadContent);
+registerViewLoader('trainerManagement', loadContent);

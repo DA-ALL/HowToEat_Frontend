@@ -142,14 +142,6 @@ export function getTrainer(trainerId) {
     })
 }
 
-// export function createTrainer(accountData) {
-//     return $.ajax({
-//         type: "POST",
-//         url: `${window.DOMAIN_URL}/admin/trainers`,
-//         contentType: "application/json",
-//         data: JSON.stringify(accountData),
-//     })
-// }
 export function createTrainer(formData) {
     return $.ajax({
         type: "POST",
