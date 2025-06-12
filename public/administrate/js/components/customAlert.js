@@ -108,4 +108,11 @@ export function showCustomAlert({ type, message, onCancel = {}, onNext = {} }) {
         if (typeof onNext === "function") onNext();
         $("#customAlert").remove();
     });
+
+        // Enter 키 입력 시 .button-next 클릭
+    $(document).off("keyup.customAlert").on("keyup.customAlert", function (e) {
+        if (e.key === "Enter") {
+            $("#customAlert .button-next").trigger("click");
+        }
+    });
 }
