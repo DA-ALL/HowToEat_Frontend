@@ -26,7 +26,7 @@ const navMap = {
 };
 
 // 뷰 전환 함수
-export function showPage(path, userConsumedData = null, registFoodData = null) {
+export function showPage(path, registFoodData = null) {
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
         if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
@@ -40,7 +40,7 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
         const regist = parts[4];   // regist 등
         const type = parts[5];     // ingredient 등
     
-        showMain(meal, regist, type, userConsumedData, registFoodData);
+        showMain(meal, regist, type, registFoodData);
     }
     else if (path.startsWith('/report')) {
         showReport();
@@ -86,24 +86,13 @@ $(document).ready(function () {
         lastMainPath = currentPath;
     }
 
-    // 아침 점심 저녁 별 섭취햇던 칼로리 데이터 이 데이터를 나중에 Ajax로 호출
-    const userConsumedData = {
-        date: "2025-04-09",
-        carbo: { consumed: 70, target: 220 },
-        protein: { consumed: 42, target: 90 },
-        fat: { consumed: 20, target: 50 }
-    }
 
     $(document).on('click', '.log-wrapper', function () {
         const mealKor = $(this).find('.meal-time').text();
         const mealMap = { '아침': 'breakfast', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
         const meal = mealMap[mealKor] || 'breakfast';
-        const selectedDate = $('.day.active').data('date') || userConsumedData.date;
+        const selectedDate = $('.day.active').data('date');
         const newPath = `/main/${meal}/${selectedDate}`;
-        const updatedConsumedData = {
-            ...userConsumedData,
-            date: selectedDate
-        };
     
         resetHomeMealView();
         resetSearchView();
@@ -114,7 +103,7 @@ $(document).ready(function () {
     
         history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
         console.log("Test", newPath)
-        showPage(newPath, updatedConsumedData);
+        showPage(newPath);
     });
     
 
@@ -230,7 +219,7 @@ $(document).ready(function () {
 
             const newPath = `/main/${meal}/${selectedDate}/regist/${foodType}/${registFoodData.id}`;
             history.pushState({ view: 'main', meal, date: selectedDate, itemId: registFoodData.id }, '', newPath);
-            showPage(newPath, userConsumedData, registFoodData);
+            showPage(newPath, registFoodData);
         }
 
     });

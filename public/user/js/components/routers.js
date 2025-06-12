@@ -94,6 +94,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
             $('html, body').scrollTop(0);
             updateNextButtonData();
         });
+
     
         $('#homeMealRegist').show();
     }

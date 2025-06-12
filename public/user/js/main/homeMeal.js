@@ -10,13 +10,13 @@ export function renderMealDetail(mealKey, data, callback) {
         type: "GET",
         url: `${window.DOMAIN_URL}/daily-summaries/${selectedDate}/meal-time/${mealTime}/macros`,
         success: function (res) {
-            const data2 = res.data;
+            const data = res.data;
 
             const commonHeader = `
                 <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
                 <div class="home-meal-container padding">
                     <div class="second-title-format">${mealKor}의 탄단지</div>
-                    ${createBarContainer(mealKey, data2)}
+                    ${createBarContainer(mealKey, data)}
                 </div>
                 <div class="divider large"></div>
             `;
