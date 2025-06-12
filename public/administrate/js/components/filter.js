@@ -1,5 +1,5 @@
 import { updateQueryParam, syncFiltersWithURL} from '../router.js';
-import { getGymList } from '../api.js';
+import { getAllGymList } from '../api.js';
 
 export async function renderFilters(contentId, onclick = null) {
     let gyms =  [];
@@ -138,13 +138,13 @@ export async function loadFilter(contentId, onclick = null) {
 
 async function getGyms(){
     try{
-        const response = await getGymList(1);
+        const response = await getAllGymList();
         let totalTrainerCount = 0;
-        response.content.forEach(gym => {
+        response.data.forEach(gym => {
             totalTrainerCount += gym.trainerCount;
         });
 
-        const gyms = [{ id: 0, name: "전체" , trainerCount: totalTrainerCount}, ...response.content];
+        const gyms = [{ id: 0, name: "전체" , trainerCount: totalTrainerCount}, ...response.data];
         return gyms;
     } catch (err) {
         console.error("헬스장 목록을 불러오는 중 오류 발생:", err);

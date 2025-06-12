@@ -1,5 +1,5 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
-import { getGymList, getTrainer, createTrainer, updateTrainer} from '../api.js';
+import { getTrainer, createTrainer, updateTrainer, getAllGymList} from '../api.js';
 import { registerViewLoader } from '../router.js';
 
 export async function loadTrainertDetail({type}) {
@@ -185,19 +185,13 @@ async function loadDetailData() {
 
 async function getGyms(){
     try{
-        const response = await getGymList(1);
-        return response.content;
+        const response = await getAllGymList();
+        console.log("헬스장 목록:", response);
+        return response.data;
     } catch (err) {
         console.error("헬스장 목록을 불러오는 중 오류 발생:", err);
     }
 }
-
-
-// $(document).ready(function () {
-//     const detailType = getDetailTypeFromUrl();
-//     loadTrainertDetail({type: detailType});
-// });
-
 
 // input 포커스 아웃시 확인
 $(document).on("blur", "#trainerDetail input.input", function () {

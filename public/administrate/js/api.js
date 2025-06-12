@@ -77,6 +77,13 @@ export function getGymList(page, name='') {
     });
 }
 
+export function getAllGymList(){
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/gyms/all`,
+        contentType: "application/json",
+    });
+}
 
 export function getGym(gymId) {
     return $.ajax({
