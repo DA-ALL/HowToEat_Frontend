@@ -10,21 +10,22 @@ export function getTodaysCPF(
     if (target === null) target = 0;
 
 
-    const formattedTarget = target.toLocaleString();
+    const formattedTarget = Math.floor(target).toLocaleString();
     const formattedConsumed = consumed.toLocaleString();
+    const formattedCarloriesLeft = Math.floor(caloriesLeft).toLocaleString();
     const isToday = date === todayStr;
     const [year, month, day] = date.split("-");
     const title = isToday ? "오늘의 탄단지" : `${year}년 ${month}월 ${day}일`;
 
-    const messageFormat = getMessageFormat(rawPercent, caloriesLeft);
+    const messageFormat = getMessageFormat(rawPercent, formattedCarloriesLeft);
     const svg = createCalorieArc(rawPercent, percent);
     const backgroundSvg = createBackgroundSvg();
 
     const barContainer = `
         <div class="cpf-bar-container">
-            ${createBar("carbo", Math.round(consumedCarbo), Math.round(targetCarbo), carboPercent, carboRawPercent)}
-            ${createBar("protein", Math.round(consumedProtein), Math.round(targetProtein), proteinPercent, proteinRawPercent)}
-            ${createBar("fat", Math.round(consumedFat), Math.round(targetFat), fatPercent, fatRawPercent)}        
+            ${createBar("carbo", Math.floor(consumedCarbo), Math.floor(targetCarbo), carboPercent, carboRawPercent)}
+            ${createBar("protein", Math.floor(consumedProtein), Math.floor(targetProtein), proteinPercent, proteinRawPercent)}
+            ${createBar("fat", Math.floor(consumedFat), Math.floor(targetFat), fatPercent, fatRawPercent)}        
         </div>
     `;
 
