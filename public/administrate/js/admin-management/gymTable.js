@@ -5,11 +5,12 @@ import { deleteGym } from '../api.js';
 
 const usersPerPage = 20;
 
-export function createRows({ id, name, createdAt }) {
+export function createRows({ id, name, trainerCount, createdAt }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
             <td class="td-gym-name">${name}</td>
+            <td class="td-trainer-count">${trainerCount}</td>
             <td class="td-created-at">${createdAt}</td>
             <td class="td-delete">
                 <div class="table-delete-button-wrapper">
@@ -27,6 +28,7 @@ export function renderGymTable(containerId, bodyId) {
                 <tr>
                     <th class="th-id">ID</th>
                     <th class="th-gym-name">지점</th>
+                    <th class="th-trainer-count">트레이너 수</th>
                     <th class="th-created-at">등록일</th>
                     <th class="th-delete">선택</th>
                 </tr>

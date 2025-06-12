@@ -43,7 +43,7 @@ export function updateURL(page) {
 }
 
 function updateURLParams(params, useReplaceState = false) {
-    console.log("testtest");
+
     const url = new URL(window.location.href);
     const searchParams = url.searchParams;
     let hasChanges = false; // 변경 여부 체크
