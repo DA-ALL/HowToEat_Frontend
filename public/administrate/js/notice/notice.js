@@ -1,12 +1,9 @@
-import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
+import { updateURL, registerPopstateHandler, registerViewLoader } from '../router.js';
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 import { renderNoticeTable, renderTableWithOptionalPagination } from '/administrate/js/notice/noticeTable.js';
 import { loadNoticeDetail } from '/administrate/js/notice/noticeDetail.js';
-
-$(document).ready(function () {
-    loadContent();
-});
+import { getNoticeList } from '../api.js';
 
 function loadContent() {
     const container = $("#notice");
@@ -33,8 +30,8 @@ function loadContent() {
 
     container.html(adminFoodHTML);
     
-    loadSearchBar('notice');
-    loadFilter('notice');
+    loadSearchBar('notice', loadNoticeTable);
+    loadFilter('notice', loadNoticeTable);
     
     loadNoticeTable();
 }
@@ -54,32 +51,41 @@ function loadNoticeTable(){
     });
 }
 
-function getNoticeDatas() {
-    return Array.from({ length: 3 }, (_, i) => ({
-        id: i + 1,
-        noticeType: "공지사항",
-        noticeTitle: "공지사항 제목" + (i + 1),
-        createdAt: "2023-10-01",
-    }));
+async function getNoticeDatas() {
+    const params = getParamsFromUrl();
+    console.log("Fetching notice list with params:", params);
+    try {
+        const response = await getNoticeList(params.page, params.title, params.orderBy);
+        console.log(response);
+        return response;
+
+    } catch (error) {
+        console.error("공지사항 목록을 불러오는 중 오류 발생:", error);
+    }
 }
 
+function getParamsFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    return {
+        page: parseInt(urlParams.get('page')) || 1,
+        title: urlParams.get('search') || '',
+        orderBy: urlParams.get('orderby') || ''
+    };
+}
 
 
 $(document).on('click', `#noticeTableBody tr`, function () {
     const noticeId = $(this).find('.td-id').text();
     const page = `notice/${noticeId}`;
     updateURL(page);
-    
-    // load notice detail
-    loadNoticeDetail({type:'edit'});
 });
 
 $(document).on('click', `#addNoticeButton`, function () {
     console.log('create notice');
     updateURL('notice/add');
-
-    loadNoticeDetail({type:'add'});
 });
 
 
 registerPopstateHandler('notice', loadContent);
+registerViewLoader('notice', loadContent);

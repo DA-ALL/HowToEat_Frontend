@@ -176,3 +176,56 @@ export function deleteTrainer(trainerId) {
         contentType: "application/json",
     })
 }
+
+// ================  notice API ================
+export function getNoticeList(page, title='', orderBy='desc') {
+    const params = new URLSearchParams({
+        page: page,
+        size: 20,
+        orderBy: orderBy
+    });
+
+    if (title != null && title.trim() !== '') {
+        params.append('title', title);
+    }
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/notices?${params.toString()}`,
+        contentType: "application/json",
+    });
+}
+
+export function getNotice(noticeId) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/notices/${noticeId}`,
+        contentType: "application/json",
+    })
+}
+
+export function createNotice(noticeData) {
+    return $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/notices`,
+        contentType: "application/json",
+        data: JSON.stringify(noticeData),
+    })
+}
+
+export function updateNotice(noticeId, noticeData) {
+    return $.ajax({
+        type: "PUT",
+        url: `${window.DOMAIN_URL}/admin/notices/${noticeId}`,
+        contentType: "application/json",
+        data: JSON.stringify(noticeData),
+    })
+}
+
+export function deleteNotice(noticeId) {
+    return $.ajax({
+        type: "DELETE",
+        url: `${window.DOMAIN_URL}/admin/notices/${noticeId}`,
+        contentType: "application/json",
+    })
+}
