@@ -2,7 +2,7 @@ import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { createNotice, getNotice, updateNotice} from '../api.js';
 import { registerViewLoader } from '../router.js';
 
-export async function loadNoticeDetail({type}) {
+export function loadNoticeDetail({type}) {
     
     const container = $("#noticeDetail");
 
@@ -76,7 +76,7 @@ export async function loadNoticeDetail({type}) {
     }
 
     container.html(noticeDetailHTML);
-    await loadNoticeDetailData();
+    loadNoticeDetailData();
     updateFormNextButton();
 }
 
@@ -166,7 +166,7 @@ async function loadNoticeDetailData() {
 }
 
 // input 포커스 아웃시 확인
-$(document).on("blur", "#noticeDetail input.input, #noticeDetail textarea.input", function () {
+$(document).on("blur input", "#noticeDetail input.input, #noticeDetail textarea.input", function () {
     const $this = $(this);
     const value = $this.val().trim();
 

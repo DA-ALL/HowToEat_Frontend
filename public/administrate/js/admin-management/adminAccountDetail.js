@@ -154,7 +154,7 @@ async function loadDetailData() {
 }
 
 
-$(document).on("blur", "#adminAccountDetail input.input", function () {
+$(document).on("blur input", "#adminAccountDetail input.input", function () {
     const $this = $(this);
     const value = $this.val().trim();
     const isAccountIdField = $this.attr("id") === "adminAccountId";

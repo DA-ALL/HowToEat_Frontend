@@ -142,7 +142,7 @@ async function loadDetailData() {
 }
 
 // input 포커스 아웃시 확인
-$(document).on("blur", "#gymDetail input.input", function () {
+$(document).on("blur input", "#gymDetail input.input", function () {
     const $this = $(this);
     const value = $this.val().trim();
 

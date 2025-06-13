@@ -194,7 +194,7 @@ async function getGyms(){
 }
 
 // input 포커스 아웃시 확인
-$(document).on("blur", "#trainerDetail input.input", function () {
+$(document).on("blur input", "#trainerDetail input.input", function () {
     const $this = $(this);
     const value = $this.val().trim();
 
