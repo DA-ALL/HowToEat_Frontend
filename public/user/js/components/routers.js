@@ -53,7 +53,7 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 
 
     if (meal && !subpage && !type) {
-        renderMealDetail(meal, merged, function (html) {
+        renderMealDetail(function (html) {
             const pathParts = window.location.pathname.split("/");
             const selectedDate = pathParts[3];
             const mealTime = meal.toUpperCase();

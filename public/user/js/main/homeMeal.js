@@ -1,10 +1,9 @@
-export function renderMealDetail(mealKey, data, callback) {
-    const mealKor = mealToKor(mealKey);
+export function renderMealDetail(callback) {
     const pathParts = window.location.pathname.split("/");
-    const selectedDate = pathParts[3];
-    const isToday = isTodayDate(selectedDate);
-    const buttonClass = isToday ? 'active' : 'disabled';
+    const mealKey = pathParts[2];
+    const mealKor = mealToKor(mealKey);
     const mealTime = mealKey.toUpperCase();
+    const selectedDate = pathParts[3];
 
     $.ajax({
         type: "GET",
@@ -37,7 +36,7 @@ export function renderMealDetail(mealKey, data, callback) {
                 </div>
                 `;
 
-            callback(content); // ✅ 콜백으로 결과 전달
+            callback(content); // 콜백으로 결과 전달
         }
     });
 }
@@ -151,7 +150,7 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
                 </div>
             `;
 
-            callback(listHtml, buttonHtml); // 🚀 데이터도 버튼도 콜백으로 넘김
+            callback(listHtml, buttonHtml); // 데이터도 버튼도 콜백으로 넘김
         }
     });
 }

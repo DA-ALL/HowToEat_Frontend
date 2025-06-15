@@ -138,7 +138,7 @@ export function renderMealAdjust(mealKey, userConsumedData, foodInfo) {
             </div>
         </div>
         <div class="button-container">
-            <div id="favoriteButton" class="next-button favorite active">즐겨찾기에 추가</div>
+            <div id="favoriteButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button favorite active">즐겨찾기에 추가</div>
             <div id="registButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button active">${mealKor} 등록</div>
         </div>
     `;
@@ -408,6 +408,56 @@ $(document).on('click', '#registButton', function () {
 });
 
 
+// favorite 버튼 클릭 시
+$(document).on('click', '#favoriteButton', function () {
+    const $btn = $(this);
+    const pathParts = window.location.pathname.split("/");
+    const mealTime = pathParts[2];
+    const mealTimeUpper = mealTime.toUpperCase();
+    const selectedDate = pathParts[3];
+
+    const fields = {
+        foodCode: $btn.data('food-code'),
+        foodName: $btn.data('food-name'),
+        mealTime: mealTimeUpper,
+        foodWeight: $btn.data('weight'),
+        foodType: $btn.data('type'),
+        kcal: $btn.data('kcal'),
+        carbo: $btn.data('carbo'),
+        protein: $btn.data('protein'),
+        fat: $btn.data('fat'),
+        providedBy: $btn.data('provided-by'),
+        isPerServing: $btn.data('is-per-serving'),
+        unit: $btn.data('unit'),
+        source: "User",
+        foodImageUrl: compressedFile // 예시
+    };
+
+    // 기존 formData 클리어 후 새로 이미지 추가
+    let globalFormData = new FormData(); // 새로 생성해서 덮기
+
+    // 기존 globalFormData에 필드 추가
+    for (const key in fields) {
+        globalFormData.append(key, fields[key]);
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: `${window.DOMAIN_URL}/favorite-food/search`,
+        data: globalFormData,
+        contentType: false,
+        processData: false,
+        success: function () {
+            console.log("업로드 성공");
+        },
+        error: function (err) {
+            console.error("업로드 실패", err);
+        }
+    });
+});
+
+
+
 // 주어진 비율로 전체 UI 업데이트 (amount, bar, message, 색상, consumed 텍스트 포함)
 function updateUIWithRatio(ratio) {
     const regist = window.registFoodData;
@@ -513,7 +563,9 @@ $(document).on('click', '.image-container', function (e) {
     e.stopPropagation(); // 꼭 버블 차단
 });
 
-// 이미지 선택 시 미리보기 렌더링
+let compressedFile = '';
+
+// 이미지 선택 시 formData에 미리 넣기
 $(document).off('change', '.image-input').on('change', '.image-input', async function (e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -527,34 +579,23 @@ $(document).off('change', '.image-input').on('change', '.image-input', async fun
         maxWidthOrHeight: 720,
         useWebWorker: true,
         maxIteration: 5,
-        initialQuality: 0.8
+        initialQuality: 0.7
     };
 
     try {
-        const compressedFile = await imageCompression(file, options);
+        compressedFile = await imageCompression(file, options);
         const compressedDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
 
-        // 압축된 base64 이미지를 new-image src에 넣는다
         $newImage.attr('src', compressedDataUrl).show();
         $previewImage.hide();
 
-        // 버튼에도 이미지 반영
         updateNextButtonData();
-
         console.log("압축 성공:", (compressedFile.size / 1024).toFixed(1), "KB");
     } catch (err) {
         console.error("압축 실패:", err);
-
-        // 압축 실패 시 원본 처리
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            $newImage.attr('src', e.target.result).show();
-            $previewImage.hide();
-            updateNextButtonData();
-        };
-        reader.readAsDataURL(file);
     }
 });
+
 
 
 // 간편입력 / 직접입력 탭 전환 처리
@@ -578,7 +619,7 @@ $(document).on('click', '.manual-input', function () {
         $('.sub-title.truncate').text(`${Math.round(gram)}g`);
         updateUIWithRatio(ratio);
         updateNextButtonData();
-    }
+    } 
 });
 
 // [직접 입력] input에서 포커스 아웃 시 → 입력 g값 기준 UI 갱신
