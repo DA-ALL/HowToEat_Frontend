@@ -75,11 +75,13 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 
     if (meal && subpage === 'regist' && !type) {
         // /main/morning/search
-        if ($('#homeMealSearch').children().length === 0) {
-
-            $('#homeMealSearch').html(renderMealSearch(meal, merged, registFoodDataTest));
+        renderMealSearch(function(html) {
+            $('#homeMealSearch').html(html);
             initHeaderNav($('#homeMealSearch'));
-        }
+            // runAllCountAnimations();
+            // $(".bar-front.bar-increase").hide().show();
+            // $('html, body').scrollTop(0);
+        });
 
         $('#homeMealSearch').show();
     }

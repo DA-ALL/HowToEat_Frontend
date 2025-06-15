@@ -67,88 +67,116 @@ const mealFavoriteData = [
 
 
 
-export function renderMealSearch(mealKey, userConsumedDataTest, registFoodDataTest) {
-    window.userConsumedData = userConsumedDataTest;
-    window.mealKey = mealKey;
+export function renderMealSearch(callback) {
+    const pathParts = window.location.pathname.split("/");
+    const mealKey = pathParts[2];
     const mealKor = mealToKor(mealKey);
-    return `
-      <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
+    const mealTime = mealKey.toUpperCase();
+    const selectedDate = pathParts[3];
 
+    const macrosRequest = $.ajax({
+        url: `${window.DOMAIN_URL}/daily-summaries/${selectedDate}/meal-time/${mealTime}/macros`,
+        method: 'GET'
+    });
 
-      <div class="meal-search-container">
+    const favoriteFoodList = $.ajax({
+        url: `${window.DOMAIN_URL}/favorite-foods`,
+        method: 'GET'
+    });
 
-      <div class="search-toggle-wrapper">
-            <div class="search-tab-wrapper">
-                <div class="tab-button search active">음식 검색</div>
-                <div class="tab-button favorite">즐겨찾기</div>
-            </div>
-      </div>
+    $.when(macrosRequest, favoriteFoodList).done(function (macrosRes, favoriteRes) {
+        const raw = macrosRes[0].data;
+        const userConsumedData = {
+            carbo: { consumed: raw.consumedCarbo, target: raw.targetCarbo },
+            protein: { consumed: raw.consumedProtein, target: raw.targetProtein },
+            fat: { consumed: raw.consumedFat, target: raw.targetFat }
+        };
 
-        <div class="meal-tab-content">
-            <div class="meal-search-list padding">
-                <div class="search-tool-wrapper">
-                    <div class="search-tool">
-                        <input class="input-search"></input>
-                        <div class="label">
-                            <img src="/user/images/icon_search_gray2.png">
-                        </div>
-                    </div>
-                </div>
-                <div class="button-container meal-search hidden">
-                    <div class="next-button home-meal-search disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
-                </div>
-            </div>
+        console.log(userConsumedData, "test");
+        console.log(raw);
 
-            <div class="meal-favorite-list" style="display: none;">
-                <div class="cpf-container padding">
-                    <div class="second-title-format">${mealKor}의 탄단지</div>
-                    <div class="cpf-kcal-left-message-wrapper">
-                        <span class="cpf-kcal-left-message favorite">음식을 선택하면 얼마나 증가되는지 한눈에 볼 수 있어요.</span>
-                        <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
-                    </div>
+        const favoriteFoods = favoriteRes[0].data;
 
-                    ${createBarContainer(mealKey, userConsumedDataTest)}
-                </div>
-            
-                <div class="divider large"></div>
+        window.userConsumedData = userConsumedData;
+        window.mealKey = mealKey;
 
-                <div class="favorite-list-container padding">
-                    <div class="second-title-format">즐겨찾는 음식</div>
-
-                    <div class="favorite-meal-list-wrapper">
-                    ${mealFavoriteData.map(item => `
-                        <div class="favorite-meal-item"
-                             data-id="${item.id}"
-                             data-type="${item.type}"
-                             data-name="${item.name}"
-                             data-detail="${item.detail}"
-                             data-weight="${item.weight}"
-                             data-kcal="${item.kcal}"
-                             data-carbo="${item.carbo}"
-                             data-protein="${item.protein}"
-                             data-fat="${item.fat}">
-                            <div class="meal-title">${item.name}</div>
-                            <div class="text-wrapper">
-                                <span class="weight">${item.weight}g</span>
-                                <span class="divide">/</span>
-                                <span class="kcal">${item.kcal}kcal</span>
-                            </div>
-                        </div>
-                      `).join('')}
-                    </div>
-                </div>
-                <div class="button-container meal-favorite hidden">
-                    <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+        const favoriteListHTML = favoriteFoods.map(item => `
+            <div class="favorite-meal-item"
+                 data-id="${item.favoriteFoodId}"
+                 data-type="${item.foodType}"
+                 data-name="${item.foodName}"
+                 data-detail="${item.providedBy}"
+                 data-weight="${item.foodWeight}"
+                 data-kcal="${item.kcal}"
+                 data-carbo="${item.carbo}"
+                 data-protein="${item.protein}"
+                 data-fat="${item.fat}">
+                <div class="meal-title">${item.foodName}</div>
+                <div class="text-wrapper">
+                    <span class="weight">${Math.trunc(item.foodWeight)}g</span>
+                    <span class="divide">/</span>
+                    <span class="kcal">${Math.trunc(item.kcal)}kcal</span>
                 </div>
             </div>
-            
+        `).join('');
 
-        </div>
+        const html = `
+          <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
+          <div class="meal-search-container">
+              <div class="search-toggle-wrapper">
+                  <div class="search-tab-wrapper">
+                      <div class="tab-button search active">음식 검색</div>
+                      <div class="tab-button favorite">즐겨찾기</div>
+                  </div>
+              </div>
 
-      </div>
+              <div class="meal-tab-content">
+                  <div class="meal-search-list padding">
+                      <div class="search-tool-wrapper">
+                          <div class="search-tool">
+                              <input class="input-search" />
+                              <div class="label">
+                                  <img src="/user/images/icon_search_gray2.png">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="button-container meal-search hidden">
+                          <div class="next-button home-meal-search disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                      </div>
+                  </div>
 
-    `;
+                  <div class="meal-favorite-list" style="display: none;">
+                      <div class="cpf-container padding">
+                          <div class="second-title-format">${mealKor}의 탄단지</div>
+                          <div class="cpf-kcal-left-message-wrapper">
+                              <span class="cpf-kcal-left-message favorite">음식을 선택하면 얼마나 증가되는지 한눈에 볼 수 있어요.</span>
+                              <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
+                          </div>
+                          ${createBarContainer(mealKey, userConsumedData)}
+                      </div>
+
+                      <div class="divider large"></div>
+
+                      <div class="favorite-list-container padding">
+                          <div class="second-title-format">즐겨찾는 음식</div>
+                          <div class="favorite-meal-list-wrapper">
+                              ${favoriteListHTML}
+                          </div>
+                      </div>
+                      <div class="button-container meal-favorite hidden">
+                          <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        `;
+
+        callback(html);
+    }).fail(function () {
+        callback(`<div class="error">데이터를 불러오는 데 실패했습니다.</div>`);
+    });
 }
+
 
 initMealSearchTab()
 
@@ -326,7 +354,7 @@ function typeColorClass(type) {
 
 function mealToKor(meal) {
     switch (meal) {
-        case 'morning': return '아침';
+        case 'breakfast': return '아침';
         case 'lunch': return '점심';
         case 'dinner': return '저녁';
         case 'snack': return '간식';
@@ -352,7 +380,7 @@ function createBarContainer(mealKey, userConsumedData) {
         <div class="home-meal-bar-container">
             ${types.map(type => {
                 const consumed = Number(userConsumedData[type]?.consumed || 0);
-                const target = Number(userConsumedData[type]?.target || 0);
+                const target = Math.trunc(Number(userConsumedData[type]?.target || 0));
 
                 const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
 

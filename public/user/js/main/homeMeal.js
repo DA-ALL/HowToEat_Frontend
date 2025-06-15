@@ -95,7 +95,7 @@ function createBarContainer(mealKey, data) {
         <div class="home-meal-bar-container">
             ${types.map(type => {
                 const consumed = data[`consumed${capitalize(type)}`];
-                const target = data[`target${capitalize(type)}`];
+                const target = Math.trunc(data[`target${capitalize(type)}`]);
                 const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
                 const percent = Math.min(rawPercent, 100);
 
@@ -156,16 +156,14 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
 }
 
 
-
-
 function renderMealListItem(data) {
     return `
         <div class="meal-list-item">
             <div class="meal-title">${data.foodName}</div>
             <div class="text-wrapper">
-                <span class="weight">${data.weight}${data.unit}</span>
+                <span class="weight">${Math.trunc(data.weight)}${data.unit}</span>
                 <span class="divide">/</span>
-                <span class="kcal">${data.kcal}kcal</span>
+                <span class="kcal">${Math.trunc(data.kcal)}kcal</span>
                 <div class="image-arrow">
                     <img src="/user/images/icon_arrow_front.png">
                 </div>
