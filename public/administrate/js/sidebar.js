@@ -131,7 +131,6 @@ $(document).ready(function () {
 
     // 페이지 로드 시 현재 URL 기준으로 active 상태 설정
     const currentPage = getCurrentPage();
-    console.log(currentPage);
     updateActiveState(currentPage);
 
     $('.sidebar-item-option').on('click', function (event) {

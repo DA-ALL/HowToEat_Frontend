@@ -39,13 +39,27 @@ $(document).on('click', '.button-search', function () {
     
     const handler = $searchbar.data('onSearch');
     if (typeof handler === 'function') {
-        handler();
+        if($searchbar.hasClass('popup')) {
+            handler(searchValue);
+        } else {
+            handler();
+        }
     }
 });
 
 
-$(document).on('keyup', '.searchbar input', function (event) {
-    if (event.which === 13) { // 13 = Enter key
+let isSearching = false;
+
+$(document).on('keydown', '.searchbar input', function (event) {
+    if (event.which === 13 && !isSearching) {
+        isSearching = true;
+        event.preventDefault();
         $(this).closest('.searchbar').find('.button-search').click();
+    }
+});
+
+$(document).on('keyup', '.searchbar input', function (event) {
+    if (event.which === 13) {
+        isSearching = false;
     }
 });

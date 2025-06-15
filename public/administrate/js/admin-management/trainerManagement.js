@@ -50,11 +50,10 @@ function loadTable(){
 }
 
 async function getTrainerDatas(){
-    const page = getPageFromURL();
-    const searchValue = getSearchValueFromURL();
-    const gymName = getGymNameFromURL();
+    const params = getParamsFromURL();
+
     try{
-        const response = await getTrainerList(page, searchValue, gymName);
+        const response = await getTrainerList(params.page, params.name, params.gymName);
         console.log(response);
         return response;
     } catch (error){
@@ -62,19 +61,13 @@ async function getTrainerDatas(){
     }
 }
 
-function getPageFromURL() {
+function getParamsFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
-function getSearchValueFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('search');
-}
-
-function getGymNameFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('gym');
+    return {
+        page: parseInt(urlParams.get('page')) || 1,
+        name: urlParams.get('search') || '',
+        gymName: urlParams.get('gym') || ''
+    };
 }
 
 $(document).on('click', `#adminTrainerTableBody tr`, function () {

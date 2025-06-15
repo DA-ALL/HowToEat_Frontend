@@ -1,14 +1,9 @@
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
-import { loadSearchDropdown } from '/administrate/js/components/searchDropdown.js';
 import { renderTrainerTable, renderTableWithOptionalPagination } from '/administrate/js/pt-user-management/trainerTable.js';
-import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
+import { updateURL, registerPopstateHandler, registerViewLoader } from '../router.js';
 import { renderTrainerInfo, getTrainerInfo} from '/administrate/js/pt-user-management/trainerInfo.js';
-
-
-$(document).ready(function () {
-    loadContent();
-});
+import { getTrainerList } from '../api.js';
 
 function loadContent() {
     const container = $("#ptUserManagement");
@@ -26,12 +21,11 @@ function loadContent() {
 
     container.html(ptUserManagementHTML);
 
-    loadSearchBar('ptUserManagement');
-    loadFilter('ptUserManagement');
+    loadSearchBar('ptUserManagement', loadTrainerTable);
+    loadFilter('ptUserManagement', loadTrainerTable);
     
     loadTrainerTable();
 }
-
 
 function loadTrainerTable() {
     const containerId = 'trainerTable';
@@ -47,17 +41,26 @@ function loadTrainerTable() {
     })
 }
 
-function getTrainerDatas() {
-    return Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        imageURL: "/administrate/images/icon_human_red.png",
-        name: `트레이너 ${i + 1}`,
-        gymBranch: ['용인기흥구청점', '용인기흥구청점', '처인구청점', '수원권선동점', '이천마장점', '이천중앙점', '평택미전점'][Math.floor(Math.random() * 7)],
-        memberCount: Math.floor(Math.random() * 20),
-        joined: "2025.03.16"
-    }));
+async function getTrainerDatas(){
+    const params = getParamsFromURL();
+
+    try{
+        const response = await getTrainerList(params.page, params.name, params.gymName);
+        console.log(response);
+        return response;
+    } catch (error){
+        console.error(error);
+    }
 }
 
+function getParamsFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+        page: parseInt(urlParams.get('page')) || 1,
+        name: urlParams.get('search') || '',
+        gymName: urlParams.get('gym') || ''
+    };
+}
 
 
 $(document).on('click', `#trainerTableBody tr`, function () {
@@ -69,3 +72,4 @@ $(document).on('click', `#trainerTableBody tr`, function () {
 });
 
 registerPopstateHandler('ptUserManagement', loadContent);
+registerViewLoader('ptUserManagement', loadContent);

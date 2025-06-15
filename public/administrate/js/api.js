@@ -229,3 +229,21 @@ export function deleteNotice(noticeId) {
         contentType: "application/json",
     })
 }
+
+// ================  User API ================
+export function getUserList(page, size, name='') {
+const params = new URLSearchParams({
+        page: page,
+        size: size || 20
+    });
+
+    if (name != null && name.trim() !== '') {
+        params.append('name', name);
+    }
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/users?${params.toString()}`,
+        contentType: "application/json",
+    });
+}

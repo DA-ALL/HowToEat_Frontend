@@ -166,7 +166,6 @@ function showCurrentContent() {
             if (pattern.test(fullPath)) {
                 currentContent = id;
                 contentType = type;
-                console.log(contentType);
                 break;
             }
         }
