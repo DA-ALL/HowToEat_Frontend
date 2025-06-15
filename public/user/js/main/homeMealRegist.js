@@ -73,28 +73,28 @@ export function renderMealRegist(userConsumedData, foodInfo) {
             <div class="food-info-container">
                 <div class="food-info-wrapper">
                     <span class="title">칼로리</span>
-                    <span class="amount kcal">${Math.round(foodInfo.kcal)}kcal</span>
+                    <span class="amount kcal">${(foodInfo.kcal).toFixed(1)}kcal</span>
                 </div>
 
                 <div class="divider column"></div>
 
                 <div class="food-info-wrapper">
                     <span class="title">탄수화물</span>
-                    <span class="amount carbo">${Math.round(foodInfo.carbo)}g</span>
+                    <span class="amount carbo">${(foodInfo.carbo).toFixed(1)}g</span>
                 </div>
 
                 <div class="divider column"></div>
 
                 <div class="food-info-wrapper">
                     <span class="title">단백질</span>
-                    <span class="amount protein">${Math.round(foodInfo.protein)}g</span>
+                    <span class="amount protein">${(foodInfo.protein).toFixed(1)}g</span>
                 </div>
 
                 <div class="divider column"></div>
 
                 <div class="food-info-wrapper">
                     <span class="title">지방</span>
-                    <span class="amount fat">${Math.round(foodInfo.fat)}g</span>
+                    <span class="amount fat">${(foodInfo.fat).toFixed(1)}g</span>
                 </div>
             </div>
         </div>
@@ -161,7 +161,7 @@ function mealToKor(meal) {
 
 // 1/1 ~ 1/10 또는 1/30 portion-item HTML 생성
 function renderPortionItems(registFoodData) {
-    const kcal = Number(registFoodData.kcal || 0);
+    const kcal = Number(registFoodData.kcal || 0).toFixed(1);
     const type = registFoodData.type;
     
     let maxPortion = 10;
@@ -171,7 +171,7 @@ function renderPortionItems(registFoodData) {
     for (let i = 1; i <= maxPortion; i++) {
         const ratioText = `1 / ${i}`;
         const ratioValue = 1 / i;
-        const kcalText = `${Math.round(kcal * ratioValue)} kcal`;
+        const kcalText = `${(kcal * ratioValue).toFixed(1)} kcal`;
 
         html.push(`
             <div class="portion-item${i === 1 ? ' active' : ''}">
@@ -191,9 +191,12 @@ function createBarContainer(mealKey, userConsumedData, registFoodData) {
         <div class="home-meal-bar-container">
             ${types.map(type => {
                 const consumed = Number(userConsumedData[type]?.consumed || 0);
-                const target = Number(userConsumedData[type]?.target || 0);
+                const target = Math.trunc(Number(userConsumedData[type]?.target || 0));
                 const upcoming = Number(registFoodData[type] || 0); // 예정 섭취량
-                const newConsumed = consumed + upcoming;
+                const newConsumed = (consumed + upcoming).toFixed(1);
+                console.log(consumed, " consumed")
+                console.log(upcoming, " upcoming")
+                console.log(newConsumed, " teststset")
 
                 const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
                 const rawIncreasePercent = target > 0 ? (newConsumed / target) * 100 : 0;
@@ -315,7 +318,7 @@ function animateCountUp($element, from, to, duration = 1200) {
     
     function update(timestamp) {
         const progress = Math.min((timestamp - start) / duration, 1);
-        const current = Math.floor(from + (to - from) * progress);
+        const current = (from + (to - from) * progress).toFixed(1);
         $element.text(`${current}g`);
         if (progress < 1) {
             requestAnimationFrame(update);
@@ -465,16 +468,16 @@ function updateUIWithRatio(ratio) {
     const mealKey = window.mealKey;
 
     const adjusted = {
-        kcal: Math.round(regist.kcal * ratio),
+        kcal: (regist.kcal * ratio),
         carbo: regist.carbo * ratio,
         protein: regist.protein * ratio,
         fat: regist.fat * ratio,
     };
     // 정보 업데이트
-    $('.food-info-wrapper .amount.kcal').text(`${Math.round(adjusted.kcal)}kcal`);
-    $('.food-info-wrapper .amount.carbo').text(`${Math.round(adjusted.carbo)}g`);
-    $('.food-info-wrapper .amount.protein').text(`${Math.round(adjusted.protein)}g`);
-    $('.food-info-wrapper .amount.fat').text(`${Math.round(adjusted.fat)}g`);
+    $('.food-info-wrapper .amount.kcal').text(`${(adjusted.kcal).toFixed(1)}kcal`);
+    $('.food-info-wrapper .amount.carbo').text(`${(adjusted.carbo).toFixed(1)}g`);
+    $('.food-info-wrapper .amount.protein').text(`${(adjusted.protein).toFixed(1)}g`);
+    $('.food-info-wrapper .amount.fat').text(`${(adjusted.fat).toFixed(1)}g`);
     
 
     // 메시지 갱신
@@ -646,42 +649,27 @@ $(document).on('click', '.easy-input', function () {
     updateNextButtonData();
 });
 
-$(document).on('click', '.portion-item', function () {
-    const $this = $(this);
-    const ratioText = $this.find('.ratio').text();
-    const [numerator, denominator] = ratioText.split('/').map(v => parseFloat(v.trim()));
-    const ratio = numerator / denominator;
 
-    $('.portion-item').removeClass('active');
-    $this.addClass('active');
-
-    const original = window.registFoodData;
-    const user = window.userConsumedData;
-    const mealKey = window.mealKey;
-
-    const adjustedWeight = Math.round(original.foodWeight * ratio); // ✅ 추가
-    $('.sub-title.truncate').text(`${adjustedWeight}g`);        // ✅ 업데이트
-
-    // 이하 updateUIWithRatio 호출
-    window.lastPortionRatio = ratio;
-    updateUIWithRatio(ratio);
-    updateNextButtonData();
-});
-
-// portion-item 클릭 시 → 비율 저장 및 UI 갱신
 $(document).on('click', '.portion-item', function () {
     const $this = $(this);
     const ratioText = $this.find('.ratio').text(); // 예: "1 / 3"
     const [numerator, denominator] = ratioText.split('/').map(v => parseFloat(v.trim()));
     const ratio = numerator / denominator;
 
+    // 상태 및 클래스 업데이트
     $('.portion-item').removeClass('active');
     $this.addClass('active');
+    window.lastPortionRatio = ratio;
 
     const original = window.registFoodData;
     const user = window.userConsumedData;
     const mealKey = window.mealKey;
 
+    // 1. 서브타이틀 g 업데이트
+    const adjustedWeight = Math.round(original.foodWeight * ratio);
+    $('.sub-title.truncate').text(`${adjustedWeight}g`);
+
+    // 2. kcal/탄단지 계산
     const adjusted = {
         kcal: Math.round(original.kcal * ratio),
         carbo: original.carbo * ratio,
@@ -689,17 +677,11 @@ $(document).on('click', '.portion-item', function () {
         fat: original.fat * ratio,
     };
 
-    // food-info 업데이트
-    $('.food-info-wrapper .amount.kcal').text(`${Math.round(adjusted.kcal)}kcal`);
-    $('.food-info-wrapper .amount.carbo').text(`${Math.round(adjusted.carbo)}g`);
-    $('.food-info-wrapper .amount.protein').text(`${Math.round(adjusted.protein)}g`);
-    $('.food-info-wrapper .amount.fat').text(`${Math.round(adjusted.fat)}g`);    
-
-    // 메세지 업데이트
+    // 3. 메시지 업데이트
     const message = getMessageFormat(user, adjusted);
     $('.cpf-kcal-left-message-wrapper .cpf-kcal-left-message').replaceWith(message);
 
-    // 탄단지 바 및 텍스트 업데이트
+    // 4. 탄단지 바 애니메이션 + 숫자 업데이트
     ['carbo', 'protein', 'fat'].forEach(type => {
         const newValue = user[type].consumed + adjusted[type];
         const rawIncreasePercent = user[type].target > 0 ? (newValue / user[type].target) * 100 : 0;
@@ -736,5 +718,11 @@ $(document).on('click', '.portion-item', function () {
         $el.attr({ 'data-from': from, 'data-to': to }).css('color', fontColor);
         animateCountUp($el, from, to);
     });
+
+    // 5. UI, 버튼 업데이트
+    updateUIWithRatio(ratio);
+    updateNextButtonData();
+
+
 
 });

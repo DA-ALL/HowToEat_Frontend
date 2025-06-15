@@ -47,12 +47,14 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 
     if (!meal) {
         initCalendarPage(true);
+        resetSearchView();
         $('#home').show(); // /main
         return;
     }
 
 
     if (meal && !subpage && !type) {
+        resetSearchView();
         renderMealDetail(function (html) {
             const pathParts = window.location.pathname.split("/");
             const selectedDate = pathParts[3];
@@ -75,14 +77,17 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 
     if (meal && subpage === 'regist' && !type) {
         // /main/morning/search
-        renderMealSearch(function(html) {
-            $('#homeMealSearch').html(html);
-            initHeaderNav($('#homeMealSearch'));
-            // runAllCountAnimations();
-            // $(".bar-front.bar-increase").hide().show();
-            // $('html, body').scrollTop(0);
-        });
 
+        if ($('#homeMealSearch').children().length === 0) {
+            renderMealSearch(function(html) {
+                $('#homeMealSearch').html(html);
+                initHeaderNav($('#homeMealSearch'));
+                runAllCountAnimations();
+                $('style[data-keyframe]').remove();
+                $('html, body').scrollTop(0);
+            });
+            
+         } 
         $('#homeMealSearch').show();
     }
 

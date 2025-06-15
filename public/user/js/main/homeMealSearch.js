@@ -64,9 +64,6 @@ const mealFavoriteData = [
 ];
 
 
-
-
-
 export function renderMealSearch(callback) {
     const pathParts = window.location.pathname.split("/");
     const mealKey = pathParts[2];
@@ -92,7 +89,7 @@ export function renderMealSearch(callback) {
             fat: { consumed: raw.consumedFat, target: raw.targetFat }
         };
 
-        console.log(userConsumedData, "test");
+        console.log(userConsumedData);
         console.log(raw);
 
         const favoriteFoods = favoriteRes[0].data;
@@ -465,14 +462,13 @@ function updateCPFIncreaseBar(selectedItems) {
         acc.fat += Number(item.fat || 0);
         return acc;
     }, { carbo: 0, protein: 0, fat: 0 });
-
     const mealKor = mealToKor(mealKey);
 
     // 탄단지 각각에 대해 105% 초과 여부 검사
     const isOverTarget = ['carbo', 'protein', 'fat'].some(type => {
-        const consumed = Number(user[type]?.consumed || 0);
-        const target = Number(user[type]?.target || 0);
-        const upcoming = Number(total[type] || 0);
+        const consumed = Number(user[type]?.consumed || 0).toFixed(1);
+        const target = Number(user[type]?.target || 0).toFixed(1);
+        const upcoming = Number(total[type] || 0).toFixed(1);
         const percent = target > 0 ? ((consumed + upcoming) / target) * 100 : 0;
         return percent > 105;
     });
@@ -493,7 +489,8 @@ function updateCPFIncreaseBar(selectedItems) {
     ['carbo', 'protein', 'fat'].forEach(type => {
         const consumed = Number(user[type]?.consumed || 0);
         const target = Number(user[type]?.target || 0);
-        const newValue = consumed + total[type];
+        const newValue = (consumed + total[type]);
+
         const rawIncreasePercent = target > 0 ? (newValue / target) * 100 : 0;
         const percentLimited = Math.min(rawIncreasePercent, 100);
         const uniqueKey = `fillBar-${mealKey}-${type}-increase-favorite`;
@@ -536,7 +533,7 @@ function animateCountUp($element, from, to, duration = 1200) {
     
     function update(timestamp) {
         const progress = Math.min((timestamp - start) / duration, 1);
-        const current = Math.floor(from + (to - from) * progress);
+        const current = (from + (to - from) * progress).toFixed(1);
         $element.text(`${current}g`);
         if (progress < 1) {
             requestAnimationFrame(update);
