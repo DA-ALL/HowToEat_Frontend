@@ -57,12 +57,29 @@ export function renderMealSearch(callback) {
                  data-protein="${item.protein}"
                  data-fat="${item.fat}"
                  data-unit="${item.unit}">
-                <div class="meal-title">${item.foodName}</div>
+
+                
+                <div class="meal-info-wrapper">
+                    <div class="meal-title">${item.foodName}</div>
+                    
+                    <div class="meal-macro-wrapper">
+                        <div class="macro-kcal">${(item.kcal).toFixed(1).toLocaleString()} kcal</div>
+                        <div class="divider">|</div>
+                        <div class="macro-carbo">탄수 ${(item.carbo).toFixed(1).toLocaleString()}</div>
+                        <div class="divider">|</div>
+                        <div class="macro-protein">단백 ${(item.protein).toFixed(1).toLocaleString()}</div>
+                        <div class="divider">|</div>
+                        <div class="macro-fat">지방 ${(item.fat).toFixed(1).toLocaleString()}</div>
+                    </div>
+                </div>
+
+                <!--
                 <div class="text-wrapper">
                     <span class="weight">${Math.trunc(item.foodWeight)}g</span>
                     <span class="divide">/</span>
                     <span class="kcal">${Math.trunc(item.kcal)}kcal</span>
                 </div>
+                --!>
             </div>
         `).join('');
 
