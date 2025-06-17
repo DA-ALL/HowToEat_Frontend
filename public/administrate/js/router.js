@@ -188,8 +188,6 @@ function showCurrentContent() {
 
     // 뷰 초기화 및 데이터 로딩
     if(viewLoaders[currentContent]) {
-        // admin-management의 경우 URL에 따라 다른 타입으로 로드
-        // if(currentContent == 'adminAccountDetail' || currentContent == 'gymDetail' || currentContent == 'trainerDetail'){
         if(contentType) {
             viewLoaders[currentContent]({type: contentType});
         } 

@@ -1,35 +1,35 @@
-import { updateQueryParam , getCurrentContent} from '/administrate/js/router.js';
+import { updateQueryParam } from '/administrate/js/router.js';
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 20;
 
-export function createUserRow({ id, imageURL, name, mealCount, joined, left, gymUser, role }) {
+export function createUserRow({ ptMemberId, user}) {
     return `
         <tr>
-            <td class="td-id">${id}</td>
+            <td class="td-id">${user.id}</td>
             <td class="td-user-profile">
                 <div class="td-user-profile-wrapper">
                     <div class="image-user">
-                        <img src=${imageURL}>
+                        <img src=${user.imageURL ? user.imageURL : '/administrate/images/icon_human_green.png'}>
                     </div>
-                    <div class="user-name">${name}</div>
+                    <div class="user-name">${user.name}</div>
                 </div>
             </td>
-            <td class="td-meal-log-count">${mealCount}</td>
-            <td class="td-account-created-at">${joined}</td>
-            <td class="td-account-closed-at">${left}</td>
+            <td class="td-meal-log-count">${user.mealCount}</td>
+            <td class="td-account-created-at">${user.createdAt}</td>
+            <td class="td-account-closed-at">${user.deletedAt ? deletedAt : '-'}</td>
             <td class="td-gym-user">
-                ${gymUser ? `<div class="image-gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>` : `<div class="image-gym-user">-</div>`}
+                ${user.isNextGym ? `<div class="image-gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>` : `<div class="image-gym-user">-</div>`}
             </td>
             <td class="td-user-role">
                 <div class="user-role-wrapper">
-                    <div class="user-role-button ${role}">${role == 'super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
+                    <div class="user-role-button ${user.userRole}">${formatUserRole(user.userRole)}</div>
                 </div>
             </td>
             <td class="td-delete">
                 <div class="delete-user-button-wrapper">
-                    <div class="delete-user-button" data-user-id="${id}">삭제</div>
+                    <div class="delete-user-button" data-pt-member-id="${ptMemberId}">삭제</div>
                 </div>
             </td>
 
@@ -59,26 +59,23 @@ export function renderUserTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderTableWithOptionalPagination({
+export async function renderTableWithOptionalPagination({
     getData,         // 데이터 함수
     bodyId,
     contentId,
-    enablePagination = true
+    enablePagination = false
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const response = await getData();
+    const page = response.currentPage + 1;
+    const rows = response.content;
 
     $(`#${bodyId}`).html(rows.map(createUserRow).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
-            itemsPerPage: usersPerPage, 
+            totalItems: response.totalElements,
+            itemsPerPage: usersPerPage,
             currentPage: page,
             onPageChange: (newPage) => {
                 updateQueryParam({ page: newPage });
@@ -95,25 +92,28 @@ export function renderTableWithOptionalPagination({
     }
 }
 
-
-function getPageFromURL(contentId) {
-    const urlParams = new URLSearchParams(window.location.search);
-    if(getCurrentContent() == contentId) {
-        return parseInt(urlParams.get('page')) || 1;
-    } else {
-        return 1;
+function formatUserRole(userRole) {
+    switch (userRole) {
+        case 'SUPERUSER':
+            return 'SuperUser';
+        case 'ADMIN':
+            return 'Admin';
+        case 'USER':
+            return 'User';
+        case 'MASTER':
+            return 'Master';
+        default:
+            return '';
     }
 }
-
 
 // 삭제 버튼 클릭 시
 $(document).on('click', '.delete-user-button', function (e) {
     e.stopPropagation();
-    const userId = $(this).data('user-id');
-    console.log(`사용자 ID ${userId} 삭제 요청`);
+    const ptMemberId = $(this).data('pt-member-id');
+    console.log(`멤버아이디 ${ptMemberId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
-    
     showCustomAlert({
         type: 2,
         onCancel: () => {

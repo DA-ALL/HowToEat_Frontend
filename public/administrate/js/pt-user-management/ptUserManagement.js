@@ -67,8 +67,6 @@ $(document).on('click', `#trainerTableBody tr`, function () {
     const userId = $(this).find('.td-id').text();
     const page = `user-management/pt/${userId}`;
     updateURL(page);
-
-    renderTrainerInfo(getTrainerInfo(), 'user-management/pt');
 });
 
 registerPopstateHandler('ptUserManagement', loadContent);

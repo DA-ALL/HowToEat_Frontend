@@ -177,6 +177,19 @@ export function deleteTrainer(trainerId) {
     })
 }
 
+export function getTrainerWithPtMembers(page, trainerId) {
+    const params = new URLSearchParams({
+        page: page,
+        size: 20
+    });
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/trainers/${trainerId}/pt-members?${params.toString()}`,
+        contentType: "application/json",
+    });
+}
+
 // ================  notice API ================
 export function getNoticeList(page, title='', orderBy='desc') {
     const params = new URLSearchParams({
@@ -246,4 +259,14 @@ const params = new URLSearchParams({
         url: `${window.DOMAIN_URL}/admin/users?${params.toString()}`,
         contentType: "application/json",
     });
+}
+
+// ================  PtMember API ================
+export function createPtMember(ptMemberData) {
+    return $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/pt-members`,
+        contentType: "application/json",
+        data: JSON.stringify(ptMemberData),
+    })
 }

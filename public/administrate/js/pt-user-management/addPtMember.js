@@ -1,6 +1,7 @@
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/pt-user-management/userTableAddPtMember.js';
-import { getUserList } from '../api.js';
+import { getUserList, createPtMember} from '../api.js';
+import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 
 export function showAddPtMember() {
 
@@ -24,8 +25,6 @@ export function showAddPtMember() {
     `;
 
     $("body").append(addPtMemberHTML);
-
-    // loadSearchBar('addPtMember', ()=>loadTotalUserTable(searchValue));
     
     loadSearchBar('addPtMember', (searchValue, page) => {
         loadTotalUserTable(searchValue, page);
@@ -61,15 +60,35 @@ async function getUserDataForladdPtUserTable(searchValue, page) {
     }
 }
 
+function getPathIdFromUrl() {
+    const pathArray = window.location.pathname.split('/');
+    return pathArray[pathArray.length - 1]; // 마지막 요소가 ID
+}
+
 //취소 버튼 클릭시
 $(document).on("click", "#addPtMemberButtonCancel", function () {
     $("#addPtMember").remove();
 });
 
 // 추가하기 버튼 클릭시
-$(document).on("click", "#addPtMemberButtonNext", function () {
+$(document).on("click", "#addPtMemberButtonNext", async function () {
     if ($(this).hasClass("disabled")) return;
 
+    const trainerId = getPathIdFromUrl();
+    const userId = $(`#${bodyId} tr.selected .td-id`).map(function () {
+        return $(this).text();
+    }).get(0);
+
+    try {
+        const response = await createPtMember({trainerId, userId});
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+        })
+    } catch (error) {
+        console.error("Error while creating PT member:", error);
+    }
+    
     $("#addPtMember").remove();
 });
 
