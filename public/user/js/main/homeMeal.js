@@ -165,13 +165,13 @@ function renderMealListItem(data) {
                 <div class="meal-title">${data.foodName}</div>
                 
                 <div class="meal-macro-wrapper">
-                    <div class="macro-kcal">2000kcal</div>
+                    <div class="macro-kcal">${(data.kcal).toFixed(1).toLocaleString()} kcal</div>
                     <div class="divider">|</div>
-                    <div class="macro-carbo">탄수2000</div>
+                    <div class="macro-carbo">탄수 ${(data.carbo).toFixed(1).toLocaleString()}</div>
                     <div class="divider">|</div>
-                    <div class="macro-protein">단백2000</div>
+                    <div class="macro-protein">단백 ${(data.protein).toFixed(1).toLocaleString()}</div>
                     <div class="divider">|</div>
-                    <div class="macro-fat">지방2000</div>
+                    <div class="macro-fat">지방 ${(data.fat).toFixed(1).toLocaleString()}</div>
                 </div>
             </div>
 

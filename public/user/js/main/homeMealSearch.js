@@ -4,65 +4,8 @@ import { setLastMainPath } from '../components/nav-bottom.js';
 let currentSearchKeyword = '';
 let currentPage = 0;
 let hasNext = true;
-
-const mealFavoriteData = [
-    {
-        id: 42,
-        type: "ingredient_food",
-        name: "소고기 채끝살 (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 217,
-        carbo: 0,
-        protein: 26,
-        fat: 12,
-    },
-    {
-        id: 87,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "(주)예현 소고기",
-        weight: 100,
-        kcal: 320,
-        carbo: 200,
-        protein: 21,
-        fat: 24,
-    },
-    {
-        id: 13,
-        type: "ingredient_food",
-        name: "소고기 1등급++ (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 245,
-        carbo: 0,
-        protein: 23,
-        fat: 17,
-    },
-    {
-        id: 74,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "청정원",
-        weight: 100,
-        kcal: 310,
-        carbo: 5,
-        protein: 20,
-        fat: 22,
-    },
-    {
-        id: 8,
-        type: "cooked_food",
-        name: "소고기 구이",
-        detail: "급식",
-        weight: 100,
-        kcal: 290,
-        carbo: 1,
-        protein: 24,
-        fat: 20,
-    }
-];
-
+let selectedFavorites = [];
+let isLoading = false;
 
 export function renderMealSearch(callback) {
     const pathParts = window.location.pathname.split("/");
@@ -70,6 +13,10 @@ export function renderMealSearch(callback) {
     const mealKor = mealToKor(mealKey);
     const mealTime = mealKey.toUpperCase();
     const selectedDate = pathParts[3];
+
+    selectedFavorites = [];
+    isLoading = false;
+
 
     const macrosRequest = $.ajax({
         url: `${window.DOMAIN_URL}/daily-summaries/${selectedDate}/meal-time/${mealTime}/macros`,
@@ -569,10 +516,6 @@ function fetchSearchResults(keyword, page) {
         }
     });
 }
-
-
-let selectedFavorites = [];
-let isLoading = false;
 
 $(window).on('scroll', function () {
     const scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();

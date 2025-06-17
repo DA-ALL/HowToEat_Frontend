@@ -72,7 +72,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: clamp(14px, 2px + 3.2vw, 18px) clamp(6px, 1.6vw, 8px);
+    padding: clamp(14px, 2px + 3.2vw, 22px) clamp(6px, 1.6vw, 8px);
     border-bottom: 1px solid #eee;
     cursor: pointer;
 }
