@@ -49,7 +49,13 @@ export function initCalendarPage() {
 }
 
 function updateCalendar() {
+    $.get(`${window.DOMAIN_URL}/users/signup-date`, function (res) {
+        const signupDateStr = res.data.createdAt;
+        renderCalendarWithSignupLimit(signupDateStr);
+    });
+}
 
+function renderCalendarWithSignupLimit(signupDateStr) {
     const today = new Date();
     const todayStr = formatDate(today);
     const shouldUpdateCPF = (activeDate === todayStr && !hasRenderedCPFOnce);
@@ -76,9 +82,9 @@ function updateCalendar() {
             const tempDate = new Date(weekStart);
             tempDate.setDate(weekStart.getDate() + i);
             const dateStr = formatDate(tempDate);
-            const disabledClass = dateStr > todayStr ? 'disabled' : '';
+            const disabledClass = (dateStr > todayStr || dateStr < signupDateStr) ? 'disabled' : '';
             const isActive = dateStr === activeDate ? 'active' : '';
-            daysHtml += createDayHTML(tempDate, disabledClass, isActive);
+            daysHtml += createDayHTML(tempDate, disabledClass, isActive, signupDateStr);
         }
         daysHtml += '</div>';
     } else {
@@ -94,9 +100,9 @@ function updateCalendar() {
         for (let i = 1; i <= lastDate; i++) {
             tempDate.setDate(i);
             const dateStr = formatDate(tempDate);
-            const disabledClass = dateStr > todayStr ? 'disabled' : '';
+            const disabledClass = (dateStr > todayStr || dateStr < signupDateStr) ? 'disabled' : '';
             const isActive = dateStr === activeDate ? 'active' : '';
-            daysHtml += createDayHTML(tempDate, disabledClass, isActive);
+            daysHtml += createDayHTML(tempDate, disabledClass, isActive, signupDateStr);
         }
         daysHtml += '</div>';
     }
@@ -104,7 +110,7 @@ function updateCalendar() {
     daysHtml += '</div>';
     $("#calendar").html(daysHtml);
 
-    // ensure selected date remains active after re-render
+    // 날짜 클릭 이벤트
     $(`.day[data-date="${activeDate}"]`).addClass("active");
 
     $(".day").off('click').on("click", function () {
@@ -115,7 +121,7 @@ function updateCalendar() {
         const selected = $(this).data("date");
         activeDate = selected;
         currentDate = new Date(selected);
-        
+
         $.get(`${window.DOMAIN_URL}/daily-summary/${selected}/macros`, function (res) {
             macrosData = res.data;
             const info = getDailyMacrosInfo(macrosData);
@@ -127,24 +133,23 @@ function updateCalendar() {
     if (shouldUpdateCPF) {
         hasRenderedCPFOnce = true;
 
-        $('#kcalGraphPath').attr('d', ''); // 그래프 값을 0으로 설정해 깜빡임 해결
-
-        $('style').each(function () { //탄 단 지 그래프 바 스타일 초기화로 깜빡임 해결
+        $('#kcalGraphPath').attr('d', '');
+        $('style').each(function () {
             const content = this.innerHTML;
             if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
                 this.remove();
             }
         });
-        
+
         $.get(`${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`, function (res) {
             macrosData = res.data;
             const info = getDailyMacrosInfo(macrosData);
-            
             $("#todaysCPF").html(getTodaysCPF(activeDate, info.targetKcal, info.rawPercent, info.percent, info.consumedKcal, info.caloriesLeft, info.targetCarbo, info.targetProtein, info.targetFat, info.consumedCarbo, info.consumedProtein, info.consumedFat, info.carboRawPercent, info.carboPercent, info.proteinRawPercent, info.proteinPercent, info.fatRawPercent, info.fatPercent));
             $("#mealLog").html(getMealLog(activeDate, res.data));
         });
     }
 }
+
 
 
 function getVisibleDateRangeFromCalendar() {
@@ -263,11 +268,11 @@ function getCalorieInfo(dateStr) {
     };
 }
 
-function createDayHTML(date, disabledClass, isActive) {
+function createDayHTML(date, disabledClass, isActive, signupDateStr) {
     const dateStr = formatDate(date);
     const todayStr = formatDate(new Date());
 
-    if (dateStr > todayStr) {
+    if (dateStr > todayStr || dateStr < signupDateStr) {
         return `
             <div class="day disabled ${isActive}" data-date="${dateStr}">
                 <span>${date.getDate()}</span>
