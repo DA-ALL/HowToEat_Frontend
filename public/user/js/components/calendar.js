@@ -131,15 +131,24 @@ function renderCalendarWithSignupLimit(signupDateStr) {
     });
 
     if (shouldUpdateCPF) {
+        console.log("test");
         hasRenderedCPFOnce = true;
 
         $('#kcalGraphPath').attr('d', '');
+        
+
+        // 그래프 두번 그려주기 방지
         $('style').each(function () {
             const content = this.innerHTML;
             if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
                 this.remove();
             }
         });
+
+        $('style').filter((_, el) =>
+            /@keyframes fillArc/.test(el.innerHTML)
+            ).remove();
+    
 
         $.get(`${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`, function (res) {
             macrosData = res.data;

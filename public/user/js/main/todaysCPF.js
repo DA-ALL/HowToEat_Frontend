@@ -11,7 +11,7 @@ export function getTodaysCPF(
 
 
     const formattedTarget = Math.floor(target).toLocaleString();
-    const formattedConsumed = consumed.toLocaleString();
+    const formattedConsumed = Math.floor(consumed).toLocaleString();
     const formattedCarloriesLeft = Math.floor(caloriesLeft).toLocaleString();
     const isToday = date === todayStr;
     const [year, month, day] = date.split("-");

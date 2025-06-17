@@ -25,6 +25,21 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     if (!meal) {
         initCalendarPage(true);
         resetSearchView();
+
+
+        //그래프 두번 그려주기 방지
+        $('style').each(function () {
+            const content = this.innerHTML;
+            if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+                this.remove();
+            }
+        });
+
+        $('style').filter((_, el) =>
+            /@keyframes fillArc/.test(el.innerHTML)
+          ).remove();
+
+          
         $('#home').show(); // /main
         return;
     }
@@ -175,25 +190,4 @@ export function resetRegistView() {
 
 export function resetSetTimeView() {
     $('#usersSetTime').empty();
-}
-
-function mergeConsumedData(user, food) {
-    if (!food) return user;
-
-    console.log(food);
-    return {
-        date: user.date,
-        carbo: {
-            consumed: user.carbo.consumed + food.carbo,
-            target: user.carbo.target
-        },
-        protein: {
-            consumed: user.protein.consumed + food.protein,
-            target: user.protein.target
-        },
-        fat: {
-            consumed: user.fat.consumed + food.fat,
-            target: user.fat.target
-        }
-    };
 }
