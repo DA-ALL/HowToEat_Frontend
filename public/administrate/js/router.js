@@ -60,7 +60,7 @@ function updateURLParams(params, useReplaceState = false) {
     if (!hasChanges) return;
 
     // 파라미터 정렬
-    const sortOrder = ["search", "trainer", "gym", "orderby", "next-gym", "user-role", "data-source", "recommend", "admin-share", "option", "page"];
+    const sortOrder = ["search", "trainer", "gym", "orderBy", "isNextGym", "userRole", "dataSource", "recommend", "adminShare", "option", "page"];
     const sortedParams = new URLSearchParams();
     sortOrder.forEach(param => {
         if (searchParams.has(param)) {

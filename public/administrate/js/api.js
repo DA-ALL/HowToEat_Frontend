@@ -244,14 +244,22 @@ export function deleteNotice(noticeId) {
 }
 
 // ================  User API ================
-export function getUserList(page, size, name='') {
+export function getUserList({page, size, name='', orderBy, isNextGym, userRole, isAddPtMember=false}) {
 const params = new URLSearchParams({
-        page: page,
-        size: size || 20
+        page,
+        size,
+        isAddPtMember,
+        orderBy: orderBy || 'desc',
     });
 
     if (name != null && name.trim() !== '') {
         params.append('name', name);
+    }
+    if (isNextGym != null && isNextGym.trim() !== 'all' && isNextGym.trim() !== '') {
+        params.append('isNextGym', isNextGym);
+    }
+    if (userRole != null && userRole != 'all' && userRole.trim() !== '') {
+        params.append('userRole', userRole);
     }
 
     return $.ajax({

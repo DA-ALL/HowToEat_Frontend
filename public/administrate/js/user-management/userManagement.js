@@ -2,12 +2,8 @@
 import { loadTotalUserTable } from '/administrate/js/user-management/totalUserTable.js';
 import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
-import { registerPopstateHandler } from '/administrate/js/router.js';
+import { registerPopstateHandler, registerViewLoader } from '/administrate/js/router.js';
 
-
-$(document).ready(function () {
-    loadContent();
-});
 
 function loadContent() {
     const container = $("#userManagement");
@@ -27,8 +23,9 @@ function loadContent() {
 
     container.html(totalUserManagementHTML);
     loadTotalUserTable();
-    loadSearchBar('userManagement');
-    loadFilter('userManagement');
+    loadSearchBar('userManagement', loadTotalUserTable);
+    loadFilter('userManagement', loadTotalUserTable);
 }
 
 registerPopstateHandler('userManagement', loadContent);
+registerViewLoader('userManagement', loadContent);

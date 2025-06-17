@@ -19,7 +19,7 @@ export async function renderFilters(contentId, onclick = null) {
             case 1:
                 filterTemplate = `
                         <div class="filter-title">조회 기준</div>
-                        <div class="filter-option-wrapper" data-key="orderby">
+                        <div class="filter-option-wrapper" data-key="orderBy">
                             <div class="filter-option" data-query="desc">최신순</div>
                             <div class="filter-option" data-query="asc">과거순</div>
                         </div>
@@ -29,10 +29,10 @@ export async function renderFilters(contentId, onclick = null) {
             case 2:
                 filterTemplate = `
                         <div class="filter-title">넥스트짐 등록 여부</div>
-                        <div class="filter-option-wrapper" data-key="next-gym">
+                        <div class="filter-option-wrapper" data-key="isNextGym">
                             <div class="filter-option" data-query="all">전체</div>
-                            <div class="filter-option" data-query="registered">등록</div>
-                            <div class="filter-option" data-query="unregistered">미등록</div>
+                            <div class="filter-option" data-query="true">등록</div>
+                            <div class="filter-option" data-query="false">미등록</div>
                         </div>
                     `;
                 break;
@@ -40,10 +40,10 @@ export async function renderFilters(contentId, onclick = null) {
             case 3:
                 filterTemplate = `
                         <div class="filter-title">권한</div>
-                        <div class="filter-option-wrapper" data-key="user-role">
+                        <div class="filter-option-wrapper" data-key="userRole">
                             <div class="filter-option" data-query="all">전체</div>
-                            <div class="filter-option" data-query="user">유저</div>
-                            <div class="filter-option" data-query="admin">관리자</div>
+                            <div class="filter-option" data-query="USER">유저</div>
+                            <div class="filter-option" data-query="ADMIN">관리자</div>
                         </div>
                     `;
                 break;
@@ -51,7 +51,7 @@ export async function renderFilters(contentId, onclick = null) {
             case 4:
                 filterTemplate = `
                         <div class="filter-title">데이터 출처 필터</div>
-                        <div class="filter-option-wrapper" data-key="data-source">
+                        <div class="filter-option-wrapper" data-key="dataSource">
                             <div class="filter-option" data-query="all">전체</div>
                             <div class="filter-option" data-query="processed">가공식품DB</div>
                             <div class="filter-option" data-query="cooked">음식DB</div>
@@ -74,7 +74,7 @@ export async function renderFilters(contentId, onclick = null) {
             case 6:
                 filterTemplate = `
                         <div class="filter-title">관리자 DB 공유 여부</div>
-                        <div class="filter-option-wrapper" data-key="admin-share">
+                        <div class="filter-option-wrapper" data-key="adminShare">
                             <div class="filter-option" data-query="shared">관리자 DB 공유</div>
                             <div class="filter-option" data-query="user">관리자 DB 미공유</div>
                         </div>

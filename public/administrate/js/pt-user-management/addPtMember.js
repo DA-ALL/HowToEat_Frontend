@@ -52,7 +52,15 @@ export function loadTotalUserTable(searchValue, page) {
 async function getUserDataForladdPtUserTable(searchValue, page) {
     console.log("getUserDataForladdPtUserTable called with searchValue:", searchValue, "and page:", page);
     try{
-        const response = await getUserList(page || 1, 10, searchValue);
+        const request = {
+            name: searchValue || '',
+            page: page || 1,
+            size: 10,
+            isAddPtMember: true,
+            orderBy: 'asc',
+        }
+        console.log("Request parameters:", request);
+        const response = await getUserList(request);
         console.log(response);
         return response;
     } catch (error){

@@ -70,7 +70,7 @@ function getParamsFromUrl() {
     return {
         page: parseInt(urlParams.get('page')) || 1,
         title: urlParams.get('search') || '',
-        orderBy: urlParams.get('orderby') || ''
+        orderBy: urlParams.get('orderBy') || ''
     };
 }
 
