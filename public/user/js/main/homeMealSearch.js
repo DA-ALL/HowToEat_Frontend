@@ -156,6 +156,9 @@ export function initMealSearchTab() {
         if (isSearchTab) {
             $('.meal-search-list').show();
             $('.meal-favorite-list').hide();
+            $('.favorite-meal-item.active').each(function () {
+                $(this).trigger('click');
+            });
 
             const $input = $('.input-search');
 
@@ -432,9 +435,9 @@ function updateCPFIncreaseBar(selectedItems) {
 
     // 탄단지 각각에 대해 105% 초과 여부 검사
     const isOverTarget = ['carbo', 'protein', 'fat'].some(type => {
-        const consumed = Number(user[type]?.consumed || 0).toFixed(1);
-        const target = Number(user[type]?.target || 0).toFixed(1);
-        const upcoming = Number(total[type] || 0).toFixed(1);
+        const consumed = Number(user[type]?.consumed || 0);
+        const target = Number(user[type]?.target || 0);
+        const upcoming = Number(total[type] || 0);
         const percent = target > 0 ? ((consumed + upcoming) / target) * 100 : 0;
         return percent > 105;
     });

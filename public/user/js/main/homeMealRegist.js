@@ -615,7 +615,7 @@ $(document).on('click', '.manual-input', function () {
     const base = window.registFoodData.foodWeight;
     const ratio = gram / base;
 
-    if (!isNaN(ratio) && ratio > 0) {
+    if (!isNaN(ratio) && ratio >= 0) {
         $('.sub-title.truncate').text(`${Math.round(gram)}g`);
         updateUIWithRatio(ratio);
         updateNextButtonData();
@@ -628,7 +628,7 @@ $(document).on('blur', '.manual-input-field', function () {
     const base = window.registFoodData.foodWeight;
     const ratio = gram / base;
 
-    if (!isNaN(ratio) && ratio > 0) {
+    if (!isNaN(ratio) && ratio >= 0) {
         $('.sub-title.truncate').text(`${Math.round(gram)}g`);
         updateUIWithRatio(ratio);
         updateNextButtonData();

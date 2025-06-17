@@ -54,13 +54,12 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
 
     if (meal && subpage === 'regist' && !type) {
         // /main/morning/search
-
+        $('style[data-keyframe]').remove();
         if ($('#homeMealSearch').children().length === 0) {
             renderMealSearch(function(html) {
                 $('#homeMealSearch').html(html);
                 initHeaderNav($('#homeMealSearch'));
                 runAllCountAnimations();
-                $('style[data-keyframe]').remove();
                 $('html, body').scrollTop(0);
             });
             
