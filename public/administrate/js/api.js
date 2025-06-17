@@ -270,3 +270,11 @@ export function createPtMember(ptMemberData) {
         data: JSON.stringify(ptMemberData),
     })
 }
+
+export function deletePtMember(ptMemberId) {
+    return $.ajax({
+        type: "DELETE",
+        url: `${window.DOMAIN_URL}/admin/pt-members/${ptMemberId}`,
+        contentType: "application/json",
+    })
+}

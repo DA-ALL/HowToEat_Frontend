@@ -124,26 +124,14 @@ async function getUserDataForUserTable() {
     const trainerId = getPathIdFromUrl();
     try {
         const response = await getTrainerWithPtMembers(page, trainerId);
-        
-        const currentPage = response.data.ptMembers.number;
+        console.log("Trainer with PT Members:", response.data);
+        const currentPage = response.data.ptMembers.page;
         const totalElements = response.data.ptMembers.totalElements;
         const content = response.data.ptMembers.content;
         return { currentPage, totalElements, content };
     } catch (error) {
         console.error("Error fetching trainer info:", error);
     }   
-
-
-    return Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        imageURL: "/administrate/images/icon_human_green.png",
-        name: `사용자${i + 1}`,
-        mealCount: Math.floor(Math.random() * 200),
-        joined: "2025.03.16",
-        left: "-",
-        gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
-    }));
 }
 
 

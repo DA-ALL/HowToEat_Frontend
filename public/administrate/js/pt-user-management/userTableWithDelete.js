@@ -1,7 +1,7 @@
 import { updateQueryParam } from '/administrate/js/router.js';
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
-
+import { deletePtMember } from '../api.js';
 const usersPerPage = 20;
 
 export function createUserRow({ ptMemberId, user}) {
@@ -119,8 +119,20 @@ $(document).on('click', '.delete-user-button', function (e) {
         onCancel: () => {
             console.log("삭제 취소");
         },
-        onNext: () => {
-            console.log("삭제 확인");
+        onNext: async () => {
+            try {
+                const response= await deletePtMember(ptMemberId);
+                showCustomAlert({
+                    type: 3,
+                    message: response.message,
+                    onNext: function () {
+                        //새로고침 
+                        location.reload();
+                    }
+                });
+            } catch (error) {
+                console.error("Error while deleting PT member:", error);
+            }
         }
     }); 
     // 예시: 삭제 후 테이블 다시 렌더링할 경우 필요한 콜백 추가 가능
