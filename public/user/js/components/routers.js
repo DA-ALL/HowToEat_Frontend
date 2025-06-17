@@ -11,31 +11,8 @@ import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
-import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
-
-const userConsumedDataTest = {
-    date: "2025-04-18",
-    carbo: { consumed: 70, target: 220 },
-    protein: { consumed: 42, target: 90 },
-    fat: { consumed: 20, target: 50 }
-} 
-
-const registFoodDataTest = {
-    id: 42,
-    type: "ingredient_food",
-    name: "소고기 채끝살 (생것)",
-    detail: "수입산(미국산)",
-    weight: 100,
-    kcal: 217,
-    carbo: 442,
-    protein: 26,
-    fat: 12
-}
 
 export function showMain(meal = null, subpage = null, type = null, userConsumedData = null, registFoodData = null) {
-    const saved = localStorage.getItem(`mealData_${meal}`);
-    const savedFood = saved ? JSON.parse(saved) : null;
-    const merged = mergeConsumedData(userConsumedDataTest, savedFood);
 
     // $('#report').hide();
     $('#main').show();

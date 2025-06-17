@@ -26,7 +26,7 @@ const navMap = {
 };
 
 // 뷰 전환 함수
-export function showPage(path, registFoodData = null) {
+export function showPage(path) {
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
         if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
@@ -40,7 +40,7 @@ export function showPage(path, registFoodData = null) {
         const regist = parts[4];   // regist 등
         const type = parts[5];     // ingredient 등
     
-        showMain(meal, regist, type, registFoodData);
+        showMain(meal, regist, type);
     }
     else if (path.startsWith('/report')) {
         showReport();
@@ -206,12 +206,6 @@ $(document).ready(function () {
             const registFoodData = {
                 id: $btn.attr('data-id'),
                 type: $btn.attr('data-type'),
-                name: $btn.attr('data-name'),
-                weight: $btn.attr('data-weight'),
-                kcal: $btn.attr('data-kcal'),
-                carbo: $btn.attr('data-carbo'),
-                protein: $btn.attr('data-protein'),
-                fat: $btn.attr('data-fat'),
             };
             const foodType = $btn.attr('data-type');
 
@@ -219,7 +213,7 @@ $(document).ready(function () {
 
             const newPath = `/main/${meal}/${selectedDate}/regist/${foodType}/${registFoodData.id}`;
             history.pushState({ view: 'main', meal, date: selectedDate, itemId: registFoodData.id }, '', newPath);
-            showPage(newPath, registFoodData);
+            showPage(newPath);
         }
 
     });

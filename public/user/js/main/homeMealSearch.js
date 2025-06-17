@@ -89,10 +89,10 @@ export function renderMealSearch(callback) {
             fat: { consumed: raw.consumedFat, target: raw.targetFat }
         };
 
-        console.log(userConsumedData);
-        console.log(raw);
-
         const favoriteFoods = favoriteRes[0].data;
+        
+        console.log(userConsumedData);
+        console.log(favoriteFoods);
 
         window.userConsumedData = userConsumedData;
         window.mealKey = mealKey;
@@ -100,6 +100,7 @@ export function renderMealSearch(callback) {
         const favoriteListHTML = favoriteFoods.map(item => `
             <div class="favorite-meal-item"
                  data-id="${item.favoriteFoodId}"
+                 data-food-code="${item.foodCode}"
                  data-type="${item.foodType}"
                  data-name="${item.foodName}"
                  data-detail="${item.providedBy}"
@@ -107,7 +108,8 @@ export function renderMealSearch(callback) {
                  data-kcal="${item.kcal}"
                  data-carbo="${item.carbo}"
                  data-protein="${item.protein}"
-                 data-fat="${item.fat}">
+                 data-fat="${item.fat}"
+                 data-unit="${item.unit}">
                 <div class="meal-title">${item.foodName}</div>
                 <div class="text-wrapper">
                     <span class="weight">${Math.trunc(item.foodWeight)}g</span>
@@ -613,29 +615,58 @@ $(document).on('click', '.favorite-meal-item', function () {
 
 // regist 버튼 클릭 시
 $(document).on('click', '#registFavoriteButton', function () {
-    const $btn = $(this);
-    const mealKey = window.mealKey;
+    const pathParts = window.location.pathname.split('/');
+    const selectedDate = pathParts[3];
+    const mealTime = pathParts[2];
+    const mealTimeUpper = mealTime.toUpperCase();
 
-    console.log('선택된 즐겨찾기 항목:', selectedFavorites);
+    const consumedFoodList = [];
 
-    resetHomeMealView();
-    resetSearchView();
-    resetRegistView();
+    $('.favorite-meal-item.active').each(function () {
+        const $item = $(this);
+        const food = {
+            id: $item.data('id'),
+            foodCode: $item.data('food-code'),
+            foodName: $item.data('name'),
+            mealTime: mealTimeUpper,
+            foodWeight: $item.data('weight'),
+            foodType: $item.data('type'),
+            kcal: $item.data('kcal'),
+            carbo: $item.data('carbo'),
+            protein: $item.data('protein'),
+            fat: $item.data('fat'),
+            providedBy: $item.data('detail') || "-",
+            isPerServing: false, // 필요시 변경
+            unit: $item.data('unit'),
+            foodImageUrl: ""
+        };
+        consumedFoodList.push(food);
+    });
 
-    $(`style[data-keyframe="protein"]`).remove(); 
-    $(`style[data-keyframe="fat"]`).remove(); 
-    $(`style[data-keyframe="carbo"]`).remove(); 
-    selectedFavorites = [];
-
-    const targetPath = `/main/${mealKey}`;
-    history.pushState({ view: 'main' }, '', targetPath);
-    setLastMainPath(targetPath);
-    
-    // ✅ window에도 저장, 그리고 nav-bottom.js에서도 참조하도록
-    window.lastMainPath = targetPath;
-    if (typeof setLastMainPath === 'function') {
-        setLastMainPath(targetPath); // 전역 설정 함수 호출
+    if (consumedFoodList.length === 0) {
+        alert("음식을 선택해주세요.");
+        return;
     }
 
-    showMain(mealKey);
+    $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/consumed-foods`,
+        contentType: "application/json",
+        data: JSON.stringify(consumedFoodList),
+        success: function () {
+
+            consumedFoodList.length = 0;
+            selectedFavorites.length = 0;
+
+            const targetPath = `/main/${mealTime}/${selectedDate}`;
+            history.pushState({ view: 'main' }, '', targetPath);
+            window.lastMainPath = targetPath;
+
+            if (typeof setLastMainPath === 'function') {
+                setLastMainPath(targetPath);
+            }
+
+            showMain(mealTime);
+        }
+    });
 });

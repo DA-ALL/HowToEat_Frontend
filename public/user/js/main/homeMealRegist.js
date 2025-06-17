@@ -194,9 +194,6 @@ function createBarContainer(mealKey, userConsumedData, registFoodData) {
                 const target = Math.trunc(Number(userConsumedData[type]?.target || 0));
                 const upcoming = Number(registFoodData[type] || 0); // 예정 섭취량
                 const newConsumed = (consumed + upcoming).toFixed(1);
-                console.log(consumed, " consumed")
-                console.log(upcoming, " upcoming")
-                console.log(newConsumed, " teststset")
 
                 const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
                 const rawIncreasePercent = target > 0 ? (newConsumed / target) * 100 : 0;
