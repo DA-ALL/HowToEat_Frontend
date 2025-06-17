@@ -1,3 +1,7 @@
+#homeMeal .home-meal-button{
+    padding-bottom: clamp(70px, 7.2vw + 65px, 120px);
+}
+
 #homeMeal .home-meal-bar-container {
     display: flex;
     flex-direction: column;
@@ -73,10 +77,34 @@
     cursor: pointer;
 }
 
-#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-title {
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 2.664vw, 13.33px);
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-title {
     font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
+    width: clamp(222px, 73.68vw + 0.2px, 370px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: 300;
     color: var(--black100);
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-macro-wrapper {
+    display: flex;
+    flex-direction: row;
+    font-size: clamp(10px, 3vw + 1px, 16px);
+    gap: clamp(5.6px, 1.864vw, 9.33px);
+    color: var(--gray300);
+}
+
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-macro-wrapper .divider{
+    font-size: clamp(8px, 3vw + 1px, 14px);
+    color: var(--gray100);
 }
 
 #homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .text-wrapper {

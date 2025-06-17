@@ -145,7 +145,7 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
         success: function (res) {
             const listHtml = res.data.map(renderMealListItem).join('');
             const buttonHtml = `
-                <div class="button-container">
+                <div class="button-container home-meal-button">
                     <div class="next-button home-meal ${buttonClass}">추가</div>
                 </div>
             `;
@@ -157,13 +157,31 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
 
 
 function renderMealListItem(data) {
+
+    console.log(data);
     return `
-        <div class="meal-list-item">
-            <div class="meal-title">${data.foodName}</div>
+        <div class="meal-list-item" data-consumed-food-id="${data.consumedFoodId}">
+            <div class="meal-info-wrapper">
+                <div class="meal-title">${data.foodName}</div>
+                
+                <div class="meal-macro-wrapper">
+                    <div class="macro-kcal">2000kcal</div>
+                    <div class="divider">|</div>
+                    <div class="macro-carbo">탄수2000</div>
+                    <div class="divider">|</div>
+                    <div class="macro-protein">단백2000</div>
+                    <div class="divider">|</div>
+                    <div class="macro-fat">지방2000</div>
+                </div>
+            </div>
+
+
             <div class="text-wrapper">
+            <!--
                 <span class="weight">${Math.trunc(data.weight)}${data.unit}</span>
                 <span class="divide">/</span>
                 <span class="kcal">${Math.trunc(data.kcal)}kcal</span>
+                --!>
                 <div class="image-arrow">
                     <img src="/user/images/icon_arrow_front.png">
                 </div>
