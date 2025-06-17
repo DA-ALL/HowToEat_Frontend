@@ -1,5 +1,6 @@
 import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '../components/routers.js';
 import { setLastMainPath } from '../components/nav-bottom.js';
+import { showToast } from '../components/toast.js';
 
 // 탄단지 섹션 렌더링 (상단 메시지, 바 포함)
 export function renderIncreaseCPFbar(callback) {
@@ -448,6 +449,7 @@ $(document).on('click', '#favoriteButton', function () {
         contentType: false,
         processData: false,
         success: function () {
+            showToast("즐겨찾기에 추가되었습니다.", "#homeMealRegist")
             console.log("업로드 성공");
         },
         error: function (err) {
