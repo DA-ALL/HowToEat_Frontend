@@ -26,7 +26,7 @@ const navMap = {
 };
 
 // 뷰 전환 함수
-export function showPage(path, userConsumedData = null, registFoodData = null) {
+export function showPage(path) {
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
         if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
@@ -40,7 +40,7 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
         const regist = parts[4];   // regist 등
         const type = parts[5];     // ingredient 등
     
-        showMain(meal, regist, type, userConsumedData, registFoodData);
+        showMain(meal, regist, type);
     }
     else if (path.startsWith('/report')) {
         showReport();
@@ -86,24 +86,13 @@ $(document).ready(function () {
         lastMainPath = currentPath;
     }
 
-    // 아침 점심 저녁 별 섭취햇던 칼로리 데이터 이 데이터를 나중에 Ajax로 호출
-    const userConsumedData = {
-        date: "2025-04-09",
-        carbo: { consumed: 70, target: 220 },
-        protein: { consumed: 42, target: 90 },
-        fat: { consumed: 20, target: 50 }
-    }
 
     $(document).on('click', '.log-wrapper', function () {
         const mealKor = $(this).find('.meal-time').text();
         const mealMap = { '아침': 'breakfast', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
         const meal = mealMap[mealKor] || 'breakfast';
-        const selectedDate = $('.day.active').data('date') || userConsumedData.date;
+        const selectedDate = $('.day.active').data('date');
         const newPath = `/main/${meal}/${selectedDate}`;
-        const updatedConsumedData = {
-            ...userConsumedData,
-            date: selectedDate
-        };
     
         resetHomeMealView();
         resetSearchView();
@@ -114,7 +103,7 @@ $(document).ready(function () {
     
         history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
         console.log("Test", newPath)
-        showPage(newPath, updatedConsumedData);
+        showPage(newPath);
     });
     
 
@@ -126,6 +115,7 @@ $(document).ready(function () {
     
             if (key === '/main') {
                 if (currentPath.startsWith('/main')) {
+
                     if (currentPath === lastMainPath && currentPath !== '/main') {
                         lastMainPath = '/main';
                         history.pushState({ view: 'main' }, '', '/main');
@@ -193,19 +183,19 @@ $(document).ready(function () {
 
     $(document).on('click', '.next-button.active', function () {
         let $btn = $(this);
-        const currentPath = window.location.pathname; // ex: /main/breakfast
-        const parts = currentPath.split('/');
+        const pathParts = window.location.pathname.split("/");
+        const selectedDate = pathParts[3];
 
-        if (parts.length < 3) return;
+        if (pathParts.length < 3) return;
 
-        const meal = parts[2]; // 'breakfast', 'lunch', etc
+        const meal = pathParts[2]; // 'breakfast', 'lunch', etc
 
         // ---------------------------------------------
         // 1. /main/{meal}/regist → from home-meal
         // ---------------------------------------------
         if ($btn.hasClass('home-meal')) {
-            const newPath = `/main/${meal}/regist`;
-            history.pushState({ view: 'main', meal }, '', newPath);
+            const newPath = `/main/${meal}/${selectedDate}/regist`;
+            history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
             showPage(newPath);
         }
 
@@ -216,22 +206,14 @@ $(document).ready(function () {
             const registFoodData = {
                 id: $btn.attr('data-id'),
                 type: $btn.attr('data-type'),
-                name: $btn.attr('data-name'),
-                weight: $btn.attr('data-weight'),
-                kcal: $btn.attr('data-kcal'),
-                carbo: $btn.attr('data-carbo'),
-                protein: $btn.attr('data-protein'),
-                fat: $btn.attr('data-fat'),
             };
+            const foodType = $btn.attr('data-type');
 
             if (!registFoodData.id || !registFoodData.type) return;
 
-            // `_food` 제거
-            const pureType = registFoodData.type.replace('_food', '');
-
-            const newPath = `/main/${meal}/regist/${pureType}/${registFoodData.id}`;
-            history.pushState({ view: 'main', meal, itemId: registFoodData.id }, '', newPath);
-            showPage(newPath, userConsumedData, registFoodData);
+            const newPath = `/main/${meal}/${selectedDate}/regist/${foodType}/${registFoodData.id}`;
+            history.pushState({ view: 'main', meal, date: selectedDate, itemId: registFoodData.id }, '', newPath);
+            showPage(newPath);
         }
 
     });

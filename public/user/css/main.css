@@ -13,9 +13,11 @@
 @import url("/user/css/todays-cpf.css");
 @import url("/user/css/meal-log.css");
 @import url("/user/css/components/nav-bottom.css");
+@import url("/user/css/components/toast.css");
 @import url("/user/css/home-meal.css");
 @import url("/user/css/home-meal-search.css");
 @import url("/user/css/home-meal-regist.css");
+
 
 html, body {
     height: 100%;
