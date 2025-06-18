@@ -1,7 +1,7 @@
 import { registerPopstateHandler, updateURL, registerViewLoader } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/pt-user-management/userTableWithDelete.js';
 import { showAddPtMember } from '/administrate/js/pt-user-management/addPtMember.js';
-import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
+import { renderUserInfo } from '/administrate/js/userInfo.js';
 import { getTrainer, getTrainerWithPtMembers} from '../api.js';
 
 
@@ -100,8 +100,6 @@ $(document).on('click', `#${bodyId} tr`, function () {
     const fullPath = pathSegments.join("/");
     const page = fullPath + `/user/${userId}`;
     updateURL(page);
-
-    renderUserInfo(getUserInfo(), `user-management/pt/${lastSegment}`);
 });
 
 

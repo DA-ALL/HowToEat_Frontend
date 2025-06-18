@@ -1,6 +1,6 @@
 import { updateURL } from '/administrate/js/router.js';
 import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
-import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
+import { renderUserInfo } from '/administrate/js/userInfo.js';
 import { getUserList } from '../api.js';
 
 const containerId = 'totalUserTable';
@@ -24,7 +24,7 @@ async function getUserDataForTotalUsers() {
         console.log("User data fetched:", response);
         return response;
     } catch (err) {
-        return [];
+        console.error("Error fetching user data:", err);
     }
 }
 
@@ -44,6 +44,4 @@ $(document).on('click', `#userTableBody tr`, function () {
     const userId = $(this).find('.td-id').text();
     const page = `user-management/user/${userId}`;
     updateURL(page);
-
-    renderUserInfo(getUserInfo(), 'user-management');
 });

@@ -1,7 +1,7 @@
 import { registerPopstateHandler, updateURL, getCurrentContent } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
-
+import { getUser } from './api.js';
 
 export function renderUserInfo({ imageURL, username, email, birth, goal, goalCalorie, streakDay }, previousContent) {
     if (previousContent) {
@@ -73,7 +73,6 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
         if (prev) {
             updateURL(prev);
         } else {
-            // fallback
             window.history.back();
         }
     });
@@ -88,7 +87,7 @@ function loadUserInfoTable() {
 
     renderUserTable(containerId, bodyId);
     renderTableWithOptionalPagination({
-        getData: getUserDataForUserInfo,
+        getData: getUserData,
         bodyId: bodyId,
         contentId: contentId,
         enablePagination: false
@@ -112,15 +111,19 @@ function loadDailyCalorieTable(){
     })
 }
 
-export function getUserInfo() {
-    return {
-        imageURL: "/administrate/images/icon_human_blue.png",
-        username: `김예현`,
-        email: "insidesy4@gmail.com",
-        birth: "1995.04.30",
-        goal: "체중 감량",
-        goalCalorie: 2024,
-        streakDay: 13
+export async function getUserData() {
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getUser(userId);
+        console.log("User data fetched:", response);
+        const data = {
+            content: [response.data],
+            page: 0,
+            totalElements: 1,
+        }
+        return data;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
     }
 }
 
@@ -582,14 +585,17 @@ function updateDateAndConsumedData(newDate) {
 //[[consumedMealDataWrapper]] 영역 코드 - 아침 점심 저녁별 탄단지 그래프 영역//
 ///////////////////////////////////////////////////////////////////
 
-
-
-$(document).ready(function () {
+function getUserIdFromUrl() {
     const pathSegments = window.location.pathname.split('/');
     const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
-        
-    if(getCurrentContent() == 'userInfo' && userId ) {     
-        renderUserInfo(getUserInfo());
+    return userId;
+}
+
+$(document).ready(function () {
+    const userId = getUserIdFromUrl();
+
+    if(getCurrentContent() == 'userInfo' && userId ) {
+        renderUserInfo(getUserDataForUserInfo());
     }
 });
 
