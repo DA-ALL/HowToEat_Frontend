@@ -13,7 +13,6 @@ $(document).ready(function () {
 
 
 export function updateProgressBar(pageNumber) {
-    console.log("test")
     $('.bar').each(function () {
         const page = parseInt($(this).attr('data-page'));
         if (page <= pageNumber) {
