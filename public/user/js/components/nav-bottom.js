@@ -98,11 +98,9 @@ $(document).ready(function () {
         resetSearchView();
         resetRegistView();
     
-        // ✅ 여기 추가
         window.lastMainPath = newPath;
     
         history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
-        console.log("Test", newPath)
         showPage(newPath);
     });
     

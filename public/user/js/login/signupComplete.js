@@ -1,4 +1,15 @@
+import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
+
 $(document).ready(function () {
+    setupAjaxAuthInterceptor();
+    $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/users/basic-info`,
+        success: function (res) {
+            const userBasicInfo = res.data;
+            window.targetKcal = userBasicInfo.targetKcal;
+        },
+    });
     showWelcomeMessage();
     triggerConfettiEffect();
 
@@ -33,7 +44,7 @@ const createGoalMessage = () => `
 `;
 
 function animateKcalCounter() {
-    let targetValue = 2562, duration = 3000, startTime = performance.now();
+    let targetValue = window.targetKcal, duration = 3000, startTime = performance.now();
 
     function easeOutExpo(t) {
         return t === 1 ? 1 : 1 - Math.pow(2, -15 * t);
