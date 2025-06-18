@@ -1,22 +1,21 @@
-export function renderMealDetail(mealKey, data, callback) {
-    const mealKor = mealToKor(mealKey);
+export function renderMealDetail(callback) {
     const pathParts = window.location.pathname.split("/");
-    const selectedDate = pathParts[3];
-    const isToday = isTodayDate(selectedDate);
-    const buttonClass = isToday ? 'active' : 'disabled';
+    const mealKey = pathParts[2];
+    const mealKor = mealToKor(mealKey);
     const mealTime = mealKey.toUpperCase();
+    const selectedDate = pathParts[3];
 
     $.ajax({
         type: "GET",
         url: `${window.DOMAIN_URL}/daily-summaries/${selectedDate}/meal-time/${mealTime}/macros`,
         success: function (res) {
-            const data2 = res.data;
+            const data = res.data;
 
             const commonHeader = `
                 <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
                 <div class="home-meal-container padding">
                     <div class="second-title-format">${mealKor}의 탄단지</div>
-                    ${createBarContainer(mealKey, data2)}
+                    ${createBarContainer(mealKey, data)}
                 </div>
                 <div class="divider large"></div>
             `;
@@ -37,7 +36,7 @@ export function renderMealDetail(mealKey, data, callback) {
                 </div>
                 `;
 
-            callback(content); // ✅ 콜백으로 결과 전달
+            callback(content); // 콜백으로 결과 전달
         }
     });
 }
@@ -96,7 +95,7 @@ function createBarContainer(mealKey, data) {
         <div class="home-meal-bar-container">
             ${types.map(type => {
                 const consumed = data[`consumed${capitalize(type)}`];
-                const target = data[`target${capitalize(type)}`];
+                const target = Math.trunc(data[`target${capitalize(type)}`]);
                 const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
                 const percent = Math.min(rawPercent, 100);
 
@@ -146,27 +145,43 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
         success: function (res) {
             const listHtml = res.data.map(renderMealListItem).join('');
             const buttonHtml = `
-                <div class="button-container">
+                <div class="button-container home-meal-button">
                     <div class="next-button home-meal ${buttonClass}">추가</div>
                 </div>
             `;
 
-            callback(listHtml, buttonHtml); // 🚀 데이터도 버튼도 콜백으로 넘김
+            callback(listHtml, buttonHtml); // 데이터도 버튼도 콜백으로 넘김
         }
     });
 }
 
 
-
-
 function renderMealListItem(data) {
+
+    console.log(data);
     return `
-        <div class="meal-list-item">
-            <div class="meal-title">${data.foodName}</div>
+        <div class="meal-list-item" data-consumed-food-id="${data.consumedFoodId}">
+            <div class="meal-info-wrapper">
+                <div class="meal-title">${data.foodName}</div>
+                
+                <div class="meal-macro-wrapper">
+                    <div class="macro-kcal">${(data.kcal).toFixed(1).toLocaleString()} kcal</div>
+                    <div class="divider">|</div>
+                    <div class="macro-carbo">탄수 ${(data.carbo).toFixed(1).toLocaleString()}</div>
+                    <div class="divider">|</div>
+                    <div class="macro-protein">단백 ${(data.protein).toFixed(1).toLocaleString()}</div>
+                    <div class="divider">|</div>
+                    <div class="macro-fat">지방 ${(data.fat).toFixed(1).toLocaleString()}</div>
+                </div>
+            </div>
+
+
             <div class="text-wrapper">
-                <span class="weight">${data.weight}${data.unit}</span>
+            <!--
+                <span class="weight">${Math.trunc(data.weight)}${data.unit}</span>
                 <span class="divide">/</span>
-                <span class="kcal">${data.kcal}kcal</span>
+                <span class="kcal">${Math.trunc(data.kcal)}kcal</span>
+                --!>
                 <div class="image-arrow">
                     <img src="/user/images/icon_arrow_front.png">
                 </div>
