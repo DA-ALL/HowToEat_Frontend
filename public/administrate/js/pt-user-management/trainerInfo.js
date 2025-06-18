@@ -100,6 +100,9 @@ $(document).on('click', `#${bodyId} tr`, function () {
     const fullPath = pathSegments.join("/");
     const page = fullPath + `/user/${userId}`;
     updateURL(page);
+    
+    const trainerId = getPathIdFromUrl();
+    sessionStorage.setItem('previousContent', 'user-management/pt/' + trainerId);
 });
 
 
@@ -148,15 +151,6 @@ function getPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return parseInt(urlParams.get('page')) || 1;
 }
-
-// $(document).ready(async function () {
-//     const pathSegments = window.location.pathname.split('/');
-//     const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
-//     if(userId) {
-//         renderTrainerInfo(await getTrainerInfo(), 'user-management/pt');    
-//     }      
-// });
-
 
 // 회원 추가하기 클릭시
 $(document).on('click', `#memberAddButton`, function () {

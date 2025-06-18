@@ -44,4 +44,5 @@ $(document).on('click', `#userTableBody tr`, function () {
     const userId = $(this).find('.td-id').text();
     const page = `user-management/user/${userId}`;
     updateURL(page);
+    sessionStorage.setItem('previousContent', 'user-management');
 });

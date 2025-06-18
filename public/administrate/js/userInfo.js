@@ -1,12 +1,10 @@
-import { registerPopstateHandler, updateURL, getCurrentContent } from '/administrate/js/router.js';
+import { registerPopstateHandler, updateURL, getCurrentContent, registerViewLoader } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
-import { getUser } from './api.js';
+import { getUser, getUserDetail } from './api.js';
 
-export function renderUserInfo({ imageURL, username, email, birth, goal, goalCalorie, streakDay }, previousContent) {
-    if (previousContent) {
-        sessionStorage.setItem('previousContent', previousContent);
-    }
+export async function renderUserInfo() {
+    const data = await getUserDataForUserInfo();
 
     let userInfoHtml = `
         <div class="nav-top">
@@ -20,34 +18,34 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
         <div class="user-info-container">
             <div class="user-info-wrapper">
                 <div class="user-profile-image">
-                    <img src="${imageURL}">
+                    <img src="${data.profileImageUrl}">
                 </div>
 
-                <div class="user-name">${username}</div>
+                <div class="user-name">${data.name}</div>
 
                 <div class="user-meta-wrapper">
-                    <div class="email">${email}</div>
+                    <div class="email">${data.email}</div>
                     <div class="divider"></div>
-                    <div class="birth">${birth}</div>
+                    <div class="birth">${data.birth}</div>
                 </div>
 
                 <div class="user-goal-wrapper">
                     <div class="text-wrapper">
-                        <div class="value">${goal}</div>
+                        <div class="value">${formatUserGoal(data.userGoal)}</div>
                         <div class="label">유저 목표</div>
                     </div>
 
                     <div class="divider"></div>                    
 
                     <div class="text-wrapper">
-                        <div class="value">${goalCalorie}</div>
+                        <div class="value">${data.targetKcal}</div>
                         <div class="label">목표 Kcal</div>
                     </div>
 
                     <div class="divider"></div>
 
                     <div class="streak-wrapper">
-                        <div class="value">${streakDay}</div>
+                        <div class="value">${data.streakDays}</div>
                         <div class="label">연속 기록</div>
                     </div>
                 </div>
@@ -70,6 +68,8 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
 
     $(document).on('click', `#userInfo .back-button-wrapper`, function () {
         const prev = sessionStorage.getItem('previousContent');
+
+        console.log("뒤로가기 버튼")
         if (prev) {
             updateURL(prev);
         } else {
@@ -77,6 +77,21 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
         }
     });
 
+}
+
+function formatUserGoal(userGole){
+    switch (userGole){
+        case 'LOSE_WEIGHT' :
+            return "체중감량";
+        case 'MAINTAIN_WEIGHT' : 
+            return "체중유지";
+        case 'GAIN_WEIGHT':
+            return "체중증량";
+        case 'GAIN_MUSCLE':
+            return "근육증량";
+        default:
+            return '';
+    }
 }
 
 
@@ -93,8 +108,6 @@ function loadUserInfoTable() {
         enablePagination: false
     })
 }
-
-
 
 function loadDailyCalorieTable(){
     const containerId = 'dailyCalorieTable';
@@ -127,18 +140,32 @@ export async function getUserData() {
     }
 }
 
-function getUserDataForUserInfo() {
-    return [{
-        id: 1,
-        imageURL: "/administrate/images/icon_human_blue.png",
-        name: `김예현`,
-        mealCount: Math.floor(Math.random() * 200),
-        joined: "2025.03.16",
-        left: "-",
-        gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
-    }]
+async function getUserDataForUserInfo() {
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getUserDetail(userId);
+        console.log("User Detail data:", response);
+        
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
 }
+
+registerPopstateHandler('userInfo',loadDailyCalorieTable);
+registerViewLoader('userInfo', renderUserInfo);
+
+
+
+
+
+
+
+
+
+
+
+
 
 const calorieData = {
     "2025-04-01": { consumed: 1800, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 225, consumedProtein: 135, consumedFat: 40 },
@@ -261,8 +288,6 @@ function getDailyCaloriData() {
     ];
 }
 
-
-registerPopstateHandler('userInfo',loadDailyCalorieTable);
 
 
 // 칼로리 테이블 row 클릭
@@ -591,13 +616,13 @@ function getUserIdFromUrl() {
     return userId;
 }
 
-$(document).ready(function () {
-    const userId = getUserIdFromUrl();
+// $(document).ready(function () {
+//     const userId = getUserIdFromUrl();
 
-    if(getCurrentContent() == 'userInfo' && userId ) {
-        renderUserInfo(getUserDataForUserInfo());
-    }
-});
+//     if(getCurrentContent() == 'userInfo' && userId ) {
+//         renderUserInfo(getUserDataForUserInfo());
+//     }
+// });
 
 // 날짜 포맷을 Date 객체로 변환하는 함수
 function parseDateFromText(dateText) {

@@ -277,6 +277,14 @@ export function getUser(userId) {
     })
 }
 
+export function getUserDetail(userId) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/users/${userId}/detail`,
+        contentType: "application/json",
+    })
+}
+
 // ================  PtMember API ================
 export function createPtMember(ptMemberData) {
     return $.ajax({
