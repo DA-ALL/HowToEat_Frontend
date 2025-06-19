@@ -64,20 +64,17 @@ export async function renderUserInfo() {
 
     loadUserInfoTable();
     loadDailyCalorieTable();
-
-
-    $(document).on('click', `#userInfo .back-button-wrapper`, function () {
-        const prev = sessionStorage.getItem('previousContent');
-
-        console.log("뒤로가기 버튼")
-        if (prev) {
-            updateURL(prev);
-        } else {
-            window.history.back();
-        }
-    });
-
 }
+
+$(document).on('click', `#userInfo .back-button-wrapper`, function () {
+    const prev = sessionStorage.getItem('previousContent');
+
+    if (prev) {
+        updateURL(prev);
+    } else {
+        window.history.back();
+    }
+});
 
 function formatUserGoal(userGole){
     switch (userGole){
