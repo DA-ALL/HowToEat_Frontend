@@ -37,9 +37,22 @@ export function showPage(path) {
     
         const parts = path.split('/');
         const meal = parts[2];      // breakfast
-        const regist = parts[4];   // regist 등
-        const type = parts[5];     // ingredient 등
-    
+        const date = parts[3];      // 날짜
+
+        let regist = null;
+        let type = null;
+
+        if (parts[4] === 'consumed-food') {
+            regist = 'consumed-food';
+            type = null; // 타입 없음
+            const consumedFoodId = parts[5];
+            showMain(meal, regist, type, consumedFoodId);
+            return;
+        }
+
+        // 기존 regist 처리
+        regist = parts[4];
+        type = parts[5];
         showMain(meal, regist, type);
     }
     else if (path.startsWith('/report')) {
@@ -52,14 +65,14 @@ export function showPage(path) {
         }
     
         const parts = path.split('/');
-        const subpath = parts[2];        // 예: 'notice'
-        const detailId = parts[3];       // 예: '4'
-    
+        const subpath = parts[2];
+        const detailId = parts[3];
         showMyPage(subpath, detailId);
     }
 
     updateNavActive(path);
 }
+
 
 // 활성 nav 설정
 function updateNavActive(path) {

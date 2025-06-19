@@ -1,3 +1,5 @@
+import { showPage } from '../components/nav-bottom.js'
+
 export function renderMealDetail(callback) {
     const pathParts = window.location.pathname.split("/");
     const mealKey = pathParts[2];
@@ -189,3 +191,20 @@ function renderMealListItem(data) {
         </div>
     `;
 }
+
+$(document).on('click', '.meal-list-item', function () {
+    let $consumedFood = $(this);
+    const pathParts = window.location.pathname.split("/");
+    const selectedDate = pathParts[3];
+    const meal = pathParts[2]; // ex: breakfast, lunch 등등
+
+    // data-consumed-food-id
+    const consumedFoodId = $consumedFood.data("consumed-food-id");
+
+    // 새 path 생성
+    const newPath = `/main/${meal}/${selectedDate}/consumed-food/${consumedFoodId}`;
+
+    // pushState로 히스토리 관리
+    history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
+    showPage(newPath);
+});

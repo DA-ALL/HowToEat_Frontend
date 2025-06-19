@@ -87,20 +87,35 @@ export function initHeaderNav(parentSelector = 'body') {
     
         if (currentPath.startsWith('/main/')) {
             const parts = currentPath.split('/');
+
+            // http://localhost:3000/main/breakfast/2025-06-19
             if (parts.length === 4) {
                 // 예: /main/morning → 홈으로
                 history.pushState({ view: 'main' }, '', '/main');
                 showPage('/main');
                 return;
+
+            // http://localhost:3000/main/breakfast/2025-06-19/regist
             } else if (parts.length === 5) {
-                    const mealTime = parts[2];
-                    const selectedDate = parts[3];
-    
-                    const newPath = `/main/${mealTime}/${selectedDate}`;
-                    history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
-                    showPage(`/main/${mealTime}/${selectedDate}`);
-                    return;
-                    
+                const mealTime = parts[2];
+                const selectedDate = parts[3];
+
+                const newPath = `/main/${mealTime}/${selectedDate}`;
+                history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+                showPage(`/main/${mealTime}/${selectedDate}`);
+                return;
+
+            // http://localhost:3000/main/breakfast/2025-06-19/consumed-food/63
+            } else if (parts.length === 6) {
+                const mealTime = parts[2];
+                const selectedDate = parts[3];
+
+                const newPath = `/main/${mealTime}/${selectedDate}`;
+                history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+                showPage(`/main/${mealTime}/${selectedDate}`);
+                return;  
+
+            // http://localhost:3000/main/breakfast/2025-06-19/regist/COOKED/3
             } else if (parts.length === 7) {
                 const mealTime = parts[2];
                 const selectedDate = parts[3];

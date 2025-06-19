@@ -1,9 +1,10 @@
 import { renderMealDetail, renderMealListHTML } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
+import { renderConsumedFoodInfo } from '../main/consumedFood.js';
 import { renderReportPage } from '../report/report.js';
 import { renderMyPage } from '../my-page/myPage.js';
-import { renderIncreaseCPFbar, renderMealRegist, renderMealAdjust, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
+import { renderIncreaseCPFbar, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
 import { renderUsersSetTime } from '../my-page/usersSetTime.js';
 import { renderUsersNotice } from '../my-page/usersNotice.js';
 import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
@@ -12,51 +13,31 @@ import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
 
-export function showMain(meal = null, subpage = null, type = null, userConsumedData = null, registFoodData = null) {
-
-    // $('#report').hide();
+export function showMain(meal = null, subpage = null, type = null, consumedFoodId = null) {
     $('#main').show();
     $('#report').hide();
     $('#my').hide();
 
-    // 초기 상태: 모든 하위 뷰 숨기고 시작
-    $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
+    $('#home, #homeMeal, #homeMealSearch, #homeMealRegist, #consumedFoodDetail').hide();
 
     if (!meal) {
         initCalendarPage(true);
         resetSearchView();
-
-
-        //그래프 두번 그려주기 방지
-        $('style').each(function () {
-            const content = this.innerHTML;
-            if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
-                this.remove();
-            }
-        });
-
-        $('style').filter((_, el) =>
-            /@keyframes fillArc/.test(el.innerHTML)
-          ).remove();
-
-          
-        $('#home').show(); // /main
+        $('#home').show();
         return;
     }
 
+    const pathParts = window.location.pathname.split("/");
+    const selectedDate = pathParts[3];
+    const mealTime = meal.toUpperCase();
 
-    if (meal && !subpage && !type) {
+    // 1️⃣ 기본 식단 상세 화면
+    if (meal && !subpage && !type && !consumedFoodId) {
         resetSearchView();
         renderMealDetail(function (html) {
-            const pathParts = window.location.pathname.split("/");
-            const selectedDate = pathParts[3];
-            const mealTime = meal.toUpperCase();
-    
-            // 먼저 뼈대 렌더링
             $('#homeMeal').html(html);
             initHeaderNav($('#homeMeal'));
-    
-            // 그 다음 비동기로 식단 + 버튼 렌더링
+
             renderMealListHTML(meal, selectedDate, mealTime, function (listHtml, buttonHtml) {
                 $('.meal-list-wrapper').html(listHtml);
                 $('#homeMeal').append(buttonHtml);
@@ -64,11 +45,18 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
             });
         });
     }
-    
-    
 
+    // 2️⃣ 신규: 섭취 음식 상세
+    if (meal && subpage === 'consumed-food' && consumedFoodId) {
+        renderConsumedFoodInfo(consumedFoodId, function(html) {
+            $('#consumedFoodDetail').html(html);
+            initHeaderNav($('#consumedFoodDetail'));
+            $('#consumedFoodDetail').show();
+        });
+    }
+
+    // 3️⃣ 기존: 등록 search
     if (meal && subpage === 'regist' && !type) {
-        // /main/morning/search
         $('style[data-keyframe]').remove();
         if ($('#homeMealSearch').children().length === 0) {
             renderMealSearch(function(html) {
@@ -77,13 +65,12 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
                 runAllCountAnimations();
                 $('html, body').scrollTop(0);
             });
-            
-         } 
+        }
         $('#homeMealSearch').show();
     }
 
+    // 4️⃣ 기존: 등록 type별
     if (meal && subpage === 'regist' && type) {
-        
         renderIncreaseCPFbar(function(html) {
             $('#homeMealRegist').html(html);
             initHeaderNav($('#homeMealRegist'));
@@ -93,19 +80,18 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
             updateNextButtonData();
         });
 
-    
         $('#homeMealRegist').show();
     }
 
-    //리포트 페이지
+    // 리포트, 마이페이지 캐싱 (기존 유지)
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
     }
-    //마이 페이지
     if ($('#myPage').children().length === 0) {
         $("#myPage").html(renderMyPage());
-    }   
+    }
 }
+
 
 
 export function showReport() {
