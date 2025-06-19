@@ -1,10 +1,11 @@
-import { updateQueryParam , getCurrentContent} from '/administrate/js/router.js';
+import { updateQueryParam } from '/administrate/js/router.js';
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
-
+import { updateUserNextGymStatus, updateUserRole } from '../api.js';
 const usersPerPage = 20;
 
-export function createUserRow({ id, profileImageUrl, name, consumedFoodCount, createdAt, left, isNextGym, userRole }) {
+export function createUserRow({ id, profileImageUrl, name, consumedFoodCount, createdAt, left, nextGym, userRole }) {
+    
     return `
         <tr>
             <td class="td-id">${id}</td>
@@ -19,12 +20,12 @@ export function createUserRow({ id, profileImageUrl, name, consumedFoodCount, cr
             <td class="td-meal-log-count">${consumedFoodCount}</td>
             <td class="td-account-created-at">${createdAt}</td>
             <td class="td-account-closed-at">${left || '-'}</td>
-            <td class="td-gym-user">
-                ${isNextGym ? `<div class="image-gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>` : `<div class="image-gym-user">-</div>`}
+            <td class="td-gym-user" data-user-id=${id}>
+                ${nextGym ? `<div class="image-gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>` : `<div class="image-gym-user">-</div>`}
             </td>
             <td class="td-user-role">
                 <div class="user-role-wrapper">
-                    <div class="user-role-button ${userRole}">${formatUserRole(userRole)}</div>
+                    <div class="user-role-button ${userRole}" data-user-id=${id}>${formatUserRole(userRole)}</div>
                 </div>
             </td>
         </tr>
@@ -103,17 +104,17 @@ export async function renderTableWithOptionalPagination({
 // 유저권한 변경 버튼
 $(document).on('click', '.user-role-button', function (e) {
     e.stopPropagation();
+    const userId = $(this).data('user-id');
 
     let dropdownMaster =`
-        <div id="roleChangeDropdown">
+        <div id="roleChangeDropdown" data-user-id=${userId}>
             <div class="role-item master">Master</div>
         </div>
     `
     let dropdownOther = `
-        <div id="roleChangeDropdown">
-            <div class="role-item admin">Admin</div>
-            <div class="role-item user">User</div>
-            <div class="role-item super-user">SuperUser</div>
+        <div id="roleChangeDropdown" data-user-id=${userId}>
+            <div class="role-item USER" data-query="USER">User</div>
+            <div class="role-item SUPERUSER" data-query="SUPERUSER">SuperUser</div>
         </div>
     `
     const $button = $(this);
@@ -138,13 +139,6 @@ $(document).on('click', '.user-role-button', function (e) {
 
     $('body').append($dropdown);
 
-    showCustomAlert({
-        type: 1,
-        onNext: () => {
-            console.log("확인");
-        }
-    });
-    
     // 다른 곳 클릭 시 닫기
     $(document).on('click', function (e) {
         if (!$(e.target).closest('.user-role-button, #roleChangeDropdown').length) {
@@ -153,9 +147,26 @@ $(document).on('click', '.user-role-button', function (e) {
     });
 });
 
-$(document).on('click', '.role-item', function () {
+$(document).on('click', '.role-item', async function () {
     // TODO: role 변경 API 호출
-    console.log("role변경 API 호출");
+    const userId = $('#roleChangeDropdown').data('user-id')
+    const userRole = $(this).data('query');
+    
+     try {
+        const response = await updateUserRole(userId, {userRole});
+        
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: function () {
+                window.location.reload();
+            }
+        });
+         
+         
+     } catch (err) {
+         console.error("Error fetching user data:", err);
+     }
 
     const isOk = true;
     
@@ -169,11 +180,12 @@ $(document).on('click', '.role-item', function () {
 // 넥스트짐 유저 여부 변경 UI
 $(document).on('click', '.image-gym-user', function (e) {
     e.stopPropagation();
-    console.log("gym-user 버튼 클릭");
+    const userId = $(this).parent().data('user-id');
+    
     let dropdownHTML =`
-        <div id="gymUserDropdown">
-            <div class="gym-user-item gym-user"><img src="/administrate/images/logo_nextgym_02.png"></div>
-            <div class="gym-user-item not-gym-user">-</div>
+        <div id="gymUserDropdown" data-user-id=${userId}>
+            <div class="gym-user-item gym-user" data-query="true"><img src="/administrate/images/logo_nextgym_02.png"></div>
+            <div class="gym-user-item not-gym-user" data-query="false">-</div>
         </div>
     `
     const $button = $(this);
@@ -200,8 +212,26 @@ $(document).on('click', '.image-gym-user', function (e) {
     });
 });
 
-$(document).on('click', '.gym-user-item', function () {
-    // TODO: role 변경 API 호출
+$(document).on('click', '.gym-user-item', async function () {
+    const userId = $('#gymUserDropdown').data('user-id')
+    const isNextGym = $(this).data('query');
+
+    
+    try {
+        const response = await updateUserNextGymStatus(userId, {isNextGym});
+        console.log(response);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: function () {
+                window.location.reload();
+            }
+        });
+     } catch (err) {
+         console.error("Error fetching user data:", err);
+     }
+
+    
     console.log("gymuser 변경 API 호출");
     $('#gymUserDropdown').remove();
 });

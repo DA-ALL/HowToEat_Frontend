@@ -16,7 +16,7 @@ export function createUserRow({ ptMemberId, user}) {
                     <div class="user-name">${user.name}</div>
                 </div>
             </td>
-            <td class="td-meal-log-count">${user.mealCount}</td>
+            <td class="td-meal-log-count">${user.consumedFoodCount}</td>
             <td class="td-account-created-at">${user.createdAt}</td>
             <td class="td-account-closed-at">${user.deletedAt ? deletedAt : '-'}</td>
             <td class="td-gym-user">

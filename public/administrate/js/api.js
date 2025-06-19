@@ -295,6 +295,24 @@ export function getUserDailyCalories(userId, page) {
     })
 }
 
+export function updateUserNextGymStatus(userId, requestDto) {
+    return $.ajax({
+        type: "PATCH",
+        url: `${window.DOMAIN_URL}/admin/users/${userId}/is-next-gym`,
+        contentType: "application/json",
+        data: JSON.stringify(requestDto),
+    })
+}
+
+export function updateUserRole(userId, requestDto) {
+    return $.ajax({
+        type: "PATCH",
+        url: `${window.DOMAIN_URL}/admin/users/${userId}/user-role`,
+        contentType: "application/json",
+        data: JSON.stringify(requestDto),
+    })
+}
+
 // ================  PtMember API ================
 export function createPtMember(ptMemberData) {
     return $.ajax({
