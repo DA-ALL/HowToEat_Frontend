@@ -1,7 +1,7 @@
 import { registerPopstateHandler, updateURL, getCurrentContent, registerViewLoader } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
-import { getUser, getUserDetail } from './api.js';
+import { getUser, getUserDetail, getUserDailyCalories} from './api.js';
 
 export async function renderUserInfo() {
     const data = await getUserDataForUserInfo();
@@ -152,13 +152,28 @@ async function getUserDataForUserInfo() {
     }
 }
 
+
+
+async function getDailyCaloriData() {
+    const page = getPageFromURL();
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getUserDailyCalories(userId, page);
+        console.log("칼로리 데이터:", response)        
+        return response;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
+}
+
+
+function getPageFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
+}
+
 registerPopstateHandler('userInfo',loadDailyCalorieTable);
 registerViewLoader('userInfo', renderUserInfo);
-
-
-
-
-
 
 
 
@@ -257,36 +272,6 @@ const userConsumedMealData = {
 };
 
 
-
-function getDailyCaloriData() {
-    return [
-        { id: 1, date: '2023-10-01', breakfast: 500, lunch: 700, dinner: 800, snack: 200, total: 2200 },
-        { id: 2, date: '2023-10-02', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 3, date: '2023-10-03', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 4, date: '2023-10-04', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 5, date: '2023-10-05', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 6, date: '2023-10-06', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 7, date: '2023-10-07', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 8, date: '2023-10-08', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 9, date: '2023-10-09', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 10, date: '2023-10-10', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 11, date: '2023-10-11', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 12, date: '2023-10-12', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 13, date: '2023-10-13', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 14, date: '2023-10-14', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 15, date: '2023-10-15', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 16, date: '2023-10-16', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 17, date: '2023-10-17', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 18, date: '2023-10-18', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 19, date: '2023-10-19', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 20, date: '2023-10-20', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 21, date: '2023-10-21', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 22, date: '2023-10-22', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 23, date: '2023-10-23', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 24, date: '2023-10-24', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 25, date: '2023-10-25', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 }
-    ];
-}
 
 
 

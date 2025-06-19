@@ -35,7 +35,6 @@ function getParamsFromURL() {
         name: urlParams.get('search') || '',
         orderBy: urlParams.get('orderBy') || '',
         isNextGym: urlParams.get('isNextGym') || '',
-        userRole: urlParams.get('userRole') || '',
         size: 20,
     };
 }

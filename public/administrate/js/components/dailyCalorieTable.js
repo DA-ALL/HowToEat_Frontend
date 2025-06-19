@@ -1,18 +1,18 @@
-import { updateQueryParam, getCurrentContent } from '/administrate/js/router.js';
+import { updateQueryParam } from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const itemsPerPage = 20;
 
-export function createCalorieRow({ id, date, breakfast, lunch, dinner, snack, total }) {
+export function createCalorieRow({ id, createdAt, breakfastKcal, lunchKcal, dinnerKcal, snackKcal, totalKcal }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
-            <td class="td-date">${date}</td>
-            <td class="td-breakfast">${breakfast} Kcal</td>
-            <td class="td-lunch">${lunch} Kcal</td>
-            <td class="td-dinner">${dinner} Kcal</td>
-            <td class="td-snack">${snack} Kcal</td>
-            <td class="td-total">${total} Kcal</td>
+            <td class="td-date">${createdAt}</td>
+            <td class="td-breakfast">${breakfastKcal} Kcal</td>
+            <td class="td-lunch">${lunchKcal} Kcal</td>
+            <td class="td-dinner">${dinnerKcal} Kcal</td>
+            <td class="td-snack">${snackKcal} Kcal</td>
+            <td class="td-total">${totalKcal} Kcal</td>
         </tr>
     `;
 }
@@ -38,26 +38,23 @@ export function renderCalorieTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderCalorieTableWithOptionalPagination({
+export async function renderCalorieTableWithOptionalPagination({
     getData,         
     bodyId,
     contentId,
     tableId,
     enablePagination = true
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL();
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const data = await getData();
+    const page = data.page + 1;
+    const rows = data.content;
 
     $(`#${bodyId}`).html(rows.map(createCalorieRow).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId: tableId,
-            totalItems: allData.length,
+            totalItems: data.totalElements,
             itemsPerPage: itemsPerPage,
             currentPage: page,
             onPageChange: (newPage) => {

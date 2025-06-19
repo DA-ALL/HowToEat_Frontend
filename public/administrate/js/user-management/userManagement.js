@@ -15,7 +15,6 @@ function loadContent() {
         <div class="filter-group">
             <div id="filter" data-type="1"></div>
             <div id="filter" data-type="2"></div>
-            <div id="filter" data-type="3"></div>
         </div>
 
         <div id="totalUserTable"></div>

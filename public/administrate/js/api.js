@@ -244,7 +244,7 @@ export function deleteNotice(noticeId) {
 }
 
 // ================  User API ================
-export function getUserList({page, size, name='', orderBy, isNextGym, userRole, isAddPtMember=false}) {
+export function getUserList({page, size, name='', orderBy, isNextGym, isAddPtMember=false}) {
 const params = new URLSearchParams({
         page,
         size,
@@ -257,9 +257,6 @@ const params = new URLSearchParams({
     }
     if (isNextGym != null && isNextGym.trim() !== 'all' && isNextGym.trim() !== '') {
         params.append('isNextGym', isNextGym);
-    }
-    if (userRole != null && userRole != 'all' && userRole.trim() !== '') {
-        params.append('userRole', userRole);
     }
 
     return $.ajax({
@@ -281,6 +278,19 @@ export function getUserDetail(userId) {
     return $.ajax({
         type: "GET",
         url: `${window.DOMAIN_URL}/admin/users/${userId}/detail`,
+        contentType: "application/json",
+    })
+}
+
+export function getUserDailyCalories(userId, page) {
+    const params = new URLSearchParams({
+        page: page,
+        size: 20
+    });
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/users/${userId}/daily-summaries/calories?${params.toString()}`,
         contentType: "application/json",
     })
 }
