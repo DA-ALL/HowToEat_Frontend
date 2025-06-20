@@ -1,5 +1,6 @@
-import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '../components/routers.js';
+import { showMain } from '../components/routers.js';
 import { setLastMainPath } from '../components/nav-bottom.js';
+
 
 let currentSearchKeyword = '';
 let currentPage = 0;
@@ -55,6 +56,7 @@ export function renderMealSearch(callback) {
                  data-kcal="${item.kcal}"
                  data-carbo="${item.carbo}"
                  data-protein="${item.protein}"
+                 data-source="${item.source}"
                  data-fat="${item.fat}"
                  data-unit="${item.unit}">
 
@@ -600,6 +602,7 @@ $(document).on('click', '#registFavoriteButton', function () {
             fat: $item.data('fat'),
             providedBy: $item.data('detail') || "-",
             isPerServing: false, // 필요시 변경
+            source : $item.data('source'),
             unit: $item.data('unit'),
             foodImageUrl: ""
         };

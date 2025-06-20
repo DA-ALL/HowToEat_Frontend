@@ -99,6 +99,12 @@
     box-shadow: none;
 }
 
+#consumedFoodDetail .button-container .hidden {
+    display: none;
+}
+
+
+
 #consumedFoodDetail .button-container #deleteFavoriteFoodButton {
     width: 60%;
     background-color: var(--gray50);

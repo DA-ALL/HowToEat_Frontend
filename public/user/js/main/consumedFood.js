@@ -1,3 +1,5 @@
+import { showToast } from '../components/toast.js';
+
 export function renderConsumedFoodInfo(consumedFoodId, callback) {
     const consumedFoodDataRequest = $.ajax({
         url: `${window.DOMAIN_URL}/consumed-foods/${consumedFoodId}`,
@@ -57,15 +59,73 @@ function renderConsumedFoodDetail(consumedFoodData) {
             </div>
         </div>
         <div class="button-container">
-            ${consumedFoodData.favoriteFoodId == null
-                ? '<div id="createFavoriteFoodButton" class="button-format active">즐겨찾기 추가</div>'
-                : '<div id="deleteFavoriteFoodButton" class="button-format active">즐겨찾기 삭제</div>'
+            ${
+                consumedFoodData.favoriteFoodId == null 
+                ? `<div id="createFavoriteFoodButton" class="button-format active">즐겨찾기 추가</div>
+                   <div id="deleteFavoriteFoodButton" data-favorite-food-id="${consumedFoodData.favoriteFoodId}" class="button-format active hidden">즐겨찾기 삭제</div>`
+                : `<div id="createFavoriteFoodButton" class="button-format active hidden">즐겨찾기 추가</div>
+                   <div id="deleteFavoriteFoodButton" data-favorite-food-id="${consumedFoodData.favoriteFoodId}" class="button-format active">즐겨찾기 삭제</div>`
             }
             <div id="deleteConsumedFoodButton" class="button-format active">삭제</div>
         </div>
-        
     `;
-    return `
-        ${commonHeader}
-    `;
+    return `${commonHeader}`;
 }
+
+
+// favorite 버튼 클릭 시
+$(document).on('click', '#createFavoriteFoodButton', function () {
+    const pathParts = window.location.pathname.split("/");
+    const consumedFoodId = pathParts[5];
+
+    const requestData = {
+        consumedFoodId: consumedFoodId
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: `${window.DOMAIN_URL}/favorite-foods`,
+        contentType: "application/json",
+        data: JSON.stringify(requestData),
+        success: function (res) {
+            const favoriteFoodId = res.data.favoriteFoodId;
+            console.log(res);
+            showToast("즐겨찾기에 추가되었습니다.", "#consumedFoodDetail")
+            $("#createFavoriteFoodButton").addClass("hidden");
+            $("#deleteFavoriteFoodButton").removeClass("hidden");
+            $("#deleteFavoriteFoodButton").data("favorite-food-id", favoriteFoodId);
+        }
+    });
+});
+
+
+$(document).on('click', '#deleteFavoriteFoodButton', function () {
+    const favoriteFoodId = $(this).data("favorite-food-id");
+
+    $.ajax({
+        type: 'DELETE',
+        url: `${window.DOMAIN_URL}/favorite-foods/${favoriteFoodId}`,
+        contentType: "application/json",
+        success: function (res) {
+            showToast("즐겨찾기에서 삭제되었습니다.", "#consumedFoodDetail")
+            $("#deleteFavoriteFoodButton").addClass("hidden");
+            $("#createFavoriteFoodButton").removeClass("hidden");
+        }
+    });
+});
+
+$(document).on('click', '#deleteConsumedFoodButton', function () {
+    const pathParts = window.location.pathname.split("/");
+    const consumedFoodId = pathParts[5];
+
+    $.ajax({
+        type: 'DELETE',
+        url: `${window.DOMAIN_URL}/consumed-foods/${consumedFoodId}`,
+        contentType: "application/json",
+        success: function () {
+            showToast("즐겨찾기에서 삭제되었습니다.", "#consumedFoodDetail")
+            $("#deleteFavoriteFoodButton").addClass("hidden");
+            $("#createFavoriteFoodButton").removeClass("hidden");
+        }
+    });
+});

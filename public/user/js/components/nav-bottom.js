@@ -47,7 +47,6 @@ export function showPage(path) {
             type = null; // 타입 없음
             const consumedFoodId = parts[5];
             showMain(meal, regist, type, consumedFoodId);
-            return;
         }
 
         // 기존 regist 처리

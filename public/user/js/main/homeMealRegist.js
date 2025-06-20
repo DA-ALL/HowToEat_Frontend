@@ -139,8 +139,8 @@ export function renderMealAdjust(mealKey, userConsumedData, foodInfo) {
             </div>
         </div>
         <div class="button-container">
-            <div id="favoriteButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button favorite active">즐겨찾기에 추가</div>
-            <div id="registButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button active">${mealKor} 등록</div>
+            <!-- <div id="favoriteButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button favorite active">즐겨찾기에 추가</div> --!>
+            <div id="registButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" data-source="${foodInfo.source}" class="next-button active">${mealKor} 등록</div>
         </div>
     `;
     return `
@@ -376,6 +376,7 @@ $(document).on('click', '#registButton', function () {
         protein: $btn.data('protein'),
         fat: $btn.data('fat'),
         providedBy: $btn.data('provided-by'),
+        source:$btn.data('source'),
         isPerServing: $btn.data('is-per-serving'),
         unit: $btn.data('unit'),
         foodImageUrl: $btn.data('img')
