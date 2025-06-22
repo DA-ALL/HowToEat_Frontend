@@ -93,12 +93,6 @@ export async function renderTableWithOptionalPagination({
     }
 }
 
-
-function getPageFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
 // 삭제 버튼 클릭 시
 $(document).on('click', '.delete-food-button', function (e) {
     e.stopPropagation();

@@ -120,6 +120,7 @@ export function deleteGym(gymId) {
 }
 
 // ================  Trainer API ================
+
 export function getTrainerList(page, name='', gymName='') {
     const params = new URLSearchParams({
         page: page,
@@ -191,6 +192,7 @@ export function getTrainerWithPtMembers(page, trainerId) {
 }
 
 // ================  notice API ================
+
 export function getNoticeList(page, title='', orderBy='desc') {
     const params = new URLSearchParams({
         page: page,
@@ -244,6 +246,7 @@ export function deleteNotice(noticeId) {
 }
 
 // ================  User API ================
+
 export function getUserList({page, size, name='', orderBy, isNextGym, isAddPtMember=false}) {
     const params = new URLSearchParams({
         page,
@@ -314,6 +317,7 @@ export function updateUserRole(userId, requestDto) {
 }
 
 // ================  PtMember API ================
+
 export function createPtMember(ptMemberData) {
     return $.ajax({
         type: "POST",
@@ -332,6 +336,7 @@ export function deletePtMember(ptMemberId) {
 }
 
 // ================  Food API ================
+
 export function getFoodList({page, size, name, orderBy, foodType, recommendation}) {
     const params = new URLSearchParams({
         page,
@@ -350,4 +355,21 @@ export function getFoodList({page, size, name, orderBy, foodType, recommendation
         url: `${window.DOMAIN_URL}/admin/foods?${params.toString()}`,
         contentType: "application/json",
     });
+}
+
+export function getFood(foodId) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/foods/${foodId}`,
+        contentType: "application/json",
+    })
+}
+
+export function createFood(foodData) {
+    return $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/foods`,
+        contentType: "application/json",
+        data: JSON.stringify(foodData),
+    })
 }

@@ -1,4 +1,6 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
+import { getFood, createFood } from '../api.js';
+import { registerViewLoader, updateURL } from '../router.js';
 
 export function loadFoodDetail({type}) {
     
@@ -14,10 +16,10 @@ export function loadFoodDetail({type}) {
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
                     <div class="data-type-option-wrapper">
-                        <div class="data-type-option active" data-query="processed">가공식품DB</div>
-                        <div class="data-type-option" data-query="cooked">음식DB</div>
-                        <div class="data-type-option" data-query="ingredient">원재료DB</div>
-                        <div class="data-type-option" data-query="custom">유저 등록</div>
+                        <div class="data-type-option" data-query="PROCESSED">가공식품DB</div>
+                        <div class="data-type-option" data-query="COOKED">음식DB</div>
+                        <div class="data-type-option" data-query="INGREDIENT">원재료DB</div>
+                        <div class="data-type-option" data-query="CUSTOM">유저 등록</div>
                     </div>
                 </div>
 
@@ -110,7 +112,7 @@ export function loadFoodDetail({type}) {
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
                     <div class="data-type-option-wrapper">
-                        <div class="data-type-option active" data-query="custom">유저 등록</div>
+                        <div class="data-type-option active" data-query="CUSTOM">유저 등록</div>
                     </div>
                 </div>
 
@@ -207,9 +209,9 @@ export function loadFoodDetail({type}) {
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
                     <div class="data-type-option-wrapper">
-                        <div class="data-type-option active" data-query="processed">가공식품DB</div>
-                        <div class="data-type-option" data-query="cooked">음식DB</div>
-                        <div class="data-type-option" data-query="ingredient">원재료DB</div>
+                        <div class="data-type-option active" data-query="PROCESSED">가공식품DB</div>
+                        <div class="data-type-option" data-query="COOKED">음식DB</div>
+                        <div class="data-type-option" data-query="INGREDIENT">원재료DB</div>
                     </div>
                 </div>
 
@@ -303,6 +305,7 @@ export function loadFoodDetail({type}) {
     loadFoodDetailData();
 }
 
+registerViewLoader('foodDetail', loadFoodDetail);
 
 function validateInput(input) {
     const value = input.value.trim();
@@ -402,53 +405,16 @@ function getIdFromUrl() {
 }
 
 
-function generateDummyData(id) {
-    const dummyData = {
-        1: {
-            id: 1,
-            dataType: "processed",
-            foodName: "삼겹살",
-            providedBy: "삼겹살 회사",
-            kcal: 500,
-            carbo: 0,
-            protein: 30,
-            fat: 40,
-            foodWeight: 200,
-            unit: "g",
-            isPerServing: true,
-            is_recommended: false
-        },
-        2: {
-            id: 2,
-            dataType: "cooked",
-            foodName: "김치찌개",
-            providedBy: "서울 김치",
-            kcal: 350,
-            carbo: 20,
-            protein: 25,
-            fat: 10,
-            foodWeight: 150,
-            unit: "ml",
-            isPerServing: false,
-            is_recommended: true
-        },
-        3: {
-            id: 3,
-            dataType: "ingredient",
-            foodName: "배추",
-            providedBy: "배추 농장",
-            kcal: 40,
-            carbo: 9,
-            protein: 2,
-            fat: 0,
-            foodWeight: 100,
-            unit: "g",
-            isPerServing: true,
-            is_recommended: true
-        }
-    };
-
-    return dummyData[id] || null;
+async function getFoodData() {
+    const foodId = getIdFromUrl();
+    try {
+        const response = await getFood(foodId);
+        console.log("음식 단일 조회: ", response);
+        
+        return response.data;
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 
@@ -474,7 +440,7 @@ function populateFoodDetails(data) {
     // Data Type Option
     $(".data-type-option").removeClass("active");  // 모든 데이터 타입 옵션에서 active 클래스 제거
     $(".data-type-option").each(function () {
-        if ($(this).data("query") === data.dataType) {
+        if ($(this).data("query") === data.foodType) {
             $(this).addClass("active");
         }
     });
@@ -489,7 +455,7 @@ function populateFoodDetails(data) {
 
     // Recommended Toggle
     const recommendedToggle = $("#isRecommendedToggle");
-    if (data.is_recommended) {
+    if (data.isRecommended) {
         recommendedToggle.addClass("active");
     } else {
         recommendedToggle.removeClass("active");
@@ -499,30 +465,14 @@ function populateFoodDetails(data) {
 }
 
 
-function loadFoodDetailData() {
+async function loadFoodDetailData() {
     const id = getIdFromUrl();
     if (id) {
-        const foodData = generateDummyData(id);  // ID에 맞는 더미 데이터 가져오기
+        const foodData = await getFoodData(id);  // ID에 맞는 더미 데이터 가져오기
         populateFoodDetails(foodData);  // 데이터를 필드에 채우기
     }
 }
 
-function getFoodDetailTypeFromUrl() {
-    const urlPath = window.location.pathname;
-
-    // 정규 표현식을 사용하여 URL에서 type을 추출
-    if (urlPath.match(/\/admin\/food-management\/(\d+)$/)) {
-        return "edit";  // "edit" 처리
-    } else if (urlPath.match(/\/admin\/food-management\/user-regist\/(\d+)$/)) {
-        return "share";  // "share" 처리
-    } else if (urlPath.match(/\/admin\/food-management\/recommend\/(\d+)$/)) {
-        return "edit";  // "edit" 처리 (recommend는 edit으로 간주)
-    } else if (urlPath.match(/\/admin\/food-management\/add$/)) {
-        return "add";  // "add" 처리
-    } else {
-        return null;  // 해당하지 않으면 null 반환
-    }
-}
 
 function getFoodDetailValues() {
     const foodName = $("#foodName").val()?.trim() || "";
@@ -534,7 +484,7 @@ function getFoodDetailValues() {
     const foodWeight = parseFloat($("#foodWeight").val()) || 0;
 
     // 선택된 데이터 종류
-    const dataType = $(".data-type-option.active").data("query") || "";
+    const foodType = $(".data-type-option.active").data("query") || "";
 
     // 선택된 단위 (g/ml)
     const unit = $(".unit-option.active").data("query") || "";
@@ -543,8 +493,8 @@ function getFoodDetailValues() {
     const isPerServing = $("#isPerServingToggle").hasClass("active");
     const isRecommended = $("#isRecommendedToggle").hasClass("active");
 
-    // description은 share 모드에서만 존재함
-    const description = $("#description").length ? $("#description").val()?.trim() : "";
+    // description은 share 모드에서만 존재함 (food에 필요는없음)
+    // const description = $("#description").length ? $("#description").val()?.trim() : "";
 
     return {
         foodName,
@@ -554,19 +504,12 @@ function getFoodDetailValues() {
         protein,
         fat,
         foodWeight,
-        dataType,
+        foodType,
         unit,
         isPerServing,
         isRecommended,
-        description,
     };
 }
-
-
-$(document).ready(function () {
-    const foodDetailType = getFoodDetailTypeFromUrl();
-    loadFoodDetail({type: foodDetailType});
-});
 
 // 1인분 토글
 $(document).on("click", "#isPerServingToggle", function () {
@@ -652,9 +595,22 @@ $(document).on("click", "#foodDetailShare", function () {
 });
 
 // 추가하기 버튼
-$(document).on("click", "#foodDetailAdd", function () {
+$(document).on("click", "#foodDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
     const foodDetailValues = getFoodDetailValues();
-    console.log("추가할 음식 정보:", foodDetailValues);
+    console.log(foodDetailValues);
+    try {
+        const response = await createFood(foodDetailValues);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: function () {
+                updateURL('food-management');
+            }
+        });
+    } catch(err) {
+        console.log(err);
+    }
+    
 });

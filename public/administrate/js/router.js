@@ -125,7 +125,7 @@ function showCurrentContent() {
         'food-management': 'adminFood',
         'food-management/user-regist': 'userFood',
         'food-management/recommend': 'recommendFood',
-        'food-management/add': 'foodDetail',
+        // 'food-management/add': 'foodDetail',
         'notice': 'notice',
         'admin-management': 'adminManagement',
         'admin-management/trainer': 'trainerManagement',
@@ -143,9 +143,10 @@ function showCurrentContent() {
             { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, id: 'userInfo' },
     
             // food-management
-            { pattern: /^food-management\/\d+$/, id: 'foodDetail' },
-            { pattern: /^food-management\/user-regist\/\d+$/, id: 'foodDetail' },
-            { pattern: /^food-management\/recommend\/\d+$/, id: 'foodDetail' },
+            { pattern: /^food-management\/\d+$/, id: 'foodDetail', type: 'edit'},
+            { pattern: /^food-management\/user-regist\/\d+$/, id: 'foodDetail' , type: 'share'},
+            { pattern: /^food-management\/recommend\/\d+$/, id: 'foodDetail' , type: 'edit'},
+            { pattern: /^food-management\/add$/, id: 'foodDetail', type: 'add'},
     
             // notice
             { pattern: /^notice\/\d+$/, id: 'noticeDetail' , type: 'edit'},
@@ -196,19 +197,6 @@ function showCurrentContent() {
         }
     }
 }
-
-function getDetailTypeFromUrl(){
-    const urlPath = window.location.pathname;
-
-    if (/\/admin\/admin-management\/add$/.test(urlPath)) {
-        return "add"; // 관리자 계정 추가
-    } else if (/\/admin\/admin-management\/\d+$/.test(urlPath)) {
-        return "edit"; // 관리자 계정 수정 (숫자 ID)
-    } else {
-        return null; // 그 외는 처리 안 함
-    }
-}
-
 
 
 /*

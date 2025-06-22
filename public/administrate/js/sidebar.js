@@ -160,9 +160,9 @@ $(document).ready(function () {
         updateURL(newUrl);
         updateSideOptionActiveState(page);
         
-        if (page === 'add') {
-            loadFoodDetail({type:"add"});
-        }
+        // if (page === 'add') {
+        //     loadFoodDetail({type:"add"});
+        // }
 
         $(this).addClass("active");
     })

@@ -73,10 +73,6 @@ $(document).on('click', `#userFoodTableBody tr`, function () {
     const foodId = $(this).find('.td-id').text();
     const page = `food-management/user-regist/${foodId}`;
     updateURL(page);
-
-    loadFoodDetail({
-        type: "share",       
-    });
 });
 
 registerPopstateHandler('userFood',loadUserFood);

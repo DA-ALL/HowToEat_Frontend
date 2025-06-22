@@ -104,10 +104,6 @@ $(document).on('click', `.recommend-food-table tbody tr`, function () {
     const foodId = $(this).find('.td-id').text();
     const page = `food-management/recommend/${foodId}`;
     updateURL(page);
-
-    loadFoodDetail({
-        type: "edit",
-    });
 });
 
 
