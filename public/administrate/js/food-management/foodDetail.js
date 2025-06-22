@@ -1,5 +1,5 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
-import { getFood, createFood } from '../api.js';
+import { getFood, createFood, updateFood } from '../api.js';
 import { registerViewLoader, updateURL } from '../router.js';
 
 export function loadFoodDetail({type}) {
@@ -573,15 +573,29 @@ $(document).on("click", "#foodDetailCancel", function () {
 $(document).on("click", "#foodDetailEdit", function () {
     if ($(this).hasClass("disabled")) return;
     
+    const foodId = getIdFromUrl();
     const foodDetailValues = getFoodDetailValues();
     console.log("수정할 음식 정보:", foodDetailValues); 
+    
+
     showCustomAlert({
         type: 4,
         onCancel: function () {
             console.log("수정 취소");
         },
-        onNext: function () {
-            console.log("수정 완료");
+        onNext: async function () {        
+            try {
+                const response = await updateFood(foodId, foodDetailValues);
+                showCustomAlert({
+                    type: 3,
+                    message: response.message,
+                    onNext: function () {
+                        updateURL('food-management');
+                    }
+                });
+            } catch(err) {
+                console.log(err);
+            }
         }
     });
 });

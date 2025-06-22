@@ -1,6 +1,7 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateQueryParam } from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
+import { deleteFood } from '../api.js';
 
 const usersPerPage = 20;
 
@@ -105,8 +106,19 @@ $(document).on('click', '.delete-food-button', function (e) {
         onCancel: () => {
             console.log("삭제 취소");
         },
-        onNext: () => {
-            console.log("삭제 확인");
+        onNext: async () => {
+            try {
+                const response = await deleteFood(foodId);
+                showCustomAlert({
+                    type: 3,
+                    message: response.message,
+                    onNext: function () {
+                        location.reload();
+                    }
+                });
+            } catch(err) {
+                console.log(err);
+            }
         }
     });
 

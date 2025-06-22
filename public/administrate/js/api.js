@@ -373,3 +373,20 @@ export function createFood(foodData) {
         data: JSON.stringify(foodData),
     })
 }
+
+export function updateFood(foodId, foodData) {
+    return $.ajax({
+        type: "PUT",
+        url: `${window.DOMAIN_URL}/admin/foods/${foodId}`,
+        contentType: "application/json",
+        data: JSON.stringify(foodData),
+    })
+}
+
+export function deleteFood(foodId) {
+    return $.ajax({
+        type: "DELETE",
+        url: `${window.DOMAIN_URL}/admin/foods/${foodId}`,
+        contentType: "application/json",
+    })
+}
