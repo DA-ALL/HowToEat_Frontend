@@ -51,12 +51,12 @@ export async function renderFilters(contentId, onclick = null) {
             case 4:
                 filterTemplate = `
                         <div class="filter-title">데이터 출처 필터</div>
-                        <div class="filter-option-wrapper" data-key="dataSource">
+                        <div class="filter-option-wrapper" data-key="foodType">
                             <div class="filter-option" data-query="all">전체</div>
-                            <div class="filter-option" data-query="processed">가공식품DB</div>
-                            <div class="filter-option" data-query="cooked">음식DB</div>
-                            <div class="filter-option" data-query="ingredient">원재료DB</div>
-                            <div class="filter-option" data-query="custom">유저 등록</div>
+                            <div class="filter-option" data-query="PROCESSED">가공식품DB</div>
+                            <div class="filter-option" data-query="COOKED">음식DB</div>
+                            <div class="filter-option" data-query="INGREDIENT">원재료DB</div>
+                            <div class="filter-option" data-query="CUSTOM">유저 등록</div>
                         </div>
                     `;
                 break;
@@ -64,7 +64,7 @@ export async function renderFilters(contentId, onclick = null) {
             case 5:
                 filterTemplate = `
                         <div class="filter-title">추천 음식 필터</div>
-                        <div class="filter-option-wrapper" data-key="recommend">
+                        <div class="filter-option-wrapper" data-key="recommendation">
                             <div class="filter-option" data-query="all">전체</div>
                             <div class="filter-option" data-query="recommended">추천음식</div>
                         </div>

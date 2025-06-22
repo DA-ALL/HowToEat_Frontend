@@ -245,7 +245,7 @@ export function deleteNotice(noticeId) {
 
 // ================  User API ================
 export function getUserList({page, size, name='', orderBy, isNextGym, isAddPtMember=false}) {
-const params = new URLSearchParams({
+    const params = new URLSearchParams({
         page,
         size,
         isAddPtMember,
@@ -329,4 +329,25 @@ export function deletePtMember(ptMemberId) {
         url: `${window.DOMAIN_URL}/admin/pt-members/${ptMemberId}`,
         contentType: "application/json",
     })
+}
+
+// ================  Food API ================
+export function getFoodList({page, size, name, orderBy, foodType, recommendation}) {
+    const params = new URLSearchParams({
+        page,
+        size,
+        foodType,
+        recommendation,
+        orderBy: orderBy || 'desc',
+    });
+
+    if (name != null && name.trim() !== '') {
+        params.append('name', name);
+    }
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/foods?${params.toString()}`,
+        contentType: "application/json",
+    });
 }
