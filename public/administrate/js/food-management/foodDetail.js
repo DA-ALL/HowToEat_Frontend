@@ -30,6 +30,12 @@ export function loadFoodDetail({type}) {
                 </div>
 
                 <div class="input-wrapper">
+                    <div class="input-title">대표 식품명</div>
+                    <input type="text" class="input" id="representativeName" placeholder="대표식품명을 입력해주세요 ex) 김밥, 도시락" />
+                    <div class="input-info">* 필수 항목입니다</div>
+                </div>
+
+                <div class="input-wrapper">
                     <div class="input-title">회사명 or 수입지역</div>
                     <input type="text" class="input" id="providedBy" placeholder="회사명 or 수입지역을 입력해주세요" />
                 </div>
@@ -119,6 +125,12 @@ export function loadFoodDetail({type}) {
                 <div class="input-wrapper">
                     <div class="input-title">음식 이름</div>
                     <input type="text" class="input" id="foodName" placeholder="음식 이름을 입력해주세요" />
+                    <div class="input-info">* 필수 항목입니다</div>
+                </div>
+
+                <div class="input-wrapper">
+                    <div class="input-title">대표 식품명</div>
+                    <input type="text" class="input" id="representativeName" placeholder="대표식품명을 입력해주세요 ex) 김밥, 도시락" />
                     <div class="input-info">* 필수 항목입니다</div>
                 </div>
 
@@ -222,6 +234,12 @@ export function loadFoodDetail({type}) {
                 </div>
 
                 <div class="input-wrapper">
+                    <div class="input-title">대표 식품명</div>
+                    <input type="text" class="input" id="representativeName" placeholder="대표식품명을 입력해주세요 ex) 김밥, 도시락" />
+                    <div class="input-info">* 필수 항목입니다</div>
+                </div>
+
+                <div class="input-wrapper">
                     <div class="input-title">회사명 or 수입지역</div>
                     <input type="text" class="input" id="providedBy" placeholder="회사명 or 수입지역을 입력해주세요" />
                 </div>
@@ -301,8 +319,9 @@ export function loadFoodDetail({type}) {
 
     container.html(foodDetialHTML);
 
-    updateFormNextButton();
+    
     loadFoodDetailData();
+    updateFormNextButton();
 }
 
 registerViewLoader('foodDetail', loadFoodDetail);
@@ -310,7 +329,7 @@ registerViewLoader('foodDetail', loadFoodDetail);
 function validateInput(input) {
     const value = input.value.trim();
     const isNumberField = input.classList.contains("only-number");
-    const isRequired = input.id === "foodName" || input.id === "foodWeight";
+    const isRequired = input.id === "foodName" || input.id === "foodWeight" ||  input.id === "representativeName";
 
     // reset classes
     input.classList.remove("error", "valid");
@@ -428,6 +447,7 @@ function populateFoodDetails(data) {
     $("#protein").val(data.protein);
     $("#fat").val(data.fat);
     $("#foodWeight").val(data.foodWeight);
+    $("#representativeName").val(data.representativeName);
 
     // Unit Option
     $(".unit-option").removeClass("active");  // 모든 유닛 옵션에서 active 클래스 제거
@@ -482,7 +502,7 @@ function getFoodDetailValues() {
     const protein = parseFloat($("#protein").val()) || 0;
     const fat = parseFloat($("#fat").val()) || 0;
     const foodWeight = parseFloat($("#foodWeight").val()) || 0;
-
+    const representativeName = $("#representativeName").val() || "";
     // 선택된 데이터 종류
     const foodType = $(".data-type-option.active").data("query") || "";
 
@@ -498,6 +518,7 @@ function getFoodDetailValues() {
 
     return {
         foodName,
+        representativeName,
         providedBy,
         kcal,
         carbo,

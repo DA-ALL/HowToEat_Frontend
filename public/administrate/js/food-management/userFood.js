@@ -13,7 +13,7 @@ function loadUserFood() {
 
     let adminFoodHTML = `
         <div class="title">유저 등록 음식</div>
-        <div id="userFoodSearchbar" class="searchbar" data-placeholder="유저명 검색"></div>
+        <div id="userFoodSearchbar" class="searchbar" data-placeholder="음식명 검색"></div>
 
         <div class="filter-group">
             <div id="filter" data-type="1"></div>
