@@ -74,9 +74,10 @@ export async function renderFilters(contentId, onclick = null) {
             case 6:
                 filterTemplate = `
                         <div class="filter-title">관리자 DB 공유 여부</div>
-                        <div class="filter-option-wrapper" data-key="adminShare">
-                            <div class="filter-option" data-query="shared">관리자 DB 공유</div>
-                            <div class="filter-option" data-query="user">관리자 DB 미공유</div>
+                        <div class="filter-option-wrapper" data-key="adminShared">
+                            <div class="filter-option" data-query="all">전체</div>
+                            <div class="filter-option" data-query="true">관리자 DB 공유</div>
+                            <div class="filter-option" data-query="false">관리자 DB 미공유</div>
                         </div>
                     `;
                 break;

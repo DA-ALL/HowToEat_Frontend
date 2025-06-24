@@ -1,11 +1,13 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
-import { getFood, createFood, updateFood } from '../api.js';
+import { getFood, createFood, updateFood, getFavoriteFood } from '../api.js';
 import { registerViewLoader, updateURL } from '../router.js';
 
-export function loadFoodDetail({type}) {
+let foodDetailType = '';
+
+export async function loadFoodDetail({type}) {
     
     const container = $("#foodDetail");
-
+    foodDetailType  = type;
     let foodDetialHTML = ``;
 
     switch (type) {
@@ -320,7 +322,7 @@ export function loadFoodDetail({type}) {
     container.html(foodDetialHTML);
 
     
-    loadFoodDetailData();
+    await loadFoodDetailData();
     updateFormNextButton();
 }
 
@@ -371,7 +373,7 @@ function isFormValid() {
     $("#foodDetail .input").each(function () {
         const $input = $(this);
         const value = $input.val().trim();
-        const isRequired = this.id === "foodName" || this.id === "foodWeight";
+        const isRequired = this.id === "foodName" || this.id === "foodWeight" || this.id === "representativeName";
 
         // error 클래스가 있는 경우
         if ($input.hasClass("error")) {
@@ -427,6 +429,11 @@ function getIdFromUrl() {
 async function getFoodData() {
     const foodId = getIdFromUrl();
     try {
+        if (foodDetailType == 'share'){
+            const favoriteFoodResponse = await getFavoriteFood(foodId);
+            console.log("유저등록 음식 ", favoriteFoodResponse);
+            return favoriteFoodResponse.data;
+        }
         const response = await getFood(foodId);
         console.log("음식 단일 조회: ", response);
         

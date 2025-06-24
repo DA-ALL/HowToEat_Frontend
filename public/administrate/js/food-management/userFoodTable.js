@@ -3,7 +3,7 @@ import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 20;
 
-export function createUserFoodRow({ id, foodName, imageURL, username, calorie, carbo, protein, fat, foodWeight, foodWeightUnit, sharedAt }) {
+export function createUserFoodRow({ id, foodName, profileImageUrl, userName, kcal, carbo, protein, fat, foodWeight, unit, sharedAt }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
@@ -11,16 +11,16 @@ export function createUserFoodRow({ id, foodName, imageURL, username, calorie, c
             <td class="td-user-profile">
                 <div class="td-user-profile-wrapper">
                     <div class="image-user">
-                        <img src=${imageURL}>
+                        <img src=${profileImageUrl}>
                     </div>
-                    <div class="user-name">${username}</div>
+                    <div class="user-name">${userName}</div>
                 </div>
             </td>
-            <td class="td-calorie">${calorie}kcal</td>
+            <td class="td-calorie">${kcal}kcal</td>
             <td class="td-carbo">${carbo}g</td>
             <td class="td-protein">${protein}g</td>
             <td class="td-fat">${fat}g</td>
-            <td class="td-food-weight">${foodWeight}${foodWeightUnit}</td>
+            <td class="td-food-weight">${foodWeight}${unit}</td>
             <td class="td-is-shared">${sharedAt ? "공유중" : "-"}</td>
         </tr>
     `;
@@ -49,25 +49,22 @@ export function renderUserFoodTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderTableWithOptionalPagination({
+export async function renderTableWithOptionalPagination({
     getData,         // 데이터 함수
     bodyId,
     contentId,
     enablePagination = true
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const data = await getData();
+    const page = data.page + 1;
+    const rows = data.content;
 
     $(`#${bodyId}`).html(rows.map(createUserFoodRow).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
+            totalItems: data.totalElements,
             itemsPerPage: usersPerPage,
             currentPage: page,
             onPageChange: (newPage) => {
@@ -84,10 +81,3 @@ export function renderTableWithOptionalPagination({
         $(`#${bodyId}`).closest('table').parent().find('.pagination').remove();
     }
 }
-
-
-function getPageFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-

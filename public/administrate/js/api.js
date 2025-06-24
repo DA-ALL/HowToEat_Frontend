@@ -390,3 +390,34 @@ export function deleteFood(foodId) {
         contentType: "application/json",
     })
 }
+
+
+
+// ================  Favorite Food API ================
+
+export function getFavoriteFoodList({page, size, name, orderBy, adminShared}) {
+    const params = new URLSearchParams({
+        page,
+        size,
+        adminShared,
+        orderBy: orderBy || 'desc',
+    });
+
+    if (name != null && name.trim() !== '') {
+        params.append('name', name);
+    }
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/favorite-foods?${params.toString()}`,
+        contentType: "application/json",
+    });
+}
+
+export function getFavoriteFood(favoritefoodId) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/favorite-foods/${favoritefoodId}`,
+        contentType: "application/json",
+    })
+}
