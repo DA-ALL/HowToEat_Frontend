@@ -1,4 +1,5 @@
 import { showToast } from '../components/toast.js';
+import { showPopup } from '../components/popup.js';
 
 export function renderConsumedFoodInfo(consumedFoodId, callback) {
     const consumedFoodDataRequest = $.ajax({
@@ -95,7 +96,7 @@ $(document).on('click', '#createFavoriteFoodButton', function () {
             $("#deleteFavoriteFoodButton").removeClass("hidden");
             $("#deleteFavoriteFoodButton").data("favorite-food-id", favoriteFoodId);
         }
-    });
+    }); 
 });
 
 
@@ -117,15 +118,15 @@ $(document).on('click', '#deleteFavoriteFoodButton', function () {
 $(document).on('click', '#deleteConsumedFoodButton', function () {
     const pathParts = window.location.pathname.split("/");
     const consumedFoodId = pathParts[5];
-
-    $.ajax({
-        type: 'DELETE',
-        url: `${window.DOMAIN_URL}/consumed-foods/${consumedFoodId}`,
-        contentType: "application/json",
-        success: function () {
-            showToast("즐겨찾기에서 삭제되었습니다.", "#consumedFoodDetail")
-            $("#deleteFavoriteFoodButton").addClass("hidden");
-            $("#createFavoriteFoodButton").removeClass("hidden");
-        }
-    });
+    showPopup("#consumedFoodDetail", 2, "알림입니다.", "서브타이틀이에요.")
+    // $.ajax({
+    //     type: 'DELETE',
+    //     url: `${window.DOMAIN_URL}/consumed-foods/${consumedFoodId}`,
+    //     contentType: "application/json",
+    //     success: function () {
+    //         showToast("즐겨찾기에서 삭제되었습니다.", "#consumedFoodDetail")
+    //         $("#deleteFavoriteFoodButton").addClass("hidden");
+    //         $("#createFavoriteFoodButton").removeClass("hidden");
+    //     }
+    // });
 });
