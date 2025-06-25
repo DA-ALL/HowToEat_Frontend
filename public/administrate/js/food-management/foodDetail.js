@@ -1,6 +1,7 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { getFood, createFood, updateFood, getFavoriteFood, shareFood } from '../api.js';
 import { registerViewLoader, updateURL } from '../router.js';
+import { updateActiveState } from '../sidebar.js';
 
 let foodDetailType = '';
 
@@ -474,6 +475,9 @@ function populateFoodDetails(data) {
         if ($(this).data("query") === data.foodType) {
             $(this).addClass("active");
         }
+        if($(this).data("query") == 'CUSTOM' && data.foodType == "CUSTOM_SHARED"){
+            $(this).addClass("active");
+        }
     });
 
     // Per Serving Toggle
@@ -624,7 +628,14 @@ $(document).on("click", "#foodDetailEdit", function () {
                     type: 3,
                     message: response.message,
                     onNext: function () {
-                        updateURL('food-management');
+                        const pathSegments = window.location.pathname.split("/").slice(2,4);
+                        const fullPath = pathSegments.join("/");
+                        console.log("여기다:", fullPath)
+                        if(fullPath == 'food-management/recommend'){
+                            updateURL('food-management/recommend');
+                        } else {
+                            updateURL('food-management');
+                        }
                     }
                 });
             } catch(err) {
@@ -670,6 +681,7 @@ $(document).on("click", "#foodDetailAdd", async function () {
             message: response.message,
             onNext: function () {
                 updateURL('food-management');
+                updateActiveState('food-management');
             }
         });
     } catch(err) {

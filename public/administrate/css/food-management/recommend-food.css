@@ -143,19 +143,19 @@
     font-size: 14px;
     font-weight: 400;
 }
-.recommend-food-table .td-source.processed .source-label{
+.recommend-food-table .td-source.PROCESSED .source-label{
     color: var(--red500);
     border: 1px solid var(--red500);
 }
-.recommend-food-table .td-source.cooked .source-label{
+.recommend-food-table .td-source.COOKED .source-label{
     color: var(--purple300);
     border: 1px solid var(--purple300);
 }
-.recommend-food-table .td-source.ingredient .source-label{
+.recommend-food-table .td-source.INGREDIENT .source-label{
     color: var(--blue300);
     border: 1px solid var(--blue300);
 }
-.recommend-food-table .td-source.custom .source-label{
+.recommend-food-table .td-source.CUSTOM .source-label{
     color: var(--orange300);
     border: 1px solid var(--orange300);
 }

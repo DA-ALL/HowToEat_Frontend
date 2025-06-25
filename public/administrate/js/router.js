@@ -10,6 +10,7 @@ export function registerViewLoader(contentId, callback) {
 export function getCurrentContent(){
     return currentContent
 }
+
 export function registerPopstateHandler(contentId, callback) {
     popstateHandlers[contentId] = callback;
 }
@@ -60,7 +61,7 @@ function updateURLParams(params, useReplaceState = false) {
     if (!hasChanges) return;
 
     // 파라미터 정렬
-    const sortOrder = ["search", "trainer", "gym", "orderBy", "isNextGym", "userRole", "foodType", "recommendation", "adminShared", "option", "page"];
+    const sortOrder = ["search", "trainer", "gym", "orderBy", "isNextGym", "userRole", "foodType", "recommendation", "adminShared", "sortBy", "page"];
     const sortedParams = new URLSearchParams();
     sortOrder.forEach(param => {
         if (searchParams.has(param)) {
@@ -79,7 +80,6 @@ function updateURLParams(params, useReplaceState = false) {
         history.pushState({}, "", newUrl);
     }
 }
-
 
 // 파라미터 변경 pushState 사용
 export function updateQueryParam(params) {
@@ -125,7 +125,6 @@ function showCurrentContent() {
         'food-management': 'adminFood',
         'food-management/user-regist': 'userFood',
         'food-management/recommend': 'recommendFood',
-        // 'food-management/add': 'foodDetail',
         'notice': 'notice',
         'admin-management': 'adminManagement',
         'admin-management/trainer': 'trainerManagement',
@@ -222,7 +221,7 @@ export function syncFiltersWithURL(){
             let queryValue = activeFilterOption.data('query');
             
             // active 되어있는 요소가 있으면 파라미터에 추가
-            if(queryValue && !(queryValue == 'all' || queryValue == 'desc')){
+            if(queryValue && !(queryValue == 'all' || queryValue == 'desc' || queryValue == 'kcal')){
                 replaceQueryParam({[$(this).data('key')]: queryValue});
             } else { // active 없으면 초기값으로 설정
                 let defaultQuery = $(this).find('.filter-option').first().data('query');

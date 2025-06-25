@@ -392,7 +392,6 @@ export function deleteFood(foodId) {
 }
 
 
-
 // ================  Favorite Food API ================
 
 export function getFavoriteFoodList({page, size, name, orderBy, adminShared}) {
@@ -429,4 +428,19 @@ export function shareFood(foodData) {
         contentType: "application/json",
         data: JSON.stringify(foodData),
     })
+}
+
+
+// ================  Recommend Food API ================
+
+export function getRecommendFoodList({sortBy}) {
+    const params = new URLSearchParams({
+        sortBy
+    });
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/recommend-foods?${params.toString()}`,
+        contentType: "application/json",
+    });
 }

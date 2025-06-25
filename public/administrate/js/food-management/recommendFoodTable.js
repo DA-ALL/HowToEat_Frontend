@@ -4,26 +4,26 @@ import { renderPagination } from '/administrate/js/components/pagination.js';
 
 let usersPerPage = 100;
 
-function createRows({ id, foodName, foodCode, mainFoodName, calorie, carbo, protein, fat, foodWeight, foodWeightUnit, source }) {
+function createRows({ id, foodName, foodCode, representativeName, kcal, carbo, protein, fat, foodWeight, unit, foodType }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
-            <td class="td-source ${source}">
+            <td class="td-source ${foodType}">
                 <div class="source-label">
-                    ${source === 'processed' ? '가공식품' :
-                        source === 'cooked' ? '음식' :
-                        source === 'ingredient' ? '원재료' :
-                        source === 'custom' ? '유저 등록' : ''}
+                    ${foodType === 'PROCESSED' ? '가공식품' :
+                        foodType === 'COOKED' ? '음식' :
+                        foodType === 'INGREDIENT' ? '원재료' :
+                        foodType === 'CUSTOM' ? '유저 등록' : ''}
                 </div>
             </td>
             <td class="td-food-name">${foodName}</td>
-            <td class="td-main-food-name">${mainFoodName}</td>
+            <td class="td-main-food-name">${representativeName}</td>
             <td class="td-food-code">${foodCode}</td>
-            <td class="td-calorie">${calorie}kcal</td>
+            <td class="td-calorie">${kcal}kcal</td>
             <td class="td-carbo">${carbo}g</td>
             <td class="td-protein">${protein}g</td>
             <td class="td-fat">${fat}g</td>
-            <td class="td-food-weight">${foodWeight}${foodWeightUnit}</td>
+            <td class="td-food-weight">${foodWeight}${unit}</td>
         </tr>
     `;
 }
@@ -52,31 +52,28 @@ export function renderRecommendFoodTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderTableWithOptionalPagination({
-    getData,         // 데이터 함수
+export async function renderTableWithOptionalPagination({
+    data,         // 데이터 함수
     bodyId,
     contentId,
     enablePagination = false
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    
+    const page = 0;
+    const rows = data;
 
     $(`#${bodyId}`).html(rows.map(createRows).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
-            itemsPerPage: usersPerPage,
+            totalItems: 0,
+            itemsPerPage: 0,
             currentPage: page,
             onPageChange: (newPage) => {
                 updateQueryParam({ page: newPage });
                 renderTableWithOptionalPagination({
-                    getData,
+                    data,
                     bodyId,
                     contentId,
                     enablePagination

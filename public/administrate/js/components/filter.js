@@ -85,11 +85,11 @@ export async function renderFilters(contentId, onclick = null) {
             case 7:
                 filterTemplate = `
                         <div class="filter-title">조회 기준</div>
-                        <div class="filter-option-wrapper" data-key="option">
+                        <div class="filter-option-wrapper" data-key="sortBy">
                             <div class="filter-option" data-query="kcal">칼로리</div>
                             <div class="filter-option" data-query="carbo">탄수화물</div>
                             <div class="filter-option" data-query="protein">단백질</div>
-                            <div class="filter-option" data-query="province">지방</div>
+                            <div class="filter-option" data-query="fat">지방</div>
                         </div>
                     `;
                 break;
