@@ -421,3 +421,12 @@ export function getFavoriteFood(favoritefoodId) {
         contentType: "application/json",
     })
 }
+
+export function shareFood(foodData) {
+    return $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/foods/share`,
+        contentType: "application/json",
+        data: JSON.stringify(foodData),
+    })
+}

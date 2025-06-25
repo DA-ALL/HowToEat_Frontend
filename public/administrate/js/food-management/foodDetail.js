@@ -1,5 +1,5 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
-import { getFood, createFood, updateFood, getFavoriteFood } from '../api.js';
+import { getFood, createFood, updateFood, getFavoriteFood, shareFood } from '../api.js';
 import { registerViewLoader, updateURL } from '../router.js';
 
 let foodDetailType = '';
@@ -455,6 +455,10 @@ function populateFoodDetails(data) {
     $("#fat").val(data.fat);
     $("#foodWeight").val(data.foodWeight);
     $("#representativeName").val(data.representativeName);
+    $("#description").val(data.description);
+
+    $("#foodDetail").attr("data-food-code", data.foodCode);
+
 
     // Unit Option
     $(".unit-option").removeClass("active");  // 모든 유닛 옵션에서 active 클래스 제거
@@ -520,6 +524,7 @@ function getFoodDetailValues() {
     const isPerServing = $("#isPerServingToggle").hasClass("active");
     const isRecommended = $("#isRecommendedToggle").hasClass("active");
 
+    const foodCode = $("#foodDetail").data("food-code");
     // description은 share 모드에서만 존재함 (food에 필요는없음)
     // const description = $("#description").length ? $("#description").val()?.trim() : "";
 
@@ -536,6 +541,7 @@ function getFoodDetailValues() {
         unit,
         isPerServing,
         isRecommended,
+        foodCode,
     };
 }
 
@@ -629,11 +635,26 @@ $(document).on("click", "#foodDetailEdit", function () {
 });
 
 //공유하기 버튼
-$(document).on("click", "#foodDetailShare", function () {
+$(document).on("click", "#foodDetailShare", async function () {
     if ($(this).hasClass("disabled")) return;
 
-    const foodDetailValues = getFoodDetailValues();
-    console.log("공유할 음식 정보:", foodDetailValues);
+    let foodDetailValues = getFoodDetailValues();
+    foodDetailValues.favoriteFoodId = getIdFromUrl();
+
+    console.log(foodDetailValues)
+
+    try {
+        const response = await shareFood(foodDetailValues);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: function () {
+                updateURL('food-management/user-regist');
+            }
+        });
+    } catch(err) {
+        console.log(err);
+    }
 });
 
 // 추가하기 버튼
