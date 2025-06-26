@@ -591,7 +591,7 @@ $(document).on('click', '#registFavoriteButton', function () {
     $('.favorite-meal-item.active').each(function () {
         const $item = $(this);
         const food = {
-            id: $item.data('id'),
+            favoriteFoodId: $item.data('id'),
             foodCode: $item.data('food-code'),
             foodName: $item.data('name'),
             mealTime: mealTimeUpper,

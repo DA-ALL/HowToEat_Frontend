@@ -13,7 +13,7 @@
     white-space: nowrap;
 }
 
-#consumedFoodDetail .consumed-food-detail-container .text-wrapper .sub-title {
+#consumedFoodDetail .consumed-food-detail-container .text-wrapper .sub-title-weight {
     font-size: clamp(13.6px, 3.2vw + 4px, 20px);
     font-weight: 500;
     color: var(--red500);
@@ -57,7 +57,7 @@
     flex-direction: row;
 }
 
-#consumedFoodDetail .consumed-food-detail-container .food-info-container .food-info-wrapper {
+#consumedFoodDetail .consumed-food-detail-container .food-info-container .consumed-food-info-wrapper {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -65,13 +65,13 @@
     gap: clamp(3.22px, 1.04vw + 0.1px, 5.3px);
 }
 
-#consumedFoodDetail .consumed-food-detail-container .food-info-container .food-info-wrapper .title {
+#consumedFoodDetail .consumed-food-detail-container .food-info-container .consumed-food-info-wrapper .title {
     font-size: clamp(10.6px, 3.2vw + 1px, 17px);
     font-weight: 400;
     color: var(--black100);
 }
 
-#consumedFoodDetail .consumed-food-detail-container .food-info-container .food-info-wrapper .amount {
+#consumedFoodDetail .consumed-food-detail-container .food-info-container .consumed-food-info-wrapper .amount {
     font-size: clamp(13px, 4vw + 1px, 21px);
     font-weight: 500;
     color: var(--red500);
