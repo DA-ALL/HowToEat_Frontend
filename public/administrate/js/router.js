@@ -254,7 +254,7 @@ export function syncFiltersWithURL() {
             }
 
             // 기본값이 의미 없는 경우는 URL에 반영 안 함
-            if (uiValue && !['all', 'desc', 'kcal'].includes(uiValue)) {
+            if (uiValue != null && !['all', 'desc', 'kcal'].includes(uiValue)) {
                 replaceQueryParam({ [key]: uiValue });
             }
         }
