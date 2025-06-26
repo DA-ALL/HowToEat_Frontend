@@ -6,7 +6,7 @@ import { getAdminAccountList } from '/administrate/js/api.js';
 import { registerViewLoader } from '/administrate/js/router.js';
 
 function loadAdminManagementView() {
-    loadContent(); // 기존 초기화
+    loadContent();
     loadAdminAccountTable(); // 실제 데이터 로딩
 }
 

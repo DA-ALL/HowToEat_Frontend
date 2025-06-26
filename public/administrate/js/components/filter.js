@@ -111,12 +111,27 @@ export async function renderFilters(contentId, onclick = null) {
 }
 
 $(document).on('click', '.filter-option', async function () {
+    if ($(this).hasClass('active')) {
+        return;
+    }
+
     let $parent = $(this).closest('.filter-option-wrapper');
     let queryKey = $parent.data('key')
     let queryValue = $(this).data('query');
 
     if (queryKey) {
         updateQueryParam({[queryKey] : queryValue});
+    }
+
+    // 파라미터에 page가 있으면 1로 바꾸기
+    const queryUpdates = {};
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('page')) {
+        queryUpdates.page = 1;
+    }
+
+    if (Object.keys(queryUpdates).length > 0) {
+        updateQueryParam(queryUpdates);
     }
 
     $parent.find('.filter-option').removeClass('active');

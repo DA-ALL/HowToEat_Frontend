@@ -5,6 +5,12 @@ import { renderTable, renderTableWithOptionalPagination } from '/administrate/js
 import { loadFoodDetail } from '/administrate/js/food-management/foodDetail.js';
 import { getFoodList } from '../api.js';
 
+const adminFoodConfig = {
+    containerId: 'adminFoodTable',
+    bodyId: 'adminFoodTableBody',
+    contentId: 'adminFood',
+};
+
 function loadContent() {
     const container = $("#adminFood");
 
@@ -25,19 +31,15 @@ function loadContent() {
     
     loadSearchBar('adminFood', loadAdminFoodTable);
     loadFilter('adminFood', loadAdminFoodTable);
-    loadAdminFoodTable();
+    renderTable(adminFoodConfig.containerId, adminFoodConfig.bodyId);
+    loadAdminFoodTable() 
 }
 
 function loadAdminFoodTable() {
-    const containerId = 'adminFoodTable';
-    const bodyId = 'adminFoodTableBody';
-    const contentId = 'adminFood';
-
-    renderTable(containerId, bodyId);
     renderTableWithOptionalPagination({
         getData: getAdminFoodDatas,
-        bodyId,
-        contentId,
+        bodyId: adminFoodConfig.bodyId,
+        contentId: adminFoodConfig.containerId,
         enablePagination: true
     });
 }
@@ -72,5 +74,6 @@ $(document).on('click', `#adminFoodTableBody tr`, function () {
     updateURL(page);
 });
 
-registerPopstateHandler('adminFood', loadContent);
-registerViewLoader('adminFood', loadContent);
+
+registerPopstateHandler('adminFood', loadContent );
+registerViewLoader('adminFood', loadContent );

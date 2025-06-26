@@ -92,6 +92,9 @@ $(document).on("click", "#addPtMemberButtonNext", async function () {
         showCustomAlert({
             type: 3,
             message: response.message,
+            onNext: function() {
+                location.reload();
+            }
         })
     } catch (error) {
         console.error("Error while creating PT member:", error);

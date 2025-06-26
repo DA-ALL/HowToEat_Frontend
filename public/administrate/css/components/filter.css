@@ -26,6 +26,7 @@
     border-radius: 30px;
     cursor: pointer;
     white-space: nowrap;
+    user-select: none;
 }
 
 #filter .filter-option.active { 
