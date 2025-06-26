@@ -287,13 +287,13 @@
     margin-bottom: clamp(70px, 7.2vw + 65px, 120px);
 }
 
-#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-info-wrapper{
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-info-wrapper {
     display: flex;
     flex-direction: column;
     gap: clamp(8px, 2.664vw, 13.33px);
 }
 
-#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-info-wrapper .meal-macro-wrapper{
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-info-wrapper .meal-macro-wrapper {
     display: flex;
     flex-direction: row;
     font-size: clamp(10px, 3vw + 1px, 16px);
@@ -378,9 +378,9 @@
     align-items: center;
     position: relative;
     margin-bottom: clamp(17.8px, 7.2vw, 36px);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-left-message {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-left-message {
     font-size: clamp(10.4px, 3.465vw, 17.33px);
     font-weight: 300;
     position: relative;
@@ -391,31 +391,52 @@
     color: var(--black100);
     /* 텍스트 색상 */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper span {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper span {
     font-size: clamp(16.8px, 4.8vw, 20px);
     font-weight: 500;
     color: var(--red500);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper .over {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper .over {
     color: var(--red800);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-tail-svg {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-tail-svg {
     z-index: 10;
     position: absolute;
     bottom: -26px;
     filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.11));
-  }
+}
 
-  @keyframes fillBar {
-    from { width: 0%; }
-    to { width: var(--fill-percent); }
-  }
-  
-  
-  .bar-front.bar-increase.animate {
+#homeMealSearch #deleteFavoriteButton {
+    display: flex;
+    justify-content: center;
+    width: 30%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+    color: var(--white300);
+    background-color: var(--gray200);
+    cursor: pointer;
+}
+
+#homeMealSearch #registFavoriteButton {
+    width: 70%;
+}
+
+@keyframes fillBar {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: var(--fill-percent);
+    }
+}
+
+
+.bar-front.bar-increase.animate {
     animation: blinkBarOpacity 1.5s infinite ease-in-out, fillBar 1s forwards;
-  }
+}

@@ -1,5 +1,6 @@
 import { showToast } from '../components/toast.js';
 import { showPopup } from '../components/popup.js';
+import { showPage } from '../components/nav-bottom.js';
 
 export function renderConsumedFoodInfo(consumedFoodId, callback) {
     const consumedFoodDataRequest = $.ajax({
@@ -117,16 +118,21 @@ $(document).on('click', '#deleteFavoriteFoodButton', function () {
 
 $(document).on('click', '#deleteConsumedFoodButton', function () {
     const pathParts = window.location.pathname.split("/");
+    const mealTime = pathParts[2];
+    const selectedDate = pathParts[3];
     const consumedFoodId = pathParts[5];
-    showPopup("#consumedFoodDetail", 2, "알림입니다.", "서브타이틀이에요.")
-    // $.ajax({
-    //     type: 'DELETE',
-    //     url: `${window.DOMAIN_URL}/consumed-foods/${consumedFoodId}`,
-    //     contentType: "application/json",
-    //     success: function () {
-    //         showToast("즐겨찾기에서 삭제되었습니다.", "#consumedFoodDetail")
-    //         $("#deleteFavoriteFoodButton").addClass("hidden");
-    //         $("#createFavoriteFoodButton").removeClass("hidden");
-    //     }
-    // });
+    showPopup("#main", 2, "삭제하시겠어요?", "").then((confirmed) => {
+        if (confirmed) {
+            $.ajax({
+                type: 'DELETE',
+                url: `${window.DOMAIN_URL}/consumed-foods/${consumedFoodId}`,
+                contentType: "application/json",
+                success: function () {
+                    const newPath = `/main/${mealTime}/${selectedDate}`;
+                    history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+                    showPage(`/main/${mealTime}/${selectedDate}`);
+                }
+            });
+        }
+    });
 });

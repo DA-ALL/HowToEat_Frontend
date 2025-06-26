@@ -1,6 +1,6 @@
 import { showMain } from '../components/routers.js';
 import { setLastMainPath } from '../components/nav-bottom.js';
-
+import { showPopup } from '../components/popup.js';
 
 let currentSearchKeyword = '';
 let currentPage = 0;
@@ -129,7 +129,8 @@ export function renderMealSearch(callback) {
                           </div>
                       </div>
                       <div class="button-container meal-favorite hidden">
-                          <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                            <div id="deleteFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">삭제</div>
+                            <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
                       </div>
                   </div>
               </div>
@@ -636,3 +637,47 @@ $(document).on('click', '#registFavoriteButton', function () {
         }
     });
 });
+
+// delete 버튼 클릭 시
+$(document).on('click', '#deleteFavoriteButton', function () {
+    const favoriteFoodIdList = [];
+
+    $('.favorite-meal-item.active').each(function () {
+        const $item = $(this);
+        const favoriteFoodId = {
+            favoriteFoodId: $item.data('id'),
+        };
+        favoriteFoodIdList.push(favoriteFoodId);
+    });
+
+    if (favoriteFoodIdList.length === 0) {
+        alert("음식을 선택해주세요.");
+        return;
+    }
+
+    showPopup("#main", 2, "삭제하시겠어요?", "").then((confirmed) => {
+        if (confirmed) {
+
+            $.ajax({
+                type: "DELETE",
+                url: `${window.DOMAIN_URL}/favorite-foods`,
+                contentType: "application/json",
+                data: JSON.stringify(favoriteFoodIdList),
+                success: function () {
+                    favoriteFoodIdList.length = 0;
+                    selectedFavorites.length = 0;
+
+                    $('.favorite-meal-item.active').each(function () {
+                        const $el = $(this);
+                        $el.trigger('click');
+                        $el.remove();
+                    });
+
+
+                }
+            });
+
+        }
+    })
+});
+

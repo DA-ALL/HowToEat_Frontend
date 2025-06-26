@@ -74,6 +74,9 @@
 
 .button-container.meal-favorite {
     position: fixed;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
     bottom: clamp(70.8px, 17.6vw + 18px, 106px); /* 화면 하단 기준 위치 */
     left: 50%;
     transform: translate(-50%, 0); /* 좌우 가운데 정렬 + translateY(0%) 유지 */
