@@ -11,9 +11,43 @@ let hasRenderedCPFOnce = false;
 
 export function initCalendarPage() {
     hasRenderedCPFOnce = false;
-    updateCalendar();
-    getVisibleDateRangeFromCalendar();
 
+    const signupRequest = $.ajax({
+        url: `${window.DOMAIN_URL}/users/signup-date`,
+        method: 'GET'
+    });
+
+    $.when(signupRequest).done(function (res) {
+        const signupDateStr = res.data.createdAt;
+
+        // 1. visible date 계산
+        const visibleDates = getVisibleDates(signupDateStr);
+        if (visibleDates.length === 0) {
+            renderCalendarWithSignupLimit(signupDateStr);
+            return;
+        }
+
+        const start = visibleDates[0];
+        const end = visibleDates[visibleDates.length - 1];
+
+        // 2. 먼저 kcal 데이터를 채우고
+        $.get(`${window.DOMAIN_URL}/daily-summary/kcals`, {
+            start_date: start,
+            end_date: end
+        }, function (kcalRes) {
+            kcalRes.data.forEach(item => {
+                calorieData[item.date] = {
+                    target: item.targetKcal,
+                    consumed: item.consumedKcal
+                };
+            });
+
+            // 3. 그 다음 캘린더 렌더
+            renderCalendarWithSignupLimit(signupDateStr);
+        });
+    });
+
+    // ✅ prev/next/toggle 버튼은 기존 그대로
     $("#prev").off('click').on("click", function () {
         if (viewMode === 'week') {
             currentDate.setDate(currentDate.getDate() - 7);
@@ -48,8 +82,53 @@ export function initCalendarPage() {
     });
 }
 
+// ✅ 캘린더에서 렌더 대상 날짜 목록 추출
+function getVisibleDates(signupDateStr) {
+    const validDates = [];
+
+    let year = currentDate.getFullYear();
+    let month = currentDate.getMonth();
+    let temp = new Date(year, month, 1);
+
+    const todayStr = formatDate(new Date());
+
+    if (viewMode === 'week') {
+        const weekStart = new Date(currentDate);
+        weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(weekStart);
+            date.setDate(weekStart.getDate() + i);
+            const str = formatDate(date);
+            if (str >= signupDateStr && str <= todayStr) {
+                validDates.push(str);
+            }
+        }
+    } else {
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+        const startDay = (firstDay === 0) ? 6 : firstDay - 1;
+
+        for (let i = 1; i <= lastDate; i++) {
+            temp.setDate(i);
+            const str = formatDate(temp);
+            if (str >= signupDateStr && str <= todayStr) {
+                validDates.push(str);
+            }
+        }
+    }
+
+    return validDates;
+}
+
+
 function updateCalendar() {
-    $.get(`${window.DOMAIN_URL}/users/signup-date`, function (res) {
+
+    const signupRequest = $.ajax({
+        url: `${window.DOMAIN_URL}/users/signup-date`,
+        method: 'GET'
+    });
+
+    $.when(signupRequest).done(function (res) {
         const signupDateStr = res.data.createdAt;
         renderCalendarWithSignupLimit(signupDateStr);
     });
@@ -131,7 +210,6 @@ function renderCalendarWithSignupLimit(signupDateStr) {
     });
 
     if (shouldUpdateCPF) {
-        console.log("test");
         hasRenderedCPFOnce = true;
 
         $('#kcalGraphPath').attr('d', '');
@@ -170,20 +248,31 @@ function getVisibleDateRangeFromCalendar() {
             validDates.push(dateStr);
         }
     });
+
     if (validDates.length === 0) return;
 
     validDates.sort();
     const start = validDates[0];
     const end = validDates[validDates.length - 1];
 
-    $.get(`${window.DOMAIN_URL}/daily-summary/kcals`, { start_date: start, end_date: end }, function (res) {
+    const kcalRequest = $.ajax({
+        url: `${window.DOMAIN_URL}/daily-summary/kcals`,
+        method: 'GET',
+        data: {
+            start_date: start,
+            end_date: end
+        }
+    });
+    
+    $.when(kcalRequest).done(function (res) {
         res.data.forEach(item => {
             calorieData[item.date] = {
                 target: item.targetKcal,
                 consumed: item.consumedKcal
             };
         });
-        updateCalendar();
+    
+        updateCalendar(); // ✅ 데이터 다 들어온 뒤에 실행
     });
 }
 
@@ -250,6 +339,7 @@ function describeArc(x, y, radius, startAngle, endAngle) {
 }
 
 function getCalorieInfo(dateStr) {
+    console.log(calorieData);
     const data = calorieData[dateStr];
     if (!data) return { rawPercent: 0, percent: 0, target: null };
     const rawPercent = Math.round((data.consumed / data.target) * 100);

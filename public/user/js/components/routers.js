@@ -21,7 +21,7 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
     $('#home, #homeMeal, #homeMealSearch, #homeMealRegist, #consumedFoodDetail').hide();
 
     if (!meal) {
-        initCalendarPage(true);
+        initCalendarPage();
         resetSearchView();
         $('#home').show();
         return;
