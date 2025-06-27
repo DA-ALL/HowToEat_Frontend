@@ -62,6 +62,17 @@ export function initHeaderNav(parentSelector = 'body') {
 
     $headerNav.html(headerTemplate);
 
+    $headerNav.find('.button-add').on('click', function() {
+        // const currentPath = window.location.pathname;
+        // const mealTime = parts[2];
+        // const selectedDate = parts[3];
+
+        const newPath = `/main/favorite-food/add`;
+        history.pushState({ view: 'main'}, '', newPath);
+        showPage(newPath);
+        return;
+    });
+
     // 이벤트 바인딩 (SPA에서도 작동하도록 매번 재바인딩)
     $headerNav.find('.button-prev').on('click', function () {
         const currentPath = window.location.pathname;

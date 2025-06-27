@@ -295,7 +295,7 @@ function getMessageFormat(userConsumedData, foodInfo) {
 
     for (const type of types) {
         const consumed = Number(userConsumedData[type]?.consumed || 0);
-        const added = adjusted ? adjusted[type] : Number(foodInfo[type] || 0);
+        const added = foodInfo ? foodInfo[type] : Number(foodInfo[type] || 0);
         const target = Number(userConsumedData[type]?.target || 0);
 
         const newConsumed = consumed + added;

@@ -27,32 +27,40 @@ const navMap = {
 
 // 뷰 전환 함수
 export function showPage(path) {
+    const parts = path.split('/');
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
         if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
             window.mainHistoryStack.push(path);
         }
+
+        let meal = null;
+        let subpage = null;
+        let type = null;
+        let consumedFoodId = null;
     
         lastMainPath = path;
-    
-        const parts = path.split('/');
-        const meal = parts[2];      // breakfast
-        const date = parts[3];      // 날짜
 
-        let regist = null;
-        let type = null;
+        if(parts[2] === 'favorite-food') {
+            meal = null;
+            subpage = 'favorite-food';
+            showMain(meal, subpage);
+        }   
 
-        if (parts[4] === 'consumed-food') {
-            regist = 'consumed-food';
-            type = null; // 타입 없음
-            const consumedFoodId = parts[5];
-            showMain(meal, regist, type, consumedFoodId);
+        else if (parts[4] === 'consumed-food') {
+            meal = parts[2];
+            subpage = 'consumed-food';
+            type = null;
+            consumedFoodId = parts[5];
+            showMain(meal, subpage, type, consumedFoodId);
         }
 
-        // 기존 regist 처리
-        regist = parts[4];
-        type = parts[5];
-        showMain(meal, regist, type);
+        else {
+            meal = parts[2];
+            subpage = parts[4];
+            type = parts[5];
+            showMain(meal, subpage, type);
+        }
     }
     else if (path.startsWith('/report')) {
         showReport();

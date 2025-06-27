@@ -86,7 +86,7 @@ export function renderMealSearch(callback) {
         `).join('');
 
         const html = `
-          <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
+          <div id="headerNav" data-title="${mealKor} 등록하기" data-type="3"></div>
           <div class="meal-search-container">
               <div class="search-toggle-wrapper">
                   <div class="search-tab-wrapper">

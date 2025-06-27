@@ -13,7 +13,7 @@
     position: fixed;
     top: 0px;
     width: 100%;
-    padding: 16px 12px;
+    padding : 16px clamp(12.8px, 4.26vw, 21.33px);
     box-sizing: border-box;
     border-bottom: 1px solid #F0F0F0;
     width: 100%;

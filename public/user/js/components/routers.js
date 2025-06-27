@@ -12,28 +12,36 @@ import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
+import { renderAddHomeNewFood } from '../main/homeAddNewFood.js';
 
 export function showMain(meal = null, subpage = null, type = null, consumedFoodId = null) {
     $('#main').show();
     $('#report').hide();
     $('#my').hide();
 
-    $('#home, #homeMeal, #homeMealSearch, #homeMealRegist, #consumedFoodDetail').hide();
+    $('#home, #homeMeal, #homeMealSearch, #homeMealRegist, #consumedFoodDetail, #homeAddNewFood').hide();
 
-    if (!meal) {
+    const pathParts = window.location.pathname.split("/");
+    let mealTime = null;
+    let selectedDate = null;
+
+    // 1️⃣ 메인페이지  /main
+    if (!meal && !subpage && !type && !consumedFoodId) {
         initCalendarPage();
         resetSearchView();
         $('#home').show();
         return;
     }
 
-    const pathParts = window.location.pathname.split("/");
-    const selectedDate = pathParts[3];
-    const mealTime = meal.toUpperCase();
 
-    // 1️⃣ 기본 식단 상세 화면
-    if (meal && !subpage && !type && !consumedFoodId) {
+    // 2️⃣ 끼니탄단지 페이지 /main/breakfast/2025-06-27
+    if (meal && !subpage && !type && !consumedFoodId) {     
+        mealTime = meal.toUpperCase();
+        selectedDate = pathParts[3];
+        
         resetSearchView();
+
+
         renderMealDetail(function (html) {
             $('#homeMeal').html(html);
             initHeaderNav($('#homeMeal'));
@@ -46,7 +54,7 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
         });
     }
 
-    // 2️⃣ 신규: 섭취 음식 상세
+    // 3️⃣ 신규: 섭취 음식 상세 /main/breakfast/2025-06-27/consumed-food/122
     if (meal && subpage === 'consumed-food' && consumedFoodId) {
         renderConsumedFoodInfo(consumedFoodId, function(html) {
             $('#consumedFoodDetail').html(html);
@@ -55,7 +63,18 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
         });
     }
 
-    // 3️⃣ 기존: 등록 search
+    // 4️⃣ 음식 새로 등록 페이지 /main/breakfast/2025-06-27/consumed-food/122
+    if (!meal && subpage === 'favorite-food' && !type) {
+        
+        $('style[data-keyframe]').remove();
+
+        if ($('#homeAddNewFood').children().length === 0) {
+            renderAddHomeNewFood();
+        }
+        $('#homeAddNewFood').show();
+    }
+
+    // 5️⃣ 음식 검색 및 즐겨찾기 페이지 /main/breakfast/2025-06-27/regist
     if (meal && subpage === 'regist' && !type) {
         $('style[data-keyframe]').remove();
         if ($('#homeMealSearch').children().length === 0) {
@@ -69,7 +88,7 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
         $('#homeMealSearch').show();
     }
 
-    // 4️⃣ 기존: 등록 type별
+    // 6️⃣ 음식 등록 페이지 /main/breakfast/2025-06-27/regist/COOKED/5
     if (meal && subpage === 'regist' && type) {
         renderIncreaseCPFbar(function(html) {
             $('#homeMealRegist').html(html);
