@@ -444,3 +444,21 @@ export function getRecommendFoodList({sortBy}) {
         contentType: "application/json",
     });
 }
+
+// ================  Daily Report API ================
+
+export function getDailyReport() {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/daily-reports/today`,
+        contentType: "application/json",
+    });
+}
+
+export function getRecent30DaysTodayConsumedFoodCounts() {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/daily-reports/consumed-food-count/recent-30-days`,
+        contentType: "application/json",
+    });
+}
