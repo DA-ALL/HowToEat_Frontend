@@ -532,6 +532,7 @@ function fetchSearchResults(keyword, page) {
         success: function (res) {
             const items = res.data.content;
             hasNext = res.data.hasNext;
+            console.log(res);
             renderMealSearchResults(items, page === 0);
         },
         complete: function () {
@@ -541,6 +542,9 @@ function fetchSearchResults(keyword, page) {
 }
 
 $(window).on('scroll', function () {
+
+    if(!$('#main').is(':visible'))  return;
+    if(!$('#homeMealSearch').is(':visible'))  return;
     const scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();
 
     if (scrollBottom < 100 && hasNext && !isLoading) {

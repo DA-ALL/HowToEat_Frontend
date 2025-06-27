@@ -71,6 +71,7 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
         if ($('#homeAddNewFood').children().length === 0) {
             $("#homeAddNewFood").html(renderAddHomeNewFood());
             initHeaderNav($('#homeAddNewFood'));
+            bindUsersInfoEvents();
         }
         $('#homeAddNewFood').show();
     }
