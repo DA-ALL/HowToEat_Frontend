@@ -41,10 +41,11 @@ export function showPage(path) {
     
         lastMainPath = path;
 
-        if(parts[2] === 'favorite-food') {
-            meal = null;
+        if(parts[5] === 'favorite-food') {
+            meal = parts[2];
             subpage = 'favorite-food';
-            showMain(meal, subpage);
+            type = parts[5];
+            showMain(meal, subpage, type);
         }   
 
         else if (parts[4] === 'consumed-food') {

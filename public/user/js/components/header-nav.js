@@ -63,12 +63,13 @@ export function initHeaderNav(parentSelector = 'body') {
     $headerNav.html(headerTemplate);
 
     $headerNav.find('.button-add').on('click', function() {
-        // const currentPath = window.location.pathname;
-        // const mealTime = parts[2];
-        // const selectedDate = parts[3];
+        const currentPath = window.location.pathname;
+        const parts = currentPath.split('/');
+        const mealTime = parts[2];
+        const selectedDate = parts[3];
 
-        const newPath = `/main/favorite-food/add`;
-        history.pushState({ view: 'main'}, '', newPath);
+        const newPath = `/main/${mealTime}/${selectedDate}/regist/favorite-food/add`;
+        history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
         showPage(newPath);
         return;
     });
@@ -86,10 +87,6 @@ export function initHeaderNav(parentSelector = 'body') {
                 const prev = stack[stack.length - 1];
                 window.usersHistoryStack = stack; // 다시 저장
 
-                // if ($container.attr('id') === 'usersNotice') {
-                //     $('#usersNotice #noticeListContainer').empty();
-                // }
-
                 history.pushState({ view: 'users' }, '', prev);
                 showPage(prev);
                 return;
@@ -98,6 +95,16 @@ export function initHeaderNav(parentSelector = 'body') {
     
         if (currentPath.startsWith('/main/')) {
             const parts = currentPath.split('/');
+
+            if (parts[2] === "favorite-food") {
+                const mealTime = parts[2];
+                const selectedDate = parts[3];
+
+                const newPath = `/main/${mealTime}/${selectedDate}`;
+                history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+                showPage(`/main/${mealTime}/${selectedDate}`);
+                return;
+            }
 
             // http://localhost:3000/main/breakfast/2025-06-19
             if (parts.length === 4) {
@@ -117,14 +124,14 @@ export function initHeaderNav(parentSelector = 'body') {
                 return;
 
             // http://localhost:3000/main/breakfast/2025-06-19/consumed-food/63
-            } else if (parts.length === 6) {
+            } else if (parts[4] === "consumed-food") {
                 const mealTime = parts[2];
                 const selectedDate = parts[3];
 
                 const newPath = `/main/${mealTime}/${selectedDate}`;
                 history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
                 showPage(`/main/${mealTime}/${selectedDate}`);
-                return;  
+                return;
 
             // http://localhost:3000/main/breakfast/2025-06-19/regist/COOKED/3
             } else if (parts.length === 7) {

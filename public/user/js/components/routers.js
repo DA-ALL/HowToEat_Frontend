@@ -64,12 +64,13 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
     }
 
     // 4️⃣ 음식 새로 등록 페이지 /main/breakfast/2025-06-27/consumed-food/122
-    if (!meal && subpage === 'favorite-food' && !type) {
+    if (meal && subpage === 'favorite-food' && type) {
         
         $('style[data-keyframe]').remove();
 
         if ($('#homeAddNewFood').children().length === 0) {
-            renderAddHomeNewFood();
+            $("#homeAddNewFood").html(renderAddHomeNewFood());
+            initHeaderNav($('#homeAddNewFood'));
         }
         $('#homeAddNewFood').show();
     }
@@ -168,7 +169,7 @@ export function showMyPage(subpath = null, detailId = null) {
         initHeaderNav($('#usersSetTime'));
         $('#usersSetTime').show();
     } else if (subpath === 'question') {
-        console.log('문의 뷰로 이동');
+        // console.log('문의 뷰로 이동');
     } else if (subpath === 'terms') {
         $("#usersTerms").html(renderUsersTerms());
         initHeaderNav($('#usersTerms'));
