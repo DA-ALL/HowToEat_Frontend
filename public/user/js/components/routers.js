@@ -14,7 +14,7 @@ import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
 import { renderAddHomeNewFood } from '../main/homeAddNewFood.js';
 
-export function showMain(meal = null, subpage = null, type = null, consumedFoodId = null) {
+export function showMain(meal = null, subpage = null, type = null, consumedFoodId = null, isFromAddFavoriteFood = false) {
     $('#main').show();
     $('#report').hide();
     $('#my').hide();
@@ -79,10 +79,14 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
     // 5️⃣ 음식 검색 및 즐겨찾기 페이지 /main/breakfast/2025-06-27/regist
     if (meal && subpage === 'regist' && !type) {
         $('style[data-keyframe]').remove();
-        if ($('#homeMealSearch').children().length === 0) {
+        if ($('#homeMealSearch').children().length === 0 || isFromAddFavoriteFood) {
             renderMealSearch(function(html) {
                 $('#homeMealSearch').html(html);
                 initHeaderNav($('#homeMealSearch'));
+                if(isFromAddFavoriteFood) {
+                    //즐겨찾기 음식 추가 후, 즐겨찾기로 이동하기 위해 추가
+                    $('.tab-button.favorite').trigger('click');
+                }
                 runAllCountAnimations();
                 $('html, body').scrollTop(0);
             });
@@ -189,6 +193,10 @@ export function resetHomeMealView() {
 
 export function resetSearchView() {
     $('#homeMealSearch').empty();
+}
+
+export function resetAddFavoriteFoodView() {
+    $('#homeAddNewFood').empty();
 }
 
 export function resetRegistView() {

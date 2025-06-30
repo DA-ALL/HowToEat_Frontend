@@ -39,10 +39,24 @@
     width: clamp(20px, 6.8vw, 34px);
   }
 
+
+
+  .popup-cover .popup .popup-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   .popup-cover .popup .popup-title {
     font-size: clamp(14.4px, 4.8vw, 24px);
     font-weight: 600;
     color: var(--black100);
+  }
+
+  .popup-cover .popup .popup-subtitle {
+    font-size: clamp(11.2px, 3.7vw, 18.67px);
+    font-weight: 400;
+    color: var(--gray400);
   }
   
 
@@ -66,7 +80,7 @@
     cursor: pointer;
   }
 
-  .popup-cover .popup .popup-button-container .delete-btn {
+  .popup-cover .popup .popup-button-container .delete-btn, .next-btn {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -77,7 +91,6 @@
     background-color: var(--red500);
     cursor: pointer;
   }
-
 
   
   @media (min-width: 500px) {

@@ -7,10 +7,16 @@ export function showPopup(parent, type, title, subtitle) {
                 popupHtml = `
                     <div class="popup-cover">
                         <div class="popup">
-                            <div class="icon notify"></div>
-                            <div class="popup-title">${title}</div>
-                            <div class="popup-subtitle">${subtitle}</div>
-                            <button class="popup-btn confirm">확인</button>
+                            <div class="icon notify">
+                                <img src="/user/images/icon_notice.png">
+                            </div>
+                            <div class="popup-title-wrapper">
+                                <div class="popup-title">${title}</div>
+                                <div class="popup-subtitle">${subtitle}</div>
+                            </div>
+                            <div class="popup-button-container">
+                                <div class="next-btn active">확인</div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -55,6 +61,11 @@ export function showPopup(parent, type, title, subtitle) {
         });
 
         popup.find('.delete-btn').on('click', function () {
+            closePopup();
+            resolve(true);
+        });
+
+        popup.find('.next-btn').on('click', function () {
             closePopup();
             resolve(true);
         });
