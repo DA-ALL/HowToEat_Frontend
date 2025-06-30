@@ -19,7 +19,7 @@ export function renderAddHomeNewFood() {
                 <div class="input-wrapper">
                     <div class="input-label">설명</div>
                     <div id="descriptionInput" class="input">
-                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="description" name="description" placeholder="어떤 음식인가요?" maxlength="5" data-text="">
+                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="description" name="description" placeholder="어떤 음식인가요?" maxlength="20" data-text="">
                     </div>
                 </div>
 
@@ -34,21 +34,21 @@ export function renderAddHomeNewFood() {
                 <div class="input-wrapper">
                     <div class="input-label">탄수화물</div>
                     <div id="carboInput" class="input">
-                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="carbo" name="carbo" placeholder="탄수화물을 입력해 주세요" maxlength="5" data-text=""}>
+                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="carbo" name="carbo" placeholder="탄수화물을 입력해 주세요" maxlength="10" data-text=""}>
                     </div>
                 </div>
 
                 <div class="input-wrapper">
                     <div class="input-label">단백질</div>
                     <div id="proteinInput" class="input">
-                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="protein" name="protein" placeholder="단백질을 입력해 주세요" maxlength="5" data-text=""}>
+                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="protein" name="protein" placeholder="단백질을 입력해 주세요" maxlength="10" data-text=""}>
                     </div>
                 </div>
 
                 <div class="input-wrapper">
                     <div class="input-label">지방</div>
                     <div id="fatInput" class="input">
-                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="fat" name="fat" placeholder="지방을 입력해 주세요" maxlength="5" data-text=""}>
+                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="fat" name="fat" placeholder="지방을 입력해 주세요" maxlength="10" data-text=""}>
                     </div>
                 </div>
 

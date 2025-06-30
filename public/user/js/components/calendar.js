@@ -45,41 +45,42 @@ export function initCalendarPage() {
             // 3. 그 다음 캘린더 렌더
             renderCalendarWithSignupLimit(signupDateStr);
         });
+
+        // ✅ prev/next/toggle 버튼은 기존 그대로
+        $("#prev").off('click').on("click", function () {
+            if (viewMode === 'week') {
+                currentDate.setDate(currentDate.getDate() - 7);
+            } else {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+            }
+            updateCalendar(signupDateStr);
+            getVisibleDateRangeFromCalendar(signupDateStr);
+        });
+
+        $("#next").off('click').on("click", function () {
+            if (viewMode === 'week') {
+                currentDate.setDate(currentDate.getDate() + 7);
+            } else {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+            }
+            updateCalendar(signupDateStr);
+            getVisibleDateRangeFromCalendar(signupDateStr);
+        });
+
+        $("#toggle-view").off('click').on("click", function () {
+            if (viewMode === 'week') {
+                viewMode = 'month';
+                $(this).text('월단위');
+            } else {
+                viewMode = 'week';
+                $(this).text('주단위');
+                currentDate = new Date(activeDate);
+            }
+            updateCalendar(signupDateStr);
+            getVisibleDateRangeFromCalendar(signupDateStr);
+        });
     });
 
-    // ✅ prev/next/toggle 버튼은 기존 그대로
-    $("#prev").off('click').on("click", function () {
-        if (viewMode === 'week') {
-            currentDate.setDate(currentDate.getDate() - 7);
-        } else {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-        }
-        updateCalendar();
-        getVisibleDateRangeFromCalendar();
-    });
-
-    $("#next").off('click').on("click", function () {
-        if (viewMode === 'week') {
-            currentDate.setDate(currentDate.getDate() + 7);
-        } else {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-        }
-        updateCalendar();
-        getVisibleDateRangeFromCalendar();
-    });
-
-    $("#toggle-view").off('click').on("click", function () {
-        if (viewMode === 'week') {
-            viewMode = 'month';
-            $(this).text('월단위');
-        } else {
-            viewMode = 'week';
-            $(this).text('주단위');
-            currentDate = new Date(activeDate);
-        }
-        updateCalendar();
-        getVisibleDateRangeFromCalendar();
-    });
 }
 
 // ✅ 캘린더에서 렌더 대상 날짜 목록 추출
@@ -121,17 +122,9 @@ function getVisibleDates(signupDateStr) {
 }
 
 
-function updateCalendar() {
+function updateCalendar(signupDateStr) {
 
-    const signupRequest = $.ajax({
-        url: `${window.DOMAIN_URL}/users/signup-date`,
-        method: 'GET'
-    });
-
-    $.when(signupRequest).done(function (res) {
-        const signupDateStr = res.data.createdAt;
-        renderCalendarWithSignupLimit(signupDateStr);
-    });
+    renderCalendarWithSignupLimit(signupDateStr);
 }
 
 function renderCalendarWithSignupLimit(signupDateStr) {
@@ -213,7 +206,7 @@ function renderCalendarWithSignupLimit(signupDateStr) {
         hasRenderedCPFOnce = true;
 
         $('#kcalGraphPath').attr('d', '');
-        
+
 
         // 그래프 두번 그려주기 방지
         $('style').each(function () {
@@ -225,8 +218,8 @@ function renderCalendarWithSignupLimit(signupDateStr) {
 
         $('style').filter((_, el) =>
             /@keyframes fillArc/.test(el.innerHTML)
-            ).remove();
-    
+        ).remove();
+
 
         $.get(`${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`, function (res) {
             macrosData = res.data;
@@ -239,7 +232,7 @@ function renderCalendarWithSignupLimit(signupDateStr) {
 
 
 
-function getVisibleDateRangeFromCalendar() {
+function getVisibleDateRangeFromCalendar(signupDateStr) {
     const todayStr = formatDate(new Date());
     const validDates = [];
     $(".day").each(function () {
@@ -263,7 +256,7 @@ function getVisibleDateRangeFromCalendar() {
             end_date: end
         }
     });
-    
+
     $.when(kcalRequest).done(function (res) {
         res.data.forEach(item => {
             calorieData[item.date] = {
@@ -271,8 +264,8 @@ function getVisibleDateRangeFromCalendar() {
                 consumed: item.consumedKcal
             };
         });
-    
-        updateCalendar(); // ✅ 데이터 다 들어온 뒤에 실행
+
+        updateCalendar(signupDateStr); // ✅ 데이터 다 들어온 뒤에 실행
     });
 }
 
@@ -339,7 +332,8 @@ function describeArc(x, y, radius, startAngle, endAngle) {
 }
 
 function getCalorieInfo(dateStr) {
-    console.log(calorieData);
+    // console.log(calorieData);
+    // console.log(dateStr);
     const data = calorieData[dateStr];
     if (!data) return { rawPercent: 0, percent: 0, target: null };
     const rawPercent = Math.round((data.consumed / data.target) * 100);
@@ -370,6 +364,7 @@ function getCalorieInfo(dateStr) {
 function createDayHTML(date, disabledClass, isActive, signupDateStr) {
     const dateStr = formatDate(date);
     const todayStr = formatDate(new Date());
+    // console.log("createDayHTML : ", dateStr);
 
     if (dateStr > todayStr || dateStr < signupDateStr) {
         return `
