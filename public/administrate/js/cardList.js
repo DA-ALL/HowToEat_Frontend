@@ -45,23 +45,23 @@ $(document).ready(async function () {
 
         if (path.includes("dashboard")) {
             return [
-                { title: "전체 회원수", value: data.totalUserCount, icon: "/administrate/images/card_01.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "오늘 가입한 회원수", value: data.todayRegisteredUserCount, trend: 4.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_02.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "전체 음식", value: data.totalFoodCount, trend: 1.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_08.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "전체 식단 등록수", value: data.totalConsumedFoodCount, trend: 0, unit: "", comparison: "", icon: "/administrate/images/card_09.png", trendIcon: "", type: "" },
+                { title: "전체 회원수", value: data.totalUserCount.toLocaleString(), icon: "/administrate/images/card_01.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "오늘 가입한 회원수", value: data.todayRegisteredUserCount.toLocaleString(), trend: 4.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_02.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "전체 음식", value: data.totalFoodCount.toLocaleString(), trend: 1.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_08.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "전체 식단 등록수", value: data.totalConsumedFoodCount.toLocaleString(), trend: 0, unit: "", comparison: "", icon: "/administrate/images/card_09.png", trendIcon: "", type: "" },
             ];
         } else if (path.includes("user-management")) {
             return [
-                { title: "전체 회원수", value: data.totalUserCount, trend: 13, unit: "명", comparison: "어제보다", icon: "/administrate/images/card_01.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "남자 회원수", value: data.maleUserCount, trend: 4.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_03.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "여자 회원수", value: data.femaleUserCount, trend: 1.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_04.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "넥스트짐 회원수", value: data.nextGymMemberCount, trend: 0, unit: "", comparison: "", icon: "/administrate/images/card_05.png", trendIcon: "", type: "" },
+                { title: "전체 회원수", value: data.totalUserCount.toLocaleString(), trend: 13, unit: "명", comparison: "어제보다", icon: "/administrate/images/card_01.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "남자 회원수", value: data.maleUserCount.toLocaleString(), trend: 4.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_03.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "여자 회원수", value: data.femaleUserCount.toLocaleString(), trend: 1.3, unit: "%", comparison: "어제보다", icon: "/administrate/images/card_04.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "넥스트짐 회원수", value: data.nextGymMemberCount.toLocaleString(), trend: 0, unit: "", comparison: "", icon: "/administrate/images/card_05.png", trendIcon: "", type: "" },
             ];
         } else if (path.includes("food-management")) {
             return [
-                { title: "전체 음식", value: data.totalFoodCount, trend: 8, unit: "개", comparison: "어제보다", icon: "/administrate/images/card_06.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "관리자 음식 DB", value: data.totalAdminFoodCount, trend: 2, unit: "개", comparison: "어제보다", icon: "/administrate/images/card_07.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
-                { title: "유저 레시피", value: data.totalUserFoodCount, trend: 6, unit: "개", comparison: "어제보다", icon: "/administrate/images/card_08.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "전체 음식", value: data.totalFoodCount.toLocaleString(), trend: 8, unit: "개", comparison: "어제보다", icon: "/administrate/images/card_06.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "관리자 음식 DB", value: data.totalAdminFoodCount.toLocaleString(), trend: 2, unit: "개", comparison: "어제보다", icon: "/administrate/images/card_07.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
+                { title: "유저 레시피", value: data.totalUserFoodCount.toLocaleString(), trend: 6, unit: "개", comparison: "어제보다", icon: "/administrate/images/card_08.png", trendIcon: "/administrate/images/icon_increase.png", type: "trend" },
             ];
         } 
         else {
