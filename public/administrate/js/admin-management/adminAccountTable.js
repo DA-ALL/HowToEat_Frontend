@@ -1,6 +1,7 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateQueryParam } from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
+import { deleteAdminAccount } from '../api.js';
 
 const usersPerPage = 20;
 
@@ -65,21 +66,18 @@ export async function renderTableWithOptionalPagination({
     contentId,
     enablePagination = true
 }) {
-    const allData = await getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const data = await getData();
+    const pageFromURL = data.page + 1;
+    const rows = data.content;
     
     $(`#${bodyId}`).html(rows.map(createRows).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
+            totalItems: data.totalElements,
             itemsPerPage: usersPerPage,
-            currentPage: page,
+            currentPage: pageFromURL,
             onPageChange: (newPage) => {
                 updateQueryParam({ page: newPage });
                 renderTableWithOptionalPagination({
@@ -95,14 +93,6 @@ export async function renderTableWithOptionalPagination({
     }
 }
 
-
-function getPageFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
-
-
 // 삭제 버튼 클릭 시
 $(document).on('click', '#adminAccountTable .table-delete-button', function (e) {
     e.stopPropagation();
@@ -116,6 +106,19 @@ $(document).on('click', '#adminAccountTable .table-delete-button', function (e) 
             console.log("삭제 취소");
         },
         onNext: () => {
+            try {
+                deleteAdminAccount(adminAccountId);
+                showCustomAlert({
+                    type: 3,
+                    message: "관리자 계정이 삭제되었습니다.",
+                    onNext: function () {
+                        //새로고침 
+                        location.reload();
+                    }
+                });
+            } catch (error) {
+                
+            }
             console.log("삭제 확인");
         }
     });

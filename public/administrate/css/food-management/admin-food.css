@@ -151,19 +151,19 @@
     font-size: 14px;
     font-weight: 400;
 }
-#adminFoodTable .td-source.processed .source-label{
+#adminFoodTable .td-source.PROCESSED .source-label{
     color: var(--red500);
     border: 1px solid var(--red500);
 }
-#adminFoodTable .td-source.cooked .source-label{
+#adminFoodTable .td-source.COOKED .source-label{
     color: var(--purple300);
     border: 1px solid var(--purple300);
 }
-#adminFoodTable .td-source.ingredient .source-label{
+#adminFoodTable .td-source.INGREDIENT .source-label{
     color: var(--blue300);
     border: 1px solid var(--blue300);
 }
-#adminFoodTable .td-source.custom .source-label{
+#adminFoodTable .td-source.CUSTOM .source-label{
     color: var(--orange300);
     border: 1px solid var(--orange300);
 }

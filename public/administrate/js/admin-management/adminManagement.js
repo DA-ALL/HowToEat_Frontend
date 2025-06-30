@@ -6,11 +6,12 @@ import { getAdminAccountList } from '/administrate/js/api.js';
 import { registerViewLoader } from '/administrate/js/router.js';
 
 function loadAdminManagementView() {
-    loadContent(); // 기존 초기화
+    loadContent();
     loadAdminAccountTable(); // 실제 데이터 로딩
 }
 
 registerViewLoader('adminManagement', loadAdminManagementView);
+registerPopstateHandler('adminManagement', loadAdminManagementView);
 
 function loadContent() {
     const container = $("#adminManagement");
@@ -47,12 +48,18 @@ async function loadAdminAccountTable(){
 }
 
 async function getAdminAccountDatas() {
+    const page = getPageFromURL();
     try {
-        const data = await getAdminAccountList(); // Promise가 resolve될 때까지 기다림
-        return data.content;
+        const data = await getAdminAccountList(page);
+        return data;
     } catch (err) {
         return [];
     }
+}
+
+function getPageFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
 }
 
 
@@ -60,18 +67,11 @@ $(document).on('click', `#adminAccountTableBody tr`, function () {
     const adminAccountId = $(this).find('.td-id').text();
     const page = `admin-management/${adminAccountId}`;
     updateURL(page);
-    
-    // load admin account detail
-    loadAdminAccountDetail({type:'edit'});
 });
 
 // 추가하기 버튼 클릭
 $(document).on('click', `#addAdminAccountButton`, function () {
     console.log('create admin account');
     updateURL('admin-management/add');
-
-    loadAdminAccountDetail({type:'add'});
 });
 
-
-registerPopstateHandler('adminManagement', loadContent);

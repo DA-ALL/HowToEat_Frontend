@@ -112,15 +112,15 @@ td {
     justify-content: center;
 }
 
-.user-table .td-user-role .user-role-button.master {
+.user-table .td-user-role .user-role-button.MASTER {
     background-color: #FD5454;
 }
-.user-table .td-user-role .user-role-button.admin {
+.user-table .td-user-role .user-role-button.ADMIN {
     background-color: #4C4C4C;
 }
-.user-table .td-user-role .user-role-button.super-user {
+.user-table .td-user-role .user-role-button.SUPERUSER {
     background-color: #D36DAE;
 }
-.user-table .td-user-role .user-role-button.user {
+.user-table .td-user-role .user-role-button.USER {
     background-color: #70BFC4;
 }

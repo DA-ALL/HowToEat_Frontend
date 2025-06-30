@@ -1,10 +1,11 @@
-import { registerPopstateHandler, updateURL } from '/administrate/js/router.js';
+import { registerPopstateHandler, updateURL, registerViewLoader } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/pt-user-management/userTableWithDelete.js';
 import { showAddPtMember } from '/administrate/js/pt-user-management/addPtMember.js';
-import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
+import { renderUserInfo } from '/administrate/js/userInfo.js';
+import { getTrainer, getTrainerWithPtMembers} from '../api.js';
 
 
-export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranch }, previousContent) {
+export function renderTrainerInfo({ imageURL, name, memberCount, gym }, previousContent) {
     if (previousContent) {
         sessionStorage.setItem('previousContentTrainer', previousContent);
     }
@@ -21,10 +22,10 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
         <div class="trainer-info-container">
             <div class="trainer-info-wrapper">
                 <div class="trainer-profile-image">
-                    <img src="${imageURL}">
+                    <img src="${imageURL ? imageURL : '/administrate/images/icon_human_green.png'}">
                 </div>
 
-                <div class="trainer-name">${trainername}</div>
+                <div class="trainer-name">${name}</div>
 
                 <div class="trainer-detail-wrapper">
                     <div class="text-wrapper">
@@ -35,7 +36,7 @@ export function renderTrainerInfo({ imageURL, trainername, memberCount, gymBranc
                     <div class="divider"></div>                    
 
                     <div class="text-wrapper">
-                        <div class="value">${gymBranch}</div>
+                        <div class="value">${gym}</div>
                         <div class="label">헬스장</div>
                     </div>
                 </div>
@@ -99,45 +100,57 @@ $(document).on('click', `#${bodyId} tr`, function () {
     const fullPath = pathSegments.join("/");
     const page = fullPath + `/user/${userId}`;
     updateURL(page);
-
-    renderUserInfo(getUserInfo(), `user-management/pt/${lastSegment}`);
+    
+    const trainerId = getPathIdFromUrl();
+    sessionStorage.setItem('previousContent', 'user-management/pt/' + trainerId);
 });
 
 
-export function getTrainerInfo() {
-    return {
-        imageURL: "/administrate/images/icon_human_blue.png",
-        trainername: `김예현`,
-        memberCount: 13,
-        gymBranch: '용인기흥구청점'
-    }
+export async function getTrainerInfo() {
+    const trainerId = getPathIdFromUrl();
+    try {
+        const response = await getTrainer(trainerId);
+        console.log("Trainer Info:", response.data);
+        const { imageURL, name, memberCount } = response.data;
+        const gym = response.data.gym.name;
+
+        return { imageURL, name, memberCount, gym };
+    } catch (error) {
+        console.error("Error fetching trainer info:", error);
+    }   
 }
 
-function getUserDataForUserTable() {
-    return Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        imageURL: "/administrate/images/icon_human_green.png",
-        name: `사용자${i + 1}`,
-        mealCount: Math.floor(Math.random() * 200),
-        joined: "2025.03.16",
-        left: "-",
-        gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
-    }));
+async function getUserDataForUserTable() {
+    const page = getPageFromURL();
+    const trainerId = getPathIdFromUrl();
+    try {
+        const response = await getTrainerWithPtMembers(page, trainerId);
+        console.log("Trainer with PT Members:", response.data);
+        const currentPage = response.data.ptMembers.page;
+        const totalElements = response.data.ptMembers.totalElements;
+        const content = response.data.ptMembers.content;
+        return { currentPage, totalElements, content };
+    } catch (error) {
+        console.error("Error fetching trainer info:", error);
+    }   
 }
 
 
-registerPopstateHandler('trainerInfo',loadUserTable);
-
-
-$(document).ready(function () {
-    const pathSegments = window.location.pathname.split('/');
-    const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
-    if(userId) {
-        renderTrainerInfo(getTrainerInfo(), 'user-management/pt');    
-    }      
+registerPopstateHandler('trainerInfo', loadUserTable);
+registerViewLoader('trainerInfo', async () => {
+    const trainerInfo = await getTrainerInfo();
+    renderTrainerInfo(trainerInfo, 'user-management/pt');
 });
 
+function getPathIdFromUrl() {
+    const pathArray = window.location.pathname.split('/');
+    return pathArray[pathArray.length - 1]; // 마지막 요소가 ID
+}
+
+function getPageFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
+}
 
 // 회원 추가하기 클릭시
 $(document).on('click', `#memberAddButton`, function () {
