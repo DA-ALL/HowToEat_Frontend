@@ -1,9 +1,14 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
+import { getFood, createFood, updateFood, getFavoriteFood, shareFood } from '../api.js';
+import { registerViewLoader, updateURL } from '../router.js';
+import { updateActiveState } from '../sidebar.js';
 
-export function loadFoodDetail({type}) {
+let foodDetailType = '';
+
+export async function loadFoodDetail({type}) {
     
     const container = $("#foodDetail");
-
+    foodDetailType  = type;
     let foodDetialHTML = ``;
 
     switch (type) {
@@ -14,16 +19,22 @@ export function loadFoodDetail({type}) {
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
                     <div class="data-type-option-wrapper">
-                        <div class="data-type-option active" data-query="processed">가공식품DB</div>
-                        <div class="data-type-option" data-query="cooked">음식DB</div>
-                        <div class="data-type-option" data-query="ingredient">원재료DB</div>
-                        <div class="data-type-option" data-query="custom">유저 등록</div>
+                        <div class="data-type-option" data-query="PROCESSED">가공식품DB</div>
+                        <div class="data-type-option" data-query="COOKED">음식DB</div>
+                        <div class="data-type-option" data-query="INGREDIENT">원재료DB</div>
+                        <div class="data-type-option" data-query="CUSTOM">유저 등록</div>
                     </div>
                 </div>
 
                 <div class="input-wrapper">
                     <div class="input-title">음식 이름</div>
                     <input type="text" class="input" id="foodName" placeholder="음식 이름을 입력해주세요" />
+                    <div class="input-info">* 필수 항목입니다</div>
+                </div>
+
+                <div class="input-wrapper">
+                    <div class="input-title">대표 식품명</div>
+                    <input type="text" class="input" id="representativeName" placeholder="대표식품명을 입력해주세요 ex) 김밥, 도시락" />
                     <div class="input-info">* 필수 항목입니다</div>
                 </div>
 
@@ -110,13 +121,19 @@ export function loadFoodDetail({type}) {
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
                     <div class="data-type-option-wrapper">
-                        <div class="data-type-option active" data-query="custom">유저 등록</div>
+                        <div class="data-type-option active" data-query="CUSTOM">유저 등록</div>
                     </div>
                 </div>
 
                 <div class="input-wrapper">
                     <div class="input-title">음식 이름</div>
                     <input type="text" class="input" id="foodName" placeholder="음식 이름을 입력해주세요" />
+                    <div class="input-info">* 필수 항목입니다</div>
+                </div>
+
+                <div class="input-wrapper">
+                    <div class="input-title">대표 식품명</div>
+                    <input type="text" class="input" id="representativeName" placeholder="대표식품명을 입력해주세요 ex) 김밥, 도시락" />
                     <div class="input-info">* 필수 항목입니다</div>
                 </div>
 
@@ -207,15 +224,21 @@ export function loadFoodDetail({type}) {
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
                     <div class="data-type-option-wrapper">
-                        <div class="data-type-option active" data-query="processed">가공식품DB</div>
-                        <div class="data-type-option" data-query="cooked">음식DB</div>
-                        <div class="data-type-option" data-query="ingredient">원재료DB</div>
+                        <div class="data-type-option active" data-query="PROCESSED">가공식품DB</div>
+                        <div class="data-type-option" data-query="COOKED">음식DB</div>
+                        <div class="data-type-option" data-query="INGREDIENT">원재료DB</div>
                     </div>
                 </div>
 
                 <div class="input-wrapper">
                     <div class="input-title">음식 이름</div>
                     <input type="text" class="input" id="foodName" placeholder="음식 이름을 입력해주세요" />
+                    <div class="input-info">* 필수 항목입니다</div>
+                </div>
+
+                <div class="input-wrapper">
+                    <div class="input-title">대표 식품명</div>
+                    <input type="text" class="input" id="representativeName" placeholder="대표식품명을 입력해주세요 ex) 김밥, 도시락" />
                     <div class="input-info">* 필수 항목입니다</div>
                 </div>
 
@@ -299,15 +322,17 @@ export function loadFoodDetail({type}) {
 
     container.html(foodDetialHTML);
 
+    
+    await loadFoodDetailData();
     updateFormNextButton();
-    loadFoodDetailData();
 }
 
+registerViewLoader('foodDetail', loadFoodDetail);
 
 function validateInput(input) {
     const value = input.value.trim();
     const isNumberField = input.classList.contains("only-number");
-    const isRequired = input.id === "foodName" || input.id === "foodWeight";
+    const isRequired = input.id === "foodName" || input.id === "foodWeight" ||  input.id === "representativeName";
 
     // reset classes
     input.classList.remove("error", "valid");
@@ -349,7 +374,7 @@ function isFormValid() {
     $("#foodDetail .input").each(function () {
         const $input = $(this);
         const value = $input.val().trim();
-        const isRequired = this.id === "foodName" || this.id === "foodWeight";
+        const isRequired = this.id === "foodName" || this.id === "foodWeight" || this.id === "representativeName";
 
         // error 클래스가 있는 경우
         if ($input.hasClass("error")) {
@@ -402,53 +427,21 @@ function getIdFromUrl() {
 }
 
 
-function generateDummyData(id) {
-    const dummyData = {
-        1: {
-            id: 1,
-            dataType: "processed",
-            foodName: "삼겹살",
-            providedBy: "삼겹살 회사",
-            kcal: 500,
-            carbo: 0,
-            protein: 30,
-            fat: 40,
-            foodWeight: 200,
-            unit: "g",
-            isPerServing: true,
-            is_recommended: false
-        },
-        2: {
-            id: 2,
-            dataType: "cooked",
-            foodName: "김치찌개",
-            providedBy: "서울 김치",
-            kcal: 350,
-            carbo: 20,
-            protein: 25,
-            fat: 10,
-            foodWeight: 150,
-            unit: "ml",
-            isPerServing: false,
-            is_recommended: true
-        },
-        3: {
-            id: 3,
-            dataType: "ingredient",
-            foodName: "배추",
-            providedBy: "배추 농장",
-            kcal: 40,
-            carbo: 9,
-            protein: 2,
-            fat: 0,
-            foodWeight: 100,
-            unit: "g",
-            isPerServing: true,
-            is_recommended: true
+async function getFoodData() {
+    const foodId = getIdFromUrl();
+    try {
+        if (foodDetailType == 'share'){
+            const favoriteFoodResponse = await getFavoriteFood(foodId);
+            console.log("유저등록 음식 ", favoriteFoodResponse);
+            return favoriteFoodResponse.data;
         }
-    };
-
-    return dummyData[id] || null;
+        const response = await getFood(foodId);
+        console.log("음식 단일 조회: ", response);
+        
+        return response.data;
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 
@@ -462,6 +455,11 @@ function populateFoodDetails(data) {
     $("#protein").val(data.protein);
     $("#fat").val(data.fat);
     $("#foodWeight").val(data.foodWeight);
+    $("#representativeName").val(data.representativeName);
+    $("#description").val(data.description);
+
+    $("#foodDetail").attr("data-food-code", data.foodCode);
+
 
     // Unit Option
     $(".unit-option").removeClass("active");  // 모든 유닛 옵션에서 active 클래스 제거
@@ -474,7 +472,10 @@ function populateFoodDetails(data) {
     // Data Type Option
     $(".data-type-option").removeClass("active");  // 모든 데이터 타입 옵션에서 active 클래스 제거
     $(".data-type-option").each(function () {
-        if ($(this).data("query") === data.dataType) {
+        if ($(this).data("query") === data.foodType) {
+            $(this).addClass("active");
+        }
+        if($(this).data("query") == 'CUSTOM' && data.foodType == "CUSTOM_SHARED"){
             $(this).addClass("active");
         }
     });
@@ -489,7 +490,7 @@ function populateFoodDetails(data) {
 
     // Recommended Toggle
     const recommendedToggle = $("#isRecommendedToggle");
-    if (data.is_recommended) {
+    if (data.isRecommended) {
         recommendedToggle.addClass("active");
     } else {
         recommendedToggle.removeClass("active");
@@ -499,30 +500,14 @@ function populateFoodDetails(data) {
 }
 
 
-function loadFoodDetailData() {
+async function loadFoodDetailData() {
     const id = getIdFromUrl();
     if (id) {
-        const foodData = generateDummyData(id);  // ID에 맞는 더미 데이터 가져오기
+        const foodData = await getFoodData(id);  // ID에 맞는 더미 데이터 가져오기
         populateFoodDetails(foodData);  // 데이터를 필드에 채우기
     }
 }
 
-function getFoodDetailTypeFromUrl() {
-    const urlPath = window.location.pathname;
-
-    // 정규 표현식을 사용하여 URL에서 type을 추출
-    if (urlPath.match(/\/admin\/food-management\/(\d+)$/)) {
-        return "edit";  // "edit" 처리
-    } else if (urlPath.match(/\/admin\/food-management\/user-regist\/(\d+)$/)) {
-        return "share";  // "share" 처리
-    } else if (urlPath.match(/\/admin\/food-management\/recommend\/(\d+)$/)) {
-        return "edit";  // "edit" 처리 (recommend는 edit으로 간주)
-    } else if (urlPath.match(/\/admin\/food-management\/add$/)) {
-        return "add";  // "add" 처리
-    } else {
-        return null;  // 해당하지 않으면 null 반환
-    }
-}
 
 function getFoodDetailValues() {
     const foodName = $("#foodName").val()?.trim() || "";
@@ -532,9 +517,9 @@ function getFoodDetailValues() {
     const protein = parseFloat($("#protein").val()) || 0;
     const fat = parseFloat($("#fat").val()) || 0;
     const foodWeight = parseFloat($("#foodWeight").val()) || 0;
-
+    const representativeName = $("#representativeName").val() || "";
     // 선택된 데이터 종류
-    const dataType = $(".data-type-option.active").data("query") || "";
+    const foodType = $(".data-type-option.active").data("query") || "";
 
     // 선택된 단위 (g/ml)
     const unit = $(".unit-option.active").data("query") || "";
@@ -543,30 +528,26 @@ function getFoodDetailValues() {
     const isPerServing = $("#isPerServingToggle").hasClass("active");
     const isRecommended = $("#isRecommendedToggle").hasClass("active");
 
-    // description은 share 모드에서만 존재함
-    const description = $("#description").length ? $("#description").val()?.trim() : "";
+    const foodCode = $("#foodDetail").data("food-code");
+    // description은 share 모드에서만 존재함 (food에 필요는없음)
+    // const description = $("#description").length ? $("#description").val()?.trim() : "";
 
     return {
         foodName,
+        representativeName,
         providedBy,
         kcal,
         carbo,
         protein,
         fat,
         foodWeight,
-        dataType,
+        foodType,
         unit,
         isPerServing,
         isRecommended,
-        description,
+        foodCode,
     };
 }
-
-
-$(document).ready(function () {
-    const foodDetailType = getFoodDetailTypeFromUrl();
-    loadFoodDetail({type: foodDetailType});
-});
 
 // 1인분 토글
 $(document).on("click", "#isPerServingToggle", function () {
@@ -630,31 +611,81 @@ $(document).on("click", "#foodDetailCancel", function () {
 $(document).on("click", "#foodDetailEdit", function () {
     if ($(this).hasClass("disabled")) return;
     
+    const foodId = getIdFromUrl();
     const foodDetailValues = getFoodDetailValues();
     console.log("수정할 음식 정보:", foodDetailValues); 
+    
+
     showCustomAlert({
         type: 4,
         onCancel: function () {
             console.log("수정 취소");
         },
-        onNext: function () {
-            console.log("수정 완료");
+        onNext: async function () {        
+            try {
+                const response = await updateFood(foodId, foodDetailValues);
+                showCustomAlert({
+                    type: 3,
+                    message: response.message,
+                    onNext: function () {
+                        const pathSegments = window.location.pathname.split("/").slice(2,4);
+                        const fullPath = pathSegments.join("/");
+                        console.log("여기다:", fullPath)
+                        if(fullPath == 'food-management/recommend'){
+                            updateURL('food-management/recommend');
+                        } else {
+                            updateURL('food-management');
+                        }
+                    }
+                });
+            } catch(err) {
+                console.log(err);
+            }
         }
     });
 });
 
 //공유하기 버튼
-$(document).on("click", "#foodDetailShare", function () {
+$(document).on("click", "#foodDetailShare", async function () {
     if ($(this).hasClass("disabled")) return;
 
-    const foodDetailValues = getFoodDetailValues();
-    console.log("공유할 음식 정보:", foodDetailValues);
+    let foodDetailValues = getFoodDetailValues();
+    foodDetailValues.favoriteFoodId = getIdFromUrl();
+
+    console.log(foodDetailValues)
+
+    try {
+        const response = await shareFood(foodDetailValues);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: function () {
+                updateURL('food-management/user-regist');
+            }
+        });
+    } catch(err) {
+        console.log(err);
+    }
 });
 
 // 추가하기 버튼
-$(document).on("click", "#foodDetailAdd", function () {
+$(document).on("click", "#foodDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
     const foodDetailValues = getFoodDetailValues();
-    console.log("추가할 음식 정보:", foodDetailValues);
+    console.log(foodDetailValues);
+    try {
+        const response = await createFood(foodDetailValues);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: function () {
+                updateURL('food-management');
+                updateActiveState('food-management');
+            }
+        });
+    } catch(err) {
+        console.log(err);
+    }
+    
 });

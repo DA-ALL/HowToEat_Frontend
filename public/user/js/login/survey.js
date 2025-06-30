@@ -21,8 +21,6 @@ let surveyData = {
 
 // 뒤로가기 이벤트 처리
 window.onpopstate = function (event) {
-    console.log("뒤로가기 감지!", event.state);
-
     if (event.state && event.state.page) {
         currentPage = event.state.page;
         loadPage(currentPage, true);
@@ -323,7 +321,7 @@ function nextPage(pageNumber) {
             contentType: "application/json",
             data: JSON.stringify(requestData),
             success: function () {
-                
+
                 window.location.href = "/signup-complete";
             },
             error: function (err) {

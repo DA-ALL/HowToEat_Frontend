@@ -87,15 +87,27 @@ export function initHeaderNav(parentSelector = 'body') {
     
         if (currentPath.startsWith('/main/')) {
             const parts = currentPath.split('/');
-            if (parts.length === 3) {
+            if (parts.length === 4) {
                 // 예: /main/morning → 홈으로
                 history.pushState({ view: 'main' }, '', '/main');
                 showPage('/main');
                 return;
-            } else if (parts.includes('regist')) {
-                const meal = parts[2];
-                history.pushState({ view: 'main' }, '', `/main/${meal}`);
-                showPage(`/main/${meal}`);
+            } else if (parts.length === 5) {
+                    const mealTime = parts[2];
+                    const selectedDate = parts[3];
+    
+                    const newPath = `/main/${mealTime}/${selectedDate}`;
+                    history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+                    showPage(`/main/${mealTime}/${selectedDate}`);
+                    return;
+                    
+            } else if (parts.length === 7) {
+                const mealTime = parts[2];
+                const selectedDate = parts[3];
+
+                const newPath = `/main/${mealTime}/${selectedDate}/regist`;
+                history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+                showPage(`/main/${mealTime}/${selectedDate}/regist`);
                 return;
             }
         }

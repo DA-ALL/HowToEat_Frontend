@@ -1,5 +1,6 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
-
+import { createGym, getGym, updateGym } from '../api.js';
+import { registerViewLoader } from '/administrate/js/router.js';
 export function loadGymDetail({type}) {
     
     const container = $("#gymDetail");
@@ -35,7 +36,7 @@ export function loadGymDetail({type}) {
 
                 <div class="button-wrapper">
                     <div class="button-cancel" id="gymDetailCancel">취소</div>
-                    <div class="button-next" id="gymDetailEdit">추가하기</div>
+                    <div class="button-next" id="gymDetailAdd">추가하기</div>
                 </div>
             `;
             break;
@@ -103,61 +104,45 @@ function getIdFromUrl() {
     return match ? match[1] : null;  // ID가 있으면 반환, 없으면 null
 }
 
-
-function generateDummyData(id) {
-    const dummyData = {
-        1: {
-            id: 1,
-            gymName: "용인기흥구청점"
-        },
-        2: {
-            id: 2,
-            gymName: "처인구청점"
-        },
-        3: {
-            id: 3,
-            gymName: "수원권선동점"
-        },
-    };
-
-    return dummyData[id] || null;
-}
-
 function populateDetails(data) {
     if (!data) {
         return;
     }
 
     // 이름 입력
-    $("#gymName").val(data.gymName || "");
+    $("#gymName").val(data.name || "");
 }
 
 
 function getDetailValues(){
-    const gymName = $('#gymName').val().trim();
+    const name = $('#gymName').val().trim();
 
     return {
-        gymName,
+        name,
     };
 }
 
 
-function loadDetailData() {
-    const id = getIdFromUrl();
-    if (id) {
-        const noticeData = generateDummyData(id);  // ID에 맞는 더미 데이터 가져오기
-        populateDetails(noticeData);  // 데이터를 필드에 채우기
+async function loadDetailData() {
+    const gymId = getIdFromUrl();
+    
+    if (!gymId) {
+        return;    
     }
+
+    try{
+        const response = await getGym(gymId);
+        console.log("??", response);
+        populateDetails(response.data);  // 데이터를 필드에 채우기
+    } catch(error){
+        console.log(error);
+    }
+
+    
 }
 
-$(document).ready(function () {
-    const detailType = getDetailTypeFromUrl();
-    loadGymDetail({type: detailType});
-});
-
-
 // input 포커스 아웃시 확인
-$(document).on("blur", "#gymDetail input.input", function () {
+$(document).on("blur input", "#gymDetail input.input", function () {
     const $this = $(this);
     const value = $this.val().trim();
 
@@ -179,19 +164,44 @@ $(document).on("click", "#gymDetailCancel", function () {
 });
 
 // 수정하기 버튼
-$(document).on("click", "#gymDetailEdit", function () {
+$(document).on("click", "#gymDetailEdit", async function () {
     if ($(this).hasClass("disabled")) return;
+    const gymId = getIdFromUrl();
 
     const detailValues = getDetailValues();
-    
-    console.log("수정하기 버튼", detailValues);
-    
+    try{
+        const response = await updateGym(gymId, detailValues);
+        showCustomAlert({
+            type: 3,
+            message: response.message,
+            onNext: () => {
+                window.history.back(); // 이전 페이지로 돌아가기
+            }
+        });
+
+    } catch(error){
+        console.log(error);
+    }
 });
 
 // 추가하기 버튼
-$(document).on("click", "#gymDetailAdd", function () {
+$(document).on("click", "#gymDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
     const detailValues = getDetailValues();
-    console.log("추가하기 버튼", detailValues);
+    try{
+        await createGym(detailValues);
+        showCustomAlert({
+            type: 3,
+            message: "헬스장이 성공적으로 추가되었습니다.",
+            onNext: () => {
+                window.history.back(); // 이전 페이지로 돌아가기
+            }
+        });
+    } catch(error){
+        console.log(error);
+    }
 });
+
+
+registerViewLoader('gymDetail', loadGymDetail);

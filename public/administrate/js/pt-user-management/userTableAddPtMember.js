@@ -3,34 +3,49 @@ import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const usersPerPage = 10;
 
-export function createUserRow({ id, imageURL, name, joined, gymUser, role }) {
+export function createUserRow({ id, profileImageUrl, name, createdAt, isNextGym, userRole }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
             <td class="td-user-profile">
                 <div class="td-user-profile-wrapper">
                     <div class="image-user">
-                        <img src=${imageURL}>
+                        <img src=${profileImageUrl}>
                     </div>
                     <div class="user-name">${name}</div>
                 </div>
             </td>
-            <td class="td-account-created-at">${joined}</td>
+            <td class="td-account-created-at">${createdAt}</td>
             <td class="td-gym-user">
-                ${gymUser ? `<div class="image-gym-user-read"><img src="/administrate/images/logo_nextgym_02.png"></div>` : `<div class="image-gym-user">-</div>`}
+                ${isNextGym ? `<div class="image-gym-user-read"><img src="/administrate/images/logo_nextgym_02.png"></div>` : `<div class="image-gym-user">-</div>`}
             </td>
             <td class="td-user-role">
                 <div class="user-role-wrapper">
-                    <div class="user-role-button-read ${role}">${role == 'super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
+                    <div class="user-role-button-read ${userRole}">${formatUserRole(userRole)}</div>
                 </div>
             </td>
         </tr>
     `;
 }
 
+function formatUserRole(userRole) {
+    switch (userRole) {
+        case 'SUPERUSER':
+            return 'SuperUser';
+        case 'ADMIN':
+            return 'Admin';
+        case 'USER':
+            return 'User';
+        case 'MASTER':
+            return 'Master';
+        default:
+            return '';
+    }
+}
+
 export function renderUserTable(containerId, bodyId) {
     const tableHTML = `
-        <table class="user-table-add-pt-member">
+        <table class="user-table-add-pt-member popup">
             <thead>
                 <tr>
                     <th class="th-id">ID</th>
@@ -47,31 +62,30 @@ export function renderUserTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderTableWithOptionalPagination({
+export async function renderTableWithOptionalPagination({
     getData,
     bodyId,
     contentId,
     enablePagination = false
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const data = await getData();
+    const page = data.page + 1;
+    const rows = data.content;
 
     $(`#${bodyId}`).html(rows.map(createUserRow).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
+            totalItems: data.totalElements,
             itemsPerPage: usersPerPage,
             currentPage: page,
             onPageChange: (newPage) => {
-                // updateQueryParam({ page: newPage });
+                const searchValue = $(`#${contentId} .searchbar input`).val();
+                const newgetData = (sv = searchValue, p = newPage) => getData(sv, p);
+                
                 renderTableWithOptionalPagination({
-                    getData,
+                    getData: newgetData,
                     bodyId,
                     contentId,
                     enablePagination
@@ -81,14 +95,4 @@ export function renderTableWithOptionalPagination({
     } else {
         $(`#${bodyId}`).closest('table').parent().find('.pagination').remove();
     }
-}
-
-
-function getPageFromURL(contentId) {
-    const urlParams = new URLSearchParams(window.location.search);
-    // if(getCurrentContent() == contentId) {
-        return parseInt(urlParams.get('page')) || 1;
-    // } else {
-        // return 1;
-    // }
 }

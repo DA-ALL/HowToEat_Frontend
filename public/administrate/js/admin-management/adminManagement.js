@@ -2,10 +2,16 @@ import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
 import { renderAdminAccountTable, renderTableWithOptionalPagination} from '/administrate/js/admin-management/adminAccountTable.js';
 import { loadAdminAccountDetail } from '/administrate/js/admin-management/adminAccountDetail.js';
+import { getAdminAccountList } from '/administrate/js/api.js';
+import { registerViewLoader } from '/administrate/js/router.js';
 
-$(document).ready(function () {
+function loadAdminManagementView() {
     loadContent();
-});
+    loadAdminAccountTable(); // 실제 데이터 로딩
+}
+
+registerViewLoader('adminManagement', loadAdminManagementView);
+registerPopstateHandler('adminManagement', loadAdminManagementView);
 
 function loadContent() {
     const container = $("#adminManagement");
@@ -25,17 +31,15 @@ function loadContent() {
     `;
 
     container.html(adminManagementHTML);
-    
-    loadAdminAccountTable();
 }
 
-function loadAdminAccountTable(){
+async function loadAdminAccountTable(){
     const containerId = 'adminAccountTable';
     const bodyId = 'adminAccountTableBody';
     const contentId = 'adminManagement';
 
     renderAdminAccountTable(containerId, bodyId);
-    renderTableWithOptionalPagination({
+    await renderTableWithOptionalPagination({
         getData: getAdminAccountDatas,
         bodyId,
         contentId,
@@ -43,13 +47,19 @@ function loadAdminAccountTable(){
     });
 }
 
-function getAdminAccountDatas() {
-    return Array.from({ length: 3 }, (_, i) => ({
-        id: i + 1,
-        accountId: "admin"+(i+1),
-        createdAt: "2023-10-01",
-        role: "admin",
-    }));
+async function getAdminAccountDatas() {
+    const page = getPageFromURL();
+    try {
+        const data = await getAdminAccountList(page);
+        return data;
+    } catch (err) {
+        return [];
+    }
+}
+
+function getPageFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
 }
 
 
@@ -57,18 +67,11 @@ $(document).on('click', `#adminAccountTableBody tr`, function () {
     const adminAccountId = $(this).find('.td-id').text();
     const page = `admin-management/${adminAccountId}`;
     updateURL(page);
-    
-    // load admin account detail
-    loadAdminAccountDetail({type:'edit'});
 });
 
 // 추가하기 버튼 클릭
 $(document).on('click', `#addAdminAccountButton`, function () {
     console.log('create admin account');
     updateURL('admin-management/add');
-
-    loadAdminAccountDetail({type:'add'});
 });
 
-
-registerPopstateHandler('adminManagement', loadContent);

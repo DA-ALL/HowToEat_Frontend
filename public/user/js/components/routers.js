@@ -1,4 +1,4 @@
-import { renderMealDetail } from '../main/homeMeal.js';
+import { renderMealDetail, renderMealListHTML } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
 import { renderReportPage } from '../report/report.js';
@@ -10,30 +10,9 @@ import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
 import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
-
-const userConsumedDataTest = {
-    date: "2025-04-18",
-    carbo: { consumed: 70, target: 220 },
-    protein: { consumed: 42, target: 90 },
-    fat: { consumed: 20, target: 50 }
-} 
-
-const registFoodDataTest = {
-    id: 42,
-    type: "ingredient_food",
-    name: "소고기 채끝살 (생것)",
-    detail: "수입산(미국산)",
-    weight: 100,
-    kcal: 217,
-    carbo: 442,
-    protein: 26,
-    fat: 12
-}
+import { initCalendarPage } from './calendar.js';
 
 export function showMain(meal = null, subpage = null, type = null, userConsumedData = null, registFoodData = null) {
-    const saved = localStorage.getItem(`mealData_${meal}`);
-    const savedFood = saved ? JSON.parse(saved) : null;
-    const merged = mergeConsumedData(userConsumedDataTest, savedFood);
 
     // $('#report').hide();
     $('#main').show();
@@ -44,45 +23,76 @@ export function showMain(meal = null, subpage = null, type = null, userConsumedD
     $('#home, #homeMeal, #homeMealSearch, #homeMealRegist').hide();
 
     if (!meal) {
+        initCalendarPage(true);
+        resetSearchView();
+
+
+        //그래프 두번 그려주기 방지
+        $('style').each(function () {
+            const content = this.innerHTML;
+            if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+                this.remove();
+            }
+        });
+
+        $('style').filter((_, el) =>
+            /@keyframes fillArc/.test(el.innerHTML)
+          ).remove();
+
+          
         $('#home').show(); // /main
         return;
     }
-    
-    if (meal && !subpage && !type) {
-        if ($('#homeMeal').children().length === 0) {
-            // 저장된 데이터 불러오기
 
-            $('#homeMeal').html(renderMealDetail(meal, merged));
+
+    if (meal && !subpage && !type) {
+        resetSearchView();
+        renderMealDetail(function (html) {
+            const pathParts = window.location.pathname.split("/");
+            const selectedDate = pathParts[3];
+            const mealTime = meal.toUpperCase();
+    
+            // 먼저 뼈대 렌더링
+            $('#homeMeal').html(html);
             initHeaderNav($('#homeMeal'));
-        }
-        $('#homeMeal').show();
+    
+            // 그 다음 비동기로 식단 + 버튼 렌더링
+            renderMealListHTML(meal, selectedDate, mealTime, function (listHtml, buttonHtml) {
+                $('.meal-list-wrapper').html(listHtml);
+                $('#homeMeal').append(buttonHtml);
+                $('#homeMeal').show();
+            });
+        });
     }
+    
     
 
     if (meal && subpage === 'regist' && !type) {
         // /main/morning/search
+        $('style[data-keyframe]').remove();
         if ($('#homeMealSearch').children().length === 0) {
-
-            $('#homeMealSearch').html(renderMealSearch(meal, merged, registFoodDataTest));
-            initHeaderNav($('#homeMealSearch'));
-        }
-
+            renderMealSearch(function(html) {
+                $('#homeMealSearch').html(html);
+                initHeaderNav($('#homeMealSearch'));
+                runAllCountAnimations();
+                $('html, body').scrollTop(0);
+            });
+            
+         } 
         $('#homeMealSearch').show();
     }
 
     if (meal && subpage === 'regist' && type) {
-        if ($('#homeMealRegist').children().length === 0) {
-            $('#homeMealRegist').html(renderIncreaseCPFbar(meal, userConsumedDataTest, registFoodDataTest));
-            $('#homeMealRegist').append(renderMealRegist(meal, userConsumedDataTest, registFoodDataTest));
-            $('#homeMealRegist').append(renderMealAdjust(meal, userConsumedDataTest, registFoodDataTest));
+        
+        renderIncreaseCPFbar(function(html) {
+            $('#homeMealRegist').html(html);
             initHeaderNav($('#homeMealRegist'));
             runAllCountAnimations();
-            $(".bar-front.bar-increase").hide();
-            $(".bar-front.bar-increase").show();
-
+            $(".bar-front.bar-increase").hide().show();
             $('html, body').scrollTop(0);
             updateNextButtonData();
-        }
+        });
+
     
         $('#homeMealRegist').show();
     }
@@ -113,7 +123,6 @@ export function showMyPage(subpath = null, detailId = null) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
-
     $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo').hide();
 
     if (!subpath) {
@@ -181,25 +190,4 @@ export function resetRegistView() {
 
 export function resetSetTimeView() {
     $('#usersSetTime').empty();
-}
-
-function mergeConsumedData(user, food) {
-    if (!food) return user;
-
-    console.log(food);
-    return {
-        date: user.date,
-        carbo: {
-            consumed: user.carbo.consumed + food.carbo,
-            target: user.carbo.target
-        },
-        protein: {
-            consumed: user.protein.consumed + food.protein,
-            target: user.protein.target
-        },
-        fat: {
-            consumed: user.fat.consumed + food.fat,
-            target: user.fat.target
-        }
-    };
 }

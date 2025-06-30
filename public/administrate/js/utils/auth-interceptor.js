@@ -13,6 +13,7 @@ export function setupAjaxAuthInterceptor() {
         },
         complete: function (xhr) {
             const newAccessToken = xhr.getResponseHeader('Authorization');
+            
             if (newAccessToken) {
                 localStorage.setItem('Authorization', newAccessToken);
             }
@@ -54,6 +55,8 @@ export function setupAjaxAuthInterceptor() {
             // 권한 에러
             else if (errorResponse?.errorType === "NOT_AVAILABLE_PERMISSION") {
                 alert("권한이 없습니다.");
+                window.location.href = "/admin/dashboard";
+
             } else if (errorResponse?.errorType === "NOT_ADMIN_ACCOUNT") {
                 alert("관리자 계정이 아니므로 변경할 수 없습니다.");
             }
@@ -61,7 +64,6 @@ export function setupAjaxAuthInterceptor() {
             // 유저 관련 에러
             else if (errorResponse?.errorType === "NOT_FOUND_USER") {
                 alert("존재하지 않는 회원입니다.");
-                redirectToLogin();
             } else if (errorResponse?.errorType === "ALREADY_EXISTS_EMAIL") {
                 alert("이미 존재하는 이메일입니다.");
             }
@@ -73,7 +75,7 @@ export function setupAjaxAuthInterceptor() {
             }
         
             function redirectToLogin() {
-                window.location.href = "/login-page";
+                window.location.href = "/admin/login";
             }
         }
         

@@ -5,10 +5,8 @@ import { loadSearchBar } from '/administrate/js/components/searchbar.js';
 import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
 import { renderAdminTrainerTable, renderTableWithOptionalPagination } from '/administrate/js/admin-management/adminTrainerTable.js';
 import { loadTrainertDetail } from '/administrate/js/admin-management/trainerDetail.js';
-
-$(document).ready(function () {
-    loadContent();
-});
+import { getTrainerList } from '../api.js';
+import { registerViewLoader } from '../router.js';
 
 function loadContent() {
     const container = $("#trainerManagement");
@@ -32,8 +30,8 @@ function loadContent() {
     `;
 
     container.html(trainerManagementHTML);
-    loadSearchBar('trainerManagement');
-    loadFilter('trainerManagement');
+    loadSearchBar('trainerManagement', loadTable);
+    loadFilter('trainerManagement', loadTable);
     loadTable();
 }
 
@@ -44,41 +42,46 @@ function loadTable(){
 
     renderAdminTrainerTable(containerId, bodyId);
     renderTableWithOptionalPagination({
-        getData: getDatas,
+        getData: getTrainerDatas,
         bodyId,
         contentId,
         enablePagination: true
     });
 }
 
-function getDatas() {
-    return Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        imageURL: "/administrate/images/icon_human_red.png",
-        name: `트레이너 ${i + 1}`,
-        gymBranch: ['용인기흥구청점', '용인기흥구청점', '처인구청점', '수원권선동점', '이천마장점', '이천중앙점', '평택미전점'][Math.floor(Math.random() * 7)],
-        memberCount: Math.floor(Math.random() * 20),
-        joined: "2025.03.16"
-    }));
+async function getTrainerDatas(){
+    const params = getParamsFromURL();
+
+    try{
+        const response = await getTrainerList(params.page, params.name, params.gymName);
+        console.log(response);
+        return response;
+    } catch (error){
+        console.error(error);
+    }
 }
 
+function getParamsFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+        page: parseInt(urlParams.get('page')) || 1,
+        name: urlParams.get('search') || '',
+        gymName: urlParams.get('gym') || ''
+    };
+}
 
 $(document).on('click', `#adminTrainerTableBody tr`, function () {
     const adminAccountId = $(this).find('.td-id').text();
     const page = `admin-management/trainer/${adminAccountId}`;
     updateURL(page);
-    
-    // load admin account detail
-    loadTrainertDetail({type:'edit'});
 });
 
 // 추가하기 버튼 클릭
 $(document).on('click', `#addTrainerButton`, function () {
     console.log('trainer 생성');
     updateURL('admin-management/trainer/add');
-
-    loadTrainertDetail({type:'add'});
 });
 
 
 registerPopstateHandler('trainerManagement', loadContent);
+registerViewLoader('trainerManagement', loadContent);

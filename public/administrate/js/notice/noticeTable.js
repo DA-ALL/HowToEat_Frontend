@@ -1,15 +1,16 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateQueryParam } from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
+import { deleteNotice } from '../api.js';
 
 const usersPerPage = 20;
 
-function createRows({ id, noticeType, noticeTitle, createdAt }) {
+function createRows({ id, title, noticeType, createdAt }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
-            <td class="td-notice-type">${noticeType}</td>
-            <td class="td-notice-title">${noticeTitle}</td>
+            <td class="td-notice-type">${convertNoticeType(noticeType)}</td>
+            <td class="td-notice-title">${title}</td>
             <td class="td-created-at">${createdAt}</td>
             <td class="td-delete">
                 <div class="delete-notice-button-wrapper">
@@ -18,6 +19,19 @@ function createRows({ id, noticeType, noticeTitle, createdAt }) {
             </td>
         </tr>
     `;
+}
+
+function convertNoticeType(noticeType) {
+    switch (noticeType) {
+        case 'NOTICE':
+            return '공지';
+        case 'BUGFIX':
+            return '버그수정';
+        case 'UPDATE':
+            return '업데이트';
+        default:
+            return '알 수 없음';
+    }
 }
 
 export function renderNoticeTable(containerId, bodyId) {
@@ -39,25 +53,22 @@ export function renderNoticeTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderTableWithOptionalPagination({
+export async function renderTableWithOptionalPagination({
     getData,         // 데이터 함수
     bodyId,
     contentId,
     enablePagination = true
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
+    const data = await getData();
+    const page = data.page + 1;
+    const rows = data.content;
 
     $(`#${bodyId}`).html(rows.map(createRows).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
+            totalItems: data.totalElements,
             itemsPerPage: usersPerPage,
             currentPage: page,
             onPageChange: (newPage) => {
@@ -75,14 +86,6 @@ export function renderTableWithOptionalPagination({
     }
 }
 
-
-function getPageFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
-
-
 // 삭제 버튼 클릭 시
 $(document).on('click', '.delete-notice-button', function (e) {
     e.stopPropagation();
@@ -95,8 +98,22 @@ $(document).on('click', '.delete-notice-button', function (e) {
         onCancel: () => {
             console.log("삭제 취소");
         },
-        onNext: () => {
+        onNext: async () => {
             console.log("삭제 확인");
+            try {
+                const response = await deleteNotice(noticeId);
+                showCustomAlert({
+                    type: 3,
+                    message: response.message,
+                    onNext: function () {
+                        //새로고침 
+                        location.reload();
+                    }
+                });
+
+            } catch (error) {
+                console.error("공지사항 삭제 중 오류 발생:", error);
+            }
         }
     });
 });

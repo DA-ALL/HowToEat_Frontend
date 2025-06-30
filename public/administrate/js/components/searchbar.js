@@ -1,11 +1,12 @@
 
 import { updateQueryParam, removeQueryParam, getCurrentContent, syncSearchbarWithURL} from '/administrate/js/router.js';
 
-let searchHandler = null;
-
 export function loadSearchBar(contentId, onSearch = null) {
     let placeholder = $(`#${contentId} .searchbar`).data('placeholder'); // HTML의 data-placeholder 값 가져오기
-    searchHandler = onSearch; 
+
+    // onSearch 함수를 해당 DOM에 data로 저장
+    const $searchbar = $(`#${contentId} .searchbar`);
+    $searchbar.data('onSearch', onSearch);
 
     $(`#${contentId} .searchbar`).html(`
         <div class="searchbar-wrapper">
@@ -24,11 +25,10 @@ export function loadSearchBar(contentId, onSearch = null) {
 
 $(document).on('click', '.button-search', function () {
     let currentContent = getCurrentContent();
-    let searchValue = $(this).closest('.searchbar').find('input').val();
+    let $searchbar = $(this).closest('.searchbar');
+    let searchValue = $searchbar.find('input').val();
 
-    console.log("검색 버튼 click", searchValue);
     // TODO: - 검색 백엔드 호출
-    
     if(searchValue){
         if(currentContent !== 'trainerInfo') {
             updateQueryParam({'search': searchValue});
@@ -36,15 +36,30 @@ $(document).on('click', '.button-search', function () {
     } else {
         removeQueryParam('search');
     }
-
-    if (typeof searchHandler === 'function') {
-        searchHandler();
+    
+    const handler = $searchbar.data('onSearch');
+    if (typeof handler === 'function') {
+        if($searchbar.hasClass('popup')) {
+            handler(searchValue);
+        } else {
+            handler();
+        }
     }
 });
 
 
-$(document).on('keyup', '.searchbar input', function (event) {
-    if (event.which === 13) { // 13 = Enter key
+let isSearching = false;
+
+$(document).on('keydown', '.searchbar input', function (event) {
+    if (event.which === 13 && !isSearching) {
+        isSearching = true;
+        event.preventDefault();
         $(this).closest('.searchbar').find('.button-search').click();
+    }
+});
+
+$(document).on('keyup', '.searchbar input', function (event) {
+    if (event.which === 13) {
+        isSearching = false;
     }
 });

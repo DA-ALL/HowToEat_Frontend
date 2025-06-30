@@ -1,12 +1,10 @@
-import { registerPopstateHandler, updateURL, getCurrentContent } from '/administrate/js/router.js';
+import { registerPopstateHandler, updateURL, getCurrentContent, registerViewLoader } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
+import { getUser, getUserDetail, getUserDailyCalories} from './api.js';
 
-
-export function renderUserInfo({ imageURL, username, email, birth, goal, goalCalorie, streakDay }, previousContent) {
-    if (previousContent) {
-        sessionStorage.setItem('previousContent', previousContent);
-    }
+export async function renderUserInfo() {
+    const data = await getUserDataForUserInfo();
 
     let userInfoHtml = `
         <div class="nav-top">
@@ -20,34 +18,34 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
         <div class="user-info-container">
             <div class="user-info-wrapper">
                 <div class="user-profile-image">
-                    <img src="${imageURL}">
+                    <img src="${data.profileImageUrl}">
                 </div>
 
-                <div class="user-name">${username}</div>
+                <div class="user-name">${data.name}</div>
 
                 <div class="user-meta-wrapper">
-                    <div class="email">${email}</div>
+                    <div class="email">${data.email}</div>
                     <div class="divider"></div>
-                    <div class="birth">${birth}</div>
+                    <div class="birth">${data.birth}</div>
                 </div>
 
                 <div class="user-goal-wrapper">
                     <div class="text-wrapper">
-                        <div class="value">${goal}</div>
+                        <div class="value">${formatUserGoal(data.userGoal)}</div>
                         <div class="label">유저 목표</div>
                     </div>
 
                     <div class="divider"></div>                    
 
                     <div class="text-wrapper">
-                        <div class="value">${goalCalorie}</div>
+                        <div class="value">${data.targetKcal}</div>
                         <div class="label">목표 Kcal</div>
                     </div>
 
                     <div class="divider"></div>
 
                     <div class="streak-wrapper">
-                        <div class="value">${streakDay}</div>
+                        <div class="value">${data.streakDays}</div>
                         <div class="label">연속 기록</div>
                     </div>
                 </div>
@@ -66,18 +64,31 @@ export function renderUserInfo({ imageURL, username, email, birth, goal, goalCal
 
     loadUserInfoTable();
     loadDailyCalorieTable();
+}
 
+$(document).on('click', `#userInfo .back-button-wrapper`, function () {
+    const prev = sessionStorage.getItem('previousContent');
 
-    $(document).on('click', `#userInfo .back-button-wrapper`, function () {
-        const prev = sessionStorage.getItem('previousContent');
-        if (prev) {
-            updateURL(prev);
-        } else {
-            // fallback
-            window.history.back();
-        }
-    });
+    if (prev) {
+        updateURL(prev);
+    } else {
+        window.history.back();
+    }
+});
 
+function formatUserGoal(userGole){
+    switch (userGole){
+        case 'LOSE_WEIGHT' :
+            return "체중감량";
+        case 'MAINTAIN_WEIGHT' : 
+            return "체중유지";
+        case 'GAIN_WEIGHT':
+            return "체중증량";
+        case 'GAIN_MUSCLE':
+            return "근육증량";
+        default:
+            return '';
+    }
 }
 
 
@@ -88,14 +99,12 @@ function loadUserInfoTable() {
 
     renderUserTable(containerId, bodyId);
     renderTableWithOptionalPagination({
-        getData: getUserDataForUserInfo,
+        getData: getUserData,
         bodyId: bodyId,
         contentId: contentId,
         enablePagination: false
     })
 }
-
-
 
 function loadDailyCalorieTable(){
     const containerId = 'dailyCalorieTable';
@@ -112,30 +121,63 @@ function loadDailyCalorieTable(){
     })
 }
 
-export function getUserInfo() {
-    return {
-        imageURL: "/administrate/images/icon_human_blue.png",
-        username: `김예현`,
-        email: "insidesy4@gmail.com",
-        birth: "1995.04.30",
-        goal: "체중 감량",
-        goalCalorie: 2024,
-        streakDay: 13
+export async function getUserData() {
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getUser(userId);
+        console.log("User data fetched:", response);
+        const data = {
+            content: [response.data],
+            page: 0,
+            totalElements: 1,
+        }
+        return data;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
     }
 }
 
-function getUserDataForUserInfo() {
-    return [{
-        id: 1,
-        imageURL: "/administrate/images/icon_human_blue.png",
-        name: `김예현`,
-        mealCount: Math.floor(Math.random() * 200),
-        joined: "2025.03.16",
-        left: "-",
-        gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
-    }]
+async function getUserDataForUserInfo() {
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getUserDetail(userId);
+        console.log("User Detail data:", response);
+        
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
 }
+
+
+
+async function getDailyCaloriData() {
+    const page = getPageFromURL();
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getUserDailyCalories(userId, page);
+        console.log("칼로리 데이터:", response)        
+        return response;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
+}
+
+
+function getPageFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
+}
+
+registerPopstateHandler('userInfo',loadDailyCalorieTable);
+registerViewLoader('userInfo', renderUserInfo);
+
+
+
+
+
+
+
 
 const calorieData = {
     "2025-04-01": { consumed: 1800, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 225, consumedProtein: 135, consumedFat: 40 },
@@ -228,38 +270,6 @@ const userConsumedMealData = {
 
 
 
-function getDailyCaloriData() {
-    return [
-        { id: 1, date: '2023-10-01', breakfast: 500, lunch: 700, dinner: 800, snack: 200, total: 2200 },
-        { id: 2, date: '2023-10-02', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 3, date: '2023-10-03', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 4, date: '2023-10-04', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 5, date: '2023-10-05', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 6, date: '2023-10-06', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 7, date: '2023-10-07', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 8, date: '2023-10-08', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 9, date: '2023-10-09', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 10, date: '2023-10-10', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 11, date: '2023-10-11', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 12, date: '2023-10-12', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 13, date: '2023-10-13', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 14, date: '2023-10-14', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 15, date: '2023-10-15', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 16, date: '2023-10-16', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 17, date: '2023-10-17', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 18, date: '2023-10-18', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 19, date: '2023-10-19', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 20, date: '2023-10-20', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 21, date: '2023-10-21', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 },
-        { id: 22, date: '2023-10-22', breakfast: 600, lunch: 800, dinner: 900, snack: 300, total: 2600 },
-        { id: 23, date: '2023-10-23', breakfast: 550, lunch: 750, dinner: 850, snack: 250, total: 2400 },
-        { id: 24, date: '2023-10-24', breakfast: 520, lunch: 720, dinner: 820, snack: 270, total: 2330 },
-        { id: 25, date: '2023-10-25', breakfast: 580, lunch: 780, dinner: 880, snack: 290, total: 2530 }
-    ];
-}
-
-
-registerPopstateHandler('userInfo',loadDailyCalorieTable);
 
 
 // 칼로리 테이블 row 클릭
@@ -582,16 +592,19 @@ function updateDateAndConsumedData(newDate) {
 //[[consumedMealDataWrapper]] 영역 코드 - 아침 점심 저녁별 탄단지 그래프 영역//
 ///////////////////////////////////////////////////////////////////
 
-
-
-$(document).ready(function () {
+function getUserIdFromUrl() {
     const pathSegments = window.location.pathname.split('/');
     const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
-        
-    if(getCurrentContent() == 'userInfo' && userId ) {     
-        renderUserInfo(getUserInfo());
-    }
-});
+    return userId;
+}
+
+// $(document).ready(function () {
+//     const userId = getUserIdFromUrl();
+
+//     if(getCurrentContent() == 'userInfo' && userId ) {
+//         renderUserInfo(getUserDataForUserInfo());
+//     }
+// });
 
 // 날짜 포맷을 Date 객체로 변환하는 함수
 function parseDateFromText(dateText) {
