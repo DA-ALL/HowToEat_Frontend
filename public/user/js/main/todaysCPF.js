@@ -6,6 +6,7 @@ export function getTodaysCPF(
     proteinRawPercent = 0, proteinPercent = 0,
     fatRawPercent = 0, fatPercent = 0
 ) {
+    console.log("getTodayCPF");
     const todayStr = new Date().toISOString().slice(0, 10);
     if (target === null) target = 0;
 

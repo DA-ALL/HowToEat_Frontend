@@ -125,10 +125,31 @@ export function showReport() {
     $('#my').hide();
     $('#report').show();
 
+    $('#kcalGraphPath').attr('d', '');
+
+    // 그래프 두번 그려주기 방지
+    $('#kcalGraphPath').attr('d', '');
+
+    // 그래프 두번 그려주기 방지
+    $('style').each(function () {
+        const content = this.innerHTML;
+        if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+            this.remove();
+        }
+    });
+    
+    // 그래프 두번 그려주기 방지
+    $('style').filter((_, el) =>
+        /@keyframes fillArc/.test(el.innerHTML)
+    ).remove();
+
+
     //리포트 페이지
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
     }
+
+
 }
 
 export function showMyPage(subpath = null, detailId = null) {
@@ -136,6 +157,22 @@ export function showMyPage(subpath = null, detailId = null) {
     $('#report').hide();
     $('#my').show();
     $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo, #withDraw').hide();
+
+    // // 그래프 두번 그려주기 방지
+    // $('#kcalGraphPath').attr('d', '');
+
+    // // 그래프 두번 그려주기 방지
+    // $('style').each(function () {
+    //     const content = this.innerHTML;
+    //     if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+    //         this.remove();
+    //     }
+    // });
+
+    // // 그래프 두번 그려주기 방지
+    // $('style').filter((_, el) =>
+    //     /@keyframes fillArc/.test(el.innerHTML)
+    // ).remove();
 
     if (!subpath) {
         if ($('#myPage').children().length === 0) {

@@ -11,11 +11,29 @@ let hasRenderedCPFOnce = false;
 
 export function initCalendarPage() {
     hasRenderedCPFOnce = false;
-
+    let shouldUpdateGraph = (activeDate === formatDate(new Date()) && !hasRenderedCPFOnce);
     const signupRequest = $.ajax({
         url: `${window.DOMAIN_URL}/users/signup-date`,
         method: 'GET'
     });
+
+    if(shouldUpdateGraph) {
+        // 그래프 두번 그려주기 방지
+        $('#kcalGraphPath').attr('d', '');
+
+        // 그래프 두번 그려주기 방지
+        $('style').each(function () {
+            const content = this.innerHTML;
+            if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+                this.remove();
+            }
+        });
+
+        // 그래프 두번 그려주기 방지
+        $('style').filter((_, el) =>
+            /@keyframes fillArc/.test(el.innerHTML)
+        ).remove();
+    }
 
     $.when(signupRequest).done(function (res) {
         const signupDateStr = res.data.createdAt;
@@ -205,22 +223,6 @@ function renderCalendarWithSignupLimit(signupDateStr) {
     if (shouldUpdateCPF) {
         hasRenderedCPFOnce = true;
 
-        $('#kcalGraphPath').attr('d', '');
-
-
-        // 그래프 두번 그려주기 방지
-        $('style').each(function () {
-            const content = this.innerHTML;
-            if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
-                this.remove();
-            }
-        });
-
-        $('style').filter((_, el) =>
-            /@keyframes fillArc/.test(el.innerHTML)
-        ).remove();
-
-
         $.get(`${window.DOMAIN_URL}/daily-summary/${activeDate}/macros`, function (res) {
             macrosData = res.data;
             const info = getDailyMacrosInfo(macrosData);
@@ -332,8 +334,6 @@ function describeArc(x, y, radius, startAngle, endAngle) {
 }
 
 function getCalorieInfo(dateStr) {
-    // console.log(calorieData);
-    // console.log(dateStr);
     const data = calorieData[dateStr];
     if (!data) return { rawPercent: 0, percent: 0, target: null };
     const rawPercent = Math.round((data.consumed / data.target) * 100);
@@ -364,7 +364,6 @@ function getCalorieInfo(dateStr) {
 function createDayHTML(date, disabledClass, isActive, signupDateStr) {
     const dateStr = formatDate(date);
     const todayStr = formatDate(new Date());
-    // console.log("createDayHTML : ", dateStr);
 
     if (dateStr > todayStr || dateStr < signupDateStr) {
         return `
