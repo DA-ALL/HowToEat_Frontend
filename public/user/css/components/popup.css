@@ -1,0 +1,100 @@
+.popup-cover {
+    position: absolute;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100%;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.75);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .popup-cover .popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    background-color: white;
+    padding: clamp(38px, 9.6vw, 48px) clamp(11px, 3.8vw, 19px);
+    border-radius: clamp(12.8px, 4.264vw, 21.33px);
+    box-shadow: 0px 0px 13.333px 0px rgba(0, 0, 0, 0.25);
+    gap: clamp(20px, 6.6vw, 33px);
+  }
+
+  .popup-cover .popup .icon{
+    width: clamp(40px, 13.2vw, 66px);
+    height: clamp(40px, 13.2vw, 66px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--red500);
+    border-radius: 200px;
+  }
+
+  .popup-cover .popup .icon img {
+    width: clamp(20px, 6.8vw, 34px);
+  }
+
+
+
+  .popup-cover .popup .popup-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .popup-cover .popup .popup-title {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 600;
+    color: var(--black100);
+  }
+
+  .popup-cover .popup .popup-subtitle {
+    font-size: clamp(11.2px, 3.7vw, 18.67px);
+    font-weight: 400;
+    color: var(--gray400);
+  }
+  
+
+  .popup-cover .popup .popup-button-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    box-shadow: none;
+    gap: 12px;
+  }
+
+  .popup-cover .popup .popup-button-container .cancel-btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+    color: var(--white300);
+    background-color: var(--gray200);
+    cursor: pointer;
+  }
+
+  .popup-cover .popup .popup-button-container .delete-btn, .next-btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+    color: var(--white300);
+    background-color: var(--red500);
+    cursor: pointer;
+  }
+
+  
+  @media (min-width: 500px) {
+    .popup-cover {
+      width: 500px;
+    }
+  }

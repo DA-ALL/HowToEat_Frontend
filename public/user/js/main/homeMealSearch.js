@@ -1,5 +1,6 @@
-import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '../components/routers.js';
+import { showMain } from '../components/routers.js';
 import { setLastMainPath } from '../components/nav-bottom.js';
+import { showPopup } from '../components/popup.js';
 
 let currentSearchKeyword = '';
 let currentPage = 0;
@@ -55,6 +56,7 @@ export function renderMealSearch(callback) {
                  data-kcal="${item.kcal}"
                  data-carbo="${item.carbo}"
                  data-protein="${item.protein}"
+                 data-source="${item.source}"
                  data-fat="${item.fat}"
                  data-unit="${item.unit}">
 
@@ -84,7 +86,7 @@ export function renderMealSearch(callback) {
         `).join('');
 
         const html = `
-          <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
+          <div id="headerNav" data-title="${mealKor} 등록하기" data-type="3"></div>
           <div class="meal-search-container">
               <div class="search-toggle-wrapper">
                   <div class="search-tab-wrapper">
@@ -127,7 +129,8 @@ export function renderMealSearch(callback) {
                           </div>
                       </div>
                       <div class="button-container meal-favorite hidden">
-                          <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                            <div id="deleteFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">삭제</div>
+                            <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
                       </div>
                   </div>
               </div>
@@ -529,6 +532,7 @@ function fetchSearchResults(keyword, page) {
         success: function (res) {
             const items = res.data.content;
             hasNext = res.data.hasNext;
+            console.log(res);
             renderMealSearchResults(items, page === 0);
         },
         complete: function () {
@@ -538,6 +542,9 @@ function fetchSearchResults(keyword, page) {
 }
 
 $(window).on('scroll', function () {
+
+    if(!$('#main').is(':visible'))  return;
+    if(!$('#homeMealSearch').is(':visible'))  return;
     const scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();
 
     if (scrollBottom < 100 && hasNext && !isLoading) {
@@ -588,7 +595,7 @@ $(document).on('click', '#registFavoriteButton', function () {
     $('.favorite-meal-item.active').each(function () {
         const $item = $(this);
         const food = {
-            id: $item.data('id'),
+            favoriteFoodId: $item.data('id'),
             foodCode: $item.data('food-code'),
             foodName: $item.data('name'),
             mealTime: mealTimeUpper,
@@ -600,6 +607,7 @@ $(document).on('click', '#registFavoriteButton', function () {
             fat: $item.data('fat'),
             providedBy: $item.data('detail') || "-",
             isPerServing: false, // 필요시 변경
+            source : $item.data('source'),
             unit: $item.data('unit'),
             foodImageUrl: ""
         };
@@ -633,3 +641,47 @@ $(document).on('click', '#registFavoriteButton', function () {
         }
     });
 });
+
+// delete 버튼 클릭 시
+$(document).on('click', '#deleteFavoriteButton', function () {
+    const favoriteFoodIdList = [];
+
+    $('.favorite-meal-item.active').each(function () {
+        const $item = $(this);
+        const favoriteFoodId = {
+            favoriteFoodId: $item.data('id'),
+        };
+        favoriteFoodIdList.push(favoriteFoodId);
+    });
+
+    if (favoriteFoodIdList.length === 0) {
+        alert("음식을 선택해주세요.");
+        return;
+    }
+
+    showPopup("#main", 2, "삭제하시겠어요?", "").then((confirmed) => {
+        if (confirmed) {
+
+            $.ajax({
+                type: "DELETE",
+                url: `${window.DOMAIN_URL}/favorite-foods`,
+                contentType: "application/json",
+                data: JSON.stringify(favoriteFoodIdList),
+                success: function () {
+                    favoriteFoodIdList.length = 0;
+                    selectedFavorites.length = 0;
+
+                    $('.favorite-meal-item.active').each(function () {
+                        const $el = $(this);
+                        $el.trigger('click');
+                        $el.remove();
+                    });
+
+
+                }
+            });
+
+        }
+    })
+});
+

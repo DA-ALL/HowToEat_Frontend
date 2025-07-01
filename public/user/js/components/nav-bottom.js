@@ -26,21 +26,42 @@ const navMap = {
 };
 
 // 뷰 전환 함수
-export function showPage(path) {
+export function showPage(path, isFromAddFavoriteFood) {
+    const parts = path.split('/');
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
         if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
             window.mainHistoryStack.push(path);
         }
-    
+        
+        let meal = null;
+        let subpage = null;
+        let type = null;
+        let consumedFoodId = null;
+        
         lastMainPath = path;
-    
-        const parts = path.split('/');
-        const meal = parts[2];      // breakfast
-        const regist = parts[4];   // regist 등
-        const type = parts[5];     // ingredient 등
-    
-        showMain(meal, regist, type);
+        
+        if(parts[5] === 'favorite-food') {
+            meal = parts[2];
+            subpage = 'favorite-food';
+            type = parts[5];
+            showMain(meal, subpage, type);
+        }   
+        
+        else if (parts[4] === 'consumed-food') {
+            meal = parts[2];
+            subpage = 'consumed-food';
+            type = null;
+            consumedFoodId = parts[5];
+            showMain(meal, subpage, type, consumedFoodId);
+        }
+        
+        else {
+            meal = parts[2];
+            subpage = parts[4];
+            type = parts[5];
+            showMain(meal, subpage, type, null, isFromAddFavoriteFood);
+        }
     }
     else if (path.startsWith('/report')) {
         showReport();
@@ -52,14 +73,14 @@ export function showPage(path) {
         }
     
         const parts = path.split('/');
-        const subpath = parts[2];        // 예: 'notice'
-        const detailId = parts[3];       // 예: '4'
-    
+        const subpath = parts[2];
+        const detailId = parts[3];
         showMyPage(subpath, detailId);
     }
 
     updateNavActive(path);
 }
+
 
 // 활성 nav 설정
 function updateNavActive(path) {
