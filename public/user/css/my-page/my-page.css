@@ -227,3 +227,47 @@
   #my #myPage .option-container .alarm-toggle.active::before {
     left: calc(100% - clamp(15.8px, 5.6vw + 0px, 27px) - 3px);
   }
+
+  #my #myPage .button-wrapper  {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    padding-right: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    margin-bottom: clamp(70px, 7.2vw + 65px, 120px);
+  }
+
+  #my #myPage .button-wrapper .user-button-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto !important;
+  }
+
+
+  #my #myPage .button-wrapper .user-button-container .logout-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    font-weight: 500;
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+    color: var(--white300);
+    background-color: var(--red500);
+    cursor: pointer;
+  }
+
+  #my #myPage .button-wrapper .text-container {
+    display: flex;
+    flex-direction: row;
+    font-size: clamp(11.6px, 3.2vw + 2px, 18px);
+    font-weight: 300;
+    color: var(--gray500);
+  }
+
+  #my #myPage .button-wrapper .text-container .delete-button {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  

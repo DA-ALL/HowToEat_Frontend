@@ -87,6 +87,18 @@ export function renderMyPage() {
                 <div class="option-title">1.2v</div>
             </div>
         </div>
+
+
+        <div class="button-wrapper">
+            <div class="user-button-container">
+                <div class="logout-button">로그아웃</div>
+            </div>
+            <div class="text-container">
+                <div class="delete-text">회원탈퇴를 원하시면 &nbsp;</div>
+                <div class="delete-button">여기</div>
+                <div class="delete-text">를 클릭해 주세요.</div>
+            </div>
+        </div>
     `;
 } 
 
