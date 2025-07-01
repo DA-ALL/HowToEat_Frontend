@@ -72,6 +72,25 @@ export function showPopup(parent, type, title, subtitle) {
                     </div>
                 </div>
             `;
+
+            case 5: // 알림형 취소 / 확인
+            popupHtml = `
+                <div class="popup-cover">
+                    <div class="popup">
+                        <div class="icon notify">
+                            <img src="/user/images/icon_notice.png">
+                        </div>
+                        <div class="popup-title-wrapper">
+                            <div class="popup-title">${title}</div>
+                            <div class="popup-subtitle">${subtitle}</div>
+                        </div>
+                        <div class="popup-button-container">
+                            <div class="cancel-btn">취소</div>
+                            <div class="next-btn active">탈퇴하기</div>
+                        </div>
+                    </div>
+                </div>
+            `;
             break;
         }
 

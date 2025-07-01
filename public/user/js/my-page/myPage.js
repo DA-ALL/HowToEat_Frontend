@@ -132,8 +132,6 @@ $(document).on('click', '.mypage-info-goal-wrapper', function () {
 });
 
 $(document).on('click', '#logoutButton', function () {
-    showPopup()
-
     showPopup("#my", 4, "로그아웃 하시겠어요?", "").then((confirmed) => {
         if(confirmed) {
             $.ajax({
@@ -143,13 +141,17 @@ $(document).on('click', '#logoutButton', function () {
                     window.location.href = "/login-page";   
                 }
             });
-
-            // window.location.href = "/login-page";
             return;
         }
     });
+});
 
 
+$(document).on('click', '.delete-button', function () {
+    const path = $(this).data('path');
+    const newPath = `/users/withdraw`;
 
-
+    window.lastUsersPath = newPath
+    history.pushState({ view: 'users', path }, '', newPath);
+    showPage(newPath);
 });

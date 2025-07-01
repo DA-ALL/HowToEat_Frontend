@@ -4,6 +4,7 @@
 @import url("/user/css/my-page/option-terms.css");
 @import url("/user/css/my-page/option-privacy.css");
 @import url("/user/css/my-page/option-info.css");
+@import url("/user/css/my-page/withdraw.css");
 
 #my .divider {
     width: 0.5px;

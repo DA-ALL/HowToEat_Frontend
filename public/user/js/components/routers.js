@@ -10,6 +10,7 @@ import { renderUsersNotice } from '../my-page/usersNotice.js';
 import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
 import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
+import { renderWithDraw } from '../my-page/renderWithDraw.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
 import { renderAddHomeNewFood } from '../main/homeAddNewFood.js';
@@ -134,7 +135,7 @@ export function showMyPage(subpath = null, detailId = null) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
-    $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo').hide();
+    $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo, #withDraw').hide();
 
     if (!subpath) {
         if ($('#myPage').children().length === 0) {
@@ -183,6 +184,10 @@ export function showMyPage(subpath = null, detailId = null) {
         $("#usersPrivacy").html(renderUsersPrivacy());
         initHeaderNav($('#usersPrivacy'));
         $('#usersPrivacy').show();
+    } else  if (subpath === 'withdraw') {
+        $("#withDraw").html(renderWithDraw());
+        initHeaderNav($('#withDraw'));
+        $('#withDraw').show();  
     }
 }
 

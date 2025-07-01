@@ -51,6 +51,7 @@
     font-size: clamp(14.4px, 4.8vw, 24px);
     font-weight: 600;
     color: var(--black100);
+    text-align: center;
   }
 
   .popup-cover .popup .popup-subtitle {
