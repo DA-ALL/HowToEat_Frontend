@@ -139,8 +139,7 @@ export function renderMealAdjust(mealKey, userConsumedData, foodInfo) {
             </div>
         </div>
         <div class="button-container">
-            <div id="favoriteButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button favorite active">즐겨찾기에 추가</div>
-            <div id="registButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" class="next-button active">${mealKor} 등록</div>
+            <div id="registButton" data-food-id="${foodInfo.foodId}" data-food-name="${foodInfo.foodName}" data-is-per-serving="${foodInfo.isPerServing}" data-food-code="${foodInfo.foodCode}" data-unit="${foodInfo.unit}" data-provided-by="${foodInfo.providedBy}" data-source="${foodInfo.source}">${mealKor} 등록</div>
         </div>
     `;
     return `
@@ -291,12 +290,12 @@ function createBar(mealKey, type, consumed, newConsumed, target, percent, rawPer
 }
 
 // 메시지 텍스트 생성 (과섭취 여부에 따라 문구 다름)
-function getMessageFormat(userConsumedData, adjusted = null) {
+function getMessageFormat(userConsumedData, foodInfo) {
     const types = ['carbo', 'protein', 'fat'];
 
     for (const type of types) {
         const consumed = Number(userConsumedData[type]?.consumed || 0);
-        const added = adjusted ? adjusted[type] : Number(window.registFoodData[type] || 0);
+        const added = foodInfo ? foodInfo[type] : Number(foodInfo[type] || 0);
         const target = Number(userConsumedData[type]?.target || 0);
 
         const newConsumed = consumed + added;
@@ -356,7 +355,7 @@ function getTailSvg() {
 //
 // regist 버튼 클릭 시
 $(document).on('click', '#registButton', function () {
-    const consumedFoodList = [];
+    const consumedFoodListBySearch = [];
     const $btn = $(this);
     const pathParts = window.location.pathname.split("/");
     const mealTime = pathParts[2];
@@ -376,18 +375,19 @@ $(document).on('click', '#registButton', function () {
         protein: $btn.data('protein'),
         fat: $btn.data('fat'),
         providedBy: $btn.data('provided-by'),
+        source:$btn.data('source'),
         isPerServing: $btn.data('is-per-serving'),
         unit: $btn.data('unit'),
         foodImageUrl: $btn.data('img')
     };
 
-    consumedFoodList.push(consumedFood);
+    consumedFoodListBySearch.push(consumedFood);
 
     $.ajax({
         type: "POST",
         url: `${window.DOMAIN_URL}/consumed-foods`,
         contentType: "application/json",
-        data: JSON.stringify(consumedFoodList),
+        data: JSON.stringify(consumedFoodListBySearch),
         success: function (res) {
             resetHomeMealView();
             resetSearchView();
@@ -537,7 +537,7 @@ export function updateNextButtonData() {
     const carbo = $('.food-info-wrapper .amount.carbo').text().replace('g', '').trim();
     const protein = $('.food-info-wrapper .amount.protein').text().replace('g', '').trim(); 
     const fat = $('.food-info-wrapper .amount.fat').text().replace('g', '').trim();
-    const $buttons = $('.next-button.favorite, #registButton');
+    const $buttons = $('#registButton');
     const foodImgUrl = $('.new-image').attr('src');
 
     $buttons.each(function () {

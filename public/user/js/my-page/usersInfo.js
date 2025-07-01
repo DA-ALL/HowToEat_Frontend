@@ -37,14 +37,14 @@ export function renderUsersInfo() {
                 <div class="input-wrapper">
                     <div class="input-label">키</div>
                     <div class="input">
-                        <input type="number" inputmode="numeric" id="height" name="height" placeholder="키" ime-mode="active" data-text="" value=${height}>
+                        <input type="text" inputmode="decimal" id="height" name="height" placeholder="키" maxlength="5" data-text="" value=${height}>
                     </div>
                 </div>
 
                 <div class="input-wrapper">
                     <div class="input-label">몸무게</div>
                     <div class="input">
-                        <input type="number" inputmode="numeric" id="weight" name="weight" placeholder="몸무게" ime-mode="active" data-text="" value=${weight}>
+                        <input type="text" inputmode="decimal" id="weight" name="weight" placeholder="몸무게" maxlength="5" data-text="" value=${weight}>
                     </div>
                 </div>
             </div> 
