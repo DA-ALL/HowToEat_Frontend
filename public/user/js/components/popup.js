@@ -3,7 +3,7 @@ export function showPopup(parent, type, title, subtitle) {
         let popupHtml = '';
 
         switch (type) {
-            case 1: // 알림형 (확인만)
+            case 1: // 알림형 - 서브 문구(확인만)
                 popupHtml = `
                     <div class="popup-cover">
                         <div class="popup">
@@ -38,6 +38,41 @@ export function showPopup(parent, type, title, subtitle) {
                     </div>
                 `;
                 break;
+
+            case 3: // 알림형 (확인만)
+            popupHtml = `
+                <div class="popup-cover">
+                    <div class="popup">
+                        <div class="icon notify">
+                            <img src="/user/images/icon_notice.png">
+                        </div>
+                        <div class="popup-title-wrapper">
+                            <div class="popup-title">${title}</div>
+                        </div>
+                        <div class="popup-button-container">
+                            <div class="next-btn active">확인</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+
+            case 4: // 알림형 취소 / 확인
+            popupHtml = `
+               <div class="popup-cover">
+                    <div class="popup">
+                        <div class="icon notify">
+                            <img src="/user/images/icon_notice.png">
+                        </div>
+                        <div class="popup-title">${title}</div>
+                        <div class="popup-button-container">
+                            <div class="cancel-btn">취소</div>
+                            <div class="delete-btn active">확인</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
         }
 
         const popup = $(popupHtml);

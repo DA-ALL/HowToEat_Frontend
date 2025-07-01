@@ -1,4 +1,5 @@
 import { showPage } from '../components/nav-bottom.js'
+import { showPopup } from '../components/popup.js'
 
 export function renderMyPage() {
     return `
@@ -91,7 +92,7 @@ export function renderMyPage() {
 
         <div class="button-wrapper">
             <div class="user-button-container">
-                <div class="logout-button">로그아웃</div>
+                <div id="logoutButton" class="logout-button">로그아웃</div>
             </div>
             <div class="text-container">
                 <div class="delete-text">회원탈퇴를 원하시면 &nbsp;</div>
@@ -100,7 +101,7 @@ export function renderMyPage() {
             </div>
         </div>
     `;
-} 
+}
 
 $(document).on('click', '.alarm-toggle', function () {
     $(this).toggleClass('active');
@@ -128,4 +129,27 @@ $(document).on('click', '.mypage-info-goal-wrapper', function () {
 
     history.pushState({ view: 'users', path }, '', newPath);
     showPage(newPath);
+});
+
+$(document).on('click', '#logoutButton', function () {
+    showPopup()
+
+    showPopup("#my", 4, "로그아웃 하시겠어요?", "").then((confirmed) => {
+        if(confirmed) {
+            $.ajax({
+                url: `${window.DOMAIN_URL}/logout`,
+                type: 'POST',
+                success: function (res) {
+                    window.location.href = "/login-page";   
+                }
+            });
+
+            // window.location.href = "/login-page";
+            return;
+        }
+    });
+
+
+
+
 });
