@@ -1,263 +1,148 @@
-import { showMain, resetHomeMealView, resetSearchView, resetRegistView } from '../components/routers.js';
+import { showMain } from '../components/routers.js';
 import { setLastMainPath } from '../components/nav-bottom.js';
+import { showPopup } from '../components/popup.js';
 
-const mealSearchData = [
-    {
-        id: 42,
-        type: "ingredient_food",
-        name: "소고기 채끝살 (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 217,
-        carbo: 0,
-        protein: 26,
-        fat: 12,
-    },
-    {
-        id: 87,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "(주)예현 소고기",
-        weight: 100,
-        kcal: 320,
-        carbo: 200,
-        protein: 21,
-        fat: 24,
-    },
-    {
-        id: 13,
-        type: "ingredient_food",
-        name: "소고기 1등급++ (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 245,
-        carbo: 0,
-        protein: 23,
-        fat: 17,
-    },
-    {
-        id: 74,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "청정원",
-        weight: 100,
-        kcal: 310,
-        carbo: 5,
-        protein: 20,
-        fat: 22,
-    },
-    {
-        id: 8,
-        type: "cooked_food",
-        name: "소고기 구이",
-        detail: "급식",
-        weight: 100,
-        kcal: 290,
-        carbo: 1,
-        protein: 24,
-        fat: 20,
-    },
-    {
-        id: 91,
-        type: "ingredient_food",
-        name: "소고기 채끝살 (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 217,
-        carbo: 0,
-        protein: 26,
-        fat: 12,
-    },
-    {
-        id: 56,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "(주)예현 소고기",
-        weight: 100,
-        kcal: 320,
-        carbo: 4,
-        protein: 21,
-        fat: 24,
-    },
-    {
-        id: 34,
-        type: "ingredient_food",
-        name: "소고기 1등급++ (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 245,
-        carbo: 0,
-        protein: 23,
-        fat: 17,
-    },
-    {
-        id: 99,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "청정원",
-        weight: 100,
-        kcal: 310,
-        carbo: 5,
-        protein: 20,
-        fat: 22,
-    },
-    {
-        id: 21,
-        type: "cooked_food",
-        name: "소고기 구이",
-        detail: "급식",
-        weight: 100,
-        kcal: 290,
-        carbo: 1,
-        protein: 24,
-        fat: 20,
-    },
-];
+let currentSearchKeyword = '';
+let currentPage = 0;
+let hasNext = true;
+let selectedFavorites = [];
+let isLoading = false;
 
-const mealFavoriteData = [
-    {
-        id: 42,
-        type: "ingredient_food",
-        name: "소고기 채끝살 (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 217,
-        carbo: 0,
-        protein: 26,
-        fat: 12,
-    },
-    {
-        id: 87,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "(주)예현 소고기",
-        weight: 100,
-        kcal: 320,
-        carbo: 200,
-        protein: 21,
-        fat: 24,
-    },
-    {
-        id: 13,
-        type: "ingredient_food",
-        name: "소고기 1등급++ (생것)",
-        detail: "수입산(미국산)",
-        weight: 100,
-        kcal: 245,
-        carbo: 0,
-        protein: 23,
-        fat: 17,
-    },
-    {
-        id: 74,
-        type: "processed_food",
-        name: "소고기 한우볶음구이",
-        detail: "청정원",
-        weight: 100,
-        kcal: 310,
-        carbo: 5,
-        protein: 20,
-        fat: 22,
-    },
-    {
-        id: 8,
-        type: "cooked_food",
-        name: "소고기 구이",
-        detail: "급식",
-        weight: 100,
-        kcal: 290,
-        carbo: 1,
-        protein: 24,
-        fat: 20,
-    }
-];
-
-
-
-
-
-export function renderMealSearch(mealKey, userConsumedDataTest, registFoodDataTest) {
-    window.userConsumedData = userConsumedDataTest;
-    window.mealKey = mealKey;
+export function renderMealSearch(callback) {
+    const pathParts = window.location.pathname.split("/");
+    const mealKey = pathParts[2];
     const mealKor = mealToKor(mealKey);
-    return `
-      <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
+    const mealTime = mealKey.toUpperCase();
+    const selectedDate = pathParts[3];
+
+    selectedFavorites = [];
+    isLoading = false;
 
 
-      <div class="meal-search-container">
+    const macrosRequest = $.ajax({
+        url: `${window.DOMAIN_URL}/daily-summaries/${selectedDate}/meal-time/${mealTime}/macros`,
+        method: 'GET'
+    });
 
-      <div class="search-toggle-wrapper">
-            <div class="search-tab-wrapper">
-                <div class="tab-button search active">음식 검색</div>
-                <div class="tab-button favorite">즐겨찾기</div>
-            </div>
-      </div>
+    const favoriteFoodList = $.ajax({
+        url: `${window.DOMAIN_URL}/favorite-foods`,
+        method: 'GET'
+    });
 
-        <div class="meal-tab-content">
-            <div class="meal-search-list padding">
-                <div class="search-tool-wrapper">
-                    <div class="search-tool">
-                        <input class="input-search"></input>
-                        <div class="label">
-                            <img src="/user/images/icon_search_gray2.png">
-                        </div>
+    $.when(macrosRequest, favoriteFoodList).done(function (macrosRes, favoriteRes) {
+        const raw = macrosRes[0].data;
+        const userConsumedData = {
+            carbo: { consumed: raw.consumedCarbo, target: raw.targetCarbo },
+            protein: { consumed: raw.consumedProtein, target: raw.targetProtein },
+            fat: { consumed: raw.consumedFat, target: raw.targetFat }
+        };
+
+        const favoriteFoods = favoriteRes[0].data;
+        
+        console.log(userConsumedData);
+        console.log(favoriteFoods);
+
+        window.userConsumedData = userConsumedData;
+        window.mealKey = mealKey;
+
+        const favoriteListHTML = favoriteFoods.map(item => `
+            <div class="favorite-meal-item"
+                 data-id="${item.favoriteFoodId}"
+                 data-food-code="${item.foodCode}"
+                 data-type="${item.foodType}"
+                 data-name="${item.foodName}"
+                 data-detail="${item.providedBy}"
+                 data-weight="${item.foodWeight}"
+                 data-kcal="${item.kcal}"
+                 data-carbo="${item.carbo}"
+                 data-protein="${item.protein}"
+                 data-source="${item.source}"
+                 data-fat="${item.fat}"
+                 data-unit="${item.unit}">
+
+                
+                <div class="meal-info-wrapper">
+                    <div class="meal-title">${item.foodName}</div>
+                    
+                    <div class="meal-macro-wrapper">
+                        <div class="macro-kcal">${(item.kcal).toFixed(1).toLocaleString()} kcal</div>
+                        <div class="divider">|</div>
+                        <div class="macro-carbo">탄수 ${(item.carbo).toFixed(1).toLocaleString()}</div>
+                        <div class="divider">|</div>
+                        <div class="macro-protein">단백 ${(item.protein).toFixed(1).toLocaleString()}</div>
+                        <div class="divider">|</div>
+                        <div class="macro-fat">지방 ${(item.fat).toFixed(1).toLocaleString()}</div>
                     </div>
                 </div>
-                <div class="button-container meal-search hidden">
-                    <div class="next-button home-meal-search disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+
+                <!--
+                <div class="text-wrapper">
+                    <span class="weight">${Math.trunc(item.foodWeight)}g</span>
+                    <span class="divide">/</span>
+                    <span class="kcal">${Math.trunc(item.kcal)}kcal</span>
                 </div>
+                --!>
             </div>
+        `).join('');
 
-            <div class="meal-favorite-list" style="display: none;">
-                <div class="cpf-container padding">
-                    <div class="second-title-format">${mealKor}의 탄단지</div>
-                    <div class="cpf-kcal-left-message-wrapper">
-                        <span class="cpf-kcal-left-message favorite">음식을 선택하면 얼마나 증가되는지 한눈에 볼 수 있어요.</span>
-                        <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
-                    </div>
+        const html = `
+          <div id="headerNav" data-title="${mealKor} 등록하기" data-type="3"></div>
+          <div class="meal-search-container">
+              <div class="search-toggle-wrapper">
+                  <div class="search-tab-wrapper">
+                      <div class="tab-button search active">음식 검색</div>
+                      <div class="tab-button favorite">즐겨찾기</div>
+                  </div>
+              </div>
 
-                    ${createBarContainer(mealKey, userConsumedDataTest)}
-                </div>
-            
-                <div class="divider large"></div>
+              <div class="meal-tab-content">
+                  <div class="meal-search-list padding">
+                      <div class="search-tool-wrapper">
+                          <div class="search-tool">
+                              <input class="input-search" />
+                              <div class="label">
+                                  <img src="/user/images/icon_search_gray2.png">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="button-container meal-search hidden">
+                          <div class="next-button home-meal-search disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                      </div>
+                  </div>
 
-                <div class="favorite-list-container padding">
-                    <div class="second-title-format">즐겨찾는 음식</div>
+                  <div class="meal-favorite-list" style="display: none;">
+                      <div class="cpf-container padding">
+                          <div class="second-title-format">${mealKor}의 탄단지</div>
+                          <div class="cpf-kcal-left-message-wrapper">
+                              <span class="cpf-kcal-left-message favorite">음식을 선택하면 얼마나 증가되는지 한눈에 볼 수 있어요.</span>
+                              <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
+                          </div>
+                          ${createBarContainer(mealKey, userConsumedData)}
+                      </div>
 
-                    <div class="favorite-meal-list-wrapper">
-                    ${mealFavoriteData.map(item => `
-                        <div class="favorite-meal-item"
-                             data-id="${item.id}"
-                             data-type="${item.type}"
-                             data-name="${item.name}"
-                             data-detail="${item.detail}"
-                             data-weight="${item.weight}"
-                             data-kcal="${item.kcal}"
-                             data-carbo="${item.carbo}"
-                             data-protein="${item.protein}"
-                             data-fat="${item.fat}">
-                            <div class="meal-title">${item.name}</div>
-                            <div class="text-wrapper">
-                                <span class="weight">${item.weight}g</span>
-                                <span class="divide">/</span>
-                                <span class="kcal">${item.kcal}kcal</span>
-                            </div>
-                        </div>
-                      `).join('')}
-                    </div>
-                </div>
-                <div class="button-container meal-favorite hidden">
-                    <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
-                </div>
-            </div>
-            
+                      <div class="divider large"></div>
 
-        </div>
+                      <div class="favorite-list-container padding">
+                          <div class="second-title-format">즐겨찾는 음식</div>
+                          <div class="favorite-meal-list-wrapper">
+                              ${favoriteListHTML}
+                          </div>
+                      </div>
+                      <div class="button-container meal-favorite hidden">
+                            <div id="deleteFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">삭제</div>
+                            <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        `;
 
-      </div>
-
-    `;
+        callback(html);
+    }).fail(function () {
+        callback(`<div class="error">데이터를 불러오는 데 실패했습니다.</div>`);
+    });
 }
+
 
 initMealSearchTab()
 
@@ -274,6 +159,9 @@ export function initMealSearchTab() {
         if (isSearchTab) {
             $('.meal-search-list').show();
             $('.meal-favorite-list').hide();
+            $('.favorite-meal-item.active').each(function () {
+                $(this).trigger('click');
+            });
 
             const $input = $('.input-search');
 
@@ -367,55 +255,66 @@ $(document).on('click', '.meal-item', function () {
 
 function handleMealSearch(keyword) {
     const $list = $('.meal-search-list');
-    $list.find('.meal-results').remove(); // 이전 검색 결과 제거
+    $list.find('.meal-results').remove();
+
+    currentSearchKeyword = keyword;
+    currentPage = 0;
+    hasNext = true;
 
     if (keyword) {
-        renderMealSearchResults(keyword);
+        fetchSearchResults(keyword, currentPage);
         $('.input-search').closest('.search-tool').css('border-color', 'var(--gray300)');
     } else {
         $('.input-search').closest('.search-tool').css('border-color', '');
     }
 }
 
-function renderMealSearchResults(keyword) {
-    const filtered = mealSearchData.filter(item =>
-        item.name.includes(keyword)
-    );
+function renderMealSearchResults(items, isFirstPage) {
+    let isItemEmpty = items.length === 0;
 
-    const html = filtered.map(item => `
+
+    const html = items.map(item => `
       <div class="meal-item"
-           data-id="${item.id}"
+           data-id="${item.foodId}"
            data-type="${item.type}"
-           data-name="${item.name}"
-           data-weight="${item.weight}"
+           data-name="${item.foodName}"
+           data-weight="${item.foodWeight}"
            data-kcal="${item.kcal}"
            data-carbo="${item.carbo}"
            data-protein="${item.protein}"
            data-fat="${item.fat}">
         <div class="meal-wrapper">
           <div class="meal-type ${typeColorClass(item.type)}">${typeToKor(item.type)}</div>
-          <div class="meal-name">${item.name}</div>
-          <div class="meal-detail">${item.detail}</div>
+          <div class="meal-name">${item.foodName}</div>
+          <div class="meal-detail">${item.providedBy}</div>
         </div>
         <div class="meal-meta">
-          <div class="weight">${item.weight}g</div>
+          <div class="weight">${item.foodWeight}g</div>
           <div class="divide">/</div>
           <div class="kcal">${item.kcal}kcal</div>
         </div>
       </div>
     `).join('');
 
-    $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
+    if(!isItemEmpty) {
+        if (isFirstPage) {
+            $('.meal-search-list').append(`<div class="meal-results">${html}</div>`);
+        } else {
+            $('.meal-results').append(html);
+        }
+    } else {
+        $('.meal-search-list').append(`<div class="meal-results not-found-result"><div class="text">검색 결과가 없어요.</div><div class="text">원하는 음식을 직접 추가해보세요!</div><div class="add-button">추가하기</div></div>`);
+    }
 }
 
 
 // type에 따라 색상 클래스 다르게
 function typeColorClass(type) {
     switch (type) {
-        case 'ingredient_food': return 'type-ingredient';
-        case 'processed_food': return 'type-processed';
-        case 'cooked_food': return 'type-cooked';
-        case 'custom_food': return 'type-custom';
+        case 'INGREDIENT': return 'type-ingredient';
+        case 'PROCESSED': return 'type-processed';
+        case 'COOKED': return 'type-cooked';
+        case 'CUSTOM': return 'type-custom';
         default: return '';
     }
 }
@@ -424,7 +323,7 @@ function typeColorClass(type) {
 
 function mealToKor(meal) {
     switch (meal) {
-        case 'morning': return '아침';
+        case 'breakfast': return '아침';
         case 'lunch': return '점심';
         case 'dinner': return '저녁';
         case 'snack': return '간식';
@@ -434,10 +333,10 @@ function mealToKor(meal) {
 
 function typeToKor(type) {
     switch (type) {
-        case 'ingredient_food': return '원재료';
-        case 'processed_food': return '가공식품';
-        case 'cooked_food': return '음식';
-        case 'custom_food': return '유저등록';
+        case 'INGREDIENT': return '원재료';
+        case 'PROCESSED': return '가공식품';
+        case 'COOKED': return '음식';
+        case 'CUSTOM': return '유저등록';
         default: return '';
     }
 }
@@ -450,7 +349,7 @@ function createBarContainer(mealKey, userConsumedData) {
         <div class="home-meal-bar-container">
             ${types.map(type => {
                 const consumed = Number(userConsumedData[type]?.consumed || 0);
-                const target = Number(userConsumedData[type]?.target || 0);
+                const target = Math.trunc(Number(userConsumedData[type]?.target || 0));
 
                 const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
 
@@ -535,7 +434,6 @@ function updateCPFIncreaseBar(selectedItems) {
         acc.fat += Number(item.fat || 0);
         return acc;
     }, { carbo: 0, protein: 0, fat: 0 });
-
     const mealKor = mealToKor(mealKey);
 
     // 탄단지 각각에 대해 105% 초과 여부 검사
@@ -563,7 +461,8 @@ function updateCPFIncreaseBar(selectedItems) {
     ['carbo', 'protein', 'fat'].forEach(type => {
         const consumed = Number(user[type]?.consumed || 0);
         const target = Number(user[type]?.target || 0);
-        const newValue = consumed + total[type];
+        const newValue = (consumed + total[type]);
+
         const rawIncreasePercent = target > 0 ? (newValue / target) * 100 : 0;
         const percentLimited = Math.min(rawIncreasePercent, 100);
         const uniqueKey = `fillBar-${mealKey}-${type}-increase-favorite`;
@@ -606,7 +505,7 @@ function animateCountUp($element, from, to, duration = 1200) {
     
     function update(timestamp) {
         const progress = Math.min((timestamp - start) / duration, 1);
-        const current = Math.floor(from + (to - from) * progress);
+        const current = (from + (to - from) * progress).toFixed(1);
         $element.text(`${current}g`);
         if (progress < 1) {
             requestAnimationFrame(update);
@@ -625,8 +524,36 @@ function getTailSvg() {
     `;
 }
 
+//호출 API
+function fetchSearchResults(keyword, page) {
+    $.ajax({
+        url: `${window.DOMAIN_URL}/foods?name=${encodeURIComponent(keyword)}&page=${page}&size=10`,
+        method: 'GET',
+        success: function (res) {
+            const items = res.data.content;
+            hasNext = res.data.hasNext;
+            console.log(res);
+            renderMealSearchResults(items, page === 0);
+        },
+        complete: function () {
+            isLoading = false; // 다시 호출 가능
+        }
+    });
+}
 
-let selectedFavorites = [];
+$(window).on('scroll', function () {
+
+    if(!$('#main').is(':visible'))  return;
+    if(!$('#homeMealSearch').is(':visible'))  return;
+    const scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();
+
+    if (scrollBottom < 100 && hasNext && !isLoading) {
+        isLoading = true; // 중복 호출 방지
+        currentPage++;
+        fetchSearchResults(currentSearchKeyword, currentPage);
+    }
+});
+
 
 $(document).on('click', '.favorite-meal-item', function () {
     const $this = $(this);
@@ -658,29 +585,103 @@ $(document).on('click', '.favorite-meal-item', function () {
 
 // regist 버튼 클릭 시
 $(document).on('click', '#registFavoriteButton', function () {
-    const $btn = $(this);
-    const mealKey = window.mealKey;
+    const pathParts = window.location.pathname.split('/');
+    const selectedDate = pathParts[3];
+    const mealTime = pathParts[2];
+    const mealTimeUpper = mealTime.toUpperCase();
 
-    console.log('선택된 즐겨찾기 항목:', selectedFavorites);
+    const consumedFoodList = [];
 
-    resetHomeMealView();
-    resetSearchView();
-    resetRegistView();
+    $('.favorite-meal-item.active').each(function () {
+        const $item = $(this);
+        const food = {
+            favoriteFoodId: $item.data('id'),
+            foodCode: $item.data('food-code'),
+            foodName: $item.data('name'),
+            mealTime: mealTimeUpper,
+            foodWeight: $item.data('weight'),
+            foodType: $item.data('type'),
+            kcal: $item.data('kcal'),
+            carbo: $item.data('carbo'),
+            protein: $item.data('protein'),
+            fat: $item.data('fat'),
+            providedBy: $item.data('detail') || "-",
+            isPerServing: false, // 필요시 변경
+            source : $item.data('source'),
+            unit: $item.data('unit'),
+            foodImageUrl: ""
+        };
+        consumedFoodList.push(food);
+    });
 
-    $(`style[data-keyframe="protein"]`).remove(); 
-    $(`style[data-keyframe="fat"]`).remove(); 
-    $(`style[data-keyframe="carbo"]`).remove(); 
-    selectedFavorites = [];
-
-    const targetPath = `/main/${mealKey}`;
-    history.pushState({ view: 'main' }, '', targetPath);
-    setLastMainPath(targetPath);
-    
-    // ✅ window에도 저장, 그리고 nav-bottom.js에서도 참조하도록
-    window.lastMainPath = targetPath;
-    if (typeof setLastMainPath === 'function') {
-        setLastMainPath(targetPath); // 전역 설정 함수 호출
+    if (consumedFoodList.length === 0) {
+        alert("음식을 선택해주세요.");
+        return;
     }
 
-    showMain(mealKey);
+    $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/consumed-foods`,
+        contentType: "application/json",
+        data: JSON.stringify(consumedFoodList),
+        success: function () {
+
+            consumedFoodList.length = 0;
+            selectedFavorites.length = 0;
+
+            const targetPath = `/main/${mealTime}/${selectedDate}`;
+            history.pushState({ view: 'main' }, '', targetPath);
+            window.lastMainPath = targetPath;
+
+            if (typeof setLastMainPath === 'function') {
+                setLastMainPath(targetPath);
+            }
+
+            showMain(mealTime);
+        }
+    });
 });
+
+// delete 버튼 클릭 시
+$(document).on('click', '#deleteFavoriteButton', function () {
+    const favoriteFoodIdList = [];
+
+    $('.favorite-meal-item.active').each(function () {
+        const $item = $(this);
+        const favoriteFoodId = {
+            favoriteFoodId: $item.data('id'),
+        };
+        favoriteFoodIdList.push(favoriteFoodId);
+    });
+
+    if (favoriteFoodIdList.length === 0) {
+        alert("음식을 선택해주세요.");
+        return;
+    }
+
+    showPopup("#main", 2, "삭제하시겠어요?", "").then((confirmed) => {
+        if (confirmed) {
+
+            $.ajax({
+                type: "DELETE",
+                url: `${window.DOMAIN_URL}/favorite-foods`,
+                contentType: "application/json",
+                data: JSON.stringify(favoriteFoodIdList),
+                success: function () {
+                    favoriteFoodIdList.length = 0;
+                    selectedFavorites.length = 0;
+
+                    $('.favorite-meal-item.active').each(function () {
+                        const $el = $(this);
+                        $el.trigger('click');
+                        $el.remove();
+                    });
+
+
+                }
+            });
+
+        }
+    })
+});
+

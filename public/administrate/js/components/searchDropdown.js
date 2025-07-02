@@ -1,5 +1,5 @@
 
-import { updateQueryParam, syncSearchDropdownWithURL } from '/administrate/js/router.js';
+import { updateQueryParam } from '/administrate/js/router.js';
 
 let data = getTrainerGymData();
 let currentDropdownItem = data[0];
@@ -52,8 +52,6 @@ export function loadSearchDropdown() {
     $(document).click(function () {
         $(".dropdown-list").hide();
     });
-
-    // syncSearchDropdownWithURL();
 }
 
 function generateDropdownItems() {

@@ -73,16 +73,16 @@
     justify-content: center;
 }
 
-#adminAccountTable .td-role .role-button.master {
+#adminAccountTable .td-role .role-button.MASTER {
     background-color: #FD5454;
 }
-#adminAccountTable .td-role .role-button.admin {
+#adminAccountTable .td-role .role-button.ADMIN {
     background-color: #4C4C4C;
 }
-#adminAccountTable .td-role .role-button.super-user {
+#adminAccountTable .td-role .role-button.SUPERUSER {
     background-color: #D36DAE;
 }
-#adminAccountTable .td-role .role-button.user {
+#adminAccountTable .td-role .role-button.USER {
     background-color: #70BFC4;
 }
 

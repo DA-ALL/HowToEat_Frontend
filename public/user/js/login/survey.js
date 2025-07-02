@@ -2,9 +2,11 @@ import { updateButtonState, validateInput, checkInput } from '/user/js/component
 import { populateDays, updateDays, validateDateInput, birthDropDown } from '/user/js/components/date-picker-validate.js';
 import { updateProgressBar } from '/user/js/components/header-processbar.js';
 import { initHeaderNav } from '/user/js/components/header-nav.js';
+import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
 let currentPage = 1;
 let surveyData = {
+    email: '',
     name: '',
     birthYear: '',
     birthMonth: '',
@@ -19,8 +21,6 @@ let surveyData = {
 
 // 뒤로가기 이벤트 처리
 window.onpopstate = function (event) {
-    console.log("뒤로가기 감지!", event.state);
-
     if (event.state && event.state.page) {
         currentPage = event.state.page;
         loadPage(currentPage, true);
@@ -28,13 +28,56 @@ window.onpopstate = function (event) {
 };
 
 $(document).ready(function () {
+    setupAjaxAuthInterceptor();
     const urlParams = new URLSearchParams(window.location.search);
     const savedPage = parseInt(urlParams.get('page')) || 1;
+    const token = urlParams.get("token");
+    const user = getPayloadFromToken(token);
+
+    // 생일이 "MM-DD" 형식이면 나눠서 넣기
+    const birthMonth = user.birthday?.split('-')[0] || '';
+    const birthDay = user.birthday?.split('-')[1] || '';
+
+    // surveyData 초기화
+    surveyData = {
+        email: user.email || '',
+        name: user.name || '',
+        birthYear: user.birthyear || '',
+        birthMonth,
+        birthDay,
+        height: user.height || '',
+        weight: user.weight || '',
+        gender: user.gender || '',
+        goal: '',
+        activity: '',
+        isNextGym: '',
+        signupProvider: user.signup_provider || '',
+        profileImageUrl: user.profile_image_url || '',
+    };
+
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
 
     currentPage = savedPage;
     initHeaderNav();
     loadPage(currentPage);
 });
+
+function getPayloadFromToken(token) {
+    try {
+        const base64Payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64Payload)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error('JWT 파싱 에러:', e);
+        return null;
+    }
+}
+
 
 function getSurveyTemplate(pageNumber) {
     switch (pageNumber) {
@@ -107,8 +150,8 @@ function getSurveyTemplate(pageNumber) {
                 </div>
 
                 <div class="select-container">
-                    <div class="select-item male" data-text="male">남자</div>
-                    <div class="select-item female" data-text="female">여자</div>
+                    <div class="select-item male" data-text="MALE">남자</div>
+                    <div class="select-item female" data-text="FEMALE">여자</div>
                 </div>
 
                 <div class="button-container bottom">
@@ -122,10 +165,10 @@ function getSurveyTemplate(pageNumber) {
                 </div>
 
                 <div class="select-container">
-                    <div class="select-item weight-loss" data-text="1">체중 감량</div>
-                    <div class="select-item weight-maintain" data-text="2">체중 유지</div>
-                    <div class="select-item weight-gain" data-text="3">체중 증량</div>
-                    <div class="select-item muscle-gain" data-text="4">근육 증량</div>
+                    <div class="select-item weight-loss" data-text="LOSE_WEIGHT">체중 감량</div>
+                    <div class="select-item weight-maintain" data-text="MAINTAIN_WEIGHT">체중 유지</div>
+                    <div class="select-item weight-gain" data-text="GAIN_WEIGHT">체중 증량</div>
+                    <div class="select-item muscle-gain" data-text="GAIN_MUSCLE">근육 증량</div>
                 </div>
 
                 <div class="button-container bottom">
@@ -139,23 +182,23 @@ function getSurveyTemplate(pageNumber) {
                 </div>
 
                 <div class="select-container activity">
-                    <div class="select-wrapper very-active" data-text="5">
+                    <div class="select-wrapper very-active" data-text="VERY_HIGH">
                         <div class="main-text">매우 활동적</div>
                         <div class="sub-text">주 6~7회 이상 고강도 운동 (운동 선수) <br> 업무 형태가 활동적</div>
                     </div>
-                    <div class="select-wrapper active" data-text="4">
+                    <div class="select-wrapper active" data-text="HIGH">
                         <div class="main-text">활동적</div>
                         <div class="sub-text">주 4~6회 운동 (웨이트 트레이닝) <br> 주 150분 이상 유산소 운동</div>
                     </div>
-                    <div class="select-wrapper moderate" data-text="3">
+                    <div class="select-wrapper moderate" data-text="NORMAL">
                         <div class="main-text">보통</div>
                         <div class="sub-text">주 2~3회 운동 (유산소 + 웨이트 트레이닝)</div>
                     </div>
-                    <div class="select-wrapper low" data-text="2">
+                    <div class="select-wrapper low" data-text="LOW">
                         <div class="main-text">적음</div>
                         <div class="sub-text">주 2회 미만의 운동 <br> 웨이트 트레이닝 / 유산소 운동 선택적 진행</div>
                     </div>
-                    <div class="select-wrapper very-low" data-text="1">
+                    <div class="select-wrapper very-low" data-text="VERY_LOW">
                         <div class="main-text">매우 적음</div>
                         <div class="sub-text">평소 운동을 하지 않음 <br> 업무 형태가 주로 앉아서 진행</div>
                     </div>
@@ -234,11 +277,16 @@ function bindEvents(pageNumber) {
 
 
 function nextPage(pageNumber) {
-    if(pageNumber === 1) {
+    if (pageNumber === 1) {
         saveSurveyData('name', $('#name').val());
         saveSurveyData('birthYear', $('#year-text').data('text'));
-        saveSurveyData('birthMonth', $('#month-text').data('text'));
-        saveSurveyData('birthDay', $('#day-text').data('text'));
+    
+        // 👇 두 자리 형식으로 보정
+        const month = String($('#month-text').data('text')).padStart(2, '0');
+        const day = String($('#day-text').data('text')).padStart(2, '0');
+    
+        saveSurveyData('birthMonth', month);
+        saveSurveyData('birthDay', day);
     } else if(pageNumber === 2) {
         saveSurveyData('height', $('#height').val());
         saveSurveyData('weight', $('#weight').val());
@@ -250,8 +298,39 @@ function nextPage(pageNumber) {
         saveSurveyData('activity', $('.select-wrapper.valid').data('text'));
     } else if(pageNumber === 6) {
         saveSurveyData('isNextGym', $('.select-item.valid').data('text'));
-        window.location.href = '/signup-complete';
-        return; // 리다이렉션 후 다음 페이지 로딩을 막기 위해 리턴
+        
+        const storedData = JSON.parse(localStorage.getItem('surveyData'));
+
+        const requestData = {
+            email: storedData.email,
+            name: storedData.name,
+            birthday: `${storedData.birthYear}-${storedData.birthMonth}-${storedData.birthDay}`, // yyyy-MM-dd
+            gender: storedData.gender,
+            height: parseFloat(storedData.height),
+            weight: parseFloat(storedData.weight),
+            goal: storedData.goal,
+            activityLevel: storedData.activity,
+            isNextGym: storedData.isNextGym === 'true',
+            signupProvider: storedData.signupProvider,
+            profileImageUrl: storedData.profileImageUrl,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: `${window.DOMAIN_URL}/signup`,
+            contentType: "application/json",
+            data: JSON.stringify(requestData),
+            success: function () {
+
+                window.location.href = "/signup-complete";
+            },
+            error: function (err) {
+                console.error("회원가입 실패", err);
+                alert("회원가입 중 문제가 발생했습니다.");
+            }
+        });
+
+        return;
     }
     currentPage++;
     loadPage(currentPage);
@@ -277,9 +356,9 @@ function restoreSurveyData() {
         $('#weight').val(surveyData.weight);
     }
     if (surveyData.gender) {
-        if(surveyData.gender === 'male') {
+        if(surveyData.gender === 'male' || surveyData.gender === 'M') {
             $('.select-item.male').addClass('valid');
-        } else {
+        } else if(surveyData.gender === 'female' || surveyData.gender === 'F') {
             $('.select-item.female').addClass('valid');
         }
     }

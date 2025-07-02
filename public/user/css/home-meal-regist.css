@@ -276,7 +276,7 @@
   justify-content: space-between;
   border: 1px solid #F1F1F1;
   border-radius: clamp(16px, 4vw + 1px, 21px);
-  
+
 }
 
 #homeMealRegist .home-meal-adjust-container .manual-input-field {
@@ -315,4 +315,17 @@
   border: 1px solid var(--red500);
   color: var(--red500);
   box-shadow: none;
+}
+
+#homeMealRegist #registButton {
+  color: var(--white300);
+  background-color: var(--red500);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-size: clamp(12.8px, 4.27vw, 21.33px);
+  font-weight: 500;
+  padding: clamp(14.4px, 4.8vw, 24px) 0;
+  border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
 }

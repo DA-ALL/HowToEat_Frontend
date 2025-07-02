@@ -26,21 +26,42 @@ const navMap = {
 };
 
 // 뷰 전환 함수
-export function showPage(path, userConsumedData = null, registFoodData = null) {
+export function showPage(path, isFromAddFavoriteFood) {
+    const parts = path.split('/');
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
         if (window.mainHistoryStack[window.mainHistoryStack.length - 1] !== path) {
             window.mainHistoryStack.push(path);
         }
-    
+        
+        let meal = null;
+        let subpage = null;
+        let type = null;
+        let consumedFoodId = null;
+        
         lastMainPath = path;
-    
-        const parts = path.split('/');
-        const meal = parts[2];      // morning
-        const regist = parts[3];   // regist 등
-        const type = parts[4];     // ingredient 등
-    
-        showMain(meal, regist, type, userConsumedData, registFoodData);
+        
+        if(parts[5] === 'favorite-food') {
+            meal = parts[2];
+            subpage = 'favorite-food';
+            type = parts[5];
+            showMain(meal, subpage, type);
+        }   
+        
+        else if (parts[4] === 'consumed-food') {
+            meal = parts[2];
+            subpage = 'consumed-food';
+            type = null;
+            consumedFoodId = parts[5];
+            showMain(meal, subpage, type, consumedFoodId);
+        }
+        
+        else {
+            meal = parts[2];
+            subpage = parts[4];
+            type = parts[5];
+            showMain(meal, subpage, type, null, isFromAddFavoriteFood);
+        }
     }
     else if (path.startsWith('/report')) {
         showReport();
@@ -52,14 +73,14 @@ export function showPage(path, userConsumedData = null, registFoodData = null) {
         }
     
         const parts = path.split('/');
-        const subpath = parts[2];        // 예: 'notice'
-        const detailId = parts[3];       // 예: '4'
-    
+        const subpath = parts[2];
+        const detailId = parts[3];
         showMyPage(subpath, detailId);
     }
 
     updateNavActive(path);
 }
+
 
 // 활성 nav 설정
 function updateNavActive(path) {
@@ -86,30 +107,24 @@ $(document).ready(function () {
         lastMainPath = currentPath;
     }
 
-    // 아침 점심 저녁 별 섭취햇던 칼로리 데이터 이 데이터를 나중에 Ajax로 호출
-    const userConsumedData = {
-        date: "2025-04-09",
-        carbo: { consumed: 70, target: 220 },
-        protein: { consumed: 42, target: 90 },
-        fat: { consumed: 20, target: 50 }
-    }
 
     $(document).on('click', '.log-wrapper', function () {
-        const mealKor = $(this).find('.meal-time').text(); // '아침' 등
-        const mealMap = { '아침': 'morning', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
-        const meal = mealMap[mealKor] || 'morning';
-        const newPath = `/main/${meal}`;
-        const selectedDate = $('.day.active').data('date') || userConsumedData.date;
-        const updatedConsumedData = {
-            ...userConsumedData,
-            date: selectedDate
-        };
+        const mealKor = $(this).find('.meal-time').text();
+        const mealMap = { '아침': 'breakfast', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
+        const meal = mealMap[mealKor] || 'breakfast';
+        const selectedDate = $('.day.active').data('date');
+        const newPath = `/main/${meal}/${selectedDate}`;
+    
         resetHomeMealView();
         resetSearchView();
         resetRegistView();
-        history.pushState({ view: 'main', meal }, '', newPath);
-        showPage(newPath, updatedConsumedData);
+    
+        window.lastMainPath = newPath;
+    
+        history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
+        showPage(newPath);
     });
+    
 
     // nav 클릭 이벤트
     Object.entries(navMap).forEach(([key, { selector }]) => {
@@ -119,6 +134,7 @@ $(document).ready(function () {
     
             if (key === '/main') {
                 if (currentPath.startsWith('/main')) {
+
                     if (currentPath === lastMainPath && currentPath !== '/main') {
                         lastMainPath = '/main';
                         history.pushState({ view: 'main' }, '', '/main');
@@ -132,15 +148,18 @@ $(document).ready(function () {
                     }
                 } else {
                     history.pushState({ view: 'main' }, '', lastMainPath);
+
                     showPage(lastMainPath);
                 }
             } else {
                 if (currentPath.startsWith('/main')) {
+                    console.log("4");
                     lastMainPath = currentPath;
                 }
     
                 // ✅ 수정된 users 블럭
                 if (key === '/users') {
+                    console.log("5");
                     const isUsers = currentPath.startsWith('/users');
                     const isDoubleClick = isUsers && (currentPath === lastUsersPath && currentPath !== '/users');
     
@@ -150,11 +169,11 @@ $(document).ready(function () {
                         lastUsersPath = currentPath;
                     }
     
+                    console.log( window.location.pathname);
                     history.pushState({ view: 'users' }, '', lastUsersPath);
                     showPage(lastUsersPath);
                     return;
                 }
-    
                 // ✅ report 등 나머지 경로 처리
                 history.pushState({ view: key.slice(1) }, '', key);
                 showPage(key);
@@ -174,27 +193,28 @@ $(document).ready(function () {
 
         if (path.startsWith('/main')) {
             lastMainPath = path;
+            console.log("뒤로가기 1", path)
         }
-
+        console.log("뒤로가기2", path)
         showPage(path);
     });
 
 
     $(document).on('click', '.next-button.active', function () {
         let $btn = $(this);
-        const currentPath = window.location.pathname; // ex: /main/morning
-        const parts = currentPath.split('/');
+        const pathParts = window.location.pathname.split("/");
+        const selectedDate = pathParts[3];
 
-        if (parts.length < 3) return;
+        if (pathParts.length < 3) return;
 
-        const meal = parts[2]; // 'morning', 'lunch', etc
+        const meal = pathParts[2]; // 'breakfast', 'lunch', etc
 
         // ---------------------------------------------
         // 1. /main/{meal}/regist → from home-meal
         // ---------------------------------------------
         if ($btn.hasClass('home-meal')) {
-            const newPath = `/main/${meal}/regist`;
-            history.pushState({ view: 'main', meal }, '', newPath);
+            const newPath = `/main/${meal}/${selectedDate}/regist`;
+            history.pushState({ view: 'main', meal, date: selectedDate }, '', newPath);
             showPage(newPath);
         }
 
@@ -205,22 +225,14 @@ $(document).ready(function () {
             const registFoodData = {
                 id: $btn.attr('data-id'),
                 type: $btn.attr('data-type'),
-                name: $btn.attr('data-name'),
-                weight: $btn.attr('data-weight'),
-                kcal: $btn.attr('data-kcal'),
-                carbo: $btn.attr('data-carbo'),
-                protein: $btn.attr('data-protein'),
-                fat: $btn.attr('data-fat'),
             };
+            const foodType = $btn.attr('data-type');
 
             if (!registFoodData.id || !registFoodData.type) return;
 
-            // `_food` 제거
-            const pureType = registFoodData.type.replace('_food', '');
-
-            const newPath = `/main/${meal}/regist/${pureType}/${registFoodData.id}`;
-            history.pushState({ view: 'main', meal, itemId: registFoodData.id }, '', newPath);
-            showPage(newPath, userConsumedData, registFoodData);
+            const newPath = `/main/${meal}/${selectedDate}/regist/${foodType}/${registFoodData.id}`;
+            history.pushState({ view: 'main', meal, date: selectedDate, itemId: registFoodData.id }, '', newPath);
+            showPage(newPath);
         }
 
     });

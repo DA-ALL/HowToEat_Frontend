@@ -45,7 +45,10 @@
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar {
     position: absolute;
     z-index: 1;
-    filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.45));
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    
 }
 
 #todaysCPF .cpf-kcal-bar-wrapper .cpf-kcal-bar svg{
@@ -79,6 +82,11 @@
     font-size: clamp(14.4px, 4.8vw, 24px);
     font-weight: 300;
     color: var(--gray200);
+}
+
+@keyframes fillBarTemp {
+  from { width: 0%; }
+  to { width: 100%; } /* 실제 width는 JS에서 다시 지정되므로 100%로 둬도 무방 */
 }
 
 #todaysCPF .cpf-kcal-left-message-wrapper {

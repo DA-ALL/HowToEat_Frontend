@@ -37,7 +37,6 @@
 #addPtMember .button-wrapper {
     display: flex;
     justify-content: center;
-    padding-top: 30px;
 }
 
 #addPtMember .button-wrapper .button-cancel {

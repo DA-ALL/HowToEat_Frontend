@@ -80,6 +80,36 @@
     border-color: var(--gray300);
 }
 
+.meal-results.not-found-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70vh;
+}
+
+
+.meal-results.not-found-result .text {
+    font-size: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    font-weight: 300;
+    margin-bottom: 2px;
+    color: var(--gray400);
+}
+
+.meal-results.not-found-result .add-button {
+    font-size: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--gray400);
+    padding: clamp(3.2px, 1.064vw + 0.01px, 5.33px) clamp(9.6px, 3.2vw, 16px);
+    margin-top: clamp(8.02px, 2.64vw + 0.1px, 13.3px);
+    background-color: #FFF6F5;
+    border-radius: 10px;
+}
+
+
+
 .meal-item {
     display: flex;
     flex-direction: row;
@@ -91,7 +121,7 @@
 }
 
 .meal-item:last-child {
-    margin-bottom: clamp(107.2px, 3.04vw + 16px, 168px);
+    margin-bottom: clamp(72px, 7.64vw + 96px, 200px);
 
 }
 
@@ -248,10 +278,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: clamp(14px, 2px + 3.2vw, 18px) clamp(6px, 1.6vw, 8px);
+    padding: clamp(14px, 2px + 3.2vw, 22px) clamp(6px, 1.6vw, 8px);
     border-bottom: 1px solid #eee;
     cursor: pointer;
 }
+
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item:last-child {
+    margin-bottom: clamp(70px, 7.2vw + 65px, 120px);
+}
+
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 2.664vw, 13.33px);
+}
+
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-info-wrapper .meal-macro-wrapper {
+    display: flex;
+    flex-direction: row;
+    font-size: clamp(10px, 3vw + 1px, 16px);
+    gap: clamp(5.6px, 1.864vw, 9.33px);
+    color: var(--gray300);
+}
+
 
 #homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item.active {
     background-color: #FFF6F5;
@@ -266,6 +315,10 @@
 
 #homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item.active .meal-title {
     font-weight: 600;
+    width: clamp(222px, 73.68vw + 0.2px, 370px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--red500);
 }
 
@@ -325,9 +378,9 @@
     align-items: center;
     position: relative;
     margin-bottom: clamp(17.8px, 7.2vw, 36px);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-left-message {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-left-message {
     font-size: clamp(10.4px, 3.465vw, 17.33px);
     font-weight: 300;
     position: relative;
@@ -338,31 +391,52 @@
     color: var(--black100);
     /* 텍스트 색상 */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper span {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper span {
     font-size: clamp(16.8px, 4.8vw, 20px);
     font-weight: 500;
     color: var(--red500);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper .over {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper .over {
     color: var(--red800);
-  }
-  
-  #homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-tail-svg {
+}
+
+#homeMealSearch .cpf-kcal-left-message-wrapper .cpf-kcal-tail-svg {
     z-index: 10;
     position: absolute;
     bottom: -26px;
     filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.11));
-  }
+}
 
-  @keyframes fillBar {
-    from { width: 0%; }
-    to { width: var(--fill-percent); }
-  }
-  
-  
-  .bar-front.bar-increase.animate {
+#homeMealSearch #deleteFavoriteButton {
+    display: flex;
+    justify-content: center;
+    width: 30%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+    color: var(--white300);
+    background-color: var(--gray200);
+    cursor: pointer;
+}
+
+#homeMealSearch #registFavoriteButton {
+    width: 70%;
+}
+
+@keyframes fillBar {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: var(--fill-percent);
+    }
+}
+
+
+.bar-front.bar-increase.animate {
     animation: blinkBarOpacity 1.5s infinite ease-in-out, fillBar 1s forwards;
-  }
+}

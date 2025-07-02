@@ -12,6 +12,7 @@
 
 #filter .filter-option-wrapper { 
     display: flex;
+    flex-wrap: wrap;   /* ← 줄바꿈 허용 */
     gap: 10px;
 }
 
@@ -25,6 +26,7 @@
     border-radius: 30px;
     cursor: pointer;
     white-space: nowrap;
+    user-select: none;
 }
 
 #filter .filter-option.active { 

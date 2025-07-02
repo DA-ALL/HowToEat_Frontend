@@ -1,5 +1,3 @@
-// 리팩터링된 getTodaysCPF.js 전체 코드
-
 export function getTodaysCPF(
     date, target, rawPercent = 0, percent = 0, consumed = 0, caloriesLeft = 0,
     targetCarbo = 0, targetProtein = 0, targetFat = 0,
@@ -11,21 +9,23 @@ export function getTodaysCPF(
     const todayStr = new Date().toISOString().slice(0, 10);
     if (target === null) target = 0;
 
-    const formattedTarget = target.toLocaleString();
-    const formattedConsumed = consumed.toLocaleString();
+
+    const formattedTarget = Math.floor(target).toLocaleString();
+    const formattedConsumed = Math.floor(consumed).toLocaleString();
+    const formattedCarloriesLeft = Math.floor(caloriesLeft).toLocaleString();
     const isToday = date === todayStr;
     const [year, month, day] = date.split("-");
     const title = isToday ? "오늘의 탄단지" : `${year}년 ${month}월 ${day}일`;
 
-    const messageFormat = getMessageFormat(rawPercent, caloriesLeft);
+    const messageFormat = getMessageFormat(rawPercent, formattedCarloriesLeft);
     const svg = createCalorieArc(rawPercent, percent);
     const backgroundSvg = createBackgroundSvg();
 
     const barContainer = `
         <div class="cpf-bar-container">
-            ${createBar("carbo", consumedCarbo, targetCarbo, carboPercent, carboRawPercent)}
-            ${createBar("protein", consumedProtein, targetProtein, proteinPercent, proteinRawPercent)}
-            ${createBar("fat", consumedFat, targetFat, fatPercent, fatRawPercent)}
+            ${createBar("carbo", Math.floor(consumedCarbo), Math.floor(targetCarbo), carboPercent, carboRawPercent)}
+            ${createBar("protein", Math.floor(consumedProtein), Math.floor(targetProtein), proteinPercent, proteinRawPercent)}
+            ${createBar("fat", Math.floor(consumedFat), Math.floor(targetFat), fatPercent, fatRawPercent)}        
         </div>
     `;
 
@@ -178,7 +178,7 @@ function createCalorieArc(rawPercent, percent) {
 
     return `<svg width="100%" height="100%" viewBox="0 0 30 30">
         ${isGradient ? gradientDef : ''}
-        <path d="${pathD}"
+        <path id="kcalGraphPath" d="${pathD}"
               fill="none"
               stroke="${color}"
               stroke-width="4.5"

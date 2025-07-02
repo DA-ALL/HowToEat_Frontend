@@ -37,16 +37,16 @@
     font-weight: 500;
 }
 
-#roleChangeDropdown .role-item.master {
+#roleChangeDropdown .role-item.MASTER {
     background-color: #FD5454;
 }
-#roleChangeDropdown .role-item.admin {
+#roleChangeDropdown .role-item.ADMIN {
     background-color: #4C4C4C;
 }
-#roleChangeDropdown .role-item.super-user {
+#roleChangeDropdown .role-item.SUPERUSER {
     background-color: #D36DAE;
 }
-#roleChangeDropdown .role-item.user {
+#roleChangeDropdown .role-item.USER {
     background-color: #70BFC4;
 }
 

@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>하잇</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
     <script type="module" src="/administrate/js/sidebar.js" defer></script>
     <script src="/administrate/js/profilebar.js" defer></script>
     <script src="/administrate/js/title.js" defer></script>
-    <script src="/administrate/js/cardList.js" defer></script>
     <script type="module" src="/administrate/js/dashboardChart.js" defer></script>
+    <script type="module" src="/administrate/js/cardList.js" defer></script>
     <script type="module" src="/administrate/js/user-management/userManagement.js" defer></script>
     <script type="module" src="/administrate/js/pt-user-management/ptUserManagement.js" defer></script>
     <script type="module" src="/administrate/js/food-management/adminFood.js" defer></script>
@@ -21,6 +22,7 @@
     <script type="module" src="/administrate/js/admin-management/trainerManagement.js" defer></script>
     <script type="module" src="/administrate/js/admin-management/gymManagement.js" defer></script>
     
+    <script src="/user/js/utils/url.js"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -191,5 +193,9 @@
         
     </div>
 </body>
+<script type="module">
+    import { setupAjaxAuthInterceptor } from '/administrate/js/utils/auth-interceptor.js';
+    setupAjaxAuthInterceptor();
+</script>
 
 </html>

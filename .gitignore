@@ -18,6 +18,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# url 설정 파일
+public/user/js/utils/url.js
+
 # 빌드된 파일 (만약 프론트엔드 빌드 폴더가 있다면 추가)
 dist/
 build/

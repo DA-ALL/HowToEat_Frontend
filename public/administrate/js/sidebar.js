@@ -1,6 +1,4 @@
 import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
-import { loadFoodDetail } from '/administrate/js/food-management/foodDetail.js';
-
 
 $(document).ready(function () {
     // 사이드바 HTML 삽입
@@ -131,7 +129,6 @@ $(document).ready(function () {
 
     // 페이지 로드 시 현재 URL 기준으로 active 상태 설정
     const currentPage = getCurrentPage();
-    console.log(currentPage);
     updateActiveState(currentPage);
 
     $('.sidebar-item-option').on('click', function (event) {
@@ -161,10 +158,6 @@ $(document).ready(function () {
         updateURL(newUrl);
         updateSideOptionActiveState(page);
         
-        if (page === 'add') {
-            loadFoodDetail({type:"add"});
-        }
-
         $(this).addClass("active");
     })
     
@@ -186,10 +179,6 @@ $(document).ready(function () {
         $(this).find('.logo-dashboard').attr('src', '/administrate/images/icon_dashboard_white.png');
     });
 
-    // onPopstate(function (event) {
-    //     const pathParts = window.location.pathname.split("/").slice(2);
-    //     updateActiveState(pathParts.length > 1 ? pathParts : pathParts[0]); // 사이드바 active 업데이트
-    // });
     registerPopstateHandler('sidebar', popstateHandler);
 
     function popstateHandler() {
@@ -223,8 +212,51 @@ $(document).ready(function () {
     }
     
 
-    // 사이드바 선택 상태 업데이트
-    function updateActiveState(page) {
+    // 유저관리 서브 사이드 바 상태 업데이트
+    function updateSideOptionActiveState(page) {
+        $(".sidebar-item-option").removeClass("active"); // 기존 active 제거
+    }
+
+
+    // [사이바 드래그로 줄이 키우기 기능]
+    const $sidebarContainer = $('.sidebar-container');
+    const $resizer = $('#resizer');
+
+    // 로컬 스토리지에서 너비 값 가져오기
+    const savedWidth = localStorage.getItem('sidebarContainerWidth');
+    if (savedWidth) {
+        $sidebarContainer.width(savedWidth);
+    }
+
+    let isResizing = false;
+
+    $(document).on('mousedown', '#resizer', function(event) {
+        isResizing = true;
+        const startX = event.clientX;
+        const startWidth = $sidebarContainer.width();
+
+        $(document).on('mousemove', function(event) {
+            if (isResizing) {
+                const newWidth = startWidth - (startX - event.clientX);
+                $sidebarContainer.width(newWidth);
+            }
+        });
+
+        $(document).on('mouseup', function() {
+            isResizing = false;
+            $(document).off('mousemove');
+            $(document).off('mouseup');
+
+            // 너비 값을 로컬 스토리지에 저장
+            localStorage.setItem('sidebarContainerWidth', $sidebarContainer.width());
+        });
+
+        event.preventDefault();
+    });
+});
+
+// 사이드바 선택 상태 업데이트
+export function updateActiveState(page) {
         $(".nav-link").removeClass("active"); // 기존 active 제거
         $(".sidebar-item-option").removeClass("active");
         $(`.nav-link[data-page="${page}"]`).addClass("active"); // 새로 선택된 요소에 active 추가
@@ -308,46 +340,3 @@ $(document).ready(function () {
             $(".logo-admin").attr("src", "/administrate/images/icon_admin_white.png");
         }
     }
-
-    // 유저관리 서브 사이드 바 상태 업데이트
-    function updateSideOptionActiveState(page) {
-        $(".sidebar-item-option").removeClass("active"); // 기존 active 제거
-    }
-
-
-    // [사이바 드래그로 줄이 키우기 기능]
-    const $sidebarContainer = $('.sidebar-container');
-    const $resizer = $('#resizer');
-
-    // 로컬 스토리지에서 너비 값 가져오기
-    const savedWidth = localStorage.getItem('sidebarContainerWidth');
-    if (savedWidth) {
-        $sidebarContainer.width(savedWidth);
-    }
-
-    let isResizing = false;
-
-    $(document).on('mousedown', '#resizer', function(event) {
-        isResizing = true;
-        const startX = event.clientX;
-        const startWidth = $sidebarContainer.width();
-
-        $(document).on('mousemove', function(event) {
-            if (isResizing) {
-                const newWidth = startWidth - (startX - event.clientX);
-                $sidebarContainer.width(newWidth);
-            }
-        });
-
-        $(document).on('mouseup', function() {
-            isResizing = false;
-            $(document).off('mousemove');
-            $(document).off('mouseup');
-
-            // 너비 값을 로컬 스토리지에 저장
-            localStorage.setItem('sidebarContainerWidth', $sidebarContainer.width());
-        });
-
-        event.preventDefault();
-    });
-});

@@ -1,10 +1,11 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { updateQueryParam } from '/administrate/js/router.js';
 import { renderPagination } from '/administrate/js/components/pagination.js';
+import { deleteAdminAccount } from '../api.js';
 
 const usersPerPage = 20;
 
-function createRows({ id, accountId, createdAt, role }) {
+function createRows({ id, accountId, createdAt, userRole }) {
     return `
         <tr>
             <td class="td-id">${id}</td>
@@ -12,7 +13,7 @@ function createRows({ id, accountId, createdAt, role }) {
             <td class="td-created-at">${createdAt}</td>
             <td class="td-role">
                 <div class="role-wrapper">
-                    <div class="role-button ${role}">${role == 'super-user' ? 'SuperUser' : role.charAt(0).toUpperCase() + role.slice(1)}</div>
+                    <div class="role-button ${userRole}">${formatUserRole(userRole)}</div>
                 </div>
             </td>
             <td class="td-delete">
@@ -43,27 +44,40 @@ export function renderAdminAccountTable(containerId, bodyId) {
     $(`#${containerId}`).html(tableHTML);
 }
 
-export function renderTableWithOptionalPagination({
+function formatUserRole(userRole) {
+    switch (userRole) {
+        case 'SUPERUSER':
+            return 'SuperUser';
+        case 'ADMIN':
+            return 'Admin';
+        case 'USER':
+            return 'User';
+        case 'MASTER':
+            return 'Master';
+        default:
+            return '';
+    }
+    
+}
+
+export async function renderTableWithOptionalPagination({
     getData,         // 데이터 함수
     bodyId,
     contentId,
     enablePagination = true
 }) {
-    const allData = getData();
-    const pageFromURL = getPageFromURL(contentId);
-    const page = enablePagination ? pageFromURL : 1;
-    const start = (page - 1) * usersPerPage;
-    const end = start + usersPerPage;
-    const rows = enablePagination ? allData.slice(start, end) : allData;
-
+    const data = await getData();
+    const pageFromURL = data.page + 1;
+    const rows = data.content;
+    
     $(`#${bodyId}`).html(rows.map(createRows).join(""));
 
     if (enablePagination) {
         renderPagination({
             contentId,
-            totalItems: allData.length,
+            totalItems: data.totalElements,
             itemsPerPage: usersPerPage,
-            currentPage: page,
+            currentPage: pageFromURL,
             onPageChange: (newPage) => {
                 updateQueryParam({ page: newPage });
                 renderTableWithOptionalPagination({
@@ -79,14 +93,6 @@ export function renderTableWithOptionalPagination({
     }
 }
 
-
-function getPageFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('page')) || 1;
-}
-
-
-
 // 삭제 버튼 클릭 시
 $(document).on('click', '#adminAccountTable .table-delete-button', function (e) {
     e.stopPropagation();
@@ -100,6 +106,19 @@ $(document).on('click', '#adminAccountTable .table-delete-button', function (e) 
             console.log("삭제 취소");
         },
         onNext: () => {
+            try {
+                deleteAdminAccount(adminAccountId);
+                showCustomAlert({
+                    type: 3,
+                    message: "관리자 계정이 삭제되었습니다.",
+                    onNext: function () {
+                        //새로고침 
+                        location.reload();
+                    }
+                });
+            } catch (error) {
+                
+            }
             console.log("삭제 확인");
         }
     });

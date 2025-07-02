@@ -1,0 +1,30 @@
+.custom-toast-container {
+    position: fixed;
+    max-width: 500px;
+    width: 100%;
+    bottom: clamp(70.8px, 17.6vw + 18px, 106px);
+    padding: 0 clamp(12.8px, 4.264vw, 21.33px);
+    left: 50%;
+    transform: translate(-50%, 20px); /* 아래에서 시작 */
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 999;
+    box-sizing: border-box;
+}
+
+.custom-toast {
+    color: white;
+    font-size: clamp(10.8px, 4.27vw, 19.33px);
+    font-weight: 300;
+    background-color: rgba(34, 34, 34, 0.85);
+    padding: clamp(12.4px, 3.46vw, 19.33px) 0;
+    padding-left: clamp(12.8px, 4.264vw, 21.33px);
+    border-radius: 12px;
+  }
+  
+  .custom-toast-container.show {
+    transform: translate(-50%, 0);   /* 위로 올라옴 */
+    opacity: 1;
+    pointer-events: none;
+  }
+  

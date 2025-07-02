@@ -11,6 +11,10 @@
     <script type="module" src="/user/js/components/calendar.js" defer></script>
     <script type="module" src="/user/js/components/nav-bottom.js" defer></script>
     <script type="module" src="/user/js/components/header-nav.js" defer></script>
+    <script type="module" src="/user/js/utils/auth-interceptor.js"  defer></script>
+    <script type="module" src="/user/js/utils/url.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@latest/dist/browser-image-compression.js"></script>
+
     <title>하잇</title>
 
     <link rel="stylesheet" href="/user/css/main.css">
@@ -22,6 +26,7 @@
 
 
 </head>
+
 
 <body>
     <div id="main">
@@ -53,10 +58,14 @@
             </div>
             
             <div id="homeMeal"></div>
+
+            <div id="consumedFoodDetail"></div>
             
             <div id="homeMealSearch"></div>
 
             <div id="homeMealRegist"></div>
+
+            <div id="homeAddNewFood"></div>
         </div>
     </div>
 
@@ -72,6 +81,7 @@
     <div id="my" style="display: none;">
         <div class="root-container">
             <div id="myPage"></div>
+            <div id="usersInfo"></div>
             <div id="usersSetTime"></div>
             <div id="usersNotice">
                 <div id="headerNav" data-title="공지사항" data-type="2"></div>

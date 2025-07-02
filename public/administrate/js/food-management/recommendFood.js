@@ -1,13 +1,12 @@
-import { updateURL, registerPopstateHandler } from '/administrate/js/router.js';
+import { updateURL, registerPopstateHandler, registerViewLoader } from '/administrate/js/router.js';
 import { loadFilter } from '/administrate/js/components/filter.js';
 import { loadFoodDetail } from '/administrate/js/food-management/foodDetail.js';
 import { renderRecommendFoodTable, renderTableWithOptionalPagination } from '/administrate/js/food-management/recommendFoodTable.js';
+import { getRecommendFoodList } from '../api.js';
 
-$(document).ready(function () {
-    loadRecommendFood();
-});
+let recommendFoods = null;
 
-function loadRecommendFood() {
+async function loadRecommendFood() {
     const container = $("#recommendFood");
 
     let adminFoodHTML = `
@@ -28,7 +27,13 @@ function loadRecommendFood() {
 
     container.html(adminFoodHTML);
     
-    loadFilter('recommendFood');
+
+    loadFilter('recommendFood', loadTables);
+    loadTables();
+}
+
+async function loadTables(){
+    recommendFoods = await getRecommendFoodDatas();
     loadRecommendFoodTable100();
     loadRecommendFoodTable200();
     loadRecommendFoodTable300();
@@ -40,8 +45,11 @@ function loadRecommendFoodTable100() {
     const contentId = 'recommendFood';
 
     renderRecommendFoodTable(containerId, bodyId);
+
+    const filtered = filterFoodsByCalorieRange(recommendFoods, 0, 100);
+
     renderTableWithOptionalPagination({
-        getData: getRecommendFoodDatas,
+        data: filtered,
         bodyId,
         contentId,
         enablePagination: false
@@ -54,8 +62,11 @@ function loadRecommendFoodTable200() {
     const contentId = 'recommendFood';
 
     renderRecommendFoodTable(containerId, bodyId);
+    
+    const filtered = filterFoodsByCalorieRange(recommendFoods, 101, 200);
+
     renderTableWithOptionalPagination({
-        getData: getRecommendFoodDatas,
+        data: filtered,
         bodyId,
         contentId,
         enablePagination: false
@@ -67,36 +78,41 @@ function loadRecommendFoodTable300() {
     const bodyId = 'recommendFoodTable300Body';
     const contentId = 'recommendFood';
 
+    const filtered = filterFoodsByCalorieRange(recommendFoods, 201, 600);
+
     renderRecommendFoodTable(containerId, bodyId);
     renderTableWithOptionalPagination({
-        getData: getRecommendFoodDatas,
+        data: filtered,
         bodyId,
         contentId,
         enablePagination: false
     });
 }
 
+function filterFoodsByCalorieRange(foods, min, max) {
+    return foods.filter(food => {
+        const kcal = food.kcal ?? 0;
+        return kcal >= min && kcal <= max;
+    });
+}
 
-function getRecommendFoodDatas() {
-    const foodNames = [
-        "사과", "바나나", "딸기", "포도", "오렌지", "키위", "수박", "참외", "복숭아", "자두",
-        "망고", "파인애플", "레몬", "체리", "블루베리", "라즈베리", "멜론", "감", "배", "귤", "잇메이트 닭가슴살 도시락 닭가슴살 소시지볶음밥 고추맛 & 스팀 닭가슴살 오리지널"
-    ];
+async function getRecommendFoodDatas() {
+    const params = getParamsFromURL();
+    try {
+        const response = await getRecommendFoodList(params);
+        console.log("추천음식 조회: ", response);
+        
+        return response.data;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-    return Array.from({ length: 5 }, (_, i) => ({
-        id: i + 1,
-        foodName: foodNames[Math.floor(Math.random() * foodNames.length)],
-        foodCode: `F${String(i + 1).padStart(3, "0")}`,
-        mainFoodName: "과일",
-        calorie: Math.floor(Math.random() * 500),
-        carbo: Math.floor(Math.random() * 100),
-        protein: Math.floor(Math.random() * 50),
-        fat: Math.floor(Math.random() * 30),
-        foodWeight: Math.floor(Math.random() * 200),
-        foodWeightUnit: ["g", "ml"][Math.floor(Math.random() * 2)],
-        isRecommended: ["O", "X"][Math.floor(Math.random() * 2)],
-        source: ["custom", "ingredient", "cooked", "processed"][Math.floor(Math.random() * 4)],
-    }));
+function getParamsFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+        sortBy: urlParams.get('sortBy') || 'kcal'
+    };
 }
 
 
@@ -104,11 +120,8 @@ $(document).on('click', `.recommend-food-table tbody tr`, function () {
     const foodId = $(this).find('.td-id').text();
     const page = `food-management/recommend/${foodId}`;
     updateURL(page);
-
-    loadFoodDetail({
-        type: "edit",
-    });
 });
 
 
 registerPopstateHandler('recommendFood', loadRecommendFood);
+registerViewLoader('recommendFood', loadRecommendFood);

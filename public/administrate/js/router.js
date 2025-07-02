@@ -1,9 +1,16 @@
 let currentContent = "";
 const popstateHandlers = {};
+const viewLoaders = {};
+
+// 뷰 별로 뷰 초기화 및 데이터 로딩 함수 등록
+export function registerViewLoader(contentId, callback) {
+    viewLoaders[contentId] = callback;
+}
 
 export function getCurrentContent(){
     return currentContent
 }
+
 export function registerPopstateHandler(contentId, callback) {
     popstateHandlers[contentId] = callback;
 }
@@ -11,11 +18,13 @@ export function registerPopstateHandler(contentId, callback) {
 window.addEventListener('popstate', function (event) {
     hideAllContents();
     showCurrentContent();
-
+    
     if (popstateHandlers[currentContent]) {
         popstateHandlers[currentContent](event);
         console.log("popstate 발생");
+        updateURLWithState();
     }
+    
     popstateHandlers['sidebar'](event);
 });
 
@@ -32,29 +41,40 @@ export function updateURL(page) {
     history.pushState({ page }, "", newUrl.toString());
 
     hideAllContents();
-    showCurrentContent();
+    const currentContentAndType = showCurrentContent();
     updateURLWithState();
+    runViewLoder(currentContentAndType);
 }
 
 function updateURLParams(params, useReplaceState = false) {
     const url = new URL(window.location.href);
     const searchParams = url.searchParams;
-    let hasChanges = false; // 변경 여부 체크
+    let hasChanges = false;
 
-    // params 객체를 순회하며 URL 파라미터 업데이트
+    const removeValues = ['all', 'desc', 'kcal'];
+
+    // params 순회
     Object.entries(params).forEach(([key, value]) => {
-        if (searchParams.get(key) !== String(value)) {
-            searchParams.set(key, value);
-            hasChanges = true;
+        const stringValue = String(value);
+
+        if (removeValues.includes(stringValue)) {
+            if (searchParams.has(key)) {
+                searchParams.delete(key);
+                hasChanges = true;
+            }
+        } else {
+            if (searchParams.get(key) !== stringValue) {
+                searchParams.set(key, stringValue);
+                hasChanges = true;
+            }
         }
     });
 
-    // 변경이 없으면 실행 안 함
     if (!hasChanges) return;
 
-    // 파라미터 정렬
-    const sortOrder = ["search", "trainer", "gym", "orderby", "next-gym", "user-role", "data-source", "recommend", "admin-share", "option", "page"];
+    const sortOrder = ["search", "trainer", "gym", "orderBy", "isNextGym", "userRole", "foodType", "recommendation", "adminShared", "sortBy", "page"];
     const sortedParams = new URLSearchParams();
+
     sortOrder.forEach(param => {
         if (searchParams.has(param)) {
             sortedParams.set(param, searchParams.get(param));
@@ -63,7 +83,6 @@ function updateURLParams(params, useReplaceState = false) {
 
     const newUrl = `${url.pathname}?${sortedParams.toString()}`;
 
-    // pushState 또는 replaceState 한 번만 호출
     if (useReplaceState) {
         console.log("replaceState");
         history.replaceState({}, "", newUrl);
@@ -72,7 +91,6 @@ function updateURLParams(params, useReplaceState = false) {
         history.pushState({}, "", newUrl);
     }
 }
-
 
 // 파라미터 변경 pushState 사용
 export function updateQueryParam(params) {
@@ -118,7 +136,6 @@ function showCurrentContent() {
         'food-management': 'adminFood',
         'food-management/user-regist': 'userFood',
         'food-management/recommend': 'recommendFood',
-        'food-management/add': 'foodDetail',
         'notice': 'notice',
         'admin-management': 'adminManagement',
         'admin-management/trainer': 'trainerManagement',
@@ -126,33 +143,40 @@ function showCurrentContent() {
     };
 
     currentContent = contentMap[fullPath];
-
+    let contentType = '';
     if (!currentContent) {
-        const contentPatterns = [
-            { pattern: /^user-management\/user\/\d+$/, contentId: 'userInfo' },
-            { pattern: /^user-management\/pt\/\d+$/, contentId: 'trainerInfo' },
-            { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, contentId: 'userInfo' },
 
-            { pattern: /^food-management\/\d+$/, contentId: 'foodDetail' },
-            { pattern: /^food-management\/user-regist\/\d+$/, contentId: 'foodDetail' },
-            { pattern: /^food-management\/recommend\/\d+$/, contentId: 'foodDetail' },
-
-            { pattern: /^notice\/\d+$/, contentId: 'noticeDetail' },
-            { pattern: /^notice\/add$/, contentId: 'noticeDetail' },
-
-            { pattern: /^admin-management\/\d+$/, contentId: 'adminAccountDetail' },
-            { pattern: /^admin-management\/add$/, contentId: 'adminAccountDetail' },
-
-            { pattern: /^admin-management\/trainer\/\d+$/, contentId: 'trainerDetail' },
-            { pattern: /^admin-management\/trainer\/add$/, contentId: 'trainerDetail' },
-
-            { pattern: /^admin-management\/gym\/\d+$/, contentId: 'gymDetail' },
-            { pattern: /^admin-management\/gym\/add$/, contentId: 'gymDetail' },
+        const patterns = [
+            // user-management
+            { pattern: /^user-management\/user\/\d+$/, id: 'userInfo' },
+            { pattern: /^user-management\/pt\/\d+$/, id: 'trainerInfo' },
+            { pattern: /^user-management\/pt\/\d+\/user\/\d+$/, id: 'userInfo' },
+    
+            // food-management
+            { pattern: /^food-management\/\d+$/, id: 'foodDetail', type: 'edit'},
+            { pattern: /^food-management\/user-regist\/\d+$/, id: 'foodDetail' , type: 'share'},
+            { pattern: /^food-management\/recommend\/\d+$/, id: 'foodDetail' , type: 'edit'},
+            { pattern: /^food-management\/add$/, id: 'foodDetail', type: 'add'},
+    
+            // notice
+            { pattern: /^notice\/\d+$/, id: 'noticeDetail' , type: 'edit'},
+            { pattern: /^notice\/add$/, id: 'noticeDetail', type: 'add' },
+    
+            // admin-management
+            { pattern: /^admin-management\/\d+$/, id: 'adminAccountDetail', type: 'edit' },
+            { pattern: /^admin-management\/add$/, id: 'adminAccountDetail', type: 'add' },
+    
+            { pattern: /^admin-management\/trainer\/\d+$/, id: 'trainerDetail', type: 'edit' },
+            { pattern: /^admin-management\/trainer\/add$/, id: 'trainerDetail', type: 'add' },
+    
+            { pattern: /^admin-management\/gym\/\d+$/, id: 'gymDetail', type: 'edit' },
+            { pattern: /^admin-management\/gym\/add$/, id: 'gymDetail', type: 'add' },
         ];
-
-        for (const item of contentPatterns) {
-            if (item.pattern.test(fullPath)) {
-                currentContent = item.contentId;
+    
+        for (const { pattern, id, type } of patterns) {
+            if (pattern.test(fullPath)) {
+                currentContent = id;
+                contentType = type;
                 break;
             }
         }
@@ -172,10 +196,22 @@ function showCurrentContent() {
     }
     
     $(`#${currentContent}`).css('display', 'flex');
+
+    return {currentContent, contentType};
+    
 }
 
-
-
+function runViewLoder({currentContent, contentType}){
+    // 뷰 초기화 및 데이터 로딩
+    if(viewLoaders[currentContent]) {
+        if(contentType) {
+            viewLoaders[currentContent]({type: contentType});
+        } 
+        else {
+            viewLoaders[currentContent]();
+        }
+    }
+}
 
 
 /*
@@ -191,38 +227,40 @@ function updateURLWithState() {
     syncSearchDropdownWithURL();
 }
 
-export function syncFiltersWithURL(){
-    let params = new URLSearchParams(window.location.search);
+export function syncFiltersWithURL() {
+    const params = new URLSearchParams(window.location.search);
 
-    // 파라미터가 없으면 
-    if(params.size == 0){        
-        $(`#${currentContent}`).find('.filter-option-wrapper').each(function(){
-            const activeFilterOption = $(this).find('.filter-option.active');
-            let queryValue = activeFilterOption.data('query');
-            
-            // active 되어있는 요소가 있으면 파라미터에 추가
-            if(queryValue && !(queryValue == 'all' || queryValue == 'desc')){
-                replaceQueryParam({[$(this).data('key')]: queryValue});
-            } else { // active 없으면 초기값으로 설정
-                let defaultQuery = $(this).find('.filter-option').first().data('query');
-                $(this).find(`.filter-option[data-query="${defaultQuery}"]`).addClass('active');
+    $(`#${currentContent}`).find('.filter-option-wrapper').each(function () {
+        const $wrapper = $(this);
+        const key = $wrapper.data('key');
+        const urlValue = params.get(key);
+
+        const $filterOptions = $wrapper.find('.filter-option');
+        const defaultQuery = $filterOptions.first().data('query');
+
+        if (urlValue) {
+            // URL에 해당 key 파라미터가 있으면 -> UI에 반영
+            $filterOptions.removeClass('active');
+            $filterOptions.filter(`[data-query="${urlValue}"]`).addClass('active');
+        } else {
+            // 파라미터가 없다면 -> UI 상태를 보고 URL을 업데이트
+            const $activeOption = $filterOptions.filter('.active');
+            const uiValue = $activeOption.data('query');
+
+            if (!$activeOption.length) {
+                // 아무것도 선택 안 되어 있으면 default 선택
+                $filterOptions.removeClass('active');
+                $filterOptions.filter(`[data-query="${defaultQuery}"]`).addClass('active');
             }
-        });
-    } else { // url에 파라미터가 있으면 url대로
-        $(`#${currentContent}`).find('.filter-option-wrapper').each(function(){            
-            const key = $(this).data('key');
-            const queryValue = params.get(key);
-            
-            if(queryValue){
-                $(this).find('.filter-option').removeClass('active');
-                $(this).find(`.filter-option[data-query="${queryValue}"]`).addClass('active');
-            } else {
-                let defaultQuery = $(this).find('.filter-option').first().data('query');
-                $(this).find(`.filter-option[data-query="${defaultQuery}"]`).addClass('active');
+
+            // 기본값이 의미 없는 경우는 URL에 반영 안 함
+            if (uiValue != null && !['all', 'desc', 'kcal'].includes(uiValue)) {
+                replaceQueryParam({ [key]: uiValue });
             }
-        });
-    }
+        }
+    });
 }
+
 
 export function syncPageWithURL(){
     let params = new URLSearchParams(window.location.search);
@@ -261,5 +299,6 @@ export function syncSearchDropdownWithURL(){
 
 $(document).ready(function () {
     hideAllContents();
-    showCurrentContent();
+    const currentContentAndType = showCurrentContent();
+    runViewLoder(currentContentAndType);
 });

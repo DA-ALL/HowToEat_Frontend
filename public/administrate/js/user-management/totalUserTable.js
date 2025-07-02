@@ -1,6 +1,7 @@
 import { updateURL } from '/administrate/js/router.js';
 import { renderUserTable,renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
-import { renderUserInfo, getUserInfo } from '/administrate/js/userInfo.js';
+import { renderUserInfo } from '/administrate/js/userInfo.js';
+import { getUserList } from '../api.js';
 
 const containerId = 'totalUserTable';
 const bodyId = 'userTableBody';
@@ -16,23 +17,31 @@ export function loadTotalUserTable() {
     })
 }
 
-function getUserDataForTotalUsers() {
-    return Array.from({ length: 200 }, (_, i) => ({
-        id: i + 1,
-        imageURL: "/administrate/images/icon_human_green.png",
-        name: `사용자${i + 1}`,
-        mealCount: Math.floor(Math.random() * 200),
-        joined: "2025.03.16",
-        left: "-",
-        gymUser: Math.random() > 0.5,
-        role: ["admin", "user", "master", "super-user"][Math.floor(Math.random() * 4)]
-    }));
+async function getUserDataForTotalUsers() {
+    const request = getParamsFromURL();
+    try {
+        const response = await getUserList(request);
+        console.log("User data fetched:", response);
+        return response;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
+}
+
+function getParamsFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+        page: parseInt(urlParams.get('page')) || 1,
+        name: urlParams.get('search') || '',
+        orderBy: urlParams.get('orderBy') || '',
+        isNextGym: urlParams.get('isNextGym') || '',
+        size: 20,
+    };
 }
 
 $(document).on('click', `#userTableBody tr`, function () {
     const userId = $(this).find('.td-id').text();
     const page = `user-management/user/${userId}`;
     updateURL(page);
-
-    renderUserInfo(getUserInfo(), 'user-management');
+    sessionStorage.setItem('previousContent', 'user-management');
 });
