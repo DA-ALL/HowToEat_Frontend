@@ -53,15 +53,17 @@ export function renderWithDraw() {
 } 
 
 $(document).on('click', '.withdraw-btn', function () {
-    showPopup("#my", 5, "정말 탈퇴하시겠어요?", "탈퇴하면 모든 데이터가 사라져요ㄴ").then((confirmed) => {
+    showPopup("#my", 5, "정말 탈퇴하시겠어요?", "탈퇴하면 모든 데이터가 삭제되며 복구할 수 없어요.").then((confirmed) => {
         if(confirmed) {
-            // $.ajax({
-            //     url: `${window.DOMAIN_URL}/logout`,
-            //     type: 'POST',
-            //     success: function (res) {
-            //         window.location.href = "/login-page";   
-            //     }
-            // });
+            $.ajax({
+                url: `${window.DOMAIN_URL}/users/withdraw`,
+                type: 'DELETE',
+                success: function () {
+                    showPopup("#my", 1, "탈퇴가 완료되었어요", "더 좋은 서비스로 찾아뵐게요").then((confirmed) => {
+                        window.location.href = "/login-page";   
+                    })
+                }
+            });
             return;
         }
     });

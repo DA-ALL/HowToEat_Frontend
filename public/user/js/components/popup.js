@@ -72,6 +72,7 @@ export function showPopup(parent, type, title, subtitle) {
                     </div>
                 </div>
             `;
+            break;
 
             case 5: // 알림형 취소 / 확인
             popupHtml = `
