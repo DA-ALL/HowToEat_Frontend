@@ -1,4 +1,5 @@
 import { updateButtonState, validateInput, checkInput } from '/user/js/components/input-validate.js';
+import { showNumericInput } from '/user/js/components/numericInput.js';
 
 export function renderUsersInfo() {
     let goal = "체중감량";
@@ -21,18 +22,23 @@ export function renderUsersInfo() {
             <div class="profile-email">insidesy4@gmail.com</div>
         </div>
 
-        <div class="goal-container container-format">
-            <div class="info-title">나의 목표</div>
-            <div class="select-container inner-container-format">
-                <div class="select-item weight-loss ${isValid("체중감량")}" data-text="1">체중 감량</div>
-                <div class="select-item weight-maintain ${isValid("체중유지")}" data-text="2">체중 유지</div>
-                <div class="select-item weight-gain ${isValid("체중증량")}" data-text="3">체중 증량</div>
-                <div class="select-item muscle-gain ${isValid("근육증량")}" data-text="4">근육 증량</div>
-            </div>
-        </div>
-
         <div class="body-stats-container container-format">
             <div class="info-title">나의 키와 몸무게</div>
+
+            <div class="select-container inner-container-format">
+                <div class="body-stat-wrapper">
+                    <div class="input-label">키</div>
+                    <div class="select-item numeric-input-view" data-text="1" data-type="height">176.2cm</div>
+                </div>
+
+                <div class="body-stat-wrapper">
+                    <div class="input-label">몸무게</div>
+                    <div class="select-item numeric-input-view" data-text="2" data-type="weight">64.2kg</div>
+                </div>
+                
+            </div>
+
+            <!--
             <div class="input-container inner-container-format">
                 <div class="input-wrapper">
                     <div class="input-label">키</div>
@@ -48,6 +54,20 @@ export function renderUsersInfo() {
                     </div>
                 </div>
             </div> 
+            --!>
+
+            
+        </div>
+
+
+        <div class="goal-container container-format">
+            <div class="info-title">나의 목표</div>
+            <div class="select-container inner-container-format">
+                <div class="select-item weight-loss ${isValid("체중감량")}" data-text="1">체중 감량</div>
+                <div class="select-item weight-maintain ${isValid("체중유지")}" data-text="2">체중 유지</div>
+                <div class="select-item weight-gain ${isValid("체중증량")}" data-text="3">체중 증량</div>
+                <div class="select-item muscle-gain ${isValid("근육증량")}" data-text="4">근육 증량</div>
+            </div>
         </div>
 
         <div class="activity-container container-format">
@@ -86,6 +106,18 @@ export function renderUsersInfo() {
 // 이미지 클릭 시 파일 선택창 열기
 $(document).on('click', '.profile-image', function (e) {
     const $input = $(this).find('.profile-image-input');
+    if ($input.length > 0) {
+        $input[0].click(); // 직접 DOM 메서드 호출 (trigger 보다 안전)
+    }
+    e.stopPropagation(); // 꼭 버블 차단
+});
+
+
+
+$(document).on('click', '.numeric-input-view', function (e) {
+    const $input = $(this).find('.profile-image-input');
+
+    showNumericInput("#my", "height", 176.4);
     if ($input.length > 0) {
         $input[0].click(); // 직접 DOM 메서드 호출 (trigger 보다 안전)
     }
