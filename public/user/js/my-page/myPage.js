@@ -1,7 +1,42 @@
 import { showPage } from '../components/nav-bottom.js'
 import { showPopup } from '../components/popup.js'
 
-export function renderMyPage() {
+
+export function renderMyPage(callback) {
+    const userBasicInfo = $.ajax({
+        method: "GET",
+        url: `${window.DOMAIN_URL}/users/basic-info`,
+    });
+
+    $.when(userBasicInfo).done(function (userBasicInfoRes) {
+        const userBasicInfoData = userBasicInfoRes.data;
+        const myPageHTML = renderMyPageHTML(userBasicInfoData);
+        console.log(userBasicInfoData)
+        callback(myPageHTML);
+    });
+
+}
+
+export function renderMyPageHTML(userBasicInfoData) {
+    let goalText = '';
+
+    switch (userBasicInfoData.userGoal) {
+        case 'LOSE_WEIGHT':
+            goalText = '체중 감량';
+            break;
+        case 'MAINTAIN_WEIGHT':
+            goalText = '체중 유지';
+            break;
+        case 'GAIN_WEIGHT':
+            goalText = '체중 증량';
+            break;
+        case 'GAIN_MUSCLE':
+            goalText = '근육 증량';
+            break;
+        default:
+            goalText = '목표 없음';
+            break;
+    }
     return `
         <div class="mypage-info-container">
             <div class="mypage-info-goal-wrapper" data-path="info">
@@ -13,7 +48,7 @@ export function renderMyPage() {
 
                     <div class="info-wrapper">
                         <div class="name-wrapper">
-                            <div class="name">하잇 님</div>
+                            <div class="name">${userBasicInfoData.name}</div>
                             <div class="icon">
                                 <img src="/user/images/icon_arrow_light_gray.png">
                             </div>
@@ -24,21 +59,21 @@ export function renderMyPage() {
 
                 <div class="mypage-goal-wrapper">
                     <div class="goal-type">
-                        <div class="type-title">근육증량</div>
+                        <div class="type-title">${goalText}</div>
                         <div class="sub">나의 목표</div>
                     </div>
 
                     <div class="divider"></div>
 
                     <div class="goal-kcal">
-                        <div class="kcal-amount">2024kcal</div>
+                        <div class="kcal-amount">${Math.floor(userBasicInfoData.targetKcal)}kcal</div>
                         <div class="sub">목표 kcal</div>
                     </div>
 
                     <div class="divider"></div>
 
                     <div class="goal-streak">
-                        <div class="streak-day">13일째</div>
+                        <div class="streak-day">${userBasicInfoData.streakDay}일째</div>
                         <div class="sub">연속 기록</div>
                     </div>
                 </div>

@@ -110,12 +110,12 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
     }
 
     // 리포트, 마이페이지 캐싱 (기존 유지)
-    if ($('#reportPage').children().length === 0) {
-        $("#reportPage").html(renderReportPage());
-    }
-    if ($('#myPage').children().length === 0) {
-        $("#myPage").html(renderMyPage());
-    }
+    // if ($('#reportPage').children().length === 0) {
+    //     $("#reportPage").html(renderReportPage());
+    // }
+    // if ($('#myPage').children().length === 0) {
+    //     $("#myPage").html(renderMyPage());
+    // }
 }
 
 
@@ -175,8 +175,12 @@ export function showMyPage(subpath = null, detailId = null) {
     // ).remove();
 
     if (!subpath) {
-        if ($('#myPage').children().length === 0) {
-            $("#myPage").html(renderMyPage());
+        if($('#myPage').children().length === 0) {
+            renderMyPage(function(html) {
+                $('#myPage').html(html);
+                // initHeaderNav($('#myPage'));
+                $('html, body').scrollTop(0);
+            });
         }
         $('#myPage').show();
         return;
