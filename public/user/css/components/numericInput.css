@@ -80,10 +80,19 @@
   /* height: 100%; */
 }
 
+
 #numericInput #inputArea .input-value {
   font-size: clamp(40px, 13.2vw, 66px);
   font-weight: 800;
+  /* color : var(--gray100); */
   color: var(--black100);
+}
+
+#numericInput #inputArea .input-value.placeholder {
+  /* font-size: clamp(40px, 13.2vw, 66px);
+  font-weight: 800; */
+  color : var(--gray100);
+  /* color: var(--black100); */
 }
 
 #numericInput #inputArea .input-unit {
@@ -94,8 +103,10 @@
   margin-left: 8px;
 }
 
-
-
+#numericInput #inputArea .value-wrapper.error .input-value,
+#numericInput #inputArea .value-wrapper.error .input-unit {
+    color: red;
+}
 #numericInput #typingArea {
   width: 100%;
   max-width: 500px;
@@ -148,6 +159,12 @@
   color: var(--white300);
   background-color: var(--red500);
   cursor: pointer;
+}
+
+#numericInput #buttonArea .record-button.disabled {
+  background-color: var(--gray100);
+  color: var(--white300);
+  pointer-events: none;
 }
 
 @media (min-width: 500px) {
