@@ -186,6 +186,23 @@
     overflow: hidden;
 }
 
+#weightReport .recommend-wrapper{
+    margin-bottom: 40px;
+}
+
+#calorieChart{
+  user-select: none;          /* 대부분 브라우저 지원 */
+  -webkit-user-select: none;  /* 사파리, 크롬 등 WebKit */
+  -moz-user-select: none;     /* 파이어폭스 */
+  -ms-user-select: none;      /* IE/Edge */  
+}
+
+#weightChart {
+  user-select: none;          
+  -webkit-user-select: none;  
+  -moz-user-select: none;     
+  -ms-user-select: none;      
+}
 
 #tooltip {
     position: absolute;

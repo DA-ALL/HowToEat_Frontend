@@ -1,7 +1,7 @@
 import { renderMealDetail, renderMealListHTML } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
-import { renderReportPage, initCalorieChart } from '../report/report.js';
+import { renderReportPage, initCalorieChart, initWeightChart } from '../report/report.js';
 import { renderConsumedFoodInfo } from '../main/consumedFood.js';
 import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
@@ -128,6 +128,7 @@ export function showReport() {
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
         initCalorieChart();
+        initWeightChart();
     }
 }
 

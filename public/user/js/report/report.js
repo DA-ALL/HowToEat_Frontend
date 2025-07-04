@@ -1,40 +1,37 @@
-const calorieData = {
-    "2025-03-28": {"consumed": 2539,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-03-29": {"consumed": 2421,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-03-30": {"consumed": 2554,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-03-31": {"consumed": 2432,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-01": {"consumed": 2478,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-02": {"consumed": 2471,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-03": {"consumed": 2591,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-04": {"consumed": 2588,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-05": {"consumed": 2590,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-06": {"consumed": 2564,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-07": {"consumed": 2445,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-08": {"consumed": 2445,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-09": {"consumed": 2512,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-10": {"consumed": 2486,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-11": {"consumed": 2437,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-12": {"consumed": 2429,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-13": {"consumed": 2603,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-14": {"consumed": 2470,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-15": {"consumed": 2462,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-16": {"consumed": 2544,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-17": {"consumed": 2538,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-18": {"consumed": 2490,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-19": {"consumed": 2462,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-20": {"consumed": 2486,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-21": {"consumed": 2519,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-22": {"consumed": 2606,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-23": {"consumed": 2438,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-24": {"consumed": 2508,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-25": {"consumed": 2439,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-26": {"consumed": 2532,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-27": {"consumed": 2422,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-28": {"consumed": 2505,"target": 2420,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-29": {"consumed": 1505,"target": 2320,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-    "2025-04-30": {"consumed": 2305,"target": 2320,"targetCarbo": 303,"targetProtein": 182,"targetFat": 54,"consumedCarbo": 206,"consumedProtein": 123,"consumedFat": 37},
-};
 
+function generateRandomCalorieData() {
+  const result = {};
+  const today = new Date();
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+    
+    let consumed = 0;
+    const target = Math.floor(Math.random() * 301) + 2200; // 2200 ~ 2500
+    if(i%2 == 0){
+        consumed = 0;
+    } else {
+        consumed = Math.floor(Math.random() * 401) + (target - 100); // target-100 ~ target+300
+    }
+    
+    
+
+    result[dateStr] = {
+      consumed,
+      target,
+    };
+  }
+
+  return result;
+}
+
+const calorieData = generateRandomCalorieData();
 
 export function renderReportPage() {
     return `
@@ -80,16 +77,16 @@ export function renderReportPage() {
                 <div class="amount">74</div>
                 <div class="unit">kg</div>
             </div>
-            <div class="feedback-comment">조금 더 드셔야 해요</div>
+            <div class="feedback-comment">목표를 향해 파이팅!</div>
             <div class="recommend-wrapper">
-                <div class="recommend-food">뭄무게 기록하기</div>
+                <div class="recommend-food">몸무게 기록하기</div>
                 <div class="icon">
                     <img src="/user/images/icon_arrow_red.png">
                 </div>
             </div>
-            <div class="period-button-wrapper">
-                <div class="period-button active">1주</div>
-                <div class="period-button">1달</div>
+            
+            <div class="chart-container"> 
+                <canvas id="weightChart"></canvas>
             </div>
         </div>
 
@@ -109,16 +106,12 @@ $(document).on('click', '.toggle-report', function () {
     } else if ($(this).hasClass('toggle-weight-report')) {
         $('#weightReport').show();
         $('#mealReport').hide();
+        if (weightChart) {
+            weightChart.destroy();
+            initWeightChart();
+        }
     }
 });
-
-$(document).on('click', '.period-button', function () {
-    var wrapper = $(this).closest('.period-button-wrapper');
-    wrapper.find('.period-button').removeClass('active');
-
-    $(this).addClass('active');
-});
-
 
 // 오늘 날짜의 데이터를 저장할 변수
 let currentData;
@@ -127,12 +120,20 @@ function updateReportData(date, consumed, target) {
     const dateElement = document.querySelector('#mealReport .date');
     const amountElement = document.querySelector('#mealReport .amount');
     const legendElement = document.querySelector('#mealReport .legend-label');
+    const feedbackCommentElement = document.querySelector('#mealReport .feedback-comment');
 
     if (dateElement && amountElement) {
         const formattedDate = date.replaceAll('-', '.'); 
         dateElement.textContent = formattedDate;
         amountElement.textContent = consumed ? consumed.toLocaleString() : '0';
         legendElement.textContent = '목표 칼로리 ' + (target ? target.toLocaleString() : '0');
+
+        let feedbackComment = '';
+        if(consumed < target) {
+            feedbackCommentElement.textContent = '조금 더 드셔야 해요';
+        } else {
+            feedbackCommentElement.textContent = '그만 드셔야 해요';
+        }        
     }
 }
 
@@ -146,7 +147,7 @@ function getTodayData() {
     };
 }
 
-let myChart; // Chart 인스턴스를 저장할 변수
+let calorieChart; // Chart 인스턴스를 저장할 변수
 
 export function initCalorieChart(days = 7) {
     const { labels, data } = getRecentData(days);
@@ -163,8 +164,8 @@ export function initCalorieChart(days = 7) {
     gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)");
     const red500 = getComputedStyle(document.documentElement).getPropertyValue('--red500').trim();
 
-    if (myChart) {
-        myChart.destroy();
+    if (calorieChart) {
+        calorieChart.destroy();
     }
 
     currentData = getTodayData();
@@ -180,7 +181,7 @@ export function initCalorieChart(days = 7) {
 
     let pointReset = false;
 
-    myChart = new Chart(ctx, {
+    calorieChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -275,22 +276,22 @@ export function initCalorieChart(days = 7) {
                 }
             },
             scales: {
+                x: {
+                    ticks: { display: false },
+                    grid: { display: false, drawBorder: false },
+                },
                 y: {
                     beginAtZero: true,
                     min: 0,
-                    max: 3000,
+                    max: 4000,
                     ticks: { stepSize: 1000, color: '#999' },
-                    grid: { display: false, drawBorder: false }
-                },
-                x: {
-                    ticks: { display: false },
                     grid: { display: false, drawBorder: false }
                 }
             },
             onHover: (event, elements) => {
                 if (!pointReset) {
-                    myChart.data.datasets[0].pointRadius = 0; // 초기 점 제거
-                    myChart.update('none');
+                    calorieChart.data.datasets[0].pointRadius = 0; // 초기 점 제거
+                    calorieChart.update('none');
                     pointReset = true;
                 }
 
@@ -304,6 +305,7 @@ export function initCalorieChart(days = 7) {
             }
         }
     });
+    bindTouchEventsForChart();
 }
 
 
@@ -354,3 +356,224 @@ $(document).on('touchend', function () {
         tooltip.style.display = 'none';  // 툴팁을 아예 숨깁니다.
     }
 });
+
+function bindTouchEventsForChart() {
+    const $chart = $('#calorieChart');
+
+    if ($chart.length === 0) {
+        console.warn('#calorieChart 요소가 존재하지 않습니다.');
+        return;
+    }
+
+    function preventScroll(e) {
+        e.preventDefault();
+    }
+
+    $chart.off('touchstart').on('touchstart', function () {
+        console.log("touch start");
+        $('body').css('overflow', 'hidden');
+        document.body.addEventListener('touchmove', preventScroll, { passive: false });
+    });
+
+    $chart.off('touchend touchcancel').on('touchend touchcancel', function () {
+        console.log("touch end or cancel");
+        $('body').css('overflow', '');
+        document.body.removeEventListener('touchmove', preventScroll);
+    });
+};
+
+// =========================================================== 몸무게 차트  ===========================================================
+
+let weightChart = null;
+
+function generateRandomWeightData() {
+    let dates = [], values = [];
+    let today = new Date();
+    for (let i = 29; i >= 0; i--) {
+        let pastDate = new Date();
+        pastDate.setDate(today.getDate() - i);
+        dates.push(pastDate.toISOString().split('T')[0]);
+        values.push(Math.floor(Math.random() * 100) + 1);
+    }
+    return { dates, values };
+}
+
+function updateWeightReportData(date, weight) {
+    const dateElement = document.querySelector('#weightReport .date');
+    const amountElement = document.querySelector('#weightReport .amount');
+
+
+
+    if (dateElement && amountElement) {
+        const formattedDate = date.replaceAll('-', '.'); 
+        dateElement.textContent = formattedDate;
+        amountElement.textContent = weight ? weight.toLocaleString() : '0';
+    }
+}
+
+export function initWeightChart() {
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    const chartContainer = document.querySelector("#weightReport .chart-container");
+    const { dates, values } = generateRandomWeightData();
+
+    let isDragging = false;
+    let startX;
+    let currentStartIndex = Math.max(0, dates.length - 7);
+    let selectedIndex = dates.length-1;
+    updateWeightReportData(dates[selectedIndex], values[selectedIndex]);
+
+    // dates.unshift('');        // 좌측 여백용
+    // values.unshift(null);     // 포인트 숨김
+
+    dates.push('');         // 우측 여백용
+    values.push(null);      // null로 포인트 숨김
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
+    gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)");
+
+    const red500 = getComputedStyle(document.documentElement).getPropertyValue('--red500').trim();
+
+    const data = {
+        labels: dates,
+        datasets: [{
+            label: '개수 변화',
+            data: values,
+            borderColor: red500,
+            backgroundColor: gradient,
+            borderWidth: 1,
+            fill: true,
+
+            pointRadius: (ctx) => ctx.dataIndex === selectedIndex ? 5 : 3,
+            pointBackgroundColor: (ctx) => ctx.dataIndex === selectedIndex ? red500 : '#ffffff',
+            pointBorderColor: red500,       // 포인트 테두리 색상
+            pointBorderWidth: 1,             // 포인트 테두리 두께
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 1.3,
+            interaction: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                x: {
+                    ticks: { 
+                        display: false,
+                    },
+                    grid: { display: false, drawBorder: false },
+                    min: dates[currentStartIndex+1],
+                    max: dates[currentStartIndex + 7],
+                    // offset: true,
+                },
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    ticks: { stepSize: 20, color: '#999' },
+                    suggestedMax: Math.max(...values) * 1.3,
+                    grid: { display: false, drawBorder: false },
+                    border: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: false,
+                },
+                hover: {
+                   mode: null
+                },
+            },
+        }
+    };
+
+    weightChart = new Chart(ctx, config);
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    chartContainer.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) {
+        isDragging = true;
+        touchStartX = e.touches[0].clientX;
+    }
+    }, { passive: false }); //preventDefault를 쓰려면 passive: false
+
+    chartContainer.addEventListener("touchmove", (e) => {
+        if (!isDragging || e.touches.length !== 1) return;
+
+        const currentX = e.touches[0].clientX;
+        const moveX = currentX - touchStartX;
+
+        // 좌우로 스와이프 중이면 세로 스크롤 방지
+        if (Math.abs(moveX) > 10) {
+            e.preventDefault(); // 세로 스크롤 막기
+        }
+
+        if (Math.abs(moveX) > 30) {
+            const moveStep = Math.floor(Math.abs(moveX) / 30); // 이동 거리에 따라 여러 step 계산
+
+            if (moveX > 0 && currentStartIndex > 0) {
+                currentStartIndex = Math.max(0, currentStartIndex - moveStep);
+            } else if (moveX < 0 && currentStartIndex < dates.length - 7) {
+                currentStartIndex = Math.min(dates.length - 7, currentStartIndex + moveStep);
+            }
+
+            weightChart.options.scales.x.min = dates[currentStartIndex];
+            weightChart.options.scales.x.max = dates[currentStartIndex + 6];
+            weightChart.update({ duration: 0 }); 
+
+            touchStartX = currentX; // 기준점 업데이트
+        }
+    }, { passive: false }); 
+
+    chartContainer.addEventListener("touchend", (e) => {
+        isDragging = false;
+
+        if (e.changedTouches.length === 1) {
+            const touch = e.changedTouches[0];
+            const touchEndX = touch.clientX;
+            const touchEndY = touch.clientY;
+
+            const diffX = Math.abs(touchEndX - touchStartX);
+            if (diffX < 10) {
+                const rect = ctx.canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+
+                const fakeEvent = {
+                    type: 'touchend',
+                    chart: weightChart,
+                    native: e,
+                    x,
+                    y
+                };
+
+                const elements = weightChart.getElementsAtEventForMode(
+                    fakeEvent,
+                    'index',              
+                    { intersect: false }, 
+                    true
+                );
+
+                if (elements.length > 0) {
+                    const index = elements[0].index;
+                    const weight = weightChart.data.datasets[0].data[index];
+                    const date = weightChart.data.labels[index];
+
+                    if (weight && date) {
+                        updateWeightReportData(date, weight);
+                        selectedIndex = index;
+                        weightChart.update();  
+                    }
+                }
+            }
+        }
+    });
+}
