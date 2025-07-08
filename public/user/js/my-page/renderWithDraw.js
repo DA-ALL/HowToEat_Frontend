@@ -69,7 +69,7 @@ $(document).on('click', '.withdraw-btn', function () {
     });
 });
 
-$(document).on('click', '.cancel-btn', function () {
+$(document).on('click', '#cancelWithdraw', function () {
     const newPath = `/users`;
 
     history.pushState({ view: 'users' }, '', newPath);

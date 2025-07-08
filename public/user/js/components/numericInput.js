@@ -1,69 +1,131 @@
+import { showPopup } from './popup.js'
+import { showPage } from './nav-bottom.js';
+
 export function showNumericInput(parent, type, value) {
         console.log("show");
         let numericInputHtml = '';
+        switch (type) {
+            case "height" : 
+                numericInputHtml = `
+                <div id="numericInput" data-default="${value}">
+                    <div id="headerNavNumeric">
+                        <div class="header-nav-numeric">
+                            <div class="button-prev-header">
+                                <img src="/user/images/icon_arrow_back.png">
+                            </div>
 
-        numericInputHtml = `
-        
-            <div id="numericInput" data-default="${value}">
-                <div id="headerNavNumeric">
-                    <div class="header-nav-numeric">
-                        <div class="button-prev">
-                            <img src="/user/images/icon_arrow_back.png">
+                            <div class="title">키 기록하기</div>
+
+                            <div class="button-add hidden">
+                                <img src="/user/images/icon_add.png">
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="title">키 기록하기</div>
-
-                        <div class="button-add hidden">
-                            <img src="/user/images/icon_add.png">
+                    <div id="inputArea">
+                        <div class="value-wrapper">
+                            <div class="input-value placeholder">${value}</div>
+                            <div class="input-unit">cm</div>
                         </div>
                     </div>
-                </div>
 
-                <div id="inputArea">
-                    <div class="value-wrapper">
-                        <div class="input-value placeholder">${value}</div>
-                        <div class="input-unit">cm</div>
+                    <div id="typingArea">
+                        <div class="key-row">
+                            <div class="number" data-text="1">1</div>
+                            <div class="number" data-text="2">2</div>
+                            <div class="number" data-text="3">3</div>
+                        </div>
+                        <div class="key-row">
+                            <div class="number" data-text="4">4</div>
+                            <div class="number" data-text="5">5</div>
+                            <div class="number" data-text="6">6</div>
+                        </div>
+                        <div class="key-row">
+                            <div class="number" data-text="7">7</div>
+                            <div class="number" data-text="8">8</div>
+                            <div class="number" data-text="9">9</div>
+                        </div>
+                        <div class="key-row">
+                            <div class="number" data-text=".">.</div>
+                            <div class="number" data-text="0">0</div>
+                            <div class="number" data-text="←">←</div>
+                        </div>
                     </div>
-                </div>
 
-                <div id="typingArea">
-                    <div class="key-row">
-                        <div class="number" data-text="1">1</div>
-                        <div class="number" data-text="2">2</div>
-                        <div class="number" data-text="3">3</div>
-                    </div>
-                    <div class="key-row">
-                        <div class="number" data-text="4">4</div>
-                        <div class="number" data-text="5">5</div>
-                        <div class="number" data-text="6">6</div>
-                    </div>
-                    <div class="key-row">
-                        <div class="number" data-text="7">7</div>
-                        <div class="number" data-text="8">8</div>
-                        <div class="number" data-text="9">9</div>
-                    </div>
-                    <div class="key-row">
-                        <div class="number" data-text=".">.</div>
-                        <div class="number" data-text="0">0</div>
-                        <div class="number" data-text="←">←</div>
+                    <div id="buttonArea">
+                        <div id="heightRecordButton" class="record-button disabled">기록하기</div>
                     </div>
                 </div>
+                `
+            break;
 
-                <div id="buttonArea">
-                    <div class="record-button disabled">기록하기</div>
+            case "weight" : 
+                numericInputHtml = `
+                <div id="numericInput" data-default="${value}">
+                    <div id="headerNavNumeric">
+                        <div class="header-nav-numeric">
+                            <div class="button-prev-header">
+                                <img src="/user/images/icon_arrow_back.png">
+                            </div>
+
+                            <div class="title">몸무게 기록하기</div>
+
+                            <div class="button-add hidden">
+                                <img src="/user/images/icon_add.png">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="inputArea">
+                        <div class="value-wrapper">
+                            <div class="input-value placeholder">${value}</div>
+                            <div class="input-unit">kg</div>
+                        </div>
+                    </div>
+
+                    <div id="typingArea">
+                        <div class="key-row">
+                            <div class="number" data-text="1">1</div>
+                            <div class="number" data-text="2">2</div>
+                            <div class="number" data-text="3">3</div>
+                        </div>
+                        <div class="key-row">
+                            <div class="number" data-text="4">4</div>
+                            <div class="number" data-text="5">5</div>
+                            <div class="number" data-text="6">6</div>
+                        </div>
+                        <div class="key-row">
+                            <div class="number" data-text="7">7</div>
+                            <div class="number" data-text="8">8</div>
+                            <div class="number" data-text="9">9</div>
+                        </div>
+                        <div class="key-row">
+                            <div class="number" data-text=".">.</div>
+                            <div class="number" data-text="0">0</div>
+                            <div class="number" data-text="←">←</div>
+                        </div>
+                    </div>
+
+                    <div id="buttonArea">
+                        <div id="weightRecordButton" class="record-button disabled">기록하기</div>
+                    </div>
                 </div>
-            </div>
-        `
+                `
+                break;
+        }
+
         const inputView = $(numericInputHtml);
         $(parent).append(inputView);
     
         $('body').css('overflow', 'hidden');
     
-        function closeInput() {
-            $('#numericInput').remove();
-            $('body').css('overflow', 'auto');
-        }   
 }
+
+
+function closeInput() {
+    $('#numericInput').remove();
+    $('body').css('overflow', 'auto');
+}   
 
 // 입력 로직: `.number` 클릭
 $(document).on('click', '.number', function () {
@@ -131,6 +193,39 @@ $(document).on('click', '.number', function () {
     $input.text(current);
     validateInput();
 });
+
+
+$(document).on('click', '.button-prev-header', function () {
+    $('#numericInput').remove();
+    $('body').css('overflow', 'auto');
+});
+
+
+$(document).on('click', '#heightRecordButton', function () {
+    const height = parseFloat($('.input-value').text());
+
+    
+    showPopup("#my", 6, "입력하신 키로 변경할까요?", "새로운 목표 칼로리가 자동으로 계산됩니다").then((confirmed) => {
+        if(confirmed) {
+                $.ajax({
+                    type: "PATCH",
+                    url: `${window.DOMAIN_URL}/user-info/height`,
+                    contentType: "application/json",
+                    data: JSON.stringify({ height: height }),
+                    success: function (res) {
+                        closeInput();
+                        const newPath = `/users`;
+
+                        history.pushState({ view: 'users' }, '', newPath);
+                        showPage(newPath);
+                        return;
+                    },
+                });
+            return;
+        }
+    });
+});
+
 
 function validateInput() {
     const $input = $('.input-value');

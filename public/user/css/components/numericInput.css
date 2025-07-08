@@ -39,12 +39,12 @@
   color: var(--black100);
 }
 
-#headerNavNumeric .header-nav-numeric .button-prev {
+#headerNavNumeric .header-nav-numeric .button-prev-header {
   display: flex;
   cursor: pointer;
 }
 
-#headerNavNumeric .header-nav-numeric .button-prev img {
+#headerNavNumeric .header-nav-numeric .button-prev-header img {
   width: 20px;
   height: 20px;
 }

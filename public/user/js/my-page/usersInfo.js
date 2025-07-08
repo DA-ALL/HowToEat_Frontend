@@ -115,13 +115,13 @@ $(document).on('click', '.profile-image', function (e) {
 
 
 $(document).on('click', '.numeric-input-view', function (e) {
-    const $input = $(this).find('.profile-image-input');
+    const type = $(this).data('type'); // "height" or "weight"
+    const valueText = $(this).text();  // 예: "176.2cm" or "64.2kg"
 
-    showNumericInput("#my", "height", 176.4);
-    if ($input.length > 0) {
-        $input[0].click(); // 직접 DOM 메서드 호출 (trigger 보다 안전)
-    }
-    e.stopPropagation(); // 꼭 버블 차단
+    // 숫자만 추출
+    const value = parseFloat(valueText);
+
+    showNumericInput("#my", type, value);
 });
 
 // 이미지 선택 시 미리보기 렌더링
