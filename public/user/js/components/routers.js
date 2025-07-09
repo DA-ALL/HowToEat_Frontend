@@ -152,7 +152,7 @@ export function showReport() {
 
 }
 
-export function showMyPage(subpath = null, detailId = null) {
+export function showMyPage(subpath = null, detailId = null, isFromNumericInput = false) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
@@ -175,7 +175,7 @@ export function showMyPage(subpath = null, detailId = null) {
     // ).remove();
 
     if (!subpath) {
-        if($('#myPage').children().length === 0) {
+        if($('#myPage').children().length === 0 || isFromNumericInput) {
             renderMyPage(function(html) {
                 $('#myPage').html(html);
                 // initHeaderNav($('#myPage'));
@@ -206,12 +206,11 @@ export function showMyPage(subpath = null, detailId = null) {
         }
 
      } else if (subpath === 'info') {
-
-        renderUsersInfo(function(html) {
-            $('#usersInfo').html(html);
-            initHeaderNav($('#usersInfo'));
-            $('html, body').scrollTop(0);
-        });
+            renderUsersInfo(function(html) {
+                $('#usersInfo').html(html);
+                initHeaderNav($('#usersInfo'));
+                $('html, body').scrollTop(0);
+            });
         $('#usersInfo').show();
     
         bindUsersInfoEvents(); //페이지를 그리고 난 후, 인풋 유효성 검사 진행을 위해 추가한 함수

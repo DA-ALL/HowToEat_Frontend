@@ -26,7 +26,7 @@ const navMap = {
 };
 
 // 뷰 전환 함수
-export function showPage(path, isFromAddFavoriteFood) {
+export function showPage(path, isFromAddFavoriteFood, isFromNumericInput) {
     const parts = path.split('/');
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
@@ -60,7 +60,7 @@ export function showPage(path, isFromAddFavoriteFood) {
             meal = parts[2];
             subpage = parts[4];
             type = parts[5];
-            showMain(meal, subpage, type, null, isFromAddFavoriteFood);
+            showMain(meal, subpage, type, null, isFromAddFavoriteFood, isFromNumericInput);
         }
     }
     else if (path.startsWith('/report')) {

@@ -217,7 +217,7 @@ $(document).on('click', '#heightRecordButton', function () {
                         const newPath = `/users`;
 
                         history.pushState({ view: 'users' }, '', newPath);
-                        showPage(newPath);
+                        showPage(newPath, false, true);
                         return;
                     },
                 });
