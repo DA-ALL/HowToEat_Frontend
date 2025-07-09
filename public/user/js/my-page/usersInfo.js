@@ -1,14 +1,36 @@
 import { updateButtonState, validateInput, checkInput } from '/user/js/components/input-validate.js';
 import { showNumericInput } from '/user/js/components/numericInput.js';
 
-export function renderUsersInfo() {
-    let goal = "체중감량";
-    let height = 176;
-    let weight = 74;
-    let activity = "very-active";
+export function renderUsersInfo(callback) {
+    const userDetailInfo = $.ajax({
+        method: "GET",
+        url: `${window.DOMAIN_URL}/users/detail-info`,
+    });
+
+    $.when(userDetailInfo).done(function (userDetailInfoRes) {
+        const userDetailInfoData = userDetailInfoRes.data;
+        const userInfoPageHTML = renderMyPageHTML(userDetailInfoData);
+        console.log(userDetailInfoData)
+        callback(userInfoPageHTML);
+    });
+
+}
+
+
+
+let initialGoal = null;
+let initialActivity = null;
+
+function renderMyPageHTML(userDetailInfoData) {
+    initialGoal = userDetailInfoData.userGoal;
+    initialActivity = userDetailInfoData.userActivityLevel;
+
+    let goal = initialGoal;
+    let activity = initialActivity;
     // 유틸 함수로 valid 클래스 조건 처리
     const isValid = (label) => goal === label ? 'valid' : '';
     const isActivityValid = (label) => activity === label ? 'valid' : '';
+    
 
     return `
         <div id="headerNav" data-title="나의 정보" data-type="2"></div>
@@ -18,8 +40,8 @@ export function renderUsersInfo() {
                 <img class="preview-image" src="/user/images/icon_human_red.png">
                 <input type="file" accept="image/*" class="profile-image-input" style="display: none;">
             </div>
-            <div class="profile-name">김예현</div>
-            <div class="profile-email">insidesy4@gmail.com</div>
+            <div class="profile-name">${userDetailInfoData.name}</div>
+            <div class="profile-email">${userDetailInfoData.email}</div>
         </div>
 
         <div class="body-stats-container container-format">
@@ -28,12 +50,12 @@ export function renderUsersInfo() {
             <div class="select-container inner-container-format">
                 <div class="body-stat-wrapper">
                     <div class="input-label">키</div>
-                    <div class="select-item numeric-input-view" data-text="1" data-type="height">176.2cm</div>
+                    <div class="select-item numeric-input-view" data-text="1" data-type="height">${userDetailInfoData.height}cm</div>
                 </div>
 
                 <div class="body-stat-wrapper">
                     <div class="input-label">몸무게</div>
-                    <div class="select-item numeric-input-view" data-text="2" data-type="weight">64.2kg</div>
+                    <div class="select-item numeric-input-view" data-text="2" data-type="weight">${userDetailInfoData.weight}kg</div>
                 </div>
                 
             </div>
@@ -43,14 +65,14 @@ export function renderUsersInfo() {
                 <div class="input-wrapper">
                     <div class="input-label">키</div>
                     <div class="input">
-                        <input type="text" inputmode="decimal" id="height" name="height" placeholder="키" maxlength="5" data-text="" value=${height}>
+                        <input type="text" inputmode="decimal" id="height" name="height" placeholder="키" maxlength="5" data-text="">
                     </div>
                 </div>
 
                 <div class="input-wrapper">
                     <div class="input-label">몸무게</div>
                     <div class="input">
-                        <input type="text" inputmode="decimal" id="weight" name="weight" placeholder="몸무게" maxlength="5" data-text="" value=${weight}>
+                        <input type="text" inputmode="decimal" id="weight" name="weight" placeholder="몸무게" maxlength="5" data-text="">
                     </div>
                 </div>
             </div> 
@@ -62,34 +84,34 @@ export function renderUsersInfo() {
 
         <div class="goal-container container-format">
             <div class="info-title">나의 목표</div>
-            <div class="select-container inner-container-format">
-                <div class="select-item weight-loss ${isValid("체중감량")}" data-text="1">체중 감량</div>
-                <div class="select-item weight-maintain ${isValid("체중유지")}" data-text="2">체중 유지</div>
-                <div class="select-item weight-gain ${isValid("체중증량")}" data-text="3">체중 증량</div>
-                <div class="select-item muscle-gain ${isValid("근육증량")}" data-text="4">근육 증량</div>
+            <div class="select-container my-goal inner-container-format">
+                <div class="select-item weight-loss ${isValid("LOSE_WEIGHT")}" data-text="LOSE_WEIGHT">체중 감량</div>
+                <div class="select-item weight-maintain ${isValid("MAINTAIN_WEIGHT")}" data-text="MAINTAIN_WEIGHT">체중 유지</div>
+                <div class="select-item weight-gain ${isValid("GAIN_WEIGHT")}" data-text="GAIN_WEIGHT">체중 증량</div>
+                <div class="select-item muscle-gain ${isValid("GAIN_MUSCLE")}" data-text="GAIN_MUSCLE">근육 증량</div>
             </div>
         </div>
 
         <div class="activity-container container-format">
             <div class="info-title">나의 활동량</div>
-            <div class="select-container activity inner-container-format">
-                <div class="select-wrapper very-active ${isActivityValid("very-active")}" data-text="5">
+            <div class="select-container my-activity activity inner-container-format">
+                <div class="select-wrapper very-active ${isActivityValid("VERY_HIGH")}" data-text="VERY_HIGH">
                     <div class="main-text">매우 활동적</div>
                     <div class="sub-text">주 6~7회 이상 고강도 운동 (운동 선수) <br> 업무 형태가 활동적</div>
                 </div>
-                <div class="select-wrapper active ${isActivityValid("active")}" data-text="4">
+                <div class="select-wrapper active ${isActivityValid("HIGH")}" data-text="HIGH">
                     <div class="main-text">활동적</div>
                     <div class="sub-text">주 4~6회 운동 (웨이트 트레이닝) <br> 주 150분 이상 유산소 운동</div>
                 </div>
-                <div class="select-wrapper moderate ${isActivityValid("moderate")}" data-text="3">
+                <div class="select-wrapper moderate ${isActivityValid("NORMAL")}" data-text="NORMAL">
                     <div class="main-text">보통</div>
                     <div class="sub-text">주 2~3회 운동 (유산소 + 웨이트 트레이닝)</div>
                 </div>
-                <div class="select-wrapper low ${isActivityValid("low")}" data-text="2">
+                <div class="select-wrapper low ${isActivityValid("LOW")}" data-text="LOW">
                     <div class="main-text">적음</div>
                     <div class="sub-text">주 2회 미만의 운동 <br> 웨이트 트레이닝 / 유산소 운동 선택적 진행</div>
                 </div>
-                <div class="select-wrapper very-low ${isActivityValid("very-low")}" data-text="1">
+                <div class="select-wrapper very-low ${isActivityValid("VERY_LOW")}" data-text="VERY_LOW">
                     <div class="main-text">매우 적음</div>
                     <div class="sub-text">평소 운동을 하지 않음 <br> 업무 형태가 주로 앉아서 진행</div>
                 </div>
@@ -181,10 +203,7 @@ export function bindUsersInfoEvents() {
             updateNextButtonState();
         }
     });
-
-    // 진입 시점에 이미 값이 있으면 valid 처리
-    checkInput($('#height'));
-    checkInput($('#weight'));
+    
 
     // 버튼 상태도 초기 상태 기준으로 업데이트
     // updateNextButtonState();
@@ -192,17 +211,27 @@ export function bindUsersInfoEvents() {
 
 
 function updateNextButtonState() {
-    const $goalValid = $('.goal-container .select-container .valid').length >= 1;
-    const $activityValid = $('.activity-container .select-container .valid').length >= 1;
-
-    const $heightInput = $('#height').closest('.input');
-    const $weightInput = $('#weight').closest('.input');
-    const $bodyStatsValid = $heightInput.hasClass('valid') && $weightInput.hasClass('valid') &&
-                            !$heightInput.hasClass('error') && !$weightInput.hasClass('error');
+    const currentGoal = $('.goal-container .my-goal .valid').data('text');
+    const currentActivity = $('.activity-container .my-activity .valid').data('text');
 
     const $nextButton = $('.next-button');
 
-    if ($goalValid && $bodyStatsValid && $activityValid) {
+    // 현재 선택값이 초기값과 동일하면 비활성화
+    console.log(initialGoal);
+    console.log(initialActivity);
+    if (
+        (currentGoal === initialGoal) &&
+        (currentActivity === initialActivity)
+    ) {
+        $nextButton.removeClass('active').addClass('disabled');
+        return;
+    }
+
+    // 현재 선택이 둘 다 되어 있고, 초기값과 다르면 활성화
+    const goalValid = !!currentGoal;
+    const activityValid = !!currentActivity;
+
+    if (goalValid && activityValid) {
         $nextButton.removeClass('disabled').addClass('active');
     } else {
         $nextButton.removeClass('active').addClass('disabled');

@@ -206,8 +206,12 @@ export function showMyPage(subpath = null, detailId = null) {
         }
 
      } else if (subpath === 'info') {
-        $("#usersInfo").html(renderUsersInfo());
-        initHeaderNav($('#usersInfo'));
+
+        renderUsersInfo(function(html) {
+            $('#usersInfo').html(html);
+            initHeaderNav($('#usersInfo'));
+            $('html, body').scrollTop(0);
+        });
         $('#usersInfo').show();
     
         bindUsersInfoEvents(); //페이지를 그리고 난 후, 인풋 유효성 검사 진행을 위해 추가한 함수
