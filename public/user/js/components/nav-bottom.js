@@ -60,7 +60,7 @@ export function showPage(path, isFromAddFavoriteFood, isFromNumericInput) {
             meal = parts[2];
             subpage = parts[4];
             type = parts[5];
-            showMain(meal, subpage, type, null, isFromAddFavoriteFood, isFromNumericInput);
+            showMain(meal, subpage, type, null, isFromAddFavoriteFood);
         }
     }
     else if (path.startsWith('/report')) {
@@ -75,7 +75,7 @@ export function showPage(path, isFromAddFavoriteFood, isFromNumericInput) {
         const parts = path.split('/');
         const subpath = parts[2];
         const detailId = parts[3];
-        showMyPage(subpath, detailId);
+        showMyPage(subpath, detailId, isFromNumericInput);
     }
 
     updateNavActive(path);
