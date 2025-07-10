@@ -1,37 +1,115 @@
+let calorieData = {}; // 최종 데이터 저장용
 
-function generateRandomCalorieData() {
-  const result = {};
-  const today = new Date();
+export function loadAndRenderKcalData() {
+    const endDate = getDateStr(0);      // 오늘
+    const startDate = getDateStr(29);   // 30일 전 (오늘 포함 총 30일)
 
-  for (let i = 0; i < 30; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
+    getKcalSummary(startDate, endDate)
+        .then((rawData) => {
+            const filledData = fillMissingDates(rawData.data, 30);
+            console.log("칼로리 데이터:", rawData);
+            // 객체 형태로 변환
+            calorieData = {};
+            filledData.forEach(item => {
+                calorieData[item.date] = {
+                    consumed: item.consumed,
+                    target: item.target
+                };
+            });
 
+            // 차트 렌더링
+            initCalorieChart(7); // 기본은 7일
+        })
+        .catch((err) => {
+            console.error("칼로리 데이터 요청 실패:", err);
+        });
+}
+
+function getDateStr(offsetDays = 0) {
+    const date = new Date();
+    date.setDate(date.getDate() - offsetDays);
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, '0');
     const dd = String(date.getDate()).padStart(2, '0');
-    const dateStr = `${yyyy}-${mm}-${dd}`;
-    
-    let consumed = 0;
-    const target = Math.floor(Math.random() * 301) + 2200; // 2200 ~ 2500
-    if(i%2 == 0){
-        consumed = 0;
-    } else {
-        consumed = Math.floor(Math.random() * 401) + (target - 100); // target-100 ~ target+300
-    }
-    
-    
-
-    result[dateStr] = {
-      consumed,
-      target,
-    };
-  }
-
-  return result;
+    return `${yyyy}-${mm}-${dd}`;
 }
 
-const calorieData = generateRandomCalorieData();
+
+function fillMissingDates(rawData, days = 30) {
+    const result = [];
+    const dataMap = new Map();
+
+    // 백엔드 데이터는 'YYYY-MM-DD' 포맷
+    rawData.forEach(({ date, targetKcal, consumedKcal }) => {
+        dataMap.set(date, { date, target: targetKcal, consumed: consumedKcal });
+    });
+
+    const today = new Date();
+
+    for (let i = 0; i < days; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${mm}-${dd}`; // 여기서 '-' 사용
+
+        if (dataMap.has(dateStr)) {
+            result.push(dataMap.get(dateStr));
+        } else {
+            result.push({
+                date: dateStr,
+                consumed: 0,
+                target: rawData[0]?.targetKcal || 0
+            });
+        }
+    }
+
+    // 날짜 오름차순 정렬
+    result.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    return result;
+}
+
+
+
+
+
+
+// function generateRandomCalorieData() {
+//   const result = {};
+//   const today = new Date();
+
+//   for (let i = 0; i < 30; i++) {
+//     const date = new Date(today);
+//     date.setDate(today.getDate() - i);
+
+//     const yyyy = date.getFullYear();
+//     const mm = String(date.getMonth() + 1).padStart(2, '0');
+//     const dd = String(date.getDate()).padStart(2, '0');
+//     const dateStr = `${yyyy}-${mm}-${dd}`;
+    
+//     let consumed = 0;
+//     const target = Math.floor(Math.random() * 301) + 2200; // 2200 ~ 2500
+//     if(i%2 == 0){
+//         consumed = 0;
+//     } else {
+//         consumed = Math.floor(Math.random() * 401) + (target - 100); // target-100 ~ target+300
+//     }
+    
+    
+
+//     result[dateStr] = {
+//       consumed,
+//       target,
+//     };
+//   }
+
+//   return result;
+// }
+// // const calorieData = generateRandomCalorieData();
+// // console.log("calorieData", calorieData);
 
 export function renderReportPage() {
     return `
@@ -152,7 +230,7 @@ let calorieChart; // Chart 인스턴스를 저장할 변수
 export function initCalorieChart(days = 7) {
     const { labels, data } = getRecentData(days);
     const goalData = data.map(item => item.target); // target만 추출
-
+    console.log("labels", labels);
     const ctx = document.getElementById('calorieChart')?.getContext('2d');
     if (!ctx) {
         console.error('calorieChart element not found');
@@ -370,13 +448,11 @@ function bindTouchEventsForChart() {
     }
 
     $chart.off('touchstart').on('touchstart', function () {
-        console.log("touch start");
         $('body').css('overflow', 'hidden');
         document.body.addEventListener('touchmove', preventScroll, { passive: false });
     });
 
     $chart.off('touchend touchcancel').on('touchend touchcancel', function () {
-        console.log("touch end or cancel");
         $('body').css('overflow', '');
         document.body.removeEventListener('touchmove', preventScroll);
     });
@@ -389,7 +465,7 @@ let weightChart = null;
 function generateRandomWeightData() {
     let dates = [], values = [];
     let today = new Date();
-    for (let i = 29; i >= 0; i--) {
+    for (let i = 100; i >= 0; i--) {
         let pastDate = new Date();
         pastDate.setDate(today.getDate() - i);
         dates.push(pastDate.toISOString().split('T')[0]);
@@ -575,5 +651,21 @@ export function initWeightChart() {
                 }
             }
         }
+    });
+}
+
+
+// =========================================================== API ===========================================================
+
+export function getKcalSummary(start_date, end_date) {
+    const params = new URLSearchParams({
+        start_date: start_date,
+        end_date: end_date
+    });
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/daily-summary/kcals?${params.toString()}`,
+        contentType: "application/json",
     });
 }
