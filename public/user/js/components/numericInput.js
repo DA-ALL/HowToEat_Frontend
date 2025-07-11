@@ -297,6 +297,31 @@ $(document).on('click', '#heightRecordButton', function () {
     });
 });
 
+$(document).on('click', '#weightRecordButton', function () {
+    const weight = parseFloat($('.input-value').text());
+
+    
+    showPopup("#my", 6, "입력하신 몸무게로 변경할까요?", "새로운 목표 칼로리가 자동으로 계산됩니다").then((confirmed) => {
+        if(confirmed) {
+                $.ajax({
+                    type: "PATCH",
+                    url: `${window.DOMAIN_URL}/user-info/weight`,
+                    contentType: "application/json",
+                    data: JSON.stringify({ weight: weight }),
+                    success: function (res) {
+                        closeInput();
+                        const newPath = `/users`;
+
+                        history.pushState({ view: 'users' }, '', newPath);
+                        showPage(newPath, false, true);
+                        return;
+                    },
+                });
+            return;
+        }
+    });
+});
+
 
 function validateInput() {
     const $input = $('.input-value');

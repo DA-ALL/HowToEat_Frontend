@@ -30,14 +30,14 @@ function renderMyPageHTML(userDetailInfoData) {
     // 유틸 함수로 valid 클래스 조건 처리
     const isValid = (label) => goal === label ? 'valid' : '';
     const isActivityValid = (label) => activity === label ? 'valid' : '';
-    
+    const image = userDetailInfoData.imageUrl != null ? userDetailInfoData.imageUrl : '/user/images/icon_human_red.png';
 
     return `
         <div id="headerNav" data-title="나의 정보" data-type="2"></div>
         <div class="profile-container">
             <div class="profile-image">
                 <img class="new-image" src="">
-                <img class="preview-image" src="/user/images/icon_human_red.png">
+                <img class="preview-image" src="${image}">
                 <input type="file" accept="image/*" class="profile-image-input" style="display: none;">
             </div>
             <div class="profile-name">${userDetailInfoData.name}</div>
@@ -119,7 +119,7 @@ function renderMyPageHTML(userDetailInfoData) {
         </div>
 
         <div class="button-container">
-            <div class="next-button disabled">수정하기</div>
+            <div id="editUserInfoButton" class="next-button disabled">수정하기</div>
         </div>
     `;
 }
@@ -136,6 +136,59 @@ $(document).on('click', '.profile-image', function (e) {
 
 
 
+let compressedFile = '';
+
+$(document).off('change', '.profile-image-input').on('change', '.profile-image-input', async function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const $container = $(this).closest('.profile-image');
+    const $newImage = $container.find('.new-image');
+    const $previewImage = $container.find('.preview-image');
+
+    const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 720,
+        useWebWorker: true,
+        maxIteration: 5,
+        initialQuality: 0.7
+    };
+
+    try {
+        compressedFile = await imageCompression(file, options);
+        const compressedDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+
+        $newImage.attr('src', compressedDataUrl).show();
+        $previewImage.hide();
+
+        console.log("압축 성공:", (compressedFile.size / 1024).toFixed(1), "KB");
+    } catch (err) {
+        console.error("압축 실패:", err);
+        return;
+    }
+
+    console.log("압축된 파일:", compressedFile);
+
+    const formData = new FormData();
+    formData.append('profileImageFile', compressedFile);
+
+    $.ajax({
+        url: `${window.DOMAIN_URL}/users/profile-image`,
+        type: 'PATCH',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            console.log("프로필 이미지 업데이트 성공:", res);
+        },
+        error: function (err) {
+            console.error("프로필 이미지 업데이트 실패:", err);
+        }
+    });
+});
+
+
+
 $(document).on('click', '.numeric-input-view', function (e) {
     const type = $(this).data('type'); // "height" or "weight"
     const valueText = $(this).text();  // 예: "176.2cm" or "64.2kg"
@@ -146,23 +199,6 @@ $(document).on('click', '.numeric-input-view', function (e) {
     showNumericInput("#my", type, value);
 });
 
-// 이미지 선택 시 미리보기 렌더링
-$(document).off('change', '.profile-image-input').on('change', 'profile-image-input', function (e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    const $container = $(this).closest('.profile-image');
-    const $newImage = $container.find('.new-image');
-    const $previewImage = $container.find('.preview-image');
-
-    reader.onload = () => {
-        $newImage.attr('src', reader.result).show();
-        $previewImage.hide();
-    };
-
-    reader.readAsDataURL(file);
-});
 
 // 나의 키와 몸무게
 let originalInputValue = {};
