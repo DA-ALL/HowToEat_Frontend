@@ -81,11 +81,18 @@ export function setupAjaxAuthInterceptor() {
             } else if (errorResponse?.errorType === "ALREADY_EXISTS_EMAIL") {
                 alert("이미 존재하는 이메일입니다.");
             }
+
+            // 유저 스탯 관련 에러
+            else if (errorResponse?.errorType === "NOT_FOUND_USER_STAT") {
+                alert("유저 스탯이 존재하지 않습니다.");
+                redirectToLogin();
+            }
         
             // 기타 알 수 없는 에러
             else {
                 console.error("⚠️ 에러:", errorResponse);
                 alert(errorResponse?.message || "알 수 없는 에러가 발생했습니다.");
+                redirectToLogin();
             }
         
             function redirectToLogin() {

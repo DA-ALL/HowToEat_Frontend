@@ -1,5 +1,8 @@
 import { updateButtonState, validateInput, checkInput } from '/user/js/components/input-validate.js';
 import { showNumericInput } from '/user/js/components/numericInput.js';
+import { showPopup } from '/user/js/components/popup.js'
+import { showPage } from '/user/js/components/nav-bottom.js'
+
 
 export function renderUsersInfo(callback) {
     const userDetailInfo = $.ajax({
@@ -200,8 +203,6 @@ $(document).on('click', '.numeric-input-view', function (e) {
 });
 
 
-// 나의 키와 몸무게
-let originalInputValue = {};
 
 $(document).on('click', '.goal-container .select-item', function () {
     $('.goal-container .select-item').removeClass('valid');
@@ -240,9 +241,6 @@ export function bindUsersInfoEvents() {
         }
     });
     
-
-    // 버튼 상태도 초기 상태 기준으로 업데이트
-    // updateNextButtonState();
 }
 
 
@@ -252,9 +250,6 @@ function updateNextButtonState() {
 
     const $nextButton = $('.next-button');
 
-    // 현재 선택값이 초기값과 동일하면 비활성화
-    console.log(initialGoal);
-    console.log(initialActivity);
     if (
         (currentGoal === initialGoal) &&
         (currentActivity === initialActivity)
@@ -273,3 +268,43 @@ function updateNextButtonState() {
         $nextButton.removeClass('active').addClass('disabled');
     }
 }
+
+
+$(document).on('click', '#editUserInfoButton', function () {
+    const currentGoal = $('.goal-container .my-goal .valid').data('text');
+    const currentActivity = $('.activity-container .my-activity .valid').data('text');
+    // const $nextButton = $('.next-button');
+    if (!currentGoal || !currentActivity) {
+        alert("목표와 활동량을 모두 선택해주세요.");
+        return;
+    }
+
+    const data = {
+        userGoal: currentGoal,
+        userActivityLevel: currentActivity
+    };
+
+    showPopup("#my", 6, "나의 목표를 변경할까요?", "새로운 목표 칼로리가 자동으로 계산됩니다").then((confirmed) => {
+        if(confirmed) {
+            $.ajax({
+                url: `${window.DOMAIN_URL}/users/detail-info`,
+                type: 'PATCH',
+                contentType: 'application/json',
+                data: JSON.stringify(data),    
+                success: function (res) {
+                    // initialGoal = currentGoal;
+                    // initialActivity = currentActivity;
+                    const newPath = `/users`;
+
+                    history.pushState({ view: 'users' }, '', newPath);
+                    showPage(newPath, false, true);
+                    return;
+
+
+                    
+                },
+            });
+        }
+
+    });
+});
