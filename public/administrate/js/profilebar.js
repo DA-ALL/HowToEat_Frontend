@@ -17,15 +17,38 @@ async function initProfileBar() {
 
 function updateProfileBar({ name, userRole, profileImageUrl }) {
     const imageUrl = profileImageUrl || '/administrate/images/icon_human_green.png';
+
     $('#profilebar').html(`
-        <div class="profile-wrapper">
+        <div class="profile-wrapper" style="position: relative;">
             <img src="${imageUrl}" class="image-profile">
             <div class="profile-text-wrapper">
                 <div class="label-name">${name}</div>
                 <div class="label-role">${userRole}</div>
             </div>
-            <img src="/administrate/images/icon_toggle_arrow_down.png" class="button-profile">
+            <div class="button-wrapper">
+                <img src="/administrate/images/icon_toggle_arrow_down.png" class="button-profile">
+            </div>
+
+            <div class="dropdown-menu">
+                <div id="Logout" class="dropdown-item">로그아웃</div>
+            </div>
         </div>
     `);
-}
 
+    // 드롭다운 토글 이벤트 등록
+    $('.button-wrapper').on('click', function () {
+        const dropdown = $('.dropdown-menu');
+        if (dropdown.hasClass('open')) {
+            dropdown.removeClass('open').css('display', 'none');
+        } else {
+            dropdown.addClass('open').css('display', 'flex');
+        }
+    });
+
+    // 바깥 클릭 시 닫기
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.profile-wrapper').length) {
+            $('.dropdown-menu').removeClass('open').css('display', 'none');
+        }
+    }); 
+}
