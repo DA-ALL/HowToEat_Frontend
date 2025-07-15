@@ -10,6 +10,7 @@ import { renderUsersNotice } from '../my-page/usersNotice.js';
 import { renderUsersNoticeDetail } from '../my-page/usersNoticeDetail.js';
 import { renderUsersTerms } from '../my-page/usersTerms.js';
 import { renderUsersPrivacy } from '../my-page/usersPrivacy.js';
+import { renderWithDraw } from '../my-page/renderWithDraw.js';
 import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
 import { renderAddHomeNewFood } from '../main/homeAddNewFood.js';
@@ -109,6 +110,7 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
     }
 
     // 리포트, 마이페이지 캐싱 (기존 유지)
+
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
         loadAndRenderKcalData();
@@ -125,6 +127,25 @@ export function showReport() {
     $('#my').hide();
     $('#report').show();
 
+    $('#kcalGraphPath').attr('d', '');
+
+    // 그래프 두번 그려주기 방지
+    $('#kcalGraphPath').attr('d', '');
+
+    // 그래프 두번 그려주기 방지
+    $('style').each(function () {
+        const content = this.innerHTML;
+        if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+            this.remove();
+        }
+    });
+    
+    // 그래프 두번 그려주기 방지
+    $('style').filter((_, el) =>
+        /@keyframes fillArc/.test(el.innerHTML)
+    ).remove();
+
+
     //리포트 페이지
     if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
@@ -132,17 +153,39 @@ export function showReport() {
         initWeightChart();
         loadAndRenderKcalData();
     }
+
+
 }
 
-export function showMyPage(subpath = null, detailId = null) {
+export function showMyPage(subpath = null, detailId = null, isFromNumericInput = false) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
-    $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo').hide();
+    $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo, #withDraw').hide();
+
+    // // 그래프 두번 그려주기 방지
+    // $('#kcalGraphPath').attr('d', '');
+
+    // // 그래프 두번 그려주기 방지
+    // $('style').each(function () {
+    //     const content = this.innerHTML;
+    //     if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+    //         this.remove();
+    //     }
+    // });
+
+    // // 그래프 두번 그려주기 방지
+    // $('style').filter((_, el) =>
+    //     /@keyframes fillArc/.test(el.innerHTML)
+    // ).remove();
 
     if (!subpath) {
-        if ($('#myPage').children().length === 0) {
-            $("#myPage").html(renderMyPage());
+        if($('#myPage').children().length === 0 || isFromNumericInput) {
+            renderMyPage(function(html) {
+                $('#myPage').html(html);
+                // initHeaderNav($('#myPage'));
+                $('html, body').scrollTop(0);
+            });
         }
         $('#myPage').show();
         return;
@@ -150,26 +193,33 @@ export function showMyPage(subpath = null, detailId = null) {
 
     if (subpath === 'notice') {
         if (detailId) {
-            // /users/notice/4 같은 경우
-            $('#usersNoticeDetail').html(renderUsersNoticeDetail(detailId));
-            initHeaderNav($('#usersNoticeDetail'));
+            // /users/notice/4
+            renderUsersNoticeDetail(function(html) {
+                $('#usersNoticeDetail').html(html);
+                initHeaderNav($('#usersNoticeDetail'));
+                $('html, body').scrollTop(0);
+            });
             $('#usersNoticeDetail').show();
         } else {
             // /users/notice
+            $('#usersNoticeDetail').html('');
+            
             if ($('#noticeListContainer').children().length === 0) {
-                let id = 4;
-                let type = "업데이트";
-                let title = "하잇앱이 신규 업데이트 되었어요";
-                let date = "2025.04.32";
-                $("#noticeListContainer").append(renderUsersNotice(id, type, title, date));
-                initHeaderNav($('#usersNotice'));
+                renderUsersNotice(function(html) {
+                    $('#noticeListContainer').html(html);
+                    initHeaderNav($('#usersNotice'));
+                    $('html, body').scrollTop(0);
+                });
             }
                 $('#usersNotice').show();
         }
 
      } else if (subpath === 'info') {
-        $("#usersInfo").html(renderUsersInfo());
-        initHeaderNav($('#usersInfo'));
+            renderUsersInfo(function(html) {
+                $('#usersInfo').html(html);
+                initHeaderNav($('#usersInfo'));
+                $('html, body').scrollTop(0);
+            });
         $('#usersInfo').show();
     
         bindUsersInfoEvents(); //페이지를 그리고 난 후, 인풋 유효성 검사 진행을 위해 추가한 함수
@@ -187,6 +237,10 @@ export function showMyPage(subpath = null, detailId = null) {
         $("#usersPrivacy").html(renderUsersPrivacy());
         initHeaderNav($('#usersPrivacy'));
         $('#usersPrivacy').show();
+    } else  if (subpath === 'withdraw') {
+        $("#withDraw").html(renderWithDraw());
+        initHeaderNav($('#withDraw'));
+        $('#withDraw').show();  
     }
 }
 

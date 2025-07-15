@@ -231,9 +231,9 @@ $(document).on("click", "#trainerDetailEdit", async function () {
     const formData = new FormData();
     formData.append("name", detailValues.name);
     formData.append("gym", detailValues.gym);
-    
+
     if (selectedImageFile) {
-        formData.append("image", selectedImageFile);
+        formData.append("image", selectedImageFile, selectedImageFile.name);
     }
     
     try {
@@ -263,7 +263,8 @@ $(document).on("click", "#trainerDetailAdd", async function () {
     formData.append("gym", detailValues.gym);
     
     if (selectedImageFile) {
-        formData.append("image", selectedImageFile);
+        // formData.append("image", selectedImageFile);
+        formData.append("image", selectedImageFile, selectedImageFile.name);
     }
 
     try {
@@ -320,7 +321,7 @@ $(document).on("change", "#trainerImageInput", async function (event) {
 
         // 압축된 파일 저장
         selectedImageFile = compressedFile;
-
+        console.log("압축된 이미지 파일:", compressedFile);
         console.log("압축 전 크기:", (file.size / 1024).toFixed(1), "KB");
         console.log("압축 후 크기:", (compressedFile.size / 1024).toFixed(1), "KB");
 

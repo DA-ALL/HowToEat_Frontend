@@ -117,6 +117,7 @@ $(document).on('click', '#deleteFavoriteFoodButton', function () {
 });
 
 $(document).on('click', '#deleteConsumedFoodButton', function () {
+    console.log("dekete")
     const pathParts = window.location.pathname.split("/");
     const mealTime = pathParts[2];
     const selectedDate = pathParts[3];
