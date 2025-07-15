@@ -81,6 +81,7 @@ export function renderMyPageHTML(userBasicInfoData) {
             </div>
         </div>
 
+        <!-- 추후 작업
         <div class="mypage-alarm-container option-container">
             <div class="title">알람 설정</div>
             <div class="set-time item-option" data-path="set-time">
@@ -92,6 +93,7 @@ export function renderMyPageHTML(userBasicInfoData) {
                 <div class="alarm-toggle"></div>
             </div>
         </div>
+        --!>
 
         <div class="mypage-customer-service-container option-container">
             <div class="title">고객 센터</div>
@@ -99,10 +101,12 @@ export function renderMyPageHTML(userBasicInfoData) {
                 <div class="option-title">공지사항</div>
                 <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
             </div>
+            <!-- 추후 작업
             <div class="question item-option" data-path="question">
                 <div class="option-title">문의</div>
                 <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
             </div>
+             --!>
         </div>
 
         <div class="mypage-TermsAndPolicies-container option-container">

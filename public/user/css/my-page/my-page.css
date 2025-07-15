@@ -232,11 +232,16 @@
 
   #my #myPage .button-wrapper  {
     display: flex;
+    position: absolute;
+    bottom: 0px;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
     flex-direction: column;
     gap: 20px;
     padding-left: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
     padding-right: clamp(12.8px, 4.264vw + 0.01px, 21.33px);
-    margin-bottom: clamp(70px, 7.2vw + 65px, 120px);
+    margin-bottom: clamp(70px, 11.2vw + 65px, 120px);
   }
 
   #my #myPage .button-wrapper .user-button-container {
