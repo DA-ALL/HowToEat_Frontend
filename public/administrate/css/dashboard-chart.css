@@ -1,0 +1,24 @@
+.chart-container .chart-wrapper {
+    width: 100%;
+    min-width: 1400px;
+    max-width: 1600px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    cursor: grab;
+    overflow: hidden;
+}
+
+
+#tooltip {
+    position: absolute;
+    background: var(--red500);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 25px;
+    font-size: 14px;
+    display: none;
+    pointer-events: none;
+    z-index: 10;
+}
+

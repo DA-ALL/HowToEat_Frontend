@@ -1,0 +1,202 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    #main {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+    }
+
+    /* 사이드바에 잡아줘야하는지? 컨테이너에 잡아줘야하는지?? 일단 컨테이너 ㄱㄱ*/
+    /* #sidebar {} */
+    #sidebar .sidebar-container {
+        display: flex;
+        flex-direction: column;
+        width: 240px;
+        gap: 10px;
+    }
+
+    /* 로고 */
+    #sidebar .logo-wrapper {
+        display: flex;
+        padding: 22px 24px;
+    }
+
+    #sidebar .logo-wrapper img {
+        height: 27px;
+    }
+    
+    /* 아이템 */
+    #sidebar .sidebar-item-wrapper {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        gap: 20px;        
+        cursor: pointer;
+    }
+
+    #sidebar .sidebar-item-wrapper .point-rect{
+        width: 5px;
+        height: 50px;
+        border-radius: 0px 5px 5px 0px;
+    }
+
+    #sidebar .sidebar-item-wrapper .sidebar-item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0px 18px;
+        width: 155px;
+        height: 50px;
+        gap: 18px;
+        border-radius: 6px;
+    }
+
+    /* 선택된 아이템 스타일 */
+    #sidebar .sidebar-item-wrapper.active .point-rect {
+        background: var(--Foundation-Red-red-600, #D67979);
+    }
+
+    #sidebar .sidebar-item-wrapper.active .sidebar-item {
+        background: var(--Foundation-Red-red-500, #EB8585);
+    }
+
+    #sidebar .sidebar-item-wrapper .sidebar-item .label{
+        color: #202224;
+        font-family: Pretendard;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        letter-spacing: 0.3px;
+    }
+
+    #sidebar .sidebar-item-wrapper.active .label {
+        color: white;
+    }
+    /* 아이콘들 */
+    
+
+    #sidebar .sidebar-item-wrapper .logo-dashboard{
+        width: 14px;
+    }
+    #sidebar .sidebar-item-wrapper .logo-user{
+        width: 14px;
+    }
+    #sidebar .sidebar-item-wrapper .logo-food{
+        width: 15px;
+    }
+    #sidebar .sidebar-item-wrapper .logo-report{
+        width: 14px;
+    }
+    #sidebar .sidebar-item-wrapper .logo-notice{
+        width: 14px;
+    }
+    #sidebar .sidebar-item-wrapper .logo-admin{
+        width: 14px;
+    }
+    
+
+    /* 디바이더 */
+    #sidebar .sidebar-item-divider {
+        width: 192px;
+        height: 1px;
+        margin: 9px 18px;
+        background: #E7E7E7;
+    }
+</style>
+
+
+<body>
+    <div id="main">
+
+        <div id="sidebar">
+            <div class="sidebar-container">
+                <div class="logo-wrapper">
+                    <img src="/administrate/images/logo_02.png">
+                </div>
+
+                <div class="sidebar-item-wrapper nav-link" data-page="dashboard">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <img class="logo-dashboard" src="/administrate/images/icon_dashboard.png">
+                        <div class="label">대시보드</div>
+                    </div>
+                </div>
+                <div class="sidebar-item-wrapper nav-link" data-page="user-management">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <img class="logo-user" src="/administrate/images/icon_user.png">
+                        <div class="label">유저관리</div>
+                    </div>
+                </div>
+                <div class="sidebar-item-wrapper nav-link" data-page="food-management">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <img class="logo-food" src="/administrate/images/icon_food.png">
+                        <div class="label">음식관리</div>
+                    </div>
+                </div>
+                <div class="sidebar-item-wrapper nav-link" data-page="report">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <img class="logo-report" src="/administrate/images/icon_report.png">
+                        <div class="label">리포트</div>
+                    </div>
+                </div>
+                <div class="sidebar-item-wrapper nav-link" data-page="notice">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <img class="logo-notice" src="/administrate/images/icon_notice.png">
+                        <div class="label">공지사항</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-item-divider"></div>
+
+                <div class="sidebar-item-wrapper nav-link" data-page="admin-management">
+                    <div class="point-rect"></div>
+                    <div class="sidebar-item"> 
+                        <img class="logo-admin" src="/administrate/images/icon_admin.png">
+                        <div class="label">어드민 관리</div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const sidebarItems = document.querySelectorAll(".sidebar-item-wrapper");
+
+    sidebarItems.forEach(item => {
+        item.addEventListener("click", function () {
+            // 기존 선택된 아이템에서 active 제거
+            document.querySelectorAll(".sidebar-item-wrapper").forEach(el => {
+                el.classList.remove("active");
+            });
+
+            // 클릭된 아이템에 active 추가
+            this.classList.add("active");
+        });
+    });
+});
+</script>
+
+    
+
+
+</html> -->

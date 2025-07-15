@@ -3,9 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="preload" as="image" href="/user/images/icon_home_active.png">
+    <link rel="preload" as="image" href="/user/images/icon_report_active.png">
+    <link rel="preload" as="image" href="/user/images/icon_mypage_active.png">
+    <script src="/user/js/login/loginPage.js" defer></script>
+    <script type="module" src="/user/js/components/calendar.js" defer></script>
+    <script type="module" src="/user/js/components/nav-bottom.js" defer></script>
+    <script type="module" src="/user/js/components/header-nav.js" defer></script>
+    <script type="module" src="/user/js/utils/auth-interceptor.js"  defer></script>
+    <script type="module" src="/user/js/utils/url.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@latest/dist/browser-image-compression.js"></script>
+
+    <title>하잇</title>
+
+    <link rel="stylesheet" href="/user/css/main.css">
+    <link rel="stylesheet" href="/user/css/report.css">
+    <link rel="stylesheet" href="/user/css/my-page/my-page.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
+
+
 </head>
+
+
 <body>
-    main
+    <div id="main">
+        <div class="root-container">
+            <div id="home">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <div id="prev">
+                            <img src="/user/images/icon_arrow_back_black.png">
+                        </div>
+                        <span id="current-date">2025년 01월</span>
+                        <div id="next">
+                            <img src="/user/images/icon_arrow_front_black.png">
+                        </div>
+                    </div>
+                    <div class="toggle-wrapper">
+                        <div id="toggle-view">주단위</div>
+                    </div>
+                    <div id="calendar"></div>
+                </div>
+
+                <div class="divider large"></div>
+
+                <div id="todaysCPF" class="padding"></div>
+                
+                <div class="divider large"></div>
+
+                <div id="mealLog" class="padding"></div>
+            </div>
+            
+            <div id="homeMeal"></div>
+
+            <div id="consumedFoodDetail"></div>
+            
+            <div id="homeMealSearch"></div>
+
+            <div id="homeMealRegist"></div>
+
+            <div id="homeAddNewFood"></div>
+        </div>
+    </div>
+
+
+    <div id="report" style="display: none;">
+        <div class="root-container">
+            <div id="reportPage">
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="my" style="display: none;">
+        <div class="root-container">
+            <div id="myPage"></div>
+            <div id="usersInfo"></div>
+            <div id="usersSetTime"></div>
+            <div id="usersNotice">
+                <div id="headerNav" data-title="공지사항" data-type="2"></div>
+                <div id="noticeListContainer"></div>
+            </div>
+            <div id="usersNoticeDetail"></div>
+            <div id="usersTerms"></div>
+            <div id="usersPrivacy"></div>
+            <div id="withDraw"></div>
+        </div>
+    </div>
+
+    <div id="navBottom">
+        <div class="nav-bottom-container">
+            <div class="item-wrapper home">
+                <div class="icon">
+                    <img src="/user/images/icon_home.png">
+                </div>
+                <div class="nav-item-title">홈</div>
+            </div>
+
+            <div class="item-wrapper report">
+                <div class="icon report">
+                    <img src="/user/images/icon_report.png">
+                </div>
+                <div class="nav-item-title">리포트</div>
+            </div>
+
+            <div class="item-wrapper mypage">
+                <div class="icon">
+                    <img src="/user/images/icon_mypage.png">
+                </div>
+                <div class="nav-item-title">마이</div>
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>

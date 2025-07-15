@@ -1,0 +1,100 @@
+/* alert */
+#alertBackground {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+
+#alert {
+    /* display: none; */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+}
+
+#alert .alert-container {
+    display: flex;
+    flex-direction: column;
+    width: clamp(214px, 78.4vw - 2.94px, 352px);
+    height: auto;
+    background-color: var(--white300);
+    border-radius: 16px;
+    align-items: center;
+    padding: clamp(28.8px, 9.6vw, 48px) clamp(10.4px, 4.8vw - 4px, 20px);
+    box-shadow: 0px 0px 13.333px 0px rgba(0, 0, 0, 0.25);
+}
+
+#alert .alert-container .alert-title {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 600;
+    color: var(--black100);
+    margin-bottom: clamp(19.2px, 6.4vw, 32px);
+
+}
+
+#alert .alert-container .set-time-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(10px, 3.2vw, 14px);
+    margin-bottom: clamp(30px, 8vw, 40px);
+
+}
+
+#alert .alert-container .set-time-wrapper .colon {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 600;
+    color: var(--black100);
+}
+
+#alert .alert-container .set-time-wrapper .time-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: clamp(11.6px, 5.12vw - 7.6px, 18px) 0;
+    width: clamp(80px, 7.47vw + 52px, 108px);
+    border-radius: 16px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+}
+
+#alert .alert-container .set-time-wrapper .time-wrapper span {
+    font-size: clamp(14.4px, 4.8vw, 24px);
+    font-weight: 600;
+    color: var(--black100);
+}
+
+
+#alert .alert-container .set-time-wrapper .dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    margin-top: 8px;
+    top: 120%;
+    left: 0;
+    right: 0;
+  }
+  
+  #alert .alert-container .set-time-wrapper .dropdown-item {
+    padding: 13px 10px;
+    cursor: pointer;
+    color: var(--black100);
+  }
+  
+  #alert .alert-container .set-time-wrapper .dropdown-item:hover {
+    background-color: var(--red50);
+  }
+  
+  .dropdown-item.active {
+    background-color: var(--gray100); /* 연회색 */
+  }

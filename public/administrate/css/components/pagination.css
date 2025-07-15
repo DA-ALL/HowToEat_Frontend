@@ -1,0 +1,18 @@
+.pagination .pagination-wrapper{
+    display: flex;
+    align-items: center;
+    height: 64px;
+    gap: 16px;
+}
+
+.pagination .pagination-button {
+    cursor: pointer;
+    font-size: 14px;
+    width: 17px;
+    color: var(--gray400);
+}
+
+.pagination .pagination-button.active {
+    font-weight: 700;
+    color: var(--black100);
+}
