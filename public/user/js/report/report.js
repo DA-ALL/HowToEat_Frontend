@@ -1,52 +1,115 @@
-const calorieData = {
-    "2025-03-01": { consumed: 1800, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 225, consumedProtein: 135, consumedFat: 40 },
-    "2025-03-02": { consumed: 2500, target: 2400, targetCarbo: 300, targetProtein: 180, targetFat: 53, consumedCarbo: 313, consumedProtein: 188, consumedFat: 56 },
-    "2025-03-03": { consumed: 2200, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 275, consumedProtein: 165, consumedFat: 49 },
-    "2025-03-04": { consumed: 1200, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 150, consumedProtein: 90, consumedFat: 27 },
-    "2025-03-05": { consumed: 2600, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 325, consumedProtein: 195, consumedFat: 58 },
-    "2025-03-06": { consumed: 1700, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 213, consumedProtein: 128, consumedFat: 38 },
-    "2025-03-07": { consumed: 1952, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 244, consumedProtein: 146, consumedFat: 43 },
-    "2025-03-08": { consumed: 1832, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 229, consumedProtein: 137, consumedFat: 41 },
-    "2025-03-09": { consumed: 2530, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 316, consumedProtein: 190, consumedFat: 56 },
-    "2025-03-10": { consumed: 2662, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 333, consumedProtein: 200, consumedFat: 59 },
-    "2025-03-11": { consumed: 2673, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 334, consumedProtein: 200, consumedFat: 59 },
-    "2025-03-12": { consumed: 2262, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 283, consumedProtein: 170, consumedFat: 50 },
-    "2025-03-13": { consumed: 2552, target: 2564, targetCarbo: 321, targetProtein: 192, targetFat: 57, consumedCarbo: 319, consumedProtein: 191, consumedFat: 57 },
-    "2025-03-14": { consumed: 2573, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 322, consumedProtein: 193, consumedFat: 57 },
-    "2025-03-15": { consumed: 2445, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 306, consumedProtein: 183, consumedFat: 54 },
-    "2025-03-16": { consumed: 2521, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 315, consumedProtein: 189, consumedFat: 56 },
-    "2025-03-17": { consumed: 2200, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 275, consumedProtein: 165, consumedFat: 49 },
-    "2025-03-18": { consumed: 2200, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 275, consumedProtein: 165, consumedFat: 49 },
-    "2025-03-19": { consumed: 2252, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 282, consumedProtein: 169, consumedFat: 50 },
-    "2025-03-20": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-    "2025-03-21": { consumed: 2681, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 335, consumedProtein: 201, consumedFat: 60 },
-    "2025-03-22": { consumed: 2624, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 328, consumedProtein: 197, consumedFat: 58 },
-    "2025-03-23": { consumed: 2551, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 319, consumedProtein: 191, consumedFat: 57 },
-    "2025-03-24": { consumed: 1593, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 199, consumedProtein: 119, consumedFat: 35 },
-    "2025-03-25": { consumed: 2545, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 318, consumedProtein: 191, consumedFat: 57 },
-    "2025-03-26": { consumed: 2400, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 300, consumedProtein: 180, consumedFat: 53 },
-    "2025-03-27": { consumed: 1656, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 207, consumedProtein: 124, consumedFat: 37 },
-    "2025-03-28": { consumed: 2662, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 333, consumedProtein: 200, consumedFat: 59 },
-    "2025-03-29": { consumed: 2556, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 320, consumedProtein: 192, consumedFat: 57 },
-    "2025-03-30": { consumed: 2462, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 308, consumedProtein: 185, consumedFat: 55 },
-    "2025-03-31": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-01": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-02": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-    "2025-04-03": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-    "2025-04-04": { consumed: 1593, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 199, consumedProtein: 119, consumedFat: 35 },
-    "2025-04-05": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-06": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-    "2025-04-07": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-    "2025-04-09": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-10": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-11": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-12": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-13": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-    "2025-04-14": { consumed: 2415, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 302, consumedProtein: 181, consumedFat: 54 },
-    "2025-04-15": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 },
-    "2025-04-16": { consumed: 1646, target: 2420, targetCarbo: 303, targetProtein: 182, targetFat: 54, consumedCarbo: 206, consumedProtein: 123, consumedFat: 37 }
-};
+let calorieData = {}; // 최종 데이터 저장용
 
+export function loadAndRenderKcalData() {
+    const endDate = getDateStr(0);      // 오늘
+    const startDate = getDateStr(29);   // 30일 전 (오늘 포함 총 30일)
+
+    getKcalSummary(startDate, endDate)
+        .then((rawData) => {
+            const filledData = fillMissingDates(rawData.data, 30);
+            console.log("칼로리 데이터:", rawData);
+            // 객체 형태로 변환
+            calorieData = {};
+            filledData.forEach(item => {
+                calorieData[item.date] = {
+                    consumed: item.consumed,
+                    target: item.target
+                };
+            });
+
+            // 차트 렌더링
+            initCalorieChart(7); // 기본은 7일
+        })
+        .catch((err) => {
+            console.error("칼로리 데이터 요청 실패:", err);
+        });
+}
+
+function getDateStr(offsetDays = 0) {
+    const date = new Date();
+    date.setDate(date.getDate() - offsetDays);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+
+function fillMissingDates(rawData, days = 30) {
+    const result = [];
+    const dataMap = new Map();
+
+    // 백엔드 데이터는 'YYYY-MM-DD' 포맷
+    rawData.forEach(({ date, targetKcal, consumedKcal }) => {
+        dataMap.set(date, { date, target: targetKcal, consumed: consumedKcal });
+    });
+
+    const today = new Date();
+
+    for (let i = 0; i < days; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${mm}-${dd}`; // 여기서 '-' 사용
+
+        if (dataMap.has(dateStr)) {
+            result.push(dataMap.get(dateStr));
+        } else {
+            result.push({
+                date: dateStr,
+                consumed: 0,
+                target: rawData[0]?.targetKcal || 0
+            });
+        }
+    }
+
+    // 날짜 오름차순 정렬
+    result.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    return result;
+}
+
+
+
+
+
+
+// function generateRandomCalorieData() {
+//   const result = {};
+//   const today = new Date();
+
+//   for (let i = 0; i < 30; i++) {
+//     const date = new Date(today);
+//     date.setDate(today.getDate() - i);
+
+//     const yyyy = date.getFullYear();
+//     const mm = String(date.getMonth() + 1).padStart(2, '0');
+//     const dd = String(date.getDate()).padStart(2, '0');
+//     const dateStr = `${yyyy}-${mm}-${dd}`;
+    
+//     let consumed = 0;
+//     const target = Math.floor(Math.random() * 301) + 2200; // 2200 ~ 2500
+//     if(i%2 == 0){
+//         consumed = 0;
+//     } else {
+//         consumed = Math.floor(Math.random() * 401) + (target - 100); // target-100 ~ target+300
+//     }
+    
+    
+
+//     result[dateStr] = {
+//       consumed,
+//       target,
+//     };
+//   }
+
+//   return result;
+// }
+// // const calorieData = generateRandomCalorieData();
+// // console.log("calorieData", calorieData);
 
 export function renderReportPage() {
     return `
@@ -69,6 +132,20 @@ export function renderReportPage() {
                     <img src="/user/images/icon_arrow_red.png">
                 </div>
             </div>
+            <div class="period-button-wrapper">
+                <div class="period-button active">1주</div>
+                <div class="period-button">1달</div>
+            </div>
+
+            <div class="legend-wrapper">
+                <div class="legend-box"></div>
+                <div class="legend-label">목표 칼로리</div>
+            </div>
+            <div class="y-label">(Kcal)</div>
+            
+            <div class="chart-container"> 
+                <canvas id="calorieChart"></canvas>
+            </div>
         </div>
 
 
@@ -78,21 +155,27 @@ export function renderReportPage() {
                 <div class="amount">74</div>
                 <div class="unit">kg</div>
             </div>
-            <div class="feedback-comment">조금 더 드셔야 해요</div>
+            <div class="feedback-comment">목표를 향해 파이팅!</div>
             <div class="recommend-wrapper">
-                <div class="recommend-food">뭄무게 기록하기</div>
+                <div class="recommend-food">몸무게 기록하기</div>
                 <div class="icon">
                     <img src="/user/images/icon_arrow_red.png">
                 </div>
             </div>
+            
+            <div class="chart-container"> 
+                <canvas id="weightChart"></canvas>
+            </div>
         </div>
+
+        <div id="tooltip"></div>
     `;
 }
 
 //식사기록 / 몸무게 토글 클릭시 그래프 뷰 변경
 $(document).on('click', '.toggle-report', function () {
     $('.toggle-report').removeClass('active');
-    
+
     $(this).addClass('active');
 
     if ($(this).hasClass('toggle-meal-report')) {
@@ -101,5 +184,488 @@ $(document).on('click', '.toggle-report', function () {
     } else if ($(this).hasClass('toggle-weight-report')) {
         $('#weightReport').show();
         $('#mealReport').hide();
+        if (weightChart) {
+            weightChart.destroy();
+            initWeightChart();
+        }
     }
 });
+
+// 오늘 날짜의 데이터를 저장할 변수
+let currentData;
+
+function updateReportData(date, consumed, target) {
+    const dateElement = document.querySelector('#mealReport .date');
+    const amountElement = document.querySelector('#mealReport .amount');
+    const legendElement = document.querySelector('#mealReport .legend-label');
+    const feedbackCommentElement = document.querySelector('#mealReport .feedback-comment');
+
+    if (dateElement && amountElement) {
+        const formattedDate = date.replaceAll('-', '.'); 
+        dateElement.textContent = formattedDate;
+        amountElement.textContent = consumed ? consumed.toLocaleString() : '0';
+        legendElement.textContent = '목표 칼로리 ' + (target ? target.toLocaleString() : '0');
+
+        let feedbackComment = '';
+        if(consumed < target) {
+            feedbackCommentElement.textContent = '조금 더 드셔야 해요';
+        } else {
+            feedbackCommentElement.textContent = '그만 드셔야 해요';
+        }        
+    }
+}
+
+function getTodayData() {
+    const today = new Date();
+    const todayKey = today.toISOString().split('T')[0];
+    return {
+        date: todayKey,
+        consumed: calorieData[todayKey]?.consumed,
+        target: calorieData[todayKey]?.target
+    };
+}
+
+let calorieChart; // Chart 인스턴스를 저장할 변수
+
+export function initCalorieChart(days = 7) {
+    const { labels, data } = getRecentData(days);
+    const goalData = data.map(item => item.target); // target만 추출
+    console.log("labels", labels);
+    const ctx = document.getElementById('calorieChart')?.getContext('2d');
+    if (!ctx) {
+        console.error('calorieChart element not found');
+        return;
+    }
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
+    gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)");
+    const red500 = getComputedStyle(document.documentElement).getPropertyValue('--red500').trim();
+
+    if (calorieChart) {
+        calorieChart.destroy();
+    }
+
+    currentData = getTodayData();
+    updateReportData(currentData.date, currentData.consumed, currentData.target);
+
+    const todayLabel = currentData.date.slice(5); // 'MM-DD'
+    const todayIndex = labels.indexOf(todayLabel);
+
+    const initialPointRadius = new Array(labels.length).fill(0);
+    if (todayIndex !== -1) {
+        initialPointRadius[todayIndex] = 3;
+    }
+
+    let pointReset = false;
+
+    calorieChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: '섭취 칼로리',
+                    data: data.map(item => item.consumed), // consumed만
+                    borderColor: red500,
+                    borderWidth: 1,
+                    backgroundColor: gradient,
+                    pointBackgroundColor: red500,
+                    pointRadius: initialPointRadius,
+                    pointHoverRadius: 3,
+                    tension: 0.25,
+                    fill: true,
+                },
+                {
+                    label: '목표 칼로리 계단',
+                    data: goalData,
+                    borderColor: '#FFEDED',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 0,
+                    pointStyle: false,
+                    stepped: true,
+                    fill: false,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 1.3,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: { display: false },
+                annotation: { annotations: {} },
+                tooltip: {
+                    enabled: false,
+                    external: function (context) {
+                        const tooltip = document.getElementById('tooltip');
+                        const tooltipModel = context.tooltip;
+
+                        if (tooltipModel.opacity === 0) {
+                            tooltip.style.opacity = '0';
+                            return;
+                        }
+
+                        const chart = context.chart;
+                        const yScale = chart.scales.y;
+                        const xScale = chart.scales.x;
+                        const position = chart.canvas.getBoundingClientRect();
+
+                        tooltip.style.opacity = '1';
+                        tooltip.style.display = 'flex';
+                        tooltip.style.justifyContent = 'center';
+                        tooltip.style.alignItems = 'center';
+                        tooltip.style.flexDirection = 'column';
+
+                        const dataPoint = tooltipModel.dataPoints?.[0];
+                        const label = dataPoint?.label || '';
+                        const index = dataPoint?.dataIndex;
+
+                        const zeroY = yScale.getPixelForValue(0);
+                        const pointX = xScale.getPixelForValue(index);
+                        const verticalBarHeight = yScale.height;
+
+                        const tooltipWidth = tooltip.offsetWidth;
+                        const tooltipTop = position.top + window.pageYOffset + zeroY - verticalBarHeight - 22;
+                        const tooltipLeft = position.left + window.pageXOffset + pointX - (tooltipWidth / 2);
+
+                        tooltip.style.left = `${tooltipLeft}px`;
+                        tooltip.style.top = `${tooltipTop}px`;
+
+                        tooltip.innerHTML = `
+                            <div class="tooltip-content">
+                                <div class="tooltip-date">${label}</div>
+                                <div class="vertical-bar"></div>
+                            </div>
+                        `;
+
+                        requestAnimationFrame(() => {
+                            const bar = tooltip.querySelector('.vertical-bar');
+                            if (bar) {
+                                bar.style.height = `${verticalBarHeight}px`;
+                            }
+                        });
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { display: false },
+                    grid: { display: false, drawBorder: false },
+                },
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 4000,
+                    ticks: { stepSize: 1000, color: '#999' },
+                    grid: { display: false, drawBorder: false }
+                }
+            },
+            onHover: (event, elements) => {
+                if (!pointReset) {
+                    calorieChart.data.datasets[0].pointRadius = 0; // 초기 점 제거
+                    calorieChart.update('none');
+                    pointReset = true;
+                }
+
+                if (elements.length > 0) {
+                    const index = elements[0].index;
+                    const dayData = data[index];
+                    if (dayData) {
+                        updateReportData(dayData.date, dayData.consumed, dayData.target);
+                    }
+                }
+            }
+        }
+    });
+    bindTouchEventsForChart();
+}
+
+
+function getRecentData(days) {
+    const today = new Date();
+    const resultLabels = [];
+    const resultData = [];
+
+    for (let i = days - 1; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+
+        resultLabels.push(dateKey.slice(5)); // MM-DD
+
+        resultData.push({
+            date: dateKey,
+            consumed: calorieData[dateKey]?.consumed ?? 0,
+            target: calorieData[dateKey]?.target ?? 0
+        });
+    }
+    return { labels: resultLabels, data: resultData };
+}
+
+
+// 기간 버튼 클릭 이벤트 핸들러
+$(document).on('click', '.period-button', function () {
+    var wrapper = $(this).closest('.period-button-wrapper');
+    wrapper.find('.period-button').removeClass('active');
+    $(this).addClass('active');
+
+    const period = $(this).text();
+    let daysToShow = 7; // 기본값은 1달
+
+    if (period === '1달') {
+        daysToShow = 30;
+    }
+
+    initCalorieChart(daysToShow); // 선택된 기간에 따라 차트 다시 초기화
+});
+
+$(document).on('touchend', function () {
+    const tooltip = document.getElementById('tooltip');
+    
+    if (tooltip) {
+        console.log("터치끝");
+        tooltip.style.opacity = '0';  // 툴팁을 숨깁니다.
+        tooltip.style.display = 'none';  // 툴팁을 아예 숨깁니다.
+    }
+});
+
+function bindTouchEventsForChart() {
+    const $chart = $('#calorieChart');
+
+    if ($chart.length === 0) {
+        console.warn('#calorieChart 요소가 존재하지 않습니다.');
+        return;
+    }
+
+    function preventScroll(e) {
+        e.preventDefault();
+    }
+
+    $chart.off('touchstart').on('touchstart', function () {
+        $('body').css('overflow', 'hidden');
+        document.body.addEventListener('touchmove', preventScroll, { passive: false });
+    });
+
+    $chart.off('touchend touchcancel').on('touchend touchcancel', function () {
+        $('body').css('overflow', '');
+        document.body.removeEventListener('touchmove', preventScroll);
+    });
+};
+
+// =========================================================== 몸무게 차트  ===========================================================
+
+let weightChart = null;
+
+function generateRandomWeightData() {
+    let dates = [], values = [];
+    let today = new Date();
+    for (let i = 100; i >= 0; i--) {
+        let pastDate = new Date();
+        pastDate.setDate(today.getDate() - i);
+        dates.push(pastDate.toISOString().split('T')[0]);
+        values.push(Math.floor(Math.random() * 100) + 1);
+    }
+    return { dates, values };
+}
+
+function updateWeightReportData(date, weight) {
+    const dateElement = document.querySelector('#weightReport .date');
+    const amountElement = document.querySelector('#weightReport .amount');
+
+
+
+    if (dateElement && amountElement) {
+        const formattedDate = date.replaceAll('-', '.'); 
+        dateElement.textContent = formattedDate;
+        amountElement.textContent = weight ? weight.toLocaleString() : '0';
+    }
+}
+
+export function initWeightChart() {
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    const chartContainer = document.querySelector("#weightReport .chart-container");
+    const { dates, values } = generateRandomWeightData();
+
+    let isDragging = false;
+    let startX;
+    let currentStartIndex = Math.max(0, dates.length - 7);
+    let selectedIndex = dates.length-1;
+    updateWeightReportData(dates[selectedIndex], values[selectedIndex]);
+
+    // dates.unshift('');        // 좌측 여백용
+    // values.unshift(null);     // 포인트 숨김
+
+    dates.push('');         // 우측 여백용
+    values.push(null);      // null로 포인트 숨김
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
+    gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)");
+
+    const red500 = getComputedStyle(document.documentElement).getPropertyValue('--red500').trim();
+
+    const data = {
+        labels: dates,
+        datasets: [{
+            label: '개수 변화',
+            data: values,
+            borderColor: red500,
+            backgroundColor: gradient,
+            borderWidth: 1,
+            fill: true,
+
+            pointRadius: (ctx) => ctx.dataIndex === selectedIndex ? 5 : 3,
+            pointBackgroundColor: (ctx) => ctx.dataIndex === selectedIndex ? red500 : '#ffffff',
+            pointBorderColor: red500,       // 포인트 테두리 색상
+            pointBorderWidth: 1,             // 포인트 테두리 두께
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 1.3,
+            interaction: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                x: {
+                    ticks: { 
+                        display: false,
+                    },
+                    grid: { display: false, drawBorder: false },
+                    min: dates[currentStartIndex+1],
+                    max: dates[currentStartIndex + 7],
+                    // offset: true,
+                },
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    ticks: { stepSize: 20, color: '#999' },
+                    suggestedMax: Math.max(...values) * 1.3,
+                    grid: { display: false, drawBorder: false },
+                    border: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: false,
+                },
+                hover: {
+                   mode: null
+                },
+            },
+        }
+    };
+
+    weightChart = new Chart(ctx, config);
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    chartContainer.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) {
+        isDragging = true;
+        touchStartX = e.touches[0].clientX;
+    }
+    }, { passive: false }); //preventDefault를 쓰려면 passive: false
+
+    chartContainer.addEventListener("touchmove", (e) => {
+        if (!isDragging || e.touches.length !== 1) return;
+
+        const currentX = e.touches[0].clientX;
+        const moveX = currentX - touchStartX;
+
+        // 좌우로 스와이프 중이면 세로 스크롤 방지
+        if (Math.abs(moveX) > 10) {
+            e.preventDefault(); // 세로 스크롤 막기
+        }
+
+        if (Math.abs(moveX) > 30) {
+            const moveStep = Math.floor(Math.abs(moveX) / 30); // 이동 거리에 따라 여러 step 계산
+
+            if (moveX > 0 && currentStartIndex > 0) {
+                currentStartIndex = Math.max(0, currentStartIndex - moveStep);
+            } else if (moveX < 0 && currentStartIndex < dates.length - 7) {
+                currentStartIndex = Math.min(dates.length - 7, currentStartIndex + moveStep);
+            }
+
+            weightChart.options.scales.x.min = dates[currentStartIndex];
+            weightChart.options.scales.x.max = dates[currentStartIndex + 6];
+            weightChart.update({ duration: 0 }); 
+
+            touchStartX = currentX; // 기준점 업데이트
+        }
+    }, { passive: false }); 
+
+    chartContainer.addEventListener("touchend", (e) => {
+        isDragging = false;
+
+        if (e.changedTouches.length === 1) {
+            const touch = e.changedTouches[0];
+            const touchEndX = touch.clientX;
+            const touchEndY = touch.clientY;
+
+            const diffX = Math.abs(touchEndX - touchStartX);
+            if (diffX < 10) {
+                const rect = ctx.canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+
+                const fakeEvent = {
+                    type: 'touchend',
+                    chart: weightChart,
+                    native: e,
+                    x,
+                    y
+                };
+
+                const elements = weightChart.getElementsAtEventForMode(
+                    fakeEvent,
+                    'index',              
+                    { intersect: false }, 
+                    true
+                );
+
+                if (elements.length > 0) {
+                    const index = elements[0].index;
+                    const weight = weightChart.data.datasets[0].data[index];
+                    const date = weightChart.data.labels[index];
+
+                    if (weight && date) {
+                        updateWeightReportData(date, weight);
+                        selectedIndex = index;
+                        weightChart.update();  
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+// =========================================================== API ===========================================================
+
+export function getKcalSummary(start_date, end_date) {
+    const params = new URLSearchParams({
+        start_date: start_date,
+        end_date: end_date
+    });
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/daily-summary/kcals?${params.toString()}`,
+        contentType: "application/json",
+    });
+}
