@@ -316,6 +316,14 @@ export function updateUserRole(userId, requestDto) {
     })
 }
 
+export function getAdminInfo() {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/me`,
+        contentType: "application/json",
+    })
+}   
+
 // ================  PtMember API ================
 
 export function createPtMember(ptMemberData) {
