@@ -1,3 +1,5 @@
+import { showPopup } from '../components/popup.js'
+
 export function setupAjaxAuthInterceptor() {
     let isErrorHandled = false; //에러 1회 발생 시, 다른  아작스는 에러로 넘어가지 않도록
 
@@ -6,6 +8,7 @@ export function setupAjaxAuthInterceptor() {
             withCredentials: true
         },
         beforeSend: function (xhr) { 
+            console.log("Interceptor");
             const accessToken = localStorage.getItem("Authorization");
             if (accessToken) {
                 xhr.setRequestHeader("Authorization", accessToken);
@@ -27,8 +30,15 @@ export function setupAjaxAuthInterceptor() {
         
             // 인증 정보 에러
             if (errorResponse?.errorType === "NOT_FOUND_AUTHENTICATION_INFO" || errorResponse?.errorType === "MISSING_REFRESH_TOKEN") {
-                alert("인증 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
-                redirectToLogin();
+                showPopup("#main", 3, "로그인해주세요.", "").then((confirmed) => {
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, "로그인해주세요.", "").then((confirmed) => {
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "로그인해주세요.", "").then((confirmed) => {
+                    redirectToLogin();
+                });
             }
         
             // JWT 관련 에러
@@ -51,6 +61,12 @@ export function setupAjaxAuthInterceptor() {
                 }
             }
         
+            // 로그인 필요
+            else if (errorResponse?.errorType === "ALREADY_LOGGED_OUT") {
+                clearAuthTokensAndRedirect();
+                redirectToLogin();
+            }
+        
             // 권한 에러
             else if (errorResponse?.errorType === "NOT_AVAILABLE_PERMISSION") {
                 alert("권한이 없습니다.");
@@ -65,11 +81,18 @@ export function setupAjaxAuthInterceptor() {
             } else if (errorResponse?.errorType === "ALREADY_EXISTS_EMAIL") {
                 alert("이미 존재하는 이메일입니다.");
             }
+
+            // 유저 스탯 관련 에러
+            else if (errorResponse?.errorType === "NOT_FOUND_USER_STAT") {
+                alert("유저 스탯이 존재하지 않습니다.");
+                redirectToLogin();
+            }
         
             // 기타 알 수 없는 에러
             else {
                 console.error("⚠️ 에러:", errorResponse);
                 alert(errorResponse?.message || "알 수 없는 에러가 발생했습니다.");
+                redirectToLogin();
             }
         
             function redirectToLogin() {

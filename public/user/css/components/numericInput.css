@@ -1,0 +1,174 @@
+#numericInput {
+    position: fixed;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100%;
+    overflow: hidden;
+    background-color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+#numericInput #headerNavNumeric {
+  margin-bottom: 54px;
+}
+
+#numericInput #headerNavNumeric .header-nav-numeric{
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  padding: 16px clamp(12.8px, 4.26vw, 21.33px);
+  box-sizing: border-box;
+  border-bottom: 1px solid #F0F0F0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--white300);
+  z-index: 12;
+  max-width: 500px;
+  margin: 0 auto !important;
+}
+
+
+#headerNavNumeric .header-nav-numeric .title {
+  font-size: clamp(12.8px, 2.935vw + 3.995px, 18.67px);
+  font-weight: 500;
+  color: var(--black100);
+}
+
+#headerNavNumeric .header-nav-numeric .button-prev-header {
+  display: flex;
+  cursor: pointer;
+}
+
+#headerNavNumeric .header-nav-numeric .button-prev-header img {
+  width: 20px;
+  height: 20px;
+}
+
+#headerNavNumeric .header-nav-numeric .button-add {
+  display: flex;
+  cursor: pointer;
+}
+
+#headerNavNumeric .header-nav-numeric .button-add img {
+  width: 22px;
+  height: 22px;
+}
+
+#headerNavNumeric .header-nav-numeric .hidden {
+  visibility: hidden;
+}
+
+
+
+#numericInput #inputArea {
+  flex : 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#numericInput #inputArea .value-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  /* height: 100%; */
+}
+
+
+#numericInput #inputArea .input-value {
+  font-size: clamp(40px, 13.2vw, 66px);
+  font-weight: 800;
+  /* color : var(--gray100); */
+  color: var(--black100);
+}
+
+#numericInput #inputArea .input-value.placeholder {
+  /* font-size: clamp(40px, 13.2vw, 66px);
+  font-weight: 800; */
+  color : var(--gray100);
+  /* color: var(--black100); */
+}
+
+#numericInput #inputArea .input-unit {
+  font-size: clamp(20.6px, 6.93vw, 34px);
+  font-weight: 400;
+  color: var(--black100);
+  margin-bottom: clamp(6px, 2vw, 8px);
+  margin-left: 8px;
+}
+
+#numericInput #inputArea .value-wrapper.error .input-value,
+#numericInput #inputArea .value-wrapper.error .input-unit {
+    color: red;
+}
+#numericInput #typingArea {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin-bottom: 40px;
+  padding : 0 clamp(12.8px, 4.26vw, 21.33px);
+  touch-action: manipulation;
+}
+
+#numericInput #typingArea .key-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+#numericInput #typingArea .key-row .number{
+  width: 100%;
+  text-align: center;
+  padding: clamp(11.2px, 3.8vw, 19px) 0;
+  font-size: clamp(19.2px, 6.4vw, 32px);
+  border-radius: clamp(12.8px, 4.26vw, 21.33px);;
+  font-weight: 400;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#numericInput #buttonArea {
+    opacity: 1;
+    z-index: 992;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 clamp(12.8px, 4.264vw, 21.33px);
+    max-width: 500px;
+    margin-bottom: 40px;
+}
+
+#numericInput #buttonArea .record-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    font-weight: 500;
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+}
+
+#numericInput #buttonArea .record-button.active {
+  color: var(--white300);
+  background-color: var(--red500);
+  cursor: pointer;
+}
+
+#numericInput #buttonArea .record-button.disabled {
+  background-color: var(--gray100);
+  color: var(--white300);
+  pointer-events: none;
+}
+
+@media (min-width: 500px) {
+  #numericInput {
+    width: 500px;
+  }
+}

@@ -26,7 +26,7 @@ const navMap = {
 };
 
 // 뷰 전환 함수
-export function showPage(path, isFromAddFavoriteFood) {
+export function showPage(path, isFromAddFavoriteFood, isFromNumericInput) {
     const parts = path.split('/');
     if (path.startsWith('/main')) {
         if (!window.mainHistoryStack) window.mainHistoryStack = ['/main'];
@@ -75,7 +75,7 @@ export function showPage(path, isFromAddFavoriteFood) {
         const parts = path.split('/');
         const subpath = parts[2];
         const detailId = parts[3];
-        showMyPage(subpath, detailId);
+        showMyPage(subpath, detailId, isFromNumericInput);
     }
 
     updateNavActive(path);
