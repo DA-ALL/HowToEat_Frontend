@@ -188,19 +188,23 @@ export function showMyPage(subpath = null, detailId = null, isFromNumericInput =
 
     if (subpath === 'notice') {
         if (detailId) {
-            // /users/notice/4 같은 경우
-            $('#usersNoticeDetail').html(renderUsersNoticeDetail(detailId));
-            initHeaderNav($('#usersNoticeDetail'));
+            // /users/notice/4
+            renderUsersNoticeDetail(function(html) {
+                $('#usersNoticeDetail').html(html);
+                initHeaderNav($('#usersNoticeDetail'));
+                $('html, body').scrollTop(0);
+            });
             $('#usersNoticeDetail').show();
         } else {
             // /users/notice
+            $('#usersNoticeDetail').html('');
+            
             if ($('#noticeListContainer').children().length === 0) {
-                let id = 4;
-                let type = "업데이트";
-                let title = "하잇앱이 신규 업데이트 되었어요";
-                let date = "2025.04.32";
-                $("#noticeListContainer").append(renderUsersNotice(id, type, title, date));
-                initHeaderNav($('#usersNotice'));
+                renderUsersNotice(function(html) {
+                    $('#noticeListContainer').html(html);
+                    initHeaderNav($('#usersNotice'));
+                    $('html, body').scrollTop(0);
+                });
             }
                 $('#usersNotice').show();
         }
