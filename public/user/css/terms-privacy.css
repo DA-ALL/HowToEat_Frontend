@@ -1,0 +1,12 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#termsPrivacy {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    background: #f8f8f8;
+}
