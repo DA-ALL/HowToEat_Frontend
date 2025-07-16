@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  DOCKER_IMAGE_FRONTEND: jay1261/front
+  DOCKER_IMAGE_FRONTEND: jay1261/howtoeat-front
 
 jobs:
   deploy:
@@ -39,9 +39,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            docker-compose pull frontend
             docker-compose stop frontend
             docker-compose rm -f frontend
-            docker rmi jay1261/howtoeat-front:latest  # (옵션: 최신 pull 강제할 때만)
-            docker-compose pull frontend
             docker-compose up -d frontend
             docker image prune -f
