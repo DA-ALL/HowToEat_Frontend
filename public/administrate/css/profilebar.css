@@ -37,7 +37,46 @@
     font-size: 12px;
     font-weight: 400;
 }
+
 #profilebar .profile-wrapper .button-profile { 
     width: 18px;
     height: 18px;
+}
+
+#profilebar .profile-wrapper .button-wrapper {
+    display: flex;
+    cursor: pointer;
+    position: relative;
+}
+
+#profilebar .dropdown-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 120%;
+    right: -10px;
+    background-color: white;
+    border-radius: 13px;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.27);
+    z-index: 1000;
+    padding: 10px 16px;
+    gap: 10px;
+}
+
+#profilebar .dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black100);
+    background-color: white;
+    width: 140px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 16px;
+    padding: 10px 0px;
+    cursor: pointer;
+}
+
+#profilebar .dropdown-menu .dropdown-item:hover{
+    background-color: var(--red50);
 }
