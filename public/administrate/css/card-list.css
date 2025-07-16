@@ -1,0 +1,86 @@
+#cardList {
+    display: flex;
+    padding: 0px 30px;
+    gap: 30px;
+}
+
+#cardList #cardItem{
+    display: flex;
+    width: 232px;
+    border-radius: 14px;
+    padding: 16px;
+    position: relative;
+    background-color: white;
+    box-shadow: 6px 6px 54px 0px rgba(0, 0, 0, 0.05);
+}
+#cardList #cardItem .icon-card img{
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+#cardList #cardItem .card-content-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+#cardList #cardItem .card-content-wrapper .title-card{
+    color: var(--gray500);
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 14px;
+}
+
+#cardList #cardItem .card-content-wrapper .value-card{
+    color: var(--black100);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 38px;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper.trend{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: visible;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .icon-trending {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .icon-trending img{
+    width: 24px;
+    height: 24px;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .trend-difference-value{
+    color: #F24545;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .trend-difference-unit{
+    color: #F24545;
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+#cardList #cardItem .card-content-wrapper .trend-difference-wrapper .trend-difference-comparison{
+    color: #12163C;
+    font-size: 16px;
+    font-weight: 600;
+}

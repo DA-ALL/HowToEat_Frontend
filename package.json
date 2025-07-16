@@ -1,0 +1,22 @@
+{
+  "name": "howtoeat_frontend",
+  "version": "1.0.0",
+  "description": "howToEat FE server",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.3",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  },
+  "dependencies": {
+    "chartjs-plugin-annotation": "^3.1.0",
+    "browser-image-compression": "^2.0.2"
+  }
+}

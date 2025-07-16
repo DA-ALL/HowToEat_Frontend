@@ -1,0 +1,141 @@
+
+@media (min-width: 500px) {
+    .button-container {
+        max-width: 500px;
+        margin: 0 auto !important;
+    }
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(12px, 3.2vw, 16px);
+}
+
+.alert-button-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.alert-button-container .next-button {
+    display: flex;
+    justify-content: center;
+    font-size: clamp(16px, 3.2vw + 4px, 20px);
+    color: var(--white300);
+    width: 100%;
+    font-weight: 500;
+    border-radius: 16px;
+    padding: clamp(13px, 2.4vw + 4px, 16px) 0;
+    background-color: var(--red500);
+    cursor: pointer;
+}
+
+.alert-button-container .cancel-button {
+    display: flex;
+    justify-content: center;
+    font-size: clamp(16px, 3.2vw + 4px, 20px);
+    color: var(--white300);
+    width: 100%;
+    font-weight: 500;
+    padding: clamp(13px, 2.4vw, 16px) 0;
+    border-radius: 16px;
+    background-color: var(--gray200);
+    cursor: pointer;
+}
+
+.button-container {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 clamp(12.8px, 4.264vw, 21.33px);
+}
+
+.button-container.bottom {
+    bottom: 20px;
+    position: absolute;
+}
+
+.button-container.meal-search {
+    position: fixed;
+    bottom: clamp(70.8px, 17.6vw + 18px, 106px); /* 화면 하단 기준 위치 */
+    left: 50%;
+    transform: translate(-50%, 0); /* 좌우 가운데 정렬 + translateY(0%) 유지 */
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 992;
+  }
+  
+  /* 숨김 시 translateY로 아래로 내려가게 */
+  .button-container.meal-search.hidden {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+    pointer-events: auto;
+  }  
+  
+
+.button-container.meal-favorite {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    bottom: clamp(70.8px, 17.6vw + 18px, 106px); /* 화면 하단 기준 위치 */
+    left: 50%;
+    transform: translate(-50%, 0); /* 좌우 가운데 정렬 + translateY(0%) 유지 */
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 992;
+  }
+  
+  /* 숨김 시 translateY로 아래로 내려가게 */
+  .button-container.meal-favorite.hidden {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+    pointer-events: auto;
+  }    
+  
+
+.button-container .next-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    font-weight: 500;
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+}
+
+
+.button-container .button-format {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: clamp(12.8px, 4.27vw, 21.33px);
+    font-weight: 500;
+    padding: clamp(14.4px, 4.8vw, 24px) 0;
+    border-radius: clamp(6.4px, 1.0667vw + 2.2px, 10.67px);
+}
+
+.button-container .active {
+    color: var(--white300);
+    background-color: var(--red500);
+    cursor: pointer;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.25);
+}
+
+
+.button-container .next-button.disabled {
+    background-color: var(--gray100);
+    color: var(--white300);
+    pointer-events: none;
+}
+
+.button-container .next-button.active {
+    color: var(--white300);
+    background-color: var(--red500);
+    cursor: pointer;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.25);
+}
+
+.button-container .next-button.signup {
+    color: var(--white300);
+    background: var(--color_01, linear-gradient(269deg, #ED7777 0%, #E386B3 71.52%, #D896EF 103.66%));
+}

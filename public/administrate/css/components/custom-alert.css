@@ -1,0 +1,108 @@
+#customAlert {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); 
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#customAlert .alert-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 49px 60px;
+    background-color: var(--white300);
+    border-radius: 16px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#customAlert .alert-wrapper .alert-image{
+    width: 60px;
+    height: 60px;
+    background-color: var(--red500);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#customAlert .alert-wrapper .alert-image img{
+    width: 30px;
+    height: 30px;
+}
+
+#customAlert .alert-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#customAlert .alert-text-wrapper .alert-text-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--black100);
+    text-align: center;
+}
+
+#customAlert .alert-text-wrapper .alert-text-sub {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--gray400);
+}
+
+#customAlert .alert-text-wrapper .alert-text-point {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--red500);
+}
+
+#customAlert .alert-wrapper .alert-button-wrapper .alert-button-one-ok{
+    width: 100%;
+    color: var(--white300);
+    background-color: var(--red500);
+    padding: 12px 98px;
+    border-radius: 8px;
+}
+
+#customAlert .alert-wrapper .alert-button-wrapper .alert-button-ok{
+    width: 100%;
+    color: var(--white300);
+    background-color: var(--red500);
+    padding: 11px 50px;
+    border-radius: 8px;
+}
+
+#customAlert .alert-wrapper .alert-button-wrapper .alert-button-cancel{
+    width: 100%;
+    background-color: var(--gray100);
+    padding: 12px 0px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white300);
+    text-align: center;
+}
+
+
+#customAlert .alert-wrapper .alert-button-wrapper .alert-button-delete{
+    width: 100%;
+    background-color: var(--red500);
+    padding: 12px 0px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white300);
+    text-align: center;
+}

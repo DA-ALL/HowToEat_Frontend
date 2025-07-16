@@ -1,0 +1,190 @@
+
+#userInfo {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white300);
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+
+
+
+/* 뒤로가기 bar */
+#userInfo .nav-top {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 73px;
+    border-bottom: 1px solid #E7E7E7;
+}
+
+#userInfo .nav-top .back-button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    margin-left: 40px;
+}
+
+#userInfo .nav-top .back-button-wrapper .icon-back {
+    width: 15px;
+    height: 15px;
+}
+
+#userInfo .nav-top .back-button-wrapper .icon-back img{
+    width: 15px;
+    height: 15px;
+}
+
+#userInfo .nav-top .back-button-wrapper .label-back {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+
+
+
+
+/* 유저 정보 메인 */
+#userInfo .user-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 1520px;
+    gap: 80px;
+    padding: 80px 0px;
+}
+
+#userInfo .user-info-container .user-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 33px;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 200px;
+    overflow: hidden;
+}
+#userInfo .user-info-container .user-info-wrapper .user-profile-image img{
+    width: 150px;
+    height: 150px;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-name {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-meta-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: var(--gray500);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-meta-wrapper .divider {
+    width: 1px;
+    height: 15px;
+    background-color: #D9D9D9;
+}
+
+
+
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper {
+    display: flex;
+    width: 498px;
+    align-items: center;
+    justify-content: center;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper .divider{
+    width: 0.5px;
+    height: 21px;
+    background-color: #D9D9D9;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper .text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper .text-wrapper .value{
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--red500);
+}
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper .text-wrapper .label{
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gray500);
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper .streak-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper .streak-wrapper .value{
+    font-size: 23px;
+    font-weight: 700;
+    /* 그라디언트 */
+    background: linear-gradient(45deg, #F7BEFC, #F95E55);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#userInfo .user-info-container .user-info-wrapper .user-goal-wrapper .streak-wrapper .label{
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gray500);
+}
+
+
+/* userInfo Table */
+#userInfo #userInfoTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 100%;
+}
+
+#userInfo #userInfoTable table{
+    width: 100%;
+    border-spacing: 0px;
+}
+
+
+/* dailyCalorie Table */
+#userInfo #dailyCalorieTable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 100%;
+}
+
+#userInfo #dailyCalorieTable table{
+    width: 100%;
+    border-spacing: 0px;
+}
