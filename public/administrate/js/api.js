@@ -324,6 +324,14 @@ export function getAdminInfo() {
     })
 }   
 
+export function adminLogout() {
+    return $.ajax({
+        type: "POST",
+        url: `${window.DOMAIN_URL}/admin/logout`,
+        contentType: "application/json",
+    })
+}
+
 // ================  PtMember API ================
 
 export function createPtMember(ptMemberData) {

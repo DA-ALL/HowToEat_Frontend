@@ -1,4 +1,4 @@
-import { getAdminInfo } from './api.js';
+import { getAdminInfo, adminLogout } from './api.js';
 
 $(document).ready(function() {
     initProfileBar();
@@ -12,6 +12,17 @@ async function initProfileBar() {
         }
     } catch (error) {
         console.error('Error initializing profile bar:', error);
+    }
+}
+
+async function logout() {
+    try {
+        await adminLogout();
+        // 로그아웃 성공 시 처리
+        window.location.replace('/admin/login');
+        localStorage.removeItem('Authorization');
+    } catch (error) {
+        console.error('Error logging out:', error);
     }
 }
 
@@ -51,4 +62,10 @@ function updateProfileBar({ name, userRole, profileImageUrl }) {
             $('.dropdown-menu').removeClass('open').css('display', 'none');
         }
     }); 
+
+    // 로그아웃 클릭 이벤트 등록
+    $('#Logout').on('click', function () {
+        logout();
+    });
 }
+
