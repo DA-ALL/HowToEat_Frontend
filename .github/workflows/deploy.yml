@@ -26,7 +26,7 @@ jobs:
 
       - name: make url.js
         run: |
-          echo 'window.DOMAIN_URL="http://localhost:8080"' > public/user/js/utils/url.js
+          echo 'window.DOMAIN_URL="https://howtoeat.ai.kr/api"' > public/user/js/utils/url.js
         shell: bash
 
       - name: Build & push frontend image
@@ -46,6 +46,8 @@ jobs:
           script: |
             docker-compose pull frontend
             docker-compose stop frontend
+            docker-compose stop nginx
             docker-compose rm -f frontend
             docker-compose up -d frontend
+            docker-compose up -d nginx
             docker image prune -f
