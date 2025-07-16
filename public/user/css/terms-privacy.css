@@ -10,3 +10,49 @@ html, body {
     justify-content: center;
     background: #f8f8f8;
 }
+
+#termsPrivacy #terms .terms-container {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.26vw, 21.33px);
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .icon-check{
+    display: flex;
+}
+
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .icon-check img{
+    width: 26px;
+    height: 26px;
+}
+
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .all-title {
+    font-size: 18px;
+    color: var(--black100);
+    font-weight: 600;
+}
+
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-subtitle {
+    font-size: 15px;
+    margin-left: 34px;
+    color: var(--gray400);
+    font-weight: 400;
+}

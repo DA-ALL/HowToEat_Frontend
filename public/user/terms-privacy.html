@@ -9,7 +9,8 @@
 
     <link rel="stylesheet" href="/user/css/main.css">
     <link rel="stylesheet" href="/user/css/terms-privacy.css">
-    
+
+    <script type="module" src="/user/js/terms-privacy/terms-privacy.js" defer></script>
 
     <script type="module" src="/user/js/utils/auth-interceptor.js"  defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -19,10 +20,35 @@
     <div id="termsPrivacy">
         <div class="root-container">
             <div id="terms">
-               
+                <div id="headerNav" data-title="이용약관 동의" data-type="2"></div>
+
+                <div class="terms-container">
+                    <!-- 전체 동의하기 영역-->
+                    <div class="agreement-all-wrapper">
+                        <div class="agreement-wrapper">
+                            <div id="allBtn" class="icon-check">
+                                <img src="/user/images/icon_check.png">
+                            </div>
+                            <div class="agreement-title all-title">전체 동의하기</div>
+                        </div>
+                        <div class="agreement-subtitle">
+                            <!-- Howtoeat 서비스 이용약관 및 개인정보처리방침(필수)에 동의합니다.</br> -->
+                            본 약관과 방침에는 서비스 이용에 필요한 권리와 의무, 개인정보의 수집 및 이용 목적과 보유 기간에 대한 내용이 포함되어 있습니다.
+                        </div>
+                    </div>
+
+                    <!-- 전체 동의하기 영역-->
+
+                </div>
             </div>
         </div>
     </div>
     
 </body>
+
+
+<script>
+
+
+</script>
 </html>
