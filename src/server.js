@@ -22,6 +22,10 @@ app.get('/signup-complete', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'signup-complete.html'));
 });
 
+app.get('/signup/terms-privacy', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/user', 'terms-privacy.html'));
+});
+
 app.get('/admin/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'loginPage.html'));
 });
