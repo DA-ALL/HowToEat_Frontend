@@ -30,6 +30,7 @@
     color: var(--balck100);
     font-size: 14px;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 #profilebar .profile-wrapper .profile-text-wrapper .label-role{ 
