@@ -15,8 +15,10 @@ html, body {
     display: flex;
     flex-direction: column;
     padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.26vw, 21.33px);
+    gap: 40px;
 }
 
+/* 전체 동의하기 영역 */
 #termsPrivacy #terms .terms-container .agreement-all-wrapper {
     display: flex;
     flex-direction: column;
@@ -43,7 +45,7 @@ html, body {
 }
 
 
-#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .all-title {
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .agreement-title-all {
     font-size: 18px;
     color: var(--black100);
     font-weight: 600;
@@ -55,4 +57,75 @@ html, body {
     margin-left: 34px;
     color: var(--gray400);
     font-weight: 400;
+}
+
+/* 이용약관 영역 */
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .title-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .title-wrapper .agreement-title {
+    font-size: 16px;
+    color: var(--black100);
+    font-weight: 600;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .agreement-wrapper .title-wrapper .required {
+    font-size: 14px;
+    color: var(--red500);
+    font-weight: 600;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box {
+    overflow: auto;
+    box-sizing: border-box;
+    max-height: 400px;
+    margin: 9px 0 0 32px;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #d6d6d6;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--black100);
+    margin-bottom: 8px;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-title.margin-top {
+    margin-top: 30px;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-content {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray400);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-content-sub {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray400);
+    margin-bottom: 5px;
+    line-height: 1.4;
+    margin-left: 20px;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-content-sub.last {
+    margin-bottom: 14px;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-content-sub-des {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray400);
+    margin-bottom: 5px;
+    line-height: 1.4;
+    margin-left: 20px;
 }
