@@ -24,6 +24,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - name: make url.js
+        run: |
+          echo 'window.DOMAIN_URL="http://localhost:8080"' > public/user/js/utils/url.js
+        shell: bash
+
       - name: Build & push frontend image
         uses: docker/build-push-action@v5
         with:
