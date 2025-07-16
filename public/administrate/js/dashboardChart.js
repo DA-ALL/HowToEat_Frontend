@@ -63,9 +63,7 @@ async function initChart() {
     const chartWrapper = document.querySelector(".chart-wrapper");
     let isDragging = false;
     let startX;
-    let currentStartIndex = 23;
-
-
+    
     const datas = await generateLast30Days();
     const { dates, values } = datas.reduce(
     (acc, item) => {
@@ -75,6 +73,10 @@ async function initChart() {
     },
     { dates: [], values: [] }
     );
+
+    let currentStartIndex = Math.max(0, dates.length - 7);
+    dates.push('');         // 우측 여백용
+    values.push(null);      // null로 포인트 숨김
 
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
@@ -112,8 +114,8 @@ async function initChart() {
                         padding: 30
                     },
                     grid: { display: false },
-                    min: dates[23],
-                    max: dates[30]
+                    min: dates[currentStartIndex + 1],
+                    max: dates[currentStartIndex + 7]
                 },
                 y: {
                     ticks: {
