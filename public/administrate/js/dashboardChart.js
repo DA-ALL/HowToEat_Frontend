@@ -124,7 +124,8 @@ async function initChart() {
                         maxTicksLimit: 5,
                         padding: 50,
                     },
-                    suggestedMax: Math.max(...values) * 2,
+                    min: 0,
+                    suggestedMax: Math.ceil(Math.max(...values) * 1.5),
                     grid: { color: 'rgba(200, 200, 200, 0.5)' },
                     border: { display: false }
                 }
