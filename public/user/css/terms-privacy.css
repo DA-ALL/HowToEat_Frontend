@@ -82,7 +82,7 @@ html, body {
 #termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box {
     overflow: auto;
     box-sizing: border-box;
-    max-height: 400px;
+    max-height: 300px;
     margin: 9px 0 0 32px;
     padding: 15px;
     border-radius: 6px;
@@ -94,6 +94,17 @@ html, body {
     font-weight: 500;
     color: var(--black100);
     margin-bottom: 8px;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-subtitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black100);
+    margin-bottom: 8px;
+}
+
+#termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-subtitle.margin-top {
+    margin-top: 30px;
 }
 
 #termsPrivacy #terms .terms-container .agreement-all-wrapper .terms-box .article-title.margin-top {
