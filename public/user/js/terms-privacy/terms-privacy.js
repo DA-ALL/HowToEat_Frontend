@@ -1,20 +1,5 @@
 import { initHeaderNav } from '../components/header-nav.js';
 
-let surveyData = {
-    email: '',
-    name: '',
-    birthYear: '',
-    birthMonth: '',
-    birthDay: '',
-    height: '',
-    weight: '',
-    gender: '',
-    goal: '',
-    activity: '',
-    isNextGym: '',
-    termsAgreedAt:'',
-    privacyAgreedAt:''
-};
 
 $(document).ready(function () {
     initHeaderNav($('#terms'));
@@ -28,7 +13,7 @@ $(document).ready(function () {
     const birthDay = user.birthday?.split('-')[1] || '';
 
     // surveyData 초기화
-    surveyData = {
+    let surveyData = {
         email: user.email || '',
         name: user.name || '',
         birthYear: user.birthyear || '',
@@ -42,6 +27,8 @@ $(document).ready(function () {
         isNextGym: '',
         signupProvider: user.signup_provider || '',
         profileImageUrl: user.profile_image_url || '',
+        termsAgreedAt:'',
+        privacyAgreedAt:''
     };
 
     localStorage.setItem('surveyData', JSON.stringify(surveyData));
@@ -100,3 +87,23 @@ function getPayloadFromToken(token) {
         return null;
     }
 }
+
+$('#agreeButton').on('click', function () {
+    if ($(this).hasClass('disabled')) {
+        return; // 동의하지 않은 상태면 아무 것도 안함
+    }
+
+    // 현재 날짜/시간 ISO 포맷
+    const now = new Date().toISOString();
+
+    // surveyData 불러오기
+    let surveyData = JSON.parse(localStorage.getItem('surveyData') || '{}');
+
+    // 값 넣기
+    surveyData.termsAgreedAt = now;
+    surveyData.privacyAgreedAt = now;
+
+    // 다시 저장
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
+    window.location.href = '/survey'
+});

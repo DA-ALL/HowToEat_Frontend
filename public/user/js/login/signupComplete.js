@@ -8,6 +8,8 @@ $(document).ready(function () {
         success: function (res) {
             const userBasicInfo = res.data;
             window.targetKcal = userBasicInfo.targetKcal;
+            window.name = userBasicInfo.name;
+            console.log(res);
         },
     });
     showWelcomeMessage();
@@ -24,18 +26,19 @@ function showWelcomeMessage() {
 }
 
 function showGoalMessage() {
+    let name = window.name;
     $(".welcome-text").fadeOut(1000, function () {
-        $(this).replaceWith(createGoalMessage());
+        $(this).replaceWith(createGoalMessage(name));
         $(".goal-text-container").hide().fadeIn(2000, animateKcalCounter);
     });
 }
 
 const createWelcomeMessage = () => `<div class="welcome-text">환영합니다</div>`;
 
-const createGoalMessage = () => `
+const createGoalMessage = (name) => `
     <div class="goal-text-container">
         <div class="goal-text-wrapper">
-            <div class="goal-text-name">김예현</div>
+            <div class="goal-text-name">${name}</div>
             <div class="goal-text">님의 목표 달성을 위해선</div>
         </div>
         <div class="goal-kcal-wrapper"></div>
