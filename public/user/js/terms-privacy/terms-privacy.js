@@ -1,12 +1,50 @@
 import { initHeaderNav } from '../components/header-nav.js';
 
-function renderTermsPrivacy() {
-    console.log("Test");
-}
+let surveyData = {
+    email: '',
+    name: '',
+    birthYear: '',
+    birthMonth: '',
+    birthDay: '',
+    height: '',
+    weight: '',
+    gender: '',
+    goal: '',
+    activity: '',
+    isNextGym: '',
+    termsAgreedAt:'',
+    privacyAgreedAt:''
+};
 
 $(document).ready(function () {
-    renderTermsPrivacy();
     initHeaderNav($('#terms'));
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const user = getPayloadFromToken(token);
+    console.log(user);
+    
+    // 생일이 "MM-DD" 형식이면 나눠서 넣기
+    const birthMonth = user.birthday?.split('-')[0] || '';
+    const birthDay = user.birthday?.split('-')[1] || '';
+
+    // surveyData 초기화
+    surveyData = {
+        email: user.email || '',
+        name: user.name || '',
+        birthYear: user.birthyear || '',
+        birthMonth,
+        birthDay,
+        height: user.height || '',
+        weight: user.weight || '',
+        gender: user.gender || '',
+        goal: '',
+        activity: '',
+        isNextGym: '',
+        signupProvider: user.signup_provider || '',
+        profileImageUrl: user.profile_image_url || '',
+    };
+
+    localStorage.setItem('surveyData', JSON.stringify(surveyData));
 
 
     function updateState() {
@@ -46,3 +84,19 @@ $(document).ready(function () {
         updateState();
     });
 });
+
+function getPayloadFromToken(token) {
+    try {
+        const base64Payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64Payload)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error('JWT 파싱 에러:', e);
+        return null;
+    }
+}
