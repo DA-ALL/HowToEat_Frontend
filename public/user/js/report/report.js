@@ -7,7 +7,6 @@ export function loadAndRenderKcalData() {
     getKcalSummary(startDate, endDate)
         .then((rawData) => {
             const filledData = fillMissingDates(rawData.data, 30);
-            console.log("칼로리 데이터:", rawData);
             // 객체 형태로 변환
             calorieData = {};
             filledData.forEach(item => {
@@ -208,7 +207,7 @@ let calorieChart; // Chart 인스턴스를 저장할 변수
 export function initCalorieChart(days = 7) {
     const { labels, data } = getRecentData(days);
     const goalData = data.map(item => item.target); // target만 추출
-    console.log("labels", labels);
+    
     const ctx = document.getElementById('calorieChart')?.getContext('2d');
     if (!ctx) {
         console.error('calorieChart element not found');
@@ -407,7 +406,6 @@ $(document).on('touchend', function () {
     const tooltip = document.getElementById('tooltip');
     
     if (tooltip) {
-        console.log("터치끝");
         tooltip.style.opacity = '0';  // 툴팁을 숨깁니다.
         tooltip.style.display = 'none';  // 툴팁을 아예 숨깁니다.
     }
@@ -432,7 +430,7 @@ function bindTouchEventsForChart() {
 
     $chart.off('touchend touchcancel').on('touchend touchcancel', function () {
         $('body').css('overflow', '');
-        document.body.removeEventListener('touchmove', preventScroll);
+        document.body.removeEventListener('touchmove', preventScroll, { passive: false });
     });
 };
 
@@ -440,7 +438,7 @@ function bindTouchEventsForChart() {
 
 let weightChart = null;
 
-async function generateRandomWeightData() {
+async function getWeightDatasByDates() {
     try {
         const response = await getWeightDatas();
         let dates = [], values = [];
@@ -471,9 +469,8 @@ function updateWeightReportData(date, weight) {
 export async function initWeightChart() {
     const ctx = document.getElementById('weightChart').getContext('2d');
     const chartContainer = document.querySelector("#weightReport .chart-container");
-    const { dates, values } = await generateRandomWeightData() || {};
+    const { dates, values } = await getWeightDatasByDates() || {};
 
-    
     let isDragging = false;
     let startX;
 
@@ -488,10 +485,6 @@ export async function initWeightChart() {
     let selectedIndex = dates.length - 2;
     updateWeightReportData(dates[selectedIndex], values[selectedIndex]);
 
-    // dates.unshift('');        // 좌측 여백용
-    // values.unshift(null);     // 포인트 숨김
-
-    console.log("몸무게 데이터:", dates, values);
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
     gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)");
