@@ -1,18 +1,10 @@
 import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
-$(document).ready(function () {
+$(document).ready(async function () {
     setupAjaxAuthInterceptor();
-    $.ajax({
-        type: "GET",
-        url: `${window.DOMAIN_URL}/users/basic-info`,
-        success: function (res) {
-            const userBasicInfo = res.data;
-            window.targetKcal = userBasicInfo.targetKcal;
-            window.name = userBasicInfo.name;
-            console.log(res);
-        },
-    });
-    showWelcomeMessage();
+
+    const data = await getUserBasicInfoData();
+    showWelcomeMessage(data);
     triggerConfettiEffect();
 
     $(".next-button.signup").on('click', function(){
@@ -20,16 +12,21 @@ $(document).ready(function () {
     });
 });
 
-function showWelcomeMessage() {
+function showWelcomeMessage(data) {
     $("#signupComplete").html(createWelcomeMessage());
-    setTimeout(showGoalMessage, 3000);
+    setTimeout(function () {
+        showGoalMessage(data);
+    }, 3000);
 }
 
-function showGoalMessage() {
-    let name = window.name;
+function showGoalMessage(data) {
+    let name = data.name;
     $(".welcome-text").fadeOut(1000, function () {
         $(this).replaceWith(createGoalMessage(name));
-        $(".goal-text-container").hide().fadeIn(2000, animateKcalCounter);
+        $(".goal-text-container").hide().fadeIn(2000, function () {
+            animateKcalCounter(data);
+        });
+        
     });
 }
 
@@ -46,8 +43,8 @@ const createGoalMessage = (name) => `
     </div>
 `;
 
-function animateKcalCounter() {
-    let targetValue = window.targetKcal, duration = 3000, startTime = performance.now();
+function animateKcalCounter(data) {
+    let targetValue = data.targetKcal, duration = 3000, startTime = performance.now();
 
     function easeOutExpo(t) {
         return t === 1 ? 1 : 1 - Math.pow(2, -15 * t);
@@ -137,4 +134,13 @@ function triggerConfettiEffect() {
         origin: { y: 0.55 },
         particleCount: 80
     });
+}
+
+async function getUserBasicInfoData() {
+    try {
+        const response = await $.ajax({ type: "GET", url: `${window.DOMAIN_URL}/users/basic-info`, contentType: "application/json"});
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
 }
