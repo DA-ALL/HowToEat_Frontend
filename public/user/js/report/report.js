@@ -73,44 +73,6 @@ function fillMissingDates(rawData, days = 30) {
 }
 
 
-
-
-
-
-// function generateRandomCalorieData() {
-//   const result = {};
-//   const today = new Date();
-
-//   for (let i = 0; i < 30; i++) {
-//     const date = new Date(today);
-//     date.setDate(today.getDate() - i);
-
-//     const yyyy = date.getFullYear();
-//     const mm = String(date.getMonth() + 1).padStart(2, '0');
-//     const dd = String(date.getDate()).padStart(2, '0');
-//     const dateStr = `${yyyy}-${mm}-${dd}`;
-    
-//     let consumed = 0;
-//     const target = Math.floor(Math.random() * 301) + 2200; // 2200 ~ 2500
-//     if(i%2 == 0){
-//         consumed = 0;
-//     } else {
-//         consumed = Math.floor(Math.random() * 401) + (target - 100); // target-100 ~ target+300
-//     }
-    
-    
-
-//     result[dateStr] = {
-//       consumed,
-//       target,
-//     };
-//   }
-
-//   return result;
-// }
-// // const calorieData = generateRandomCalorieData();
-// // console.log("calorieData", calorieData);
-
 export function renderReportPage() {
     return `
         <div class="user-name">하잇님</div>
@@ -199,19 +161,35 @@ function updateReportData(date, consumed, target) {
     const amountElement = document.querySelector('#mealReport .amount');
     const legendElement = document.querySelector('#mealReport .legend-label');
     const feedbackCommentElement = document.querySelector('#mealReport .feedback-comment');
+    const recommendWrapperElement = document.querySelector('#mealReport .recommend-wrapper');
 
     if (dateElement && amountElement) {
         const formattedDate = date.replaceAll('-', '.'); 
         dateElement.textContent = formattedDate;
         amountElement.textContent = consumed ? consumed.toLocaleString() : '0';
         legendElement.textContent = '목표 칼로리 ' + (target ? target.toLocaleString() : '0');
-
-        let feedbackComment = '';
-        if(consumed < target) {
-            feedbackCommentElement.textContent = '조금 더 드셔야 해요';
+        
+        const lowerBound = target * 0.95;
+        const upperBound = target * 1.05;
+        if (consumed === 0) {
+            feedbackCommentElement.textContent = '식사 기록이 없어요';
+            recommendWrapperElement.style.visibility = 'hidden';
+            recommendWrapperElement.style.pointerEvents = 'none';
+            return;
+        }
+        if (consumed < lowerBound) {
+            feedbackCommentElement.textContent = '조금 부족했어요. 간식을 챙겨볼까요?';
+            recommendWrapperElement.style.visibility = 'visible';
+            recommendWrapperElement.style.pointerEvents = 'auto';
+        } else if (consumed > upperBound) {
+            feedbackCommentElement.textContent = '조금 초과했지만, 조절해나가면 돼요';
+            recommendWrapperElement.style.visibility = 'hidden';
+            recommendWrapperElement.style.pointerEvents = 'none';
         } else {
-            feedbackCommentElement.textContent = '그만 드셔야 해요';
-        }        
+            feedbackCommentElement.textContent = '딱 알맞게 드셨어요. 좋아요!';
+            recommendWrapperElement.style.visibility = 'hidden';
+            recommendWrapperElement.style.pointerEvents = 'none';
+        }
     }
 }
 
@@ -462,23 +440,26 @@ function bindTouchEventsForChart() {
 
 let weightChart = null;
 
-function generateRandomWeightData() {
-    let dates = [], values = [];
-    let today = new Date();
-    for (let i = 100; i >= 0; i--) {
-        let pastDate = new Date();
-        pastDate.setDate(today.getDate() - i);
-        dates.push(pastDate.toISOString().split('T')[0]);
-        values.push(Math.floor(Math.random() * 100) + 1);
+async function generateRandomWeightData() {
+    try {
+        const response = await getWeightDatas();
+        let dates = [], values = [];
+        response.data.forEach(item => {
+            const date = item.createdAt;
+            const weight = item.weight;
+            dates.push(date);
+            values.push(weight);
+        });
+        return { dates, values };
+    } catch (error) {
+        console.error("몸무게 데이터 요청 실패:", error);
+        return { dates: [], values: [] };  // 기본값 반환
     }
-    return { dates, values };
 }
 
 function updateWeightReportData(date, weight) {
     const dateElement = document.querySelector('#weightReport .date');
     const amountElement = document.querySelector('#weightReport .amount');
-
-
 
     if (dateElement && amountElement) {
         const formattedDate = date.replaceAll('-', '.'); 
@@ -487,23 +468,30 @@ function updateWeightReportData(date, weight) {
     }
 }
 
-export function initWeightChart() {
+export async function initWeightChart() {
     const ctx = document.getElementById('weightChart').getContext('2d');
     const chartContainer = document.querySelector("#weightReport .chart-container");
-    const { dates, values } = generateRandomWeightData();
+    const { dates, values } = await generateRandomWeightData() || {};
 
+    
     let isDragging = false;
     let startX;
-    let currentStartIndex = Math.max(0, dates.length - 7);
-    let selectedIndex = dates.length-1;
+
+    dates.push('');         // 우측 여백용
+    values.push(null);      // null로 포인트 숨김
+
+    const totalLength = dates.length;
+    let currentStartIndex = Math.max(0, totalLength - 7);
+    let minDate = dates[currentStartIndex] ?? dates[0];         // fallback to first date
+    let maxDate = dates[totalLength - 1] ?? dates[dates.length - 1]; // fallback to last date
+
+    let selectedIndex = dates.length - 2;
     updateWeightReportData(dates[selectedIndex], values[selectedIndex]);
 
     // dates.unshift('');        // 좌측 여백용
     // values.unshift(null);     // 포인트 숨김
 
-    dates.push('');         // 우측 여백용
-    values.push(null);      // null로 포인트 숨김
-
+    console.log("몸무게 데이터:", dates, values);
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
     gradient.addColorStop(0.9, "rgba(255, 255, 255, 0.18)");
@@ -544,9 +532,9 @@ export function initWeightChart() {
                         display: false,
                     },
                     grid: { display: false, drawBorder: false },
-                    min: dates[currentStartIndex+1],
-                    max: dates[currentStartIndex + 7],
-                    // offset: true,
+                    min: minDate,//dates[currentStartIndex + 1],
+                    max: maxDate, //dates[currentStartIndex + 7],
+                    offset: totalLength == 2 ? true : false, // 데이터가 하나일 때만 좌우 여백 추가
                 },
                 y: {
                     beginAtZero: true,
@@ -668,4 +656,12 @@ export function getKcalSummary(start_date, end_date) {
         url: `${window.DOMAIN_URL}/daily-summary/kcals?${params.toString()}`,
         contentType: "application/json",
     });
+}
+
+export function getWeightDatas() {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/user-stats/weight`,
+        contentType: "application/json",
+    })
 }
