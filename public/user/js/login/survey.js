@@ -5,21 +5,9 @@ import { initHeaderNav } from '/user/js/components/header-nav.js';
 import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
 let currentPage = 1;
-let surveyData = {
-    email: '',
-    name: '',
-    birthYear: '',
-    birthMonth: '',
-    birthDay: '',
-    height: '',
-    weight: '',
-    gender: '',
-    goal: '',
-    activity: '',
-    isNextGym: ''
-};
-
 // 뒤로가기 이벤트 처리
+const surveyData = JSON.parse(localStorage.getItem('surveyData'));
+
 window.onpopstate = function (event) {
     if (event.state && event.state.page) {
         currentPage = event.state.page;
@@ -31,31 +19,6 @@ $(document).ready(function () {
     setupAjaxAuthInterceptor();
     const urlParams = new URLSearchParams(window.location.search);
     const savedPage = parseInt(urlParams.get('page')) || 1;
-    const token = urlParams.get("token");
-    const user = getPayloadFromToken(token);
-
-    // 생일이 "MM-DD" 형식이면 나눠서 넣기
-    const birthMonth = user.birthday?.split('-')[0] || '';
-    const birthDay = user.birthday?.split('-')[1] || '';
-
-    // surveyData 초기화
-    surveyData = {
-        email: user.email || '',
-        name: user.name || '',
-        birthYear: user.birthyear || '',
-        birthMonth,
-        birthDay,
-        height: user.height || '',
-        weight: user.weight || '',
-        gender: user.gender || '',
-        goal: '',
-        activity: '',
-        isNextGym: '',
-        signupProvider: user.signup_provider || '',
-        profileImageUrl: user.profile_image_url || '',
-    };
-
-    localStorage.setItem('surveyData', JSON.stringify(surveyData));
 
     currentPage = savedPage;
     initHeaderNav();
