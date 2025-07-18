@@ -1,7 +1,7 @@
 import { renderMealDetail, renderMealListHTML } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
-import { renderReportPage, initCalorieChart, initWeightChart, loadAndRenderKcalData } from '../report/report.js';
+import { renderReportPage, initReportPage } from '../report/report.js';
 import { renderConsumedFoodInfo } from '../main/consumedFood.js';
 import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
@@ -111,10 +111,10 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
 
     // 리포트, 마이페이지 캐싱 (기존 유지)
 
-    if ($('#reportPage').children().length === 0) {
+    // if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
-        loadAndRenderKcalData();
-    }
+        initReportPage();
+    // }
     if ($('#myPage').children().length === 0) {
         $("#myPage").html(renderMyPage());
     }
@@ -147,12 +147,10 @@ export function showReport() {
 
 
     //리포트 페이지
-    if ($('#reportPage').children().length === 0) {
+    // if ($('#reportPage').children().length === 0) {
         $("#reportPage").html(renderReportPage());
-        initCalorieChart();
-        initWeightChart();
-        loadAndRenderKcalData();
-    }
+        initReportPage();
+    // }
 
 
 }
