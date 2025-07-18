@@ -1,6 +1,84 @@
 let calorieData = {}; // 최종 데이터 저장용
 
-export function loadAndRenderKcalData() {
+export function renderReportPage() {
+    return `
+        <div class="user-name">하잇님</div>
+        <div class="toggle-report-wrapper">
+            <div class="toggle-meal-report toggle-report active">식사기록</div>
+            <div class="toggle-weight-report toggle-report">몸무게</div>
+        </div>
+
+        <div id="mealReport">
+            <div class="date">2025.04.30</div>
+            <div class="amount-wrapper">
+                <div class="amount">1,652</div>
+                <div class="unit">kcal</div>
+            </div>
+            <div class="feedback-comment">조금 더 드셔야 해요</div>
+            <div class="recommend-wrapper">
+                <div class="recommend-food">추천음식 보러가기</div>
+                <div class="icon">
+                    <img src="/user/images/icon_arrow_red.png">
+                </div>
+            </div>
+            <div class="period-button-wrapper">
+                <div class="period-button active">1주</div>
+                <div class="period-button">1달</div>
+            </div>
+
+            <div class="legend-wrapper">
+                <div class="legend-box"></div>
+                <div class="legend-label">목표 칼로리</div>
+            </div>
+            <div class="y-label">(Kcal)</div>
+            
+            <div class="chart-container"> 
+                <canvas id="calorieChart"></canvas>
+            </div>
+        </div>
+
+
+        <div id="weightReport" style="display:none">
+            <div class="date">2025.04.30</div>
+            <div class="amount-wrapper">
+                <div class="amount">74</div>
+                <div class="unit">kg</div>
+            </div>
+            <div class="feedback-comment">목표를 향해 파이팅!</div>
+            <div class="recommend-wrapper">
+                <div class="recommend-food">몸무게 기록하기</div>
+                <div class="icon">
+                    <img src="/user/images/icon_arrow_red.png">
+                </div>
+            </div>
+            
+            <div class="chart-container"> 
+                <canvas id="weightChart"></canvas>
+            </div>
+        </div>
+
+        <div id="tooltip"></div>
+    `;
+}
+
+export function initReportPage() {
+    initUserName();
+    initCalorieChart();
+    initWeightChart();
+    loadAndRenderKcalData();
+}
+
+async function initUserName(){
+    try {
+        const response = await getUserBasicInfo();
+        const userName = response.data.name;
+        document.querySelector('.user-name').textContent = userName + "님";
+    } catch (error) {
+        console.error("사용자 정보 요청 실패:", error);
+    }
+}
+
+function loadAndRenderKcalData() {
     const endDate = getDateStr(0);      // 오늘
     const startDate = getDateStr(29);   // 30일 전 (오늘 포함 총 30일)
 
@@ -72,66 +150,6 @@ function fillMissingDates(rawData, days = 30) {
 }
 
 
-export function renderReportPage() {
-    return `
-        <div class="user-name">하잇님</div>
-        <div class="toggle-report-wrapper">
-            <div class="toggle-meal-report toggle-report active">식사기록</div>
-            <div class="toggle-weight-report toggle-report">몸무게</div>
-        </div>
-
-        <div id="mealReport">
-            <div class="date">2025.04.30</div>
-            <div class="amount-wrapper">
-                <div class="amount">1,652</div>
-                <div class="unit">kcal</div>
-            </div>
-            <div class="feedback-comment">조금 더 드셔야 해요</div>
-            <div class="recommend-wrapper">
-                <div class="recommend-food">추천음식 보러가기</div>
-                <div class="icon">
-                    <img src="/user/images/icon_arrow_red.png">
-                </div>
-            </div>
-            <div class="period-button-wrapper">
-                <div class="period-button active">1주</div>
-                <div class="period-button">1달</div>
-            </div>
-
-            <div class="legend-wrapper">
-                <div class="legend-box"></div>
-                <div class="legend-label">목표 칼로리</div>
-            </div>
-            <div class="y-label">(Kcal)</div>
-            
-            <div class="chart-container"> 
-                <canvas id="calorieChart"></canvas>
-            </div>
-        </div>
-
-
-        <div id="weightReport" style="display:none">
-            <div class="date">2025.04.30</div>
-            <div class="amount-wrapper">
-                <div class="amount">74</div>
-                <div class="unit">kg</div>
-            </div>
-            <div class="feedback-comment">목표를 향해 파이팅!</div>
-            <div class="recommend-wrapper">
-                <div class="recommend-food">몸무게 기록하기</div>
-                <div class="icon">
-                    <img src="/user/images/icon_arrow_red.png">
-                </div>
-            </div>
-            
-            <div class="chart-container"> 
-                <canvas id="weightChart"></canvas>
-            </div>
-        </div>
-
-        <div id="tooltip"></div>
-    `;
-}
 
 //식사기록 / 몸무게 토글 클릭시 그래프 뷰 변경
 $(document).on('click', '.toggle-report', function () {
@@ -204,7 +222,7 @@ function getTodayData() {
 
 let calorieChart; // Chart 인스턴스를 저장할 변수
 
-export function initCalorieChart(days = 7) {
+function initCalorieChart(days = 7) {
     const { labels, data } = getRecentData(days);
     const goalData = data.map(item => item.target); // target만 추출
     
@@ -466,7 +484,7 @@ function updateWeightReportData(date, weight) {
     }
 }
 
-export async function initWeightChart() {
+async function initWeightChart() {
     const ctx = document.getElementById('weightChart').getContext('2d');
     const chartContainer = document.querySelector("#weightReport .chart-container");
     const { dates, values } = await getWeightDatasByDates() || {};
@@ -638,7 +656,7 @@ export async function initWeightChart() {
 
 // =========================================================== API ===========================================================
 
-export function getKcalSummary(start_date, end_date) {
+function getKcalSummary(start_date, end_date) {
     const params = new URLSearchParams({
         start_date: start_date,
         end_date: end_date
@@ -651,10 +669,18 @@ export function getKcalSummary(start_date, end_date) {
     });
 }
 
-export function getWeightDatas() {
+function getWeightDatas() {
     return $.ajax({
         type: "GET",
         url: `${window.DOMAIN_URL}/user-stats/weight`,
+        contentType: "application/json",
+    })
+}
+
+function getUserBasicInfo() {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/users/basic-info`,
         contentType: "application/json",
     })
 }
