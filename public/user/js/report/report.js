@@ -2,16 +2,16 @@ let calorieData = {}; // 최종 데이터 저장용
 
 export function renderReportPage() {
     return `
-        <div class="user-name">하잇님</div>
+        <div class="user-name"></div>
         <div class="toggle-report-wrapper">
             <div class="toggle-meal-report toggle-report active">식사기록</div>
             <div class="toggle-weight-report toggle-report">몸무게</div>
         </div>
 
         <div id="mealReport">
-            <div class="date">2025.04.30</div>
+            <div class="date"></div>
             <div class="amount-wrapper">
-                <div class="amount">1,652</div>
+                <div class="amount"></div>
                 <div class="unit">kcal</div>
             </div>
             <div class="feedback-comment">조금 더 드셔야 해요</div>
@@ -39,9 +39,9 @@ export function renderReportPage() {
 
 
         <div id="weightReport" style="display:none">
-            <div class="date">2025.04.30</div>
+            <div class="date"></div>
             <div class="amount-wrapper">
-                <div class="amount">74</div>
+                <div class="amount"></div>
                 <div class="unit">kg</div>
             </div>
             <div class="feedback-comment">목표를 향해 파이팅!</div>
@@ -63,7 +63,6 @@ export function renderReportPage() {
 
 export function initReportPage() {
     initUserName();
-    initCalorieChart();
     initWeightChart();
     loadAndRenderKcalData();
 }
@@ -145,7 +144,6 @@ function fillMissingDates(rawData, days = 30) {
 
     // 날짜 오름차순 정렬
     result.sort((a, b) => new Date(a.date) - new Date(b.date));
-
     return result;
 }
 
@@ -184,14 +182,32 @@ function updateReportData(date, consumed, target) {
         const formattedDate = date.replaceAll('-', '.'); 
         dateElement.textContent = formattedDate;
         amountElement.textContent = consumed ? consumed.toLocaleString() : '0';
-        legendElement.textContent = '목표 칼로리 ' + (target ? target.toLocaleString() : '0');
+        legendElement.textContent = '목표 칼로리 ' + (target ? Math.floor(target).toLocaleString() : '0');
         
         const lowerBound = target * 0.95;
         const upperBound = target * 1.05;
+
+        recommendWrapperElement.style.visibility = 'hidden';
+        recommendWrapperElement.style.pointerEvents = 'none';
+
+        if (isToday(date)) {
+            if (consumed === 0) {
+                feedbackCommentElement.textContent = '아직 식사 기록이 없어요';
+            }
+            else if (consumed < lowerBound) {
+                feedbackCommentElement.textContent = '목표까지 파이팅! 간식도 챙겨보세요';
+                recommendWrapperElement.style.visibility = 'visible';
+                recommendWrapperElement.style.pointerEvents = 'auto';
+            } else if (consumed > upperBound) {
+                feedbackCommentElement.textContent = '오늘 목표를 초과했어요 내일은 조절해봐요';
+            } else {
+                feedbackCommentElement.textContent = '딱 알맞게 드셨어요. 좋아요!';
+            }
+            return;
+        }
+
         if (consumed === 0) {
             feedbackCommentElement.textContent = '식사 기록이 없어요';
-            recommendWrapperElement.style.visibility = 'hidden';
-            recommendWrapperElement.style.pointerEvents = 'none';
             return;
         }
         if (consumed < lowerBound) {
@@ -200,14 +216,20 @@ function updateReportData(date, consumed, target) {
             recommendWrapperElement.style.pointerEvents = 'auto';
         } else if (consumed > upperBound) {
             feedbackCommentElement.textContent = '조금 초과했지만, 조절해나가면 돼요';
-            recommendWrapperElement.style.visibility = 'hidden';
-            recommendWrapperElement.style.pointerEvents = 'none';
         } else {
             feedbackCommentElement.textContent = '딱 알맞게 드셨어요. 좋아요!';
-            recommendWrapperElement.style.visibility = 'hidden';
-            recommendWrapperElement.style.pointerEvents = 'none';
         }
     }
+}
+
+function isToday(dateStr) {
+    const today = new Date();
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return (
+        today.getFullYear() === year &&
+        today.getMonth() + 1 === month &&
+        today.getDate() === day
+    );
 }
 
 function getTodayData() {
