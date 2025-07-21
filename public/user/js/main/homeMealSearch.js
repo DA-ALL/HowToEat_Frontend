@@ -1,6 +1,7 @@
 import { showMain } from '../components/routers.js';
 import { setLastMainPath } from '../components/nav-bottom.js';
 import { showPopup } from '../components/popup.js';
+import { showPage } from '../components/nav-bottom.js';
 
 let currentSearchKeyword = '';
 let currentPage = 0;
@@ -130,7 +131,7 @@ export function renderMealSearch(callback) {
                       </div>
                       <div class="button-container meal-favorite hidden">
                             <div id="deleteFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">삭제</div>
-                            <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">다음</div>
+                            <div id="registFavoriteButton" class="next-button home-meal-favorite disabled" data-id="" data-type="" data-name="" data-weight="" data-kcal="">추가하기</div>
                       </div>
                   </div>
               </div>
@@ -640,6 +641,19 @@ $(document).on('click', '#registFavoriteButton', function () {
             showMain(mealTime);
         }
     });
+});
+
+
+$(document).on('click', '.add-button', function() {
+    const currentPath = window.location.pathname;
+    const parts = currentPath.split('/');
+    const mealTime = parts[2];
+    const selectedDate = parts[3];
+
+    const newPath = `/main/${mealTime}/${selectedDate}/regist/favorite-food/add`;
+    history.pushState({ view: 'main', mealTime, date: selectedDate }, '', newPath);
+    showPage(newPath);
+    return;
 });
 
 // delete 버튼 클릭 시

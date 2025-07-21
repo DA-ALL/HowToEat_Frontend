@@ -15,7 +15,7 @@ import { renderUsersInfo, bindUsersInfoEvents } from '../my-page/usersInfo.js';
 import { initCalendarPage } from './calendar.js';
 import { renderAddHomeNewFood } from '../main/homeAddNewFood.js';
 
-export function showMain(meal = null, subpage = null, type = null, consumedFoodId = null, isFromAddFavoriteFood = false) {
+export function showMain(meal = null, subpage = null, type = null, consumedFoodId = null, isFromAddFavoriteFood = false, isFromNumericInput = false) {
     $('#main').show();
     $('#report').hide();
     $('#my').hide();
@@ -115,9 +115,6 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
         $("#reportPage").html(renderReportPage());
         loadAndRenderKcalData();
     }
-    if ($('#myPage').children().length === 0) {
-        $("#myPage").html(renderMyPage());
-    }
 }
 
 
@@ -203,7 +200,7 @@ export function showMyPage(subpath = null, detailId = null, isFromNumericInput =
         } else {
             // /users/notice
             $('#usersNoticeDetail').html('');
-            
+
             if ($('#noticeListContainer').children().length === 0) {
                 renderUsersNotice(function(html) {
                     $('#noticeListContainer').html(html);

@@ -85,17 +85,26 @@ export function initHeaderNav(parentSelector = 'body') {
         
         if (currentPath.startsWith('/users')) {
             const stack = window.usersHistoryStack || ['/users'];
+            const parts = currentPath.split('/');
         
-            if (stack.length > 1) {
-
-                stack.pop();
-                const prev = stack[stack.length - 1];
-                window.usersHistoryStack = stack; // 다시 저장
-
-                history.pushState({ view: 'users' }, '', prev);
-                showPage(prev);
-                return;
+            if(parts.length > 2) {                
+                const newPath = '/users'
+                window.lastUsersPath = newPath;
+                history.pushState({ view: 'users' }, '', newPath);
+                showPage(newPath);
             }
+            return;
+
+            // if (stack.length > 1) {
+
+            //     stack.pop();
+            //     const prev = stack[stack.length - 1];
+            //     window.usersHistoryStack = stack; // 다시 저장
+
+            //     history.pushState({ view: 'users' }, '', prev);
+            //     showPage(prev);
+            //     return;
+            // }
         }
     
         if (currentPath.startsWith('/main/')) {

@@ -8,7 +8,6 @@ $(document).ready(async function () {
         }, 1500); // 1.5초 후 이동
     };
 
-
     try {
         const res = await $.ajax({
             method: 'GET',

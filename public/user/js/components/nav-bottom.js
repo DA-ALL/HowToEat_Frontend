@@ -76,6 +76,8 @@ export function showPage(path, isFromAddFavoriteFood, isFromNumericInput) {
         const subpath = parts[2];
         const detailId = parts[3];
         showMyPage(subpath, detailId, isFromNumericInput);
+        // showMyPage(null, subpath, null, null, false, false, isFromNumericInput);
+        // showMain(meal, subpage, type, null, isFromAddFavoriteFood);
     }
 
     updateNavActive(path);
@@ -159,7 +161,7 @@ $(document).ready(function () {
     
                 // ✅ 수정된 users 블럭
                 if (key === '/users') {
-                    console.log("5");
+                    
                     const isUsers = currentPath.startsWith('/users');
                     const isDoubleClick = isUsers && (currentPath === lastUsersPath && currentPath !== '/users');
     
@@ -168,8 +170,6 @@ $(document).ready(function () {
                     } else if (isUsers) {
                         lastUsersPath = currentPath;
                     }
-    
-                    console.log( window.location.pathname);
                     history.pushState({ view: 'users' }, '', lastUsersPath);
                     showPage(lastUsersPath);
                     return;
