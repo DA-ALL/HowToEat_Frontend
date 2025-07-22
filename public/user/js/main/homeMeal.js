@@ -92,7 +92,7 @@ function createBar(mealKey, type, consumed, target, percent, rawPercent) {
 
 function createBarContainer(mealKey, data) {
     const types = ['carbo', 'protein', 'fat'];
-    console.log(data);
+    // console.log(data);
     return `
         <div class="home-meal-bar-container">
             ${types.map(type => {

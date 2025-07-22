@@ -112,3 +112,10 @@
     color: var(--gray400);
     box-shadow: none;
 }
+
+
+#consumedFoodDetail .button-container #deleteConsumedFoodButton.disabled{
+    background-color: var(--gray100);
+    color: var(--white300);
+    pointer-events: none;
+}
