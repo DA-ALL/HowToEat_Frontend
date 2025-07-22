@@ -159,7 +159,7 @@ $(document).ready(function () {
                     lastMainPath = currentPath;
                 }
     
-                // ✅ 수정된 users 블럭
+                // 수정된 users 블럭
                 if (key === '/users') {
                     
                     const isUsers = currentPath.startsWith('/users');
@@ -174,7 +174,7 @@ $(document).ready(function () {
                     showPage(lastUsersPath);
                     return;
                 }
-                // ✅ report 등 나머지 경로 처리
+                // report 등 나머지 경로 처리
                 history.pushState({ view: key.slice(1) }, '', key);
                 showPage(key);
             }

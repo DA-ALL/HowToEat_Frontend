@@ -26,7 +26,7 @@ $(document).ready(function () {
         activity: '',
         isNextGym: '',
         signupProvider: user.signup_provider || '',
-        profileImageUrl: user.profile_image_url || '',
+        profileImageUrl: getValidProfileImage(user.profile_image_url),
         termsAgreedAt:'',
         privacyAgreedAt:''
     };
@@ -87,6 +87,27 @@ function getPayloadFromToken(token) {
         return null;
     }
 }
+
+function getValidProfileImage(url) {
+    const defaultColors = ['green', 'blue', 'black', 'cyan', 'orange', 'purple', 'red'];
+    const baseUrl = 'https://howtoeat.ai.kr/administrate/images/icon_human_';
+
+    if (!url) {
+        const randomColor = defaultColors[Math.floor(Math.random() * defaultColors.length)];
+        return `${baseUrl}${randomColor}.png`;
+    }
+
+    const lowerUrl = url.toLowerCase();
+
+    if (lowerUrl.includes('default_profile') || lowerUrl.includes('img_profile')) {
+        const randomColor = defaultColors[Math.floor(Math.random() * defaultColors.length)];
+        return `${baseUrl}${randomColor}.png`;
+    }
+
+    return url;
+}
+
+
 
 $('#agreeButton').on('click', function () {
     if ($(this).hasClass('disabled')) {
