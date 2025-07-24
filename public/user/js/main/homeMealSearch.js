@@ -528,7 +528,7 @@ function getTailSvg() {
 //호출 API
 function fetchSearchResults(keyword, page) {
     $.ajax({
-        url: `${window.DOMAIN_URL}/foods?name=${encodeURIComponent(keyword)}&page=${page}&size=10`,
+        url: `${window.DOMAIN_URL}/foods?name=${encodeURIComponent(keyword)}&page=${page}&size=20`,
         method: 'GET',
         success: function (res) {
             const items = res.data.content;
