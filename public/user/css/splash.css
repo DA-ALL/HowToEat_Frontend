@@ -1,0 +1,36 @@
+#splashPage {
+    position: relative;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+#splashPage .splash-page {
+    display: flex;
+    height: 100%;
+    background-color: var(--red500);
+    justify-content: center;
+    align-items: center;
+}
+
+#splashPage .splash-page .logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(15px, 7vw, 35px);
+    margin-bottom: clamp(20px, 24vw, 100px);
+}
+
+#splashPage .splash-page .logo-wrapper .logo-hte {
+    width: 33.4vw;
+    max-width: 167px;
+    height: auto;
+}
+
+#splashPage .splash-page .logo-wrapper .logo-nextgym {
+    width: 22.6vw;
+    max-width: 113px;
+    height: auto;
+}
+
