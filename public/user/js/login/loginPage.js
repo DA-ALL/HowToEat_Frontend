@@ -14,7 +14,7 @@ $(document).ready(function () {
     //애플 로그인
     $("#SS0-APPLE").on("click", function() {
         console.log("apple 로그인");
-        window.location.href = '/survey?page=1';
+        window.location.href = `${window.DOMAIN_URL}/oauth2/authorization/apple`;
     });
 
     // 로그인 페이지 진입 시, 토큰 삭제 처리
