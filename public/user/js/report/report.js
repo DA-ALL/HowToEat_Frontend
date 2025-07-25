@@ -1,13 +1,89 @@
 let calorieData = {}; // 최종 데이터 저장용
 
-export function loadAndRenderKcalData() {
+export function renderReportPage() {
+    return `
+        <div class="user-name"></div>
+        <div class="toggle-report-wrapper">
+            <div class="toggle-meal-report toggle-report active">식사기록</div>
+            <div class="toggle-weight-report toggle-report">몸무게</div>
+        </div>
+
+        <div id="mealReport">
+            <div class="date"></div>
+            <div class="amount-wrapper">
+                <div class="amount"></div>
+                <div class="unit">kcal</div>
+            </div>
+            <div class="feedback-comment">조금 더 드셔야 해요</div>
+            <div class="recommend-wrapper">
+                <div class="recommend-food">추천음식 보러가기</div>
+                <div class="icon">
+                    <img src="/user/images/icon_arrow_red.png">
+                </div>
+            </div>
+            <div class="period-button-wrapper">
+                <div class="period-button active">1주</div>
+                <div class="period-button">1달</div>
+            </div>
+
+            <div class="legend-wrapper">
+                <div class="legend-box"></div>
+                <div class="legend-label">목표 칼로리</div>
+            </div>
+            <div class="y-label">(Kcal)</div>
+            
+            <div class="chart-container"> 
+                <canvas id="calorieChart"></canvas>
+            </div>
+        </div>
+
+
+        <div id="weightReport" style="display:none">
+            <div class="date"></div>
+            <div class="amount-wrapper">
+                <div class="amount"></div>
+                <div class="unit">kg</div>
+            </div>
+            <div class="feedback-comment">목표를 향해 파이팅!</div>
+            <div class="recommend-wrapper">
+                <div class="recommend-food">몸무게 기록하기</div>
+                <div class="icon">
+                    <img src="/user/images/icon_arrow_red.png">
+                </div>
+            </div>
+            
+            <div class="chart-container"> 
+                <canvas id="weightChart"></canvas>
+            </div>
+        </div>
+
+        <div id="tooltip"></div>
+    `;
+}
+
+export function initReportPage() {
+    initUserName();
+    initWeightChart();
+    loadAndRenderKcalData();
+}
+
+async function initUserName(){
+    try {
+        const response = await getUserBasicInfo();
+        const userName = response.data.name;
+        document.querySelector('.user-name').textContent = userName + "님";
+    } catch (error) {
+        console.error("사용자 정보 요청 실패:", error);
+    }
+}
+
+function loadAndRenderKcalData() {
     const endDate = getDateStr(0);      // 오늘
     const startDate = getDateStr(29);   // 30일 전 (오늘 포함 총 30일)
 
     getKcalSummary(startDate, endDate)
         .then((rawData) => {
             const filledData = fillMissingDates(rawData.data, 30);
-            console.log("칼로리 데이터:", rawData);
             // 객체 형태로 변환
             calorieData = {};
             filledData.forEach(item => {
@@ -68,109 +144,10 @@ function fillMissingDates(rawData, days = 30) {
 
     // 날짜 오름차순 정렬
     result.sort((a, b) => new Date(a.date) - new Date(b.date));
-
     return result;
 }
 
 
-
-
-
-
-// function generateRandomCalorieData() {
-//   const result = {};
-//   const today = new Date();
-
-//   for (let i = 0; i < 30; i++) {
-//     const date = new Date(today);
-//     date.setDate(today.getDate() - i);
-
-//     const yyyy = date.getFullYear();
-//     const mm = String(date.getMonth() + 1).padStart(2, '0');
-//     const dd = String(date.getDate()).padStart(2, '0');
-//     const dateStr = `${yyyy}-${mm}-${dd}`;
-    
-//     let consumed = 0;
-//     const target = Math.floor(Math.random() * 301) + 2200; // 2200 ~ 2500
-//     if(i%2 == 0){
-//         consumed = 0;
-//     } else {
-//         consumed = Math.floor(Math.random() * 401) + (target - 100); // target-100 ~ target+300
-//     }
-    
-    
-
-//     result[dateStr] = {
-//       consumed,
-//       target,
-//     };
-//   }
-
-//   return result;
-// }
-// // const calorieData = generateRandomCalorieData();
-// // console.log("calorieData", calorieData);
-
-export function renderReportPage() {
-    return `
-        <div class="user-name">하잇님</div>
-        <div class="toggle-report-wrapper">
-            <div class="toggle-meal-report toggle-report active">식사기록</div>
-            <div class="toggle-weight-report toggle-report">몸무게</div>
-        </div>
-
-        <div id="mealReport">
-            <div class="date">2025.04.30</div>
-            <div class="amount-wrapper">
-                <div class="amount">1,652</div>
-                <div class="unit">kcal</div>
-            </div>
-            <div class="feedback-comment">조금 더 드셔야 해요</div>
-            <div class="recommend-wrapper">
-                <div class="recommend-food">추천음식 보러가기</div>
-                <div class="icon">
-                    <img src="/user/images/icon_arrow_red.png">
-                </div>
-            </div>
-            <div class="period-button-wrapper">
-                <div class="period-button active">1주</div>
-                <div class="period-button">1달</div>
-            </div>
-
-            <div class="legend-wrapper">
-                <div class="legend-box"></div>
-                <div class="legend-label">목표 칼로리</div>
-            </div>
-            <div class="y-label">(Kcal)</div>
-            
-            <div class="chart-container"> 
-                <canvas id="calorieChart"></canvas>
-            </div>
-        </div>
-
-
-        <div id="weightReport" style="display:none">
-            <div class="date">2025.04.30</div>
-            <div class="amount-wrapper">
-                <div class="amount">74</div>
-                <div class="unit">kg</div>
-            </div>
-            <div class="feedback-comment">목표를 향해 파이팅!</div>
-            <div class="recommend-wrapper">
-                <div class="recommend-food">몸무게 기록하기</div>
-                <div class="icon">
-                    <img src="/user/images/icon_arrow_red.png">
-                </div>
-            </div>
-            
-            <div class="chart-container"> 
-                <canvas id="weightChart"></canvas>
-            </div>
-        </div>
-
-        <div id="tooltip"></div>
-    `;
-}
 
 //식사기록 / 몸무게 토글 클릭시 그래프 뷰 변경
 $(document).on('click', '.toggle-report', function () {
@@ -199,20 +176,60 @@ function updateReportData(date, consumed, target) {
     const amountElement = document.querySelector('#mealReport .amount');
     const legendElement = document.querySelector('#mealReport .legend-label');
     const feedbackCommentElement = document.querySelector('#mealReport .feedback-comment');
+    const recommendWrapperElement = document.querySelector('#mealReport .recommend-wrapper');
 
     if (dateElement && amountElement) {
         const formattedDate = date.replaceAll('-', '.'); 
         dateElement.textContent = formattedDate;
         amountElement.textContent = consumed ? consumed.toLocaleString() : '0';
-        legendElement.textContent = '목표 칼로리 ' + (target ? target.toLocaleString() : '0');
+        legendElement.textContent = '목표 칼로리 ' + (target ? Math.floor(target).toLocaleString() : '0');
+        
+        const lowerBound = target * 0.95;
+        const upperBound = target * 1.05;
 
-        let feedbackComment = '';
-        if(consumed < target) {
-            feedbackCommentElement.textContent = '조금 더 드셔야 해요';
+        recommendWrapperElement.style.visibility = 'hidden';
+        recommendWrapperElement.style.pointerEvents = 'none';
+
+        if (isToday(date)) {
+            if (consumed === 0) {
+                feedbackCommentElement.textContent = '아직 식사 기록이 없어요';
+            }
+            else if (consumed < lowerBound) {
+                feedbackCommentElement.textContent = '목표까지 파이팅! 간식도 챙겨보세요';
+                recommendWrapperElement.style.visibility = 'visible';
+                recommendWrapperElement.style.pointerEvents = 'auto';
+            } else if (consumed > upperBound) {
+                feedbackCommentElement.textContent = '오늘 목표를 초과했어요 내일은 조절해봐요';
+            } else {
+                feedbackCommentElement.textContent = '딱 알맞게 드셨어요. 좋아요!';
+            }
+            return;
+        }
+
+        if (consumed === 0) {
+            feedbackCommentElement.textContent = '식사 기록이 없어요';
+            return;
+        }
+        if (consumed < lowerBound) {
+            feedbackCommentElement.textContent = '조금 부족했어요. 간식을 챙겨볼까요?';
+            recommendWrapperElement.style.visibility = 'visible';
+            recommendWrapperElement.style.pointerEvents = 'auto';
+        } else if (consumed > upperBound) {
+            feedbackCommentElement.textContent = '조금 초과했지만, 조절해나가면 돼요';
         } else {
-            feedbackCommentElement.textContent = '그만 드셔야 해요';
-        }        
+            feedbackCommentElement.textContent = '딱 알맞게 드셨어요. 좋아요!';
+        }
     }
+}
+
+function isToday(dateStr) {
+    const today = new Date();
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return (
+        today.getFullYear() === year &&
+        today.getMonth() + 1 === month &&
+        today.getDate() === day
+    );
 }
 
 function getTodayData() {
@@ -227,10 +244,10 @@ function getTodayData() {
 
 let calorieChart; // Chart 인스턴스를 저장할 변수
 
-export function initCalorieChart(days = 7) {
+function initCalorieChart(days = 7) {
     const { labels, data } = getRecentData(days);
     const goalData = data.map(item => item.target); // target만 추출
-    console.log("labels", labels);
+    
     const ctx = document.getElementById('calorieChart')?.getContext('2d');
     if (!ctx) {
         console.error('calorieChart element not found');
@@ -429,7 +446,6 @@ $(document).on('touchend', function () {
     const tooltip = document.getElementById('tooltip');
     
     if (tooltip) {
-        console.log("터치끝");
         tooltip.style.opacity = '0';  // 툴팁을 숨깁니다.
         tooltip.style.display = 'none';  // 툴팁을 아예 숨깁니다.
     }
@@ -454,7 +470,7 @@ function bindTouchEventsForChart() {
 
     $chart.off('touchend touchcancel').on('touchend touchcancel', function () {
         $('body').css('overflow', '');
-        document.body.removeEventListener('touchmove', preventScroll);
+        document.body.removeEventListener('touchmove', preventScroll, { passive: false });
     });
 };
 
@@ -462,23 +478,26 @@ function bindTouchEventsForChart() {
 
 let weightChart = null;
 
-function generateRandomWeightData() {
-    let dates = [], values = [];
-    let today = new Date();
-    for (let i = 100; i >= 0; i--) {
-        let pastDate = new Date();
-        pastDate.setDate(today.getDate() - i);
-        dates.push(pastDate.toISOString().split('T')[0]);
-        values.push(Math.floor(Math.random() * 100) + 1);
+async function getWeightDatasByDates() {
+    try {
+        const response = await getWeightDatas();
+        let dates = [], values = [];
+        response.data.forEach(item => {
+            const date = item.createdAt;
+            const weight = item.weight;
+            dates.push(date);
+            values.push(weight);
+        });
+        return { dates, values };
+    } catch (error) {
+        console.error("몸무게 데이터 요청 실패:", error);
+        return { dates: [], values: [] };  // 기본값 반환
     }
-    return { dates, values };
 }
 
 function updateWeightReportData(date, weight) {
     const dateElement = document.querySelector('#weightReport .date');
     const amountElement = document.querySelector('#weightReport .amount');
-
-
 
     if (dateElement && amountElement) {
         const formattedDate = date.replaceAll('-', '.'); 
@@ -487,22 +506,24 @@ function updateWeightReportData(date, weight) {
     }
 }
 
-export function initWeightChart() {
+async function initWeightChart() {
     const ctx = document.getElementById('weightChart').getContext('2d');
     const chartContainer = document.querySelector("#weightReport .chart-container");
-    const { dates, values } = generateRandomWeightData();
+    const { dates, values } = await getWeightDatasByDates() || {};
 
     let isDragging = false;
     let startX;
-    let currentStartIndex = Math.max(0, dates.length - 7);
-    let selectedIndex = dates.length-1;
-    updateWeightReportData(dates[selectedIndex], values[selectedIndex]);
-
-    // dates.unshift('');        // 좌측 여백용
-    // values.unshift(null);     // 포인트 숨김
 
     dates.push('');         // 우측 여백용
     values.push(null);      // null로 포인트 숨김
+
+    const totalLength = dates.length;
+    let currentStartIndex = Math.max(0, totalLength - 7);
+    let minDate = dates[currentStartIndex] ?? dates[0];         // fallback to first date
+    let maxDate = dates[totalLength - 1] ?? dates[dates.length - 1]; // fallback to last date
+
+    let selectedIndex = dates.length - 2;
+    updateWeightReportData(dates[selectedIndex], values[selectedIndex]);
 
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
@@ -544,9 +565,9 @@ export function initWeightChart() {
                         display: false,
                     },
                     grid: { display: false, drawBorder: false },
-                    min: dates[currentStartIndex+1],
-                    max: dates[currentStartIndex + 7],
-                    // offset: true,
+                    min: minDate,//dates[currentStartIndex + 1],
+                    max: maxDate, //dates[currentStartIndex + 7],
+                    offset: totalLength == 2 ? true : false, // 데이터가 하나일 때만 좌우 여백 추가
                 },
                 y: {
                     beginAtZero: true,
@@ -657,7 +678,7 @@ export function initWeightChart() {
 
 // =========================================================== API ===========================================================
 
-export function getKcalSummary(start_date, end_date) {
+function getKcalSummary(start_date, end_date) {
     const params = new URLSearchParams({
         start_date: start_date,
         end_date: end_date
@@ -668,4 +689,20 @@ export function getKcalSummary(start_date, end_date) {
         url: `${window.DOMAIN_URL}/daily-summary/kcals?${params.toString()}`,
         contentType: "application/json",
     });
+}
+
+function getWeightDatas() {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/user-stats/weight`,
+        contentType: "application/json",
+    })
+}
+
+function getUserBasicInfo() {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/users/basic-info`,
+        contentType: "application/json",
+    })
 }

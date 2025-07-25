@@ -5,6 +5,12 @@ const app = express();
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '../public')));
+
+//기본 스플래쉬 화면
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/user', 'splash.html'));
+});
+
 // 메인 페이지 관련 경로는 모두 main.html로 응답
 app.get(['/main*', '/report*', '/users*'], (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'main.html'));
@@ -20,6 +26,10 @@ app.get('/survey', (req, res) => {
 
 app.get('/signup-complete', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'signup-complete.html'));
+});
+
+app.get('/signup/terms-privacy', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/user', 'terms-privacy.html'));
 });
 
 app.get('/admin/login', (req, res) => {

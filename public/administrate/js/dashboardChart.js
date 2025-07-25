@@ -74,9 +74,13 @@ async function initChart() {
     { dates: [], values: [] }
     );
 
-    let currentStartIndex = Math.max(0, dates.length - 7);
     dates.push('');         // 우측 여백용
     values.push(null);      // null로 포인트 숨김
+
+    const totalLength = dates.length;
+    let currentStartIndex = Math.max(0, dates.length - 7);
+    let minDate = dates[currentStartIndex] ?? dates[0];
+    let maxDate = dates[totalLength - 1] ?? dates[dates.length - 1];
 
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0.5, "rgba(235, 133, 133, 0.16)");
@@ -114,8 +118,8 @@ async function initChart() {
                         padding: 30
                     },
                     grid: { display: false },
-                    min: dates[currentStartIndex + 1],
-                    max: dates[currentStartIndex + 7]
+                    min: minDate,
+                    max: maxDate,
                 },
                 y: {
                     ticks: {

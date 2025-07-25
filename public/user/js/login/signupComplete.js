@@ -1,16 +1,10 @@
 import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
-$(document).ready(function () {
+$(document).ready(async function () {
     setupAjaxAuthInterceptor();
-    $.ajax({
-        type: "GET",
-        url: `${window.DOMAIN_URL}/users/basic-info`,
-        success: function (res) {
-            const userBasicInfo = res.data;
-            window.targetKcal = userBasicInfo.targetKcal;
-        },
-    });
-    showWelcomeMessage();
+
+    const data = await getUserBasicInfoData();
+    showWelcomeMessage(data);
     triggerConfettiEffect();
 
     $(".next-button.signup").on('click', function(){
@@ -18,24 +12,30 @@ $(document).ready(function () {
     });
 });
 
-function showWelcomeMessage() {
+function showWelcomeMessage(data) {
     $("#signupComplete").html(createWelcomeMessage());
-    setTimeout(showGoalMessage, 3000);
+    setTimeout(function () {
+        showGoalMessage(data);
+    }, 3000);
 }
 
-function showGoalMessage() {
+function showGoalMessage(data) {
+    let name = data.name;
     $(".welcome-text").fadeOut(1000, function () {
-        $(this).replaceWith(createGoalMessage());
-        $(".goal-text-container").hide().fadeIn(2000, animateKcalCounter);
+        $(this).replaceWith(createGoalMessage(name));
+        $(".goal-text-container").hide().fadeIn(2000, function () {
+            animateKcalCounter(data);
+        });
+        
     });
 }
 
 const createWelcomeMessage = () => `<div class="welcome-text">환영합니다</div>`;
 
-const createGoalMessage = () => `
+const createGoalMessage = (name) => `
     <div class="goal-text-container">
         <div class="goal-text-wrapper">
-            <div class="goal-text-name">김예현</div>
+            <div class="goal-text-name">${name}</div>
             <div class="goal-text">님의 목표 달성을 위해선</div>
         </div>
         <div class="goal-kcal-wrapper"></div>
@@ -43,8 +43,8 @@ const createGoalMessage = () => `
     </div>
 `;
 
-function animateKcalCounter() {
-    let targetValue = window.targetKcal, duration = 3000, startTime = performance.now();
+function animateKcalCounter(data) {
+    let targetValue = data.targetKcal, duration = 3000, startTime = performance.now();
 
     function easeOutExpo(t) {
         return t === 1 ? 1 : 1 - Math.pow(2, -15 * t);
@@ -134,4 +134,13 @@ function triggerConfettiEffect() {
         origin: { y: 0.55 },
         particleCount: 80
     });
+}
+
+async function getUserBasicInfoData() {
+    try {
+        const response = await $.ajax({ type: "GET", url: `${window.DOMAIN_URL}/users/basic-info`, contentType: "application/json"});
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
 }
