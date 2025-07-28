@@ -91,14 +91,14 @@ function getSurveyTemplate(pageNumber) {
                     <div class="input-wrapper">
                         <div class="input-label">키</div>
                         <div class="input">
-                            <input type="number" inputmode="numeric" id="height" name="height" placeholder="키" ime-mode="active" data-text="">
+                            <input class="decimal" type="text" inputmode="decimal" id="height" name="height" placeholder="키" ime-mode="active" data-text="">
                         </div>
                     </div>
 
                     <div class="input-wrapper">
                         <div class="input-label">몸무게</div>
                         <div class="input">
-                            <input type="number" inputmode="numeric" id="weight" name="weight" placeholder="몸무게" ime-mode="active" data-text="">
+                            <input class="decimal" type="text" inputmode="decimal" id="weight" name="weight" placeholder="몸무게" ime-mode="active" data-text="">
                         </div>
                     </div>
                 </div>
@@ -409,3 +409,27 @@ $(document).on('click', function (event) {
         $('.date-box').removeClass('open');
     }
 });
+
+$(document).on('input', '.decimal', function () {
+    console.log("Test");
+    let val = $(this).val();
+    
+
+    // 숫자와 소수점만 남기기
+    val = val.replace(/[^0-9.]/g, '');
+
+    // 소수점 2개 이상 제거
+    const parts = val.split('.');
+    if (parts.length > 2) {
+        val = parts[0] + '.' + parts[1];
+    }
+
+    // 소수점 이하 첫째 자리까지만 유지
+    if (parts.length === 2) {
+        parts[1] = parts[1].substring(0, 1); // 한 자리까지만
+        val = parts[0] + '.' + parts[1];
+    }
+
+    $(this).val(val);
+});
+
