@@ -40,8 +40,8 @@ export function renderMealSearch(callback) {
 
         const favoriteFoods = favoriteRes[0].data;
         
-        console.log(userConsumedData);
-        console.log(favoriteFoods);
+        // console.log(userConsumedData);
+        // console.log(favoriteFoods);
 
         window.userConsumedData = userConsumedData;
         window.mealKey = mealKey;
@@ -528,12 +528,12 @@ function getTailSvg() {
 //호출 API
 function fetchSearchResults(keyword, page) {
     $.ajax({
-        url: `${window.DOMAIN_URL}/foods?name=${encodeURIComponent(keyword)}&page=${page}&size=20`,
+        url: `${window.DOMAIN_URL}/foods?name=${encodeURIComponent(keyword)}&page=${page}&size=10`,
         method: 'GET',
         success: function (res) {
             const items = res.data.content;
             hasNext = res.data.hasNext;
-            console.log(res);
+            // console.log(res);
             renderMealSearchResults(items, page === 0);
         },
         complete: function () {
@@ -625,7 +625,7 @@ $(document).on('click', '#registFavoriteButton', function () {
         url: `${window.DOMAIN_URL}/consumed-foods`,
         contentType: "application/json",
         data: JSON.stringify(consumedFoodList),
-        success: function () {
+        success: function () {  
 
             consumedFoodList.length = 0;
             selectedFavorites.length = 0;

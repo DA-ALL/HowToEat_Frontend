@@ -11,7 +11,7 @@ export function renderMyPage(callback) {
     $.when(userBasicInfo).done(function (userBasicInfoRes) {
         const userBasicInfoData = userBasicInfoRes.data;
         const myPageHTML = renderMyPageHTML(userBasicInfoData);
-        console.log(userBasicInfoData)
+        // console.log(userBasicInfoData)
         callback(myPageHTML);
     });
 

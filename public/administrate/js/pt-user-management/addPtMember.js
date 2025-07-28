@@ -50,7 +50,7 @@ export function loadTotalUserTable(searchValue, page) {
 }
 
 async function getUserDataForladdPtUserTable(searchValue, page) {
-    console.log("getUserDataForladdPtUserTable called with searchValue:", searchValue, "and page:", page);
+    // console.log("getUserDataForladdPtUserTable called with searchValue:", searchValue, "and page:", page);
     try{
         const request = {
             name: searchValue || '',
@@ -59,9 +59,9 @@ async function getUserDataForladdPtUserTable(searchValue, page) {
             isAddPtMember: true,
             orderBy: 'asc',
         }
-        console.log("Request parameters:", request);
+        // console.log("Request parameters:", request);
         const response = await getUserList(request);
-        console.log(response);
+        // console.log(response);
         return response;
     } catch (error){
         console.error(error);
@@ -124,5 +124,5 @@ $(document).on("click", `#${bodyId} tr`, function () {
         $(".button-next").addClass("disabled");
     }
 
-    console.log("Row clicked", userId);
+    // console.log("Row clicked", userId);
 });

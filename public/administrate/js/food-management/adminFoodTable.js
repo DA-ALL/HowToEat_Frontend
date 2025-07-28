@@ -98,13 +98,13 @@ export async function renderTableWithOptionalPagination({
 $(document).on('click', '.delete-food-button', function (e) {
     e.stopPropagation();
     const foodId = $(this).data('food-id');
-    console.log(`음식 ID ${foodId} 삭제 요청`);
+    // console.log(`음식 ID ${foodId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
     showCustomAlert({
         type: 5,
         onCancel: () => {
-            console.log("삭제 취소");
+            // console.log("삭제 취소");
         },
         onNext: async () => {
             try {

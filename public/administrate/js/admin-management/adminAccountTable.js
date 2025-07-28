@@ -97,13 +97,13 @@ export async function renderTableWithOptionalPagination({
 $(document).on('click', '#adminAccountTable .table-delete-button', function (e) {
     e.stopPropagation();
     const adminAccountId = $(this).data('id');
-    console.log(`adminAccount ID ${adminAccountId} 삭제 요청`);
+    // console.log(`adminAccount ID ${adminAccountId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
     showCustomAlert({
         type: 5,
         onCancel: () => {
-            console.log("삭제 취소");
+            // console.log("삭제 취소");
         },
         onNext: () => {
             try {
@@ -119,7 +119,7 @@ $(document).on('click', '#adminAccountTable .table-delete-button', function (e) 
             } catch (error) {
                 
             }
-            console.log("삭제 확인");
+            // console.log("삭제 확인");
         }
     });
 });

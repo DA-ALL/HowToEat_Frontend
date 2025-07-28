@@ -432,11 +432,11 @@ async function getFoodData() {
     try {
         if (foodDetailType == 'share'){
             const favoriteFoodResponse = await getFavoriteFood(foodId);
-            console.log("유저등록 음식 ", favoriteFoodResponse);
+            // console.log("유저등록 음식 ", favoriteFoodResponse);
             return favoriteFoodResponse.data;
         }
         const response = await getFood(foodId);
-        console.log("음식 단일 조회: ", response);
+        // console.log("음식 단일 조회: ", response);
         
         return response.data;
     } catch (err) {
@@ -553,7 +553,7 @@ function getFoodDetailValues() {
 $(document).on("click", "#isPerServingToggle", function () {
     $(this).toggleClass("active");
     const isActive = $(this).hasClass('active');
-    console.log('Toggle is active:', isActive);
+    // console.log('Toggle is active:', isActive);
 });
 
 // 추천음식 토글
@@ -563,7 +563,7 @@ $(document).on("click", "#isRecommendedToggle", function () {
     
     $(this).toggleClass("active");
     const isActive = $(this).hasClass('active');
-    console.log('Toggle is active:', isActive);
+    // console.log('Toggle is active:', isActive);
 });
 
 // 인풋 포커스아웃
@@ -613,13 +613,13 @@ $(document).on("click", "#foodDetailEdit", function () {
     
     const foodId = getIdFromUrl();
     const foodDetailValues = getFoodDetailValues();
-    console.log("수정할 음식 정보:", foodDetailValues); 
+    // console.log("수정할 음식 정보:", foodDetailValues); 
     
 
     showCustomAlert({
         type: 4,
         onCancel: function () {
-            console.log("수정 취소");
+            // console.log("수정 취소");
         },
         onNext: async function () {        
             try {
@@ -630,7 +630,7 @@ $(document).on("click", "#foodDetailEdit", function () {
                     onNext: function () {
                         const pathSegments = window.location.pathname.split("/").slice(2,4);
                         const fullPath = pathSegments.join("/");
-                        console.log("여기다:", fullPath)
+                        // console.log("여기다:", fullPath)
                         if(fullPath == 'food-management/recommend'){
                             updateURL('food-management/recommend');
                         } else {
@@ -652,7 +652,7 @@ $(document).on("click", "#foodDetailShare", async function () {
     let foodDetailValues = getFoodDetailValues();
     foodDetailValues.favoriteFoodId = getIdFromUrl();
 
-    console.log(foodDetailValues)
+    // console.log(foodDetailValues)
 
     try {
         const response = await shareFood(foodDetailValues);
@@ -673,7 +673,7 @@ $(document).on("click", "#foodDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
     const foodDetailValues = getFoodDetailValues();
-    console.log(foodDetailValues);
+    // console.log(foodDetailValues);
     try {
         const response = await createFood(foodDetailValues);
         showCustomAlert({

@@ -54,7 +54,7 @@ async function getTrainerDatas(){
 
     try{
         const response = await getTrainerList(params.page, params.name, params.gymName);
-        console.log(response);
+        // console.log(response);
         return response;
     } catch (error){
         console.error(error);
@@ -78,7 +78,7 @@ $(document).on('click', `#adminTrainerTableBody tr`, function () {
 
 // 추가하기 버튼 클릭
 $(document).on('click', `#addTrainerButton`, function () {
-    console.log('trainer 생성');
+    // console.log('trainer 생성');
     updateURL('admin-management/trainer/add');
 });
 

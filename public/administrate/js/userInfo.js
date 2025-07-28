@@ -125,7 +125,7 @@ export async function getUserData() {
     const userId = getUserIdFromUrl();
     try {
         const response = await getUser(userId);
-        console.log("User data fetched:", response);
+        // console.log("User data fetched:", response);
         const data = {
             content: [response.data],
             page: 0,
@@ -141,7 +141,7 @@ async function getUserDataForUserInfo() {
     const userId = getUserIdFromUrl();
     try {
         const response = await getUserDetail(userId);
-        console.log("User Detail data:", response);
+        // console.log("User Detail data:", response);
         
         return response.data;
     } catch (err) {
@@ -156,7 +156,7 @@ async function getDailyCaloriData() {
     const userId = getUserIdFromUrl();
     try {
         const response = await getUserDailyCalories(userId, page);
-        console.log("칼로리 데이터:", response)        
+        // console.log("칼로리 데이터:", response)        
         return response;
     } catch (err) {
         console.error("Error fetching user data:", err);
@@ -274,7 +274,7 @@ const userConsumedMealData = {
 
 // 칼로리 테이블 row 클릭
 $(document).on('click', `#dailyCalorieTable tr`, function () {
-    console.log("칼로리 row 클릭됨", $(this).find('.td-id').text());
+    // console.log("칼로리 row 클릭됨", $(this).find('.td-id').text());
     
     let currentDateStr = "2025-04-23"; // 아작스를 통해서 date를 가져온것 예시
     let currentDate = parseDateFromText(currentDateStr); // 문자열을 Date로 변환
@@ -555,7 +555,7 @@ function updateDateAndConsumedData(newDate) {
     $('.date').text(formattedDate); // 날짜 텍스트 업데이트
 
     const info = getCalorieInfo(formattedDate); // 요걸 꼭 formattedDate로 넘겨야 함!
-    console.log(info);
+    // console.log(info);
 
     $('#consumedDataWrapper').html(renderConsumedData(
         formattedDate,    // 요것도 문자열
