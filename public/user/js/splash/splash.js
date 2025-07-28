@@ -1,7 +1,7 @@
 $(document).ready(async function () {
     const refreshToken = getCookie('RefreshToken');
 
-    console.log(refreshToken);
+    // console.log(refreshToken);
     const redirectTo = (url) => {
         setTimeout(() => {
             window.location.href = url;
@@ -17,7 +17,7 @@ $(document).ready(async function () {
             },
         });
 
-        console.log(res);
+        // console.log(res);
         redirectTo('/main');
         
     } catch (err) {        

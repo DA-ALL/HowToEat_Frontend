@@ -48,7 +48,7 @@ async function getUserFoodDatas() {
     
     try {
         const response = await getFavoriteFoodList(params);
-        console.log("유저등록음식들: ", response);
+        // console.log("유저등록음식들: ", response);
         
         return response;
     } catch (err) {

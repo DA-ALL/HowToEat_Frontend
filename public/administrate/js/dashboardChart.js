@@ -25,7 +25,7 @@ $(document).ready(function () {
 async function generateLast30Days() {
     try {
         const response = await getRecent30DaysTodayConsumedFoodCounts();
-        console.log(response);
+        // console.log(response);
         return response.data;
     } catch(err){
         console.log(err);

@@ -46,7 +46,7 @@ async function getTrainerDatas(){
 
     try{
         const response = await getTrainerList(params.page, params.name, params.gymName);
-        console.log(response);
+        // console.log(response);
         return response;
     } catch (error){
         console.error(error);

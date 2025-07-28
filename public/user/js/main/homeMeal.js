@@ -160,7 +160,7 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
 
 function renderMealListItem(data) {
 
-    console.log(data);
+    // console.log(data);
     return `
         <div class="meal-list-item" data-consumed-food-id="${data.consumedFoodId}">
             <div class="meal-info-wrapper">

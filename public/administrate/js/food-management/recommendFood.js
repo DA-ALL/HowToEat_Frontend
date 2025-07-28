@@ -100,7 +100,7 @@ async function getRecommendFoodDatas() {
     const params = getParamsFromURL();
     try {
         const response = await getRecommendFoodList(params);
-        console.log("추천음식 조회: ", response);
+        // console.log("추천음식 조회: ", response);
         
         return response.data;
     } catch (err) {

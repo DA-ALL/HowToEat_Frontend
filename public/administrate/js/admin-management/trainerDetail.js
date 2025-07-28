@@ -175,7 +175,7 @@ async function loadDetailData() {
 
     try {
         const response = await getTrainer(trainerId);
-        console.log("트레이너 정보:", response);
+        // console.log("트레이너 정보:", response);
         populateDetails(response.data);  // 데이터를 필드에 채우기
     } catch (err) {
         console.error("트레이너 정보를 불러오는 중 오류 발생:", err);
@@ -186,7 +186,7 @@ async function loadDetailData() {
 async function getGyms(){
     try{
         const response = await getAllGymList();
-        console.log("헬스장 목록:", response);
+        // console.log("헬스장 목록:", response);
         return response.data;
     } catch (err) {
         console.error("헬스장 목록을 불러오는 중 오류 발생:", err);
@@ -238,7 +238,7 @@ $(document).on("click", "#trainerDetailEdit", async function () {
     
     try {
         const response = await updateTrainer(trainerId, formData);
-        console.log("트레이너 수정 성공:", response);
+        // console.log("트레이너 수정 성공:", response);
         showCustomAlert({
             type: 3,
             message: response.message,
@@ -269,7 +269,7 @@ $(document).on("click", "#trainerDetailAdd", async function () {
 
     try {
         const response = await createTrainer(formData);
-        console.log("트레이너 추가 성공:", response);
+        // console.log("트레이너 추가 성공:", response);
         showCustomAlert({
             type: 3,
             message: response.message,
@@ -321,9 +321,9 @@ $(document).on("change", "#trainerImageInput", async function (event) {
 
         // 압축된 파일 저장
         selectedImageFile = compressedFile;
-        console.log("압축된 이미지 파일:", compressedFile);
-        console.log("압축 전 크기:", (file.size / 1024).toFixed(1), "KB");
-        console.log("압축 후 크기:", (compressedFile.size / 1024).toFixed(1), "KB");
+        // console.log("압축된 이미지 파일:", compressedFile);
+        // console.log("압축 전 크기:", (file.size / 1024).toFixed(1), "KB");
+        // console.log("압축 후 크기:", (compressedFile.size / 1024).toFixed(1), "KB");
 
     } catch (error) {
         console.error("이미지 압축 중 오류 발생:", error);

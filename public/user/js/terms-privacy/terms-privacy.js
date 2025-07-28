@@ -6,7 +6,6 @@ $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
     const user = getPayloadFromToken(token);
-    console.log(user);
     
     // 생일이 "MM-DD" 형식이면 나눠서 넣기
     const birthMonth = user.birthday?.split('-')[0] || '';

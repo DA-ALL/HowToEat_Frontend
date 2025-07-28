@@ -86,13 +86,13 @@ export async function renderTableWithOptionalPagination({
 $(document).on('click', '#adminTrainerTable .table-delete-button', function (e) {
     e.stopPropagation();
     const trainerId = $(this).data('id');
-    console.log(`trainer ID ${trainerId} 삭제 요청`);
+    // console.log(`trainer ID ${trainerId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
     showCustomAlert({
         type: 5,
         onCancel: () => {
-            console.log("삭제 취소");
+            // console.log("삭제 취소");
         },
         onNext: async () => {
             try {

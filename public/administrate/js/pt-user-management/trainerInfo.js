@@ -110,7 +110,7 @@ export async function getTrainerInfo() {
     const trainerId = getPathIdFromUrl();
     try {
         const response = await getTrainer(trainerId);
-        console.log("Trainer Info:", response.data);
+        // console.log("Trainer Info:", response.data);
         const { imageURL, name, memberCount } = response.data;
         const gym = response.data.gym.name;
 
@@ -125,7 +125,7 @@ async function getUserDataForUserTable() {
     const trainerId = getPathIdFromUrl();
     try {
         const response = await getTrainerWithPtMembers(page, trainerId);
-        console.log("Trainer with PT Members:", response.data);
+        // console.log("Trainer with PT Members:", response.data);
         const currentPage = response.data.ptMembers.page;
         const totalElements = response.data.ptMembers.totalElements;
         const content = response.data.ptMembers.content;
