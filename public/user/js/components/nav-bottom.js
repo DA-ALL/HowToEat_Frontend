@@ -155,7 +155,6 @@ $(document).ready(function () {
                 }
             } else {
                 if (currentPath.startsWith('/main')) {
-                    console.log("4");
                     lastMainPath = currentPath;
                 }
     
@@ -193,9 +192,9 @@ $(document).ready(function () {
 
         if (path.startsWith('/main')) {
             lastMainPath = path;
-            console.log("뒤로가기 1", path)
+            // console.log("뒤로가기 1", path)
         }
-        console.log("뒤로가기2", path)
+        // console.log("뒤로가기2", path)
         showPage(path);
     });
 

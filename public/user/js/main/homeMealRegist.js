@@ -29,8 +29,8 @@ export function renderIncreaseCPFbar(callback) {
         fat: { consumed: raw.consumedFat, target: raw.targetFat }
         };
         const foodInfo = foodRes[0].data;
-        console.log(userConsumedData);
-        console.log(foodInfo);
+        // console.log(userConsumedData);
+        // console.log(foodInfo);
 
         const cpfBarHTML = `
             <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
@@ -450,7 +450,7 @@ $(document).on('click', '#favoriteButton', function () {
         processData: false,
         success: function () {
             showToast("즐겨찾기에 추가되었습니다.", "#homeMealRegist")
-            console.log("업로드 성공");
+            // console.log("업로드 성공");
         },
         error: function (err) {
             console.error("업로드 실패", err);
@@ -592,7 +592,7 @@ $(document).off('change', '.image-input').on('change', '.image-input', async fun
         $previewImage.hide();
 
         updateNextButtonData();
-        console.log("압축 성공:", (compressedFile.size / 1024).toFixed(1), "KB");
+        // console.log("압축 성공:", (compressedFile.size / 1024).toFixed(1), "KB");
     } catch (err) {
         console.error("압축 실패:", err);
     }

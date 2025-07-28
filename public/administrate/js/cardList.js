@@ -103,7 +103,7 @@ $(document).ready(async function () {
 async function getDailyReportData(){
     try {
         const response = await getDailyReport();
-        console.log(response);
+        // console.log(response);
         return response.data;
     } catch(err){
         console.log(err);

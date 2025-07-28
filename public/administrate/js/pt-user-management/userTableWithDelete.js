@@ -111,13 +111,13 @@ function formatUserRole(userRole) {
 $(document).on('click', '.delete-user-button', function (e) {
     e.stopPropagation();
     const ptMemberId = $(this).data('pt-member-id');
-    console.log(`멤버아이디 ${ptMemberId} 삭제 요청`);
+    // console.log(`멤버아이디 ${ptMemberId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
     showCustomAlert({
         type: 2,
         onCancel: () => {
-            console.log("삭제 취소");
+            // console.log("삭제 취소");
         },
         onNext: async () => {
             try {

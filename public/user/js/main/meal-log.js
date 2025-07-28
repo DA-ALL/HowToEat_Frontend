@@ -1,5 +1,5 @@
 export function getMealLog(date, info) {
-    console.log(info);
+    // console.log(info);
     let target = Math.round(info.targetKcal || 0);
 
     let breakfastTarget = Math.round(target * 0.3); // 3 / 10

@@ -53,10 +53,10 @@ function loadNoticeTable(){
 
 async function getNoticeDatas() {
     const params = getParamsFromUrl();
-    console.log("Fetching notice list with params:", params);
+    // console.log("Fetching notice list with params:", params);
     try {
         const response = await getNoticeList(params.page, params.title, params.orderBy);
-        console.log(response);
+        // console.log(response);
         return response;
 
     } catch (error) {
@@ -82,7 +82,7 @@ $(document).on('click', `#noticeTableBody tr`, function () {
 });
 
 $(document).on('click', `#addNoticeButton`, function () {
-    console.log('create notice');
+    // console.log('create notice');
     updateURL('notice/add');
 });
 

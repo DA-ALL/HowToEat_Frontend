@@ -411,7 +411,6 @@ $(document).on('click', function (event) {
 });
 
 $(document).on('input', '.decimal', function () {
-    console.log("Test");
     let val = $(this).val();
     
 

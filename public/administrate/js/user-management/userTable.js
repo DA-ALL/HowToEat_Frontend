@@ -219,7 +219,7 @@ $(document).on('click', '.gym-user-item', async function () {
     
     try {
         const response = await updateUserNextGymStatus(userId, {isNextGym});
-        console.log(response);
+        // console.log(response);
         showCustomAlert({
             type: 3,
             message: response.message,
@@ -232,6 +232,6 @@ $(document).on('click', '.gym-user-item', async function () {
      }
 
     
-    console.log("gymuser 변경 API 호출");
+    // console.log("gymuser 변경 API 호출");
     $('#gymUserDropdown').remove();
 });

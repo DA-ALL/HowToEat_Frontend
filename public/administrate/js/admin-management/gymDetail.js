@@ -132,7 +132,7 @@ async function loadDetailData() {
 
     try{
         const response = await getGym(gymId);
-        console.log("??", response);
+        // console.log("??", response);
         populateDetails(response.data);  // 데이터를 필드에 채우기
     } catch(error){
         console.log(error);

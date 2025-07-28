@@ -51,7 +51,7 @@ async function getGymDatas() {
     const searchValue = getSearchValueFromURL();
     try {
         const response = await getGymList(page, searchValue);
-        console.log("헬스장", response);
+        // console.log("헬스장", response);
         return response;
     } catch (error) {
         console.error(error);
@@ -77,7 +77,7 @@ $(document).on('click', `#gymTableBody tr`, function () {
 
 // 추가하기 버튼 클릭
 $(document).on('click', `#addGymButton`, function () {
-    console.log('헬스장 생성');
+    // console.log('헬스장 생성');
     updateURL('admin-management/gym/add');
 });
 

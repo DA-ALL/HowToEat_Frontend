@@ -158,10 +158,10 @@ async function loadNoticeDetailData() {
 
     try{
         const response = await getNotice(noticeId);  // API 호출로 공지사항 데이터 가져오기
-        console.log("공지사항 데이터:", response);
+        // console.log("공지사항 데이터:", response);
         populateNoticeDetails(response.data);  // 데이터를 필드에 채우기
     } catch (error) {
-        console.log("공지사항 데이터를 불러오는 중 오류 발생:", error);
+        // console.log("공지사항 데이터를 불러오는 중 오류 발생:", error);
     }
 }
 
@@ -191,7 +191,7 @@ $(document).on("click", "#noticeDetailEdit", async function () {
     if ($(this).hasClass("disabled")) return;
     const noticeId = getNoticeIdFromUrl();
     const noticeDetailValues = getNoticeDetailValues();
-    console.log("수정하기 버튼", noticeDetailValues);
+    // console.log("수정하기 버튼", noticeDetailValues);
     
     try{
         const response = await updateNotice(noticeId, noticeDetailValues);
@@ -212,7 +212,7 @@ $(document).on("click", "#noticeDetailAdd", async function () {
     if ($(this).hasClass("disabled")) return;
 
     const noticeDetailValues = getNoticeDetailValues();
-    console.log("추가하기 버튼", noticeDetailValues);
+    // console.log("추가하기 버튼", noticeDetailValues);
     try{
         const response = await createNotice(noticeDetailValues);
         showCustomAlert({

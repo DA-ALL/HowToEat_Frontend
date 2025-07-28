@@ -21,7 +21,7 @@ async function getUserDataForTotalUsers() {
     const request = getParamsFromURL();
     try {
         const response = await getUserList(request);
-        console.log("User data fetched:", response);
+        // console.log("User data fetched:", response);
         return response;
     } catch (err) {
         console.error("Error fetching user data:", err);

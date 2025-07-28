@@ -2,7 +2,6 @@ import { showPopup } from './popup.js'
 import { showPage } from './nav-bottom.js';
 
 export function showNumericInput(parent, type, value) {
-        console.log("show");
         let numericInputHtml = '';
         switch (type) {
             case "height" : 
@@ -373,7 +372,6 @@ function validateWeightInput() {
     $button.removeClass('active').addClass('disabled');
     $valueWrapper.removeClass('error').removeAttr('data-errortype');
 
-    console.log(current);
     if (!current) return;
 
     if (current == defaultValue) return;

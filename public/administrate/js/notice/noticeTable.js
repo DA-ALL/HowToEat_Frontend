@@ -90,16 +90,16 @@ export async function renderTableWithOptionalPagination({
 $(document).on('click', '.delete-notice-button', function (e) {
     e.stopPropagation();
     const noticeId = $(this).data('notice-id');
-    console.log(`notice ID ${noticeId} 삭제 요청`);
+    // console.log(`notice ID ${noticeId} 삭제 요청`);
 
     // TODO: 실제 삭제 API 호출
     showCustomAlert({
         type: 5,
         onCancel: () => {
-            console.log("삭제 취소");
+            // console.log("삭제 취소");
         },
         onNext: async () => {
-            console.log("삭제 확인");
+            // console.log("삭제 확인");
             try {
                 const response = await deleteNotice(noticeId);
                 showCustomAlert({

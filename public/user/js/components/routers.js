@@ -115,9 +115,9 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
         $("#reportPage").html(renderReportPage());
         initReportPage();
     // }
-    if ($('#myPage').children().length === 0) {
-        $("#myPage").html(renderMyPage());
-    }
+    // if ($('#myPage').children().length === 0) {
+    //     $("#myPage").html(renderMyPage());
+    // }
 }
 
 

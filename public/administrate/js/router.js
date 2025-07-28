@@ -21,7 +21,7 @@ window.addEventListener('popstate', function (event) {
     
     if (popstateHandlers[currentContent]) {
         popstateHandlers[currentContent](event);
-        console.log("popstate 발생");
+        // console.log("popstate 발생");
         updateURLWithState();
     }
     
@@ -84,10 +84,10 @@ function updateURLParams(params, useReplaceState = false) {
     const newUrl = `${url.pathname}?${sortedParams.toString()}`;
 
     if (useReplaceState) {
-        console.log("replaceState");
+        // console.log("replaceState");
         history.replaceState({}, "", newUrl);
     } else {
-        console.log("pushState");
+        // console.log("pushState");
         history.pushState({}, "", newUrl);
     }
 }

@@ -12,7 +12,7 @@ export function renderUsersNoticeDetail(callback) {
     $.when(noticeDetailInfo).done(function (noticeDetailRes) {
         const noticeDetailInfoData = noticeDetailRes.data;
         const noticeHTML = renderUserNoticeDetailHTML(noticeDetailInfoData);
-        console.log(noticeDetailInfoData)
+        // console.log(noticeDetailInfoData)
         callback(noticeHTML);
     });
 }
