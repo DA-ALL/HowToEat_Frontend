@@ -45,9 +45,9 @@
 .date-picker .date-box {
     position: relative;
     width: 100%;
-    padding: 13px 16px;
+    padding: clamp(10.39px, 3.464vw, 17.33px) clamp(12.8px, 4.264vw, 21.33px);
+    border-radius: clamp(12.8px, 4.264vw, 21.33px);
     border: 1px solid #E8E8E8;
-    border-radius: 16px;
     cursor: pointer;
     color: #999;
 }
@@ -114,8 +114,8 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 14px 20px;
-    border-radius: 16px;
+    padding: clamp(10.39px, 3.464vw, 17.33px) clamp(12.8px, 4.264vw, 21.33px);
+    border-radius: clamp(12.8px, 4.264vw, 21.33px);
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     transition: box-shadow 0.3s ease;
@@ -167,10 +167,10 @@
 }
 
 #surveyPage #survey .select-container .select-item {
-    padding: 14px 20px;
-    border-radius: 16px;
+    padding: clamp(10.39px, 3.464vw, 17.33px) clamp(12.8px, 4.264vw, 21.33px);
+    border-radius: clamp(12.8px, 4.264vw, 21.33px);
     border: 1px solid #E8E8E8;
-    font-size: 15px;
+    font-size: 16px;
     color: var(--gray400);
     background-color: var(--white300);
     box-sizing: border-box;
@@ -191,11 +191,11 @@
     border: 1px solid #E8E8E8;
     background-color: var(--white300);
     box-sizing: border-box;
-    padding: 13px 16px;
     transition: box-shadow 0.3s ease;
     cursor: pointer;
     gap: 6px;
-    border-radius: 16px;
+    padding: clamp(10.39px, 3.464vw, 17.33px) clamp(12.8px, 4.264vw, 21.33px);
+    border-radius: clamp(12.8px, 4.264vw, 21.33px);
 }
 
 #surveyPage #survey .select-container .select-wrapper .main-text {
