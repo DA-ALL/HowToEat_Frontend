@@ -42,7 +42,7 @@
     background-color: #F0F0F0;
 }
 
-#homeMeal .home-meal-bar-container .meal-bar-wrapper .bar-wrapper .bar-front {
+#homeMeal .home-meal-bar-container .meal-bar-wrapper .bar-wrapper .bar-front-consumed {
     width: 0%;
     height: clamp(8.6px, 3.2vw - 1px, 15px);
     position: absolute;
@@ -141,3 +141,8 @@
 #homeMeal .meal-list-container .meal-list-wrapper .image-arrow img {
     width: clamp(16px, 3.2vw + 4px, 20px);
 }
+
+@keyframes fillBar {
+    from { width: 0%; }
+    to { width: 100%; }  /* 어차피 실제 width는 inline style로 조절됨 */
+  }
