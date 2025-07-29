@@ -355,58 +355,60 @@ function getTailSvg() {
 //
 // regist 버튼 클릭 시
 $(document).on('click', '#registButton', function () {
-    const consumedFoodListBySearch = [];
     const $btn = $(this);
     const pathParts = window.location.pathname.split("/");
     const mealTime = pathParts[2];
     const mealTimeUpper = mealTime.toUpperCase();
     const selectedDate = pathParts[3];
-    
 
-    const consumedFood = {
-        id: $btn.data('food-id'),
-        foodCode: $btn.data('food-code'),
-        foodName: $btn.data('food-name'),
-        mealTime: mealTimeUpper,
-        foodWeight: $btn.data('weight'),
-        foodType: $btn.data('type'),
-        kcal: $btn.data('kcal'),
-        carbo: $btn.data('carbo'),
-        protein: $btn.data('protein'),
-        fat: $btn.data('fat'),
-        providedBy: $btn.data('provided-by'),
-        source:$btn.data('source'),
-        isPerServing: $btn.data('is-per-serving'),
-        unit: $btn.data('unit'),
-        foodImageUrl: $btn.data('img')
-    };
+    const formData = new FormData();
 
-    consumedFoodListBySearch.push(consumedFood);
+    formData.append("foodCode", $btn.data("food-code"));
+    formData.append("foodName", $btn.data("food-name"));
+    formData.append("mealTime", mealTimeUpper);
+    formData.append("foodWeight", $btn.data("weight"));
+    formData.append("foodType", $btn.data("type"));
+    formData.append("kcal", $btn.data("kcal"));
+    formData.append("carbo", $btn.data("carbo"));
+    formData.append("protein", $btn.data("protein"));
+    formData.append("fat", $btn.data("fat"));
+    formData.append("providedBy", $btn.data("provided-by") || "");
+    formData.append("source", $btn.data("source"));
+    formData.append("isPerServing", $btn.data("is-per-serving"));
+    formData.append("unit", $btn.data("unit"));
+
+    // 이미지 파일이 있을 경우 추가
+    if (compressedFile) {
+        formData.append("foodImageFile", compressedFile, compressedFile.name);
+    }
+
+    for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
 
     $.ajax({
         type: "POST",
-        url: `${window.DOMAIN_URL}/consumed-foods`,
-        contentType: "application/json",
-        data: JSON.stringify(consumedFoodListBySearch),
+        url: `${window.DOMAIN_URL}/consumed-foods/search`,
+        data: formData,
+        processData: false, // 필수: jQuery가 FormData를 문자열로 변환하지 않도록
+        contentType: false, // 필수: 브라우저가 boundary 포함한 content-type 자동 설정
         success: function (res) {
             resetHomeMealView();
             resetSearchView();
             resetRegistView();
-        
+
             const targetPath = `/main/${mealTime}/${selectedDate}`;
             history.pushState({ view: 'main' }, '', targetPath);
-            setLastMainPath(targetPath);
-            
-            // window에도 저장, 그리고 nav-bottom.js에서도 참조하도록
             window.lastMainPath = targetPath;
             if (typeof setLastMainPath === 'function') {
-                setLastMainPath(targetPath); // 전역 설정 함수 호출
+                setLastMainPath(targetPath);
             }
-        
+
             showMain(mealTime);
-        },
+        }
     });
 });
+
 
 
 // favorite 버튼 클릭 시
@@ -427,7 +429,7 @@ $(document).on('click', '#favoriteButton', function () {
         carbo: $btn.data('carbo'),
         protein: $btn.data('protein'),
         fat: $btn.data('fat'),
-        providedBy: $btn.data('provided-by'),
+        providedBy: $btn.data('provided-by') || "",
         isPerServing: $btn.data('is-per-serving'),
         unit: $btn.data('unit'),
         source: "User",
@@ -565,7 +567,7 @@ $(document).on('click', '.image-container', function (e) {
     e.stopPropagation(); // 꼭 버블 차단
 });
 
-let compressedFile = '';
+let compressedFile = null;
 
 // 이미지 선택 시 formData에 미리 넣기
 $(document).off('change', '.image-input').on('change', '.image-input', async function (e) {
