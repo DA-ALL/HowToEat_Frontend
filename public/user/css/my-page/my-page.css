@@ -35,6 +35,13 @@
     z-index: 1;
 }
 
+#my #myPage {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
 #my #myPage .mypage-info-container {
     padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.264vw + 0.01px, 21.33px);
 }
@@ -232,8 +239,8 @@
 
   #my #myPage .button-wrapper  {
     display: flex;
-    position: absolute;
-    bottom: 0px;
+    /* position: absolute; */
+    /* bottom: 0px; */
     max-width: 500px;
     width: 100%;
     box-sizing: border-box;

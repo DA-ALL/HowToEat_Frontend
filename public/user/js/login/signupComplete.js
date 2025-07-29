@@ -1,10 +1,16 @@
 import { setupAjaxAuthInterceptor } from '../utils/auth-interceptor.js';
 
+let userName = "";
+let targetKcal = 0;
+
 $(document).ready(async function () {
     setupAjaxAuthInterceptor();
 
     const data = await getUserBasicInfoData();
-    showWelcomeMessage(data);
+    userName = data.name;
+    targetKcal = data.targetKcal;
+
+    showWelcomeMessage();
     triggerConfettiEffect();
 
     $(".next-button.signup").on('click', function(){
@@ -12,19 +18,18 @@ $(document).ready(async function () {
     });
 });
 
-function showWelcomeMessage(data) {
+function showWelcomeMessage() {
     $("#signupComplete").html(createWelcomeMessage());
     setTimeout(function () {
-        showGoalMessage(data);
+        showGoalMessage();
     }, 3000);
 }
 
-function showGoalMessage(data) {
-    let name = data.name;
+function showGoalMessage() {
     $(".welcome-text").fadeOut(1000, function () {
-        $(this).replaceWith(createGoalMessage(name));
+        $(this).replaceWith(createGoalMessage());
         $(".goal-text-container").hide().fadeIn(2000, function () {
-            animateKcalCounter(data);
+            animateKcalCounter();
         });
         
     });
@@ -32,10 +37,10 @@ function showGoalMessage(data) {
 
 const createWelcomeMessage = () => `<div class="welcome-text">환영합니다</div>`;
 
-const createGoalMessage = (name) => `
+const createGoalMessage = () => `
     <div class="goal-text-container">
         <div class="goal-text-wrapper">
-            <div class="goal-text-name">${name}</div>
+            <div class="goal-text-name">${userName}</div>
             <div class="goal-text">님의 목표 달성을 위해선</div>
         </div>
         <div class="goal-kcal-wrapper"></div>
@@ -43,8 +48,8 @@ const createGoalMessage = (name) => `
     </div>
 `;
 
-function animateKcalCounter(data) {
-    let targetValue = data.targetKcal, duration = 3000, startTime = performance.now();
+function animateKcalCounter() {
+    let targetValue = targetKcal, duration = 3000, startTime = performance.now();
 
     function easeOutExpo(t) {
         return t === 1 ? 1 : 1 - Math.pow(2, -15 * t);
@@ -102,7 +107,6 @@ function buttonTemplate() {
 }
 
 function showFinalButton() {
-    console.log("button");
     const $button = $(buttonTemplate()).hide(); // 버튼을 숨긴 상태에서 생성
     $('#signupComplete').append($button);
     $button.fadeIn(1000); // 1초 동안 서서히 나타나도록 설정
@@ -119,7 +123,7 @@ const createMotivationMessage1 = () => `
 const createMotivationMessage2 = () => `<div class="sub-text">매일 건강하게 채울 수 있어요</div>`;
 
 const createFinalMessage1 = () => `
-    <div class="goal-text-name">김예현</div>
+    <div class="goal-text-name">${userName}</div>
     <div class="goal-text">님의 건강한 목표달성을 위해</div>
 `;
 
