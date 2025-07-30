@@ -11,7 +11,7 @@ export function renderConsumedFoodInfo(consumedFoodId, callback) {
     $.when(consumedFoodDataRequest).done(function (consumedFoodRes) {
         const consumedFoodData = consumedFoodRes.data;
         const consumedFoodHTML = renderConsumedFoodDetail(consumedFoodData);
-        // console.log(consumedFoodData)
+        console.log(consumedFoodData)
         callback(consumedFoodHTML);
     });
 
@@ -40,8 +40,8 @@ function renderConsumedFoodDetail(consumedFoodData) {
                 <div class="sub-title-weight truncate">${Math.round(consumedFoodData.weight)}g</div>
             </div>
             <div class="image-container">
-                <img class="new-image" src="${consumedFoodData.foodImageUrl}">
-                <img class="preview-image" src="/user/images/icon_camera.png">
+                <img class="new-image" src="${consumedFoodData.foodImageUrl}" style="${consumedFoodData.foodImageUrl ? 'display: inline;' : ''}">
+                <img class="preview-image" src="/user/images/icon_camera.png" style="${consumedFoodData.foodImageUrl ? 'display: none;' : ''}">
                 <input type="file" accept="image/*" class="image-input" style="display: none;">
             </div>
             <div class="food-info-container">

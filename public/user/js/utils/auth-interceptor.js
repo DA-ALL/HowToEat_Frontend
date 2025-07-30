@@ -8,7 +8,6 @@ export function setupAjaxAuthInterceptor() {
             withCredentials: true
         },
         beforeSend: function (xhr) { 
-            // console.log("Interceptor");
             const accessToken = localStorage.getItem("Authorization");
             if (accessToken) {
                 xhr.setRequestHeader("Authorization", accessToken);
