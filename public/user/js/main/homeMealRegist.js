@@ -33,21 +33,20 @@ export function renderIncreaseCPFbar(callback) {
         // console.log(foodInfo);
 
         const cpfBarHTML = `
-            <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
             <div class="home-meal-container padding">
                 <div class="title-format">${mealKor}의 탄단지</div>
                 <div class="cpf-kcal-left-message-wrapper">
                     ${getMessageFormat(userConsumedData, foodInfo)}
                     <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
                 </div>
-                ${createBarContainer(mealKey, userConsumedData, foodInfo)}
+                ${createBarContainer(mealKor, userConsumedData, foodInfo)}
             </div>
             <div class="divider large"></div>
         `;
 
-        const mealRegistHTML = renderMealRegist(userConsumedData, foodInfo);
+        const mealRegistHTML = renderMealRegist(mealKor, userConsumedData, foodInfo);
         const mealAdjustHTML = renderMealAdjust(mealKor, userConsumedData, foodInfo);
-        const combinedHTML = cpfBarHTML + mealRegistHTML + mealAdjustHTML;
+        const combinedHTML = mealRegistHTML + cpfBarHTML + mealAdjustHTML;
 
         callback(combinedHTML);
     }).fail(function () {
@@ -59,8 +58,9 @@ export function renderIncreaseCPFbar(callback) {
 
 
 // 음식 정보 등록 카드 렌더링 (이름, g, 이미지 업로드 등)
-export function renderMealRegist(userConsumedData, foodInfo) {
+export function renderMealRegist(mealKor, userConsumedData, foodInfo) {
     const commonHeader = `
+        <div id="headerNav" data-title="${mealKor} 등록하기" data-type="2"></div>
         <div class="home-meal-regist-container padding">
             <div class="text-wrapper">
                 <div class="title">${foodInfo.foodName}</div>
@@ -133,7 +133,7 @@ export function renderMealAdjust(mealKey, userConsumedData, foodInfo) {
             <div class="input-content manual-input-content" style="display: none;">
                 <div class="manual-wrapper">
                     <span class="hidden-text">g</span>
-                    <input type="number" class="manual-input-field" value="100" inputmode="numeric" pattern="[0-9]*"/>
+                    <input type="number" class="manual-input-field" value="${foodInfo.foodWeight}" inputmode="numeric" pattern="[0-9]*"/>
                     <span class="unit">g</span>
                 </div>
             </div>
@@ -147,6 +147,33 @@ export function renderMealAdjust(mealKey, userConsumedData, foodInfo) {
     `;
     
 }
+
+// let isFixed = false;
+// let prevScroll = 0;
+
+// $(window).on("scroll", function () {
+//     const $target = $(".food-info-container");
+//     const $header = $(".header-nav");
+    
+//     if ($target.length === 0 || $header.length === 0) return;
+
+//     const headerHeight = $header.outerHeight(); // 실제 헤더 높이
+//     const offsetTop = $target.offset().top;
+//     const scrollTop = $(window).scrollTop() + headerHeight;
+
+//     if (!isFixed && scrollTop > offsetTop) {
+//         $target.addClass("fixed");
+//         isFixed = true;
+//     }
+
+//     if (isFixed && scrollTop < prevScroll) {
+//         $target.removeClass("fixed");
+//         isFixed = false;
+//     }
+
+//     prevScroll = scrollTop;
+// });
+
 
 // 영어 meal key를 한글로 변환
 function mealToKor(meal) {
