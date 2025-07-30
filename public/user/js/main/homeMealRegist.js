@@ -403,14 +403,9 @@ $(document).on('click', '#registButton', function () {
     formData.append("source", $btn.data("source"));
     formData.append("isPerServing", $btn.data("is-per-serving"));
     formData.append("unit", $btn.data("unit"));
-
     // 이미지 파일이 있을 경우 추가
     if (compressedFile) {
         formData.append("foodImageFile", compressedFile, compressedFile.name);
-    }
-
-    for (const [key, value] of formData.entries()) {
-        console.log(key, value);
     }
 
     $.ajax({
