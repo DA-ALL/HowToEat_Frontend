@@ -6,15 +6,22 @@
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/> 
     <link rel="icon" href="/user/images/favicon.png" type="image/png" />
     <link rel="stylesheet" href="/user/css/main.css">
+    <link rel="stylesheet" href="/user/css/email-exists.css">
 
     <title>하잇</title>
 
     <script type="module" src="/user/js/components/header-nav.js" defer></script>
     <script type="module" src="/user/js/utils/auth-interceptor.js"  defer></script>
     <script type="module" src="/user/js/utils/url.js" defer></script>
+    <script type="module" src="/user/js/error-page/email-exists.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    
+    <div id="emailExists">
+        <div class="root-container">
+            <div id="emailExistsPage">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
