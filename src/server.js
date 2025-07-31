@@ -20,6 +20,10 @@ app.get('/login-page', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'login-page.html'));
 });
 
+app.get('/email-exists', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/user', 'email-exists.html'));
+});
+
 app.get('/survey', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/user', 'survey.html'));
 });
