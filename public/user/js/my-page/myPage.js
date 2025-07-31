@@ -156,7 +156,7 @@ $(document).on('click', '.item-option[data-path]', function () {
     const path = $(this).data('path');
     const newPath = `/users/${path}`;
 
-    window.lastUsersPath = newPath; // ✅ 꼭 같이 업데이트 해줘야 함!
+    window.lastUsersPath = newPath;
 
     history.pushState({ view: 'users', path }, '', newPath);
     showPage(newPath);
@@ -166,7 +166,7 @@ $(document).on('click', '.mypage-info-goal-wrapper', function () {
     const path = $(this).data('path');
     const newPath = `/users/${path}`;
 
-    window.lastUsersPath = newPath; // ✅ 꼭 같이 업데이트 해줘야 함!
+    window.lastUsersPath = newPath; 
 
     history.pushState({ view: 'users', path }, '', newPath);
     showPage(newPath);

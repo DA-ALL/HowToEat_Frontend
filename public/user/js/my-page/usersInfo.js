@@ -13,7 +13,7 @@ export function renderUsersInfo(callback) {
     $.when(userDetailInfo).done(function (userDetailInfoRes) {
         const userDetailInfoData = userDetailInfoRes.data;
         const userInfoPageHTML = renderMyPageHTML(userDetailInfoData);
-        // console.log(userDetailInfoData)
+        console.log(userDetailInfoData)
         callback(userInfoPageHTML);
     });
 
@@ -138,7 +138,6 @@ $(document).on('click', '.profile-image', function (e) {
 });
 
 
-
 let compressedFile = '';
 
 $(document).off('change', '.profile-image-input').on('change', '.profile-image-input', async function (e) {
@@ -164,16 +163,19 @@ $(document).off('change', '.profile-image-input').on('change', '.profile-image-i
         $newImage.attr('src', compressedDataUrl).show();
         $previewImage.hide();
 
-        // console.log("압축 성공:", (compressedFile.size / 1024).toFixed(1), "KB");
+        console.log("압축 성공:", (compressedFile.size / 1024).toFixed(1), "KB");
     } catch (err) {
         console.error("압축 실패:", err);
         return;
     }
 
-    // console.log("압축된 파일:", compressedFile);
-
     const formData = new FormData();
-    formData.append('profileImageFile', compressedFile);
+
+    if (compressedFile) {
+        formData.append("profileImageFile", compressedFile, compressedFile.name);
+    } else {
+        return;
+    }
 
     $.ajax({
         url: `${window.DOMAIN_URL}/users/profile-image`,
@@ -182,7 +184,7 @@ $(document).off('change', '.profile-image-input').on('change', '.profile-image-i
         processData: false,
         contentType: false,
         success: function (res) {
-            // console.log("프로필 이미지 업데이트 성공:", res);
+            console.log("프로필 이미지 업데이트 성공:", res);
         },
         error: function (err) {
             console.error("프로필 이미지 업데이트 실패:", err);
