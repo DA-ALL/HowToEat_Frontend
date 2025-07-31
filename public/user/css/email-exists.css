@@ -1,0 +1,119 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#emailExists {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+#emailExists #emailExistsPage {
+    height: 100%;
+}
+
+#emailExists #emailExistsContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+#emailExists #emailExistsContainer {
+    padding: 0 clamp(12.8px, 4.264vw, 21.33px);
+}
+
+#emailExists #emailExistsContainer .title {
+    padding: clamp(24px, 7.87vw, 40px) 0;
+    font-size: clamp(19.2px, 6.41vw, 32px);
+    font-weight: 600;
+    color: var(--black100);
+}
+
+#emailExists #emailExistsContainer .description-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+#emailExists #emailExistsContainer .description-wrapper .description{
+    font-size: clamp(12px, 4vw, 20px);
+    line-height: clamp(22px, 6vw, 30px);
+    color: var(--black100);
+}
+
+#emailExists #emailExistsContainer .description-wrapper .description .bold{
+    font-weight: 700;
+}
+
+
+/* 로그인 버튼 영역 */
+#emailExists #SSO-LOGIN {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 80px;
+}
+
+#emailExists #SSO-LOGIN .SSO-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 58px;
+    gap: 16px;
+    border-radius: 6px;
+}
+
+#emailExists #SSO-LOGIN .SSO-button.kakao {
+    cursor: pointer;
+    background-color: #FEE500;
+}
+
+#emailExists #SSO-LOGIN .SSO-button.naver {
+    cursor: pointer;
+    background-color: #03C75A;
+}
+
+#emailExists #SSO-LOGIN .SSO-button.apple {
+    cursor: pointer;
+    background-color: #050708;
+}
+
+#emailExists #SSO-LOGIN .SSO-button .sso-logo {
+    display: flex;
+}
+
+#emailExists #SSO-LOGIN .SSO-button .sso-logo .kakao {
+    width: 18px;
+}
+
+#emailExists #SSO-LOGIN .SSO-button .sso-logo .naver {
+    width: 16px;
+}
+
+#emailExists #SSO-LOGIN .SSO-button .sso-logo .apple {
+    width: 16px;
+}
+
+#emailExists #SSO-LOGIN .SSO-button .sso-name.kakao{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--black100);
+}
+
+#emailExists #SSO-LOGIN .SSO-button .sso-name.naver{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--white300);
+}
+
+#emailExists #SSO-LOGIN .SSO-button .sso-name.apple{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--white300);
+}
+

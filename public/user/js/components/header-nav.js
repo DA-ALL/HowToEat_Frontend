@@ -78,6 +78,12 @@ export function initHeaderNav(parentSelector = 'body') {
     $headerNav.find('.button-prev').on('click', function () {
         const currentPath = window.location.pathname;
     
+        if (currentPath.startsWith('/email-exists')) {
+            window.location.href = '/login-page';
+            return;
+        }
+        
+    
         if (currentPath.startsWith('/signup')) {
             window.location.href = '/login-page';
             return;
