@@ -91,8 +91,8 @@
 }
 
 #foodDetail .input-wrapper input {
-    padding: 10px;
-    border-radius: 10px;
+    padding: 16px;
+    border-radius: 17px;
     border: 1px solid var(--gray75);
     outline: none;
     font-size: 15px;
@@ -142,7 +142,7 @@
 }
 
 #foodDetail .input-info{
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--gray300);
 }

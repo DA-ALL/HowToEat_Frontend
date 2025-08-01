@@ -1,7 +1,7 @@
 import { showCustomAlert } from '/administrate/js/components/customAlert.js';
 import { createGym, getGym, updateGym } from '../api.js';
 import { registerViewLoader } from '/administrate/js/router.js';
-export function loadGymDetail({type}) {
+export async function loadGymDetail({type}) {
     
     const container = $("#gymDetail");
 
@@ -46,7 +46,7 @@ export function loadGymDetail({type}) {
 
     container.html(gymDetailHTML);
     
-    loadDetailData();
+    await loadDetailData();
     updateFormNextButton();
 }
 
