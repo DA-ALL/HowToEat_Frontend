@@ -39,10 +39,10 @@ function renderConsumedFoodDetail(consumedFoodData) {
                 <div class="title">${consumedFoodData.foodName}</div>
                 <div class="sub-title-weight truncate">${Math.round(consumedFoodData.weight)}g</div>
             </div>
-            <div class="image-container">
-                <img class="new-image" src="${consumedFoodData.foodImageUrl}" style="${consumedFoodData.foodImageUrl ? 'display: inline;' : ''}">
-                <img class="preview-image" src="/user/images/icon_camera.png" style="${consumedFoodData.foodImageUrl ? 'display: none;' : ''}">
-                <input type="file" accept="image/*" class="image-input" style="display: none;">
+            <div class="image-container-consumed">
+                <img class="new-image-consumed" src="${consumedFoodData.foodImageUrl}" style="${consumedFoodData.foodImageUrl ? 'display: inline;' : ''}">
+                <img class="preview-image-consumed" src="/user/images/icon_camera.png" style="${consumedFoodData.foodImageUrl ? 'display: none;' : ''}">
+                <input type="file" accept="image/*" class="image-input-consumed" style="display: none;">
             </div>
             <div class="food-info-container">
                 <div class="consumed-food-info-wrapper">
@@ -85,6 +85,73 @@ function renderConsumedFoodDetail(consumedFoodData) {
     `;
     return `${commonHeader}`;
 }
+
+
+// 이미지 클릭 시 파일 선택창 열기
+$(document).on('click', '.image-container-consumed', function (e) {
+    const $input = $(this).find('.image-input-consumed');
+    if ($input.length > 0) {
+        $input[0].click(); // 직접 DOM 메서드 호출 (trigger 보다 안전)
+    }
+    e.stopPropagation(); // 꼭 버블 차단
+});
+
+let compressedConsumedFoodFile = null;
+
+// 이미지 선택 시 formData에 미리 넣기
+$(document).off('change', '.image-input-consumed').on('change', '.image-input-consumed', async function (e) {
+    const pathParts = window.location.pathname.split("/");
+    const consumedFoodId = pathParts[5];
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const $container = $(this).closest('.image-container-consumed');
+    const $newImage = $container.find('.new-image-consumed');
+    const $previewImage = $container.find('.preview-image-consumed');
+
+    const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 720,
+        useWebWorker: true,
+        maxIteration: 5,
+        initialQuality: 0.7
+    };
+
+    try {
+        compressedConsumedFoodFile = await imageCompression(file, options);
+        const compressedDataUrl = await imageCompression.getDataUrlFromFile(compressedConsumedFoodFile);
+
+        $newImage.attr('src', compressedDataUrl).show();
+        $previewImage.hide();
+
+        console.log("압축 성공:", (compressedConsumedFoodFile.size / 1024).toFixed(1), "KB");
+    } catch (err) {
+        console.error("압축 실패:", err);
+        return;
+    }
+
+    const formData = new FormData();
+
+    if (compressedConsumedFoodFile) {
+        formData.append("consumedFoodImageFile", compressedConsumedFoodFile, compressedConsumedFoodFile.name);
+    } else {
+        return;
+    }
+
+    $.ajax({
+        url: `${window.DOMAIN_URL}/consumed-foods/${consumedFoodId}/image`,
+        type: 'PATCH',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            console.log("프로필 이미지 업데이트 성공:", res);
+        },
+        error: function (err) {
+            console.error("프로필 이미지 업데이트 실패:", err);
+        }
+    });
+});
 
 
 // favorite 버튼 클릭 시
