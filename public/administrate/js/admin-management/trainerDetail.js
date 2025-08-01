@@ -80,7 +80,7 @@ export async function loadTrainertDetail({type}) {
 
     container.html(trainerDetailHTML);
     
-    loadDetailData();
+    await loadDetailData();
     updateFormNextButton();
 }
 

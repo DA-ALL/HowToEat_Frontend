@@ -63,6 +63,7 @@
 #trainerDetail .image-wrapper .image {
     width: 80px;
     height: 80px;
+    cursor: pointer;
 }
 
 #trainerDetail .image-wrapper .image img{
