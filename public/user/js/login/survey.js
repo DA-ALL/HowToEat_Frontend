@@ -319,33 +319,33 @@ function restoreSurveyData() {
         $('#weight').val(surveyData.weight);
     }
     if (surveyData.gender) {
-        if(surveyData.gender === 'male' || surveyData.gender === 'M') {
+        if(surveyData.gender === 'MALE' || surveyData.gender === 'M') {
             $('.select-item.male').addClass('valid');
-        } else if(surveyData.gender === 'female' || surveyData.gender === 'F') {
+        } else if(surveyData.gender === 'FEMALE' || surveyData.gender === 'F') {
             $('.select-item.female').addClass('valid');
         }
     }
     if (surveyData.goal) {
-        if(surveyData.goal == '1') {
+        if(surveyData.goal == 'LOSE_WEIGHT') {
             $('.select-item.weight-loss').addClass('valid');
-        } else if(surveyData.goal == '2') {
+        } else if(surveyData.goal == 'MAINTAIN_WEIGHT') {
             $('.select-item.weight-maintain').addClass('valid');
-        } else if(surveyData.goal == '3') {
+        } else if(surveyData.goal == 'GAIN_WEIGHT') {
             $('.select-item.weight-gain').addClass('valid');
-        } else if(surveyData.goal == '4') {
+        } else if(surveyData.goal == 'GAIN_MUSCLE') {
             $('.select-item.muscle-gain').addClass('valid');
         }
     }
     if (surveyData.activity) {
-        if(surveyData.activity == '1') {
+        if(surveyData.activity == 'VERY_HIGH') {
             $('.select-wrapper.very-low').addClass('valid');
-        } else if(surveyData.activity == '2') {
+        } else if(surveyData.activity == 'HIGH') {
             $('.select-wrapper.low').addClass('valid');
-        } else if(surveyData.activity == '3') {
+        } else if(surveyData.activity == 'NORMAL') {
             $('.select-wrapper.moderate').addClass('valid');
-        } else if(surveyData.activity == '4') {
+        } else if(surveyData.activity == 'LOW') {
             $('.select-wrapper.active').addClass('valid');
-        } else if(surveyData.activity == '5') {
+        } else if(surveyData.activity == 'VERY_LOW') {
             $('.select-wrapper.very-active').addClass('valid');
         }
     }
