@@ -116,7 +116,7 @@ export async function loadFoodDetail({type}) {
 
         case "share":
             foodDetialHTML = `
-                <div class="title">음식 상세보기</div>
+                <div class="title">유저 등록 음식 공유하기</div>
                 
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
@@ -219,7 +219,7 @@ export async function loadFoodDetail({type}) {
             break;
         case "add":
             foodDetialHTML = `
-                <div class="title">음식 상세보기</div>
+                <div class="title">음식 추가하기</div>
                 
                 <div class="data-type-wrapper"> 
                     <div class="data-type-title">데이터 종류</div>
@@ -322,8 +322,11 @@ export async function loadFoodDetail({type}) {
 
     container.html(foodDetialHTML);
 
-    
+
     await loadFoodDetailData();
+    if(type === 'share'){
+        validateAllInput();
+    }
     updateFormNextButton();
 }
 
@@ -365,6 +368,13 @@ function validateInput(input) {
     // 유효한 경우
     input.classList.add("valid");
     
+}
+
+function validateAllInput(){
+    $("#foodDetail .input").each(function () {
+        console.log(this.id);
+        validateInput(this);
+    });
 }
 
 // 유효성 검사만 수행하는 함수
@@ -572,13 +582,50 @@ $(document).on("blur", "#foodDetail .input", function () {
     updateFormNextButton()
 });
 
-// 숫자만 입력되도록 필터링
 $(document).on("input", ".only-number", function () {
-    const cleaned = this.value.replace(/[^0-9.]/g, ""); // 소수점 허용
-    if (this.value !== cleaned) {
-        this.value = cleaned;
+    let value = this.value;
+
+    // 숫자와 소수점만 남김
+    value = value.replace(/[^0-9.]/g, "");
+
+    // 소수점 여러 개 제거 (첫 번째만 남기고 나머지 제거)
+    const parts = value.split('.');
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts[1];
+    }
+
+    // 소수점 이하 첫째 자리까지만 유지
+    if (parts.length === 2) {
+        parts[1] = parts[1].slice(0, 1);
+        value = parts[0] + '.' + parts[1];
+    }
+
+    // .3 같은 값 → 0.3 으로 보정
+    if (value.startsWith('.')) {
+        value = '0' + value;
+    }
+
+    // 불필요한 앞자리 0 제거 (단, 0 또는 0.x는 유지)
+    if (value.includes('.')) {
+        // 소수인 경우: 앞자리 0 여러 개면 1개만 남김
+        value = value.replace(/^0+(?=\d)/, '');
+        if (value.startsWith('.')) {
+            value = '0' + value;
+        }
+    } else {
+        // 정수인 경우: 앞자리 0 제거, 단 0만 남는 경우는 예외
+        value = value.replace(/^0+/, '');
+        if (value === '') {
+            value = '0';
+        }
+    }
+
+    // 값이 수정되었으면 적용
+    if (this.value !== value) {
+        this.value = value;
     }
 });
+
 
 // kcal 입력이 바뀔 때마다 recommended 토글 체크
 $(document).on("input", "#kcal", function () {

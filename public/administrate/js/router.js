@@ -19,6 +19,11 @@ window.addEventListener('popstate', function (event) {
     hideAllContents();
     showCurrentContent();
     
+    // popup창 닫기
+    $(`#customAlert`).remove();
+    $(`#addPtMember`).remove();
+    $(`#calorieDetail`).remove();
+
     if (popstateHandlers[currentContent]) {
         popstateHandlers[currentContent](event);
         // console.log("popstate 발생");
