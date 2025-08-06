@@ -79,7 +79,7 @@
     justify-content: center;
     width: 100%;
     gap: 60px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 #calorieDetail .detail-wrapper .date-wrapper .nav-button {
@@ -88,14 +88,14 @@
 }
 
 #calorieDetail .detail-wrapper .date-wrapper .nav-button img {
-    width: 22px;
+    width: 16px;
 }
 
 #calorieDetail .detail-wrapper .date-wrapper .date {
     display: flex;
     justify-content: center;
     width: 160px;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: 500;
     color: var(--black100);
 }
@@ -120,8 +120,8 @@
     position: relative;
     display: flex;
     justify-content: center;
-    width: 300px;
-    height: 270px;
+    width: 230px;
+    height: 208px;
     margin-bottom: 10px
 }
 
@@ -135,13 +135,13 @@
 }
 
 #calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .target-kcal-wrapper .target-label {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 300;
     color: var(--gray300);
 }
 
 #calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .target-kcal-wrapper .target-kcal {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
     color: var(--gray300);
 }
@@ -177,7 +177,7 @@
 }
 
 #calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-consumed {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 500;
 }
 
@@ -190,7 +190,8 @@
   #calorieDetail #consumedDataWrapper .cpf-bar-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    gap: 22px;
   }
 
   #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper {
@@ -199,17 +200,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 4px;
+    gap: 3px;
   }
 
   #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar-title {
-    font-size: 18px;
+    font-size: 13px;
     font-weight: 400;
     color: var(--black100);
   }
 
   #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .target, .divide {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 300;
     color: var(--gray300);
   }
@@ -219,7 +220,7 @@
   }
 
   #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .consumed {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 500;
   }
 
