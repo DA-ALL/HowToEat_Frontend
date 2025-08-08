@@ -44,7 +44,7 @@ export function renderTable(containerId, bodyId) {
                     <th class="th-food-name">식품명</th>
                     <th class="th-food-code">식품코드</th>
                     <th class="th-source">데이터출처</th>   
-                    <th class="th-main-food-name">대표식품명</th>
+                    <th class="th-representative-name">대표식품명</th>
                     <th class="th-calorie">칼로리</th>
                     <th class="th-carbo">탄수화물</th>
                     <th class="th-protein">단백질</th>
