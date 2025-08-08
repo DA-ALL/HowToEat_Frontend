@@ -111,6 +111,11 @@
     min-width: 180px;    
 }
 
+#adminFoodTable .td-representative-name {
+    min-width: 150px;
+    max-width: 150px;    
+}
+
 #adminFoodTable .td-calorie {
     min-width: 90px;
     max-width: 90px;    

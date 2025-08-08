@@ -19,7 +19,7 @@ function createRows({ id, foodName, foodCode, representativeName, kcal, carbo, p
                         foodType === 'CUSTOM' ? '유저 등록' : ''}
                 </div>
             </td>
-            <td class="td-main-food-name">${representativeName}</td>
+            <td class="td-representative-name">${representativeName ? representativeName : '-'}</td>
             <td class="td-calorie">${kcal}kcal</td>
             <td class="td-carbo">${carbo}g</td>
             <td class="td-protein">${protein}g</td>
