@@ -91,6 +91,12 @@
     width: 16px;
 }
 
+#calorieDetail .detail-wrapper .date-wrapper .nav-button .disabled {
+    opacity: 0.35;
+    pointer-events: none;
+
+}
+
 #calorieDetail .detail-wrapper .date-wrapper .date {
     display: flex;
     justify-content: center;
