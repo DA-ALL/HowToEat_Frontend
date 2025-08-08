@@ -285,6 +285,14 @@ export function getUserDetail(userId) {
     })
 }
 
+export function getDailySummaryInfo(userId, selectedDate) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/users/${userId}/daily-summaries/${selectedDate}/macros`,
+        contentType: "application/json",
+    })
+}
+
 export function getUserDailyCalories(userId, page) {
     const params = new URLSearchParams({
         page: page,

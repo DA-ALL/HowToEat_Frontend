@@ -5,7 +5,7 @@ const itemsPerPage = 20;
 
 export function createCalorieRow({ id, createdAt, breakfastKcal, lunchKcal, dinnerKcal, snackKcal, totalKcal }) {
     return `
-        <tr>
+        <tr data-user-id="${id}" data-date="${createdAt}">
             <td class="td-id">${id}</td>
             <td class="td-date">${createdAt}</td>
             <td class="td-breakfast">${breakfastKcal} Kcal</td>
