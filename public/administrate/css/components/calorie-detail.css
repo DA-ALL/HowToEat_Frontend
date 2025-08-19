@@ -255,5 +255,91 @@
   /* 아침, 점심, 저녁 별 탄단지 섭취 영역 */
 
   #calorieDetail #consumedMealDataWrapper {
-    
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 40px;
   }
+
+  #calorieDetail #consumedMealDataWrapper .meal-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 16px;
+  }
+
+
+  #calorieDetail #consumedMealDataWrapper .meal-wrapper .second-title-format {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--black100);
+    margin-bottom: 30px;
+  }
+
+
+  #calorieDetail #consumedMealDataWrapper .home-meal-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .home-meal-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .home-meal-bar-wrapper .meal-title {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--black100);
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px
+
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .bar-wrapper {
+    width: 190px;
+    height: 11px;
+    position: relative;
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .bar-wrapper .bar-back {
+    width: 190px;
+    height: 11px;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #F0F0F0;
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .bar-wrapper .bar-front-consumed {
+    width: 0%;
+    height: 11px;
+    position: absolute;
+    border-radius: 20px;
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .text-wrapper {
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0; 
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .text-wrapper .consumed {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .text-wrapper .target, .divide {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray300);
+}
