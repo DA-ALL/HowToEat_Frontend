@@ -1,7 +1,7 @@
 import { registerPopstateHandler, updateURL, getCurrentContent, registerViewLoader } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
-import { getUser, getUserDetail, getUserDailyCalories, getDailySummaryInfo} from './api.js';
+import { getUser, getUserDetail, getUserDailyCalories, getDailySummaryInfo, getUserDailySummaryByMealTimes} from './api.js';
 
 export async function renderUserInfo() {
     const data = await getUserDataForUserInfo();
@@ -159,6 +159,17 @@ async function getDailySummaryData(selectedDate) {
     }
 }
 
+async function getUserDailySummaryByMealTimesData(selectedDate) {
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getUserDailySummaryByMealTimes(userId, selectedDate);
+        
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
+}
+
 
 
 async function getDailyCaloriData() {
@@ -190,10 +201,10 @@ let dateArr = {};
 $(document).on('click', `#dailyCalorieTable tr`, async function () {
     // console.log("칼로리 row 클릭됨", $(this).find('.td-id').text());
     let currentDateStr = $(this).data("date");
-    const data = await getDailySummaryData(currentDateStr);
-    dateArr = data.dates;
-
-    console.log(dateArr);
+    const dailySummaryData = await getDailySummaryData(currentDateStr);
+    const dailySummaryDataByMealtimes = await getUserDailySummaryByMealTimesData(currentDateStr);
+    dateArr = dailySummaryData.dates;
+    console.log(dailySummaryDataByMealtimes);
 
     //이전 다음날짜가 없을 경우 < > 버튼 disabled처리
     
@@ -221,13 +232,16 @@ $(document).on('click', `#dailyCalorieTable tr`, async function () {
           </div>
     
           <div id="consumedDataWrapper"></div>
-          <div id="consumedMealDataWrapper"></div>
+          <div id="consumedMealDataWrapper">
+            
+          </div>
         </div>
       </div>
     `;
 
     $("body").append(calorieDetailHtml);
-    updateDateAndConsumedData(data.macros);
+    updateDateAndConsumedData(dailySummaryData.macros);
+    updateMealConsumedData(dailySummaryDataByMealtimes);
     updatePrevNextButtonState();
 });
 
@@ -547,6 +561,116 @@ function updateDateAndConsumedData(data) {
 //[[consumedMealDataWrapper]] 영역 코드 - 아침 점심 저녁별 탄단지 그래프 영역//
 ///////////////////////////////////////////////////////////////////
 
+function updateMealConsumedData(data) {
+
+    const breakfastSummaryHtml = `
+        <div class="meal-wrapper">
+            ${createBarContainer("breakfast", data.breakfastDailySummary)}
+        </div>
+        <div class="meal-wrapper">
+            ${createBarContainer("lunch", data.lunchDailySummary)}
+        </div>
+
+        <div class="meal-wrapper">
+            ${createBarContainer("dinner", data.dinnerDailySummary)}
+        </div>
+
+        <div class="meal-wrapper">
+            ${createBarContainer("snack", data.snackDailySummary)}
+        </div>
+    `
+    $('#consumedMealDataWrapper').html(breakfastSummaryHtml);
+
+    requestAnimationFrame(() => {
+        document.querySelectorAll('.bar-front-consumed').forEach(el => {
+            const keyframe = el.dataset.keyframe;
+            el.style.animation = `${keyframe} 1s forwards`;
+        });
+    });
+}
+
+function createBarContainer(mealKey, data) {
+    const types = ['carbo', 'protein', 'fat'];
+    const mealKor = mealToKor(mealKey);
+    // console.log(data);
+    return `
+        <div class="second-title-format">${mealKor}</div>
+        <div class="home-meal-bar-container">
+            ${types.map(type => {
+                const consumed = data[`consumed${capitalize(type)}`];
+                const target = Math.trunc(data[`target${capitalize(type)}`]);
+                const rawPercent = target > 0 ? (consumed / target) * 100 : 0;
+                const percent = Math.min(rawPercent, 100);
+
+                return createBarByMealTime(mealKey, type, consumed, target, percent.toFixed(1), rawPercent);
+            }).join('')}
+        </div>
+    `;
+}
+
+
+function createBarByMealTime(mealKey, type, consumed, target, percent, rawPercent) {
+    const labelMap = {
+        carbo: "탄수화물",
+        protein: "단백질",
+        fat: "지방"
+    };
+
+    const label = labelMap[type];
+
+    let color = "var(--red500)";
+    let fontColor = "var(--red500)";
+
+    if (rawPercent > 105) {
+        color = '#814949';
+        fontColor = '#814949';
+    }
+
+    const keyframeName = `fillBar-${mealKey}-${type}-3`;
+
+    return `
+        <div class="home-meal-bar-wrapper ${type}">
+            <div class="meal-title ${type}">${label}</div>
+            <div class="meal-bar-wrapper">
+                <div class="bar-wrapper">
+                    <div class="bar-back"></div>
+                    <div class="bar-front-consumed ${type}" 
+                        data-keyframe="${keyframeName}" 
+                        style="width: 0%; background: ${color};"
+                        data-animation-to="${percent}">
+                    </div>
+                </div>
+                <div class="text-wrapper">
+                    <span class="consumed ${type}" style="color: ${fontColor}">${consumed}g</span>
+                    <span class="divide">/</span>
+                    <span class="target ${type}">${target}g</span>
+                </div>
+            </div>
+            <style>
+                @keyframes ${keyframeName} {
+                    from { width: 0%; }
+                    to { width: ${percent}%; }
+                }
+            </style>
+        </div>
+    `;
+}
+
+function mealToKor(meal) {
+    switch (meal) {
+        case 'breakfast': return '아침';
+        case 'lunch': return '점심';
+        case 'dinner': return '저녁';
+        case 'snack': return '간식';
+        default: return '';
+    }
+}
+
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function getUserIdFromUrl() {
     const pathSegments = window.location.pathname.split('/');
     const userId = parseInt(pathSegments[pathSegments.length - 1], 10);
@@ -554,10 +678,10 @@ function getUserIdFromUrl() {
 }
 
 // $(document).ready(function () {
-//     const userId = getUserIdFromUrl();
+    //     const userId = getUserIdFromUrl();
+    //         renderUserInfo(getUserDataForUserInfo());
 
 //     if(getCurrentContent() == 'userInfo' && userId ) {
-//         renderUserInfo(getUserDataForUserInfo());
 //     }
 // });
 
