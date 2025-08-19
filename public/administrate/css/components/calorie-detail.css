@@ -1,12 +1,23 @@
-#calorieDetail {
+.background-cover {
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); 
-    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
     position: fixed;
     top: 0;
     left: 0;
     display: flex;
+    gap: 12px;
+}
+
+#calorieDetail {
+    z-index: 2;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 12px;
     align-items: center;
     justify-content: center;
 }
@@ -15,16 +26,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     padding: 60px 30px;
     background-color: var(--white300);
     border-radius: 16px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
-    position: absolute;
+    /* position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 1400px;
-    max-width: 1600px;
+    transform: translate(-50%, -50%); */
+    width: 1200px;
+}
+
+#calorieDetail .close-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+}
+
+#calorieDetail .close-btn img {
+    width: 30px;
+    height: 30px;
 }
 
 /* 최상단 프로필 사진, 이름 영역 */
@@ -59,15 +82,108 @@
 }
 
 #calorieDetail .detail-wrapper .profile-wrapper .name-wrapper .profile-name {
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 400;
     color: var(--black100);
 }
 
 #calorieDetail .detail-wrapper .profile-wrapper .name-wrapper .name-label {
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 400;
     color: var(--black100);
+}
+
+/* 음식 목록 popup */
+#calorieDetail .consumed-food-popup {
+    display: none;
+    position: relative;
+}
+
+/* 음식 목록 popup */
+#calorieDetail .consumed-food-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 30px;
+    background-color: var(--white300);
+    border-radius: 16px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    width: 300px;
+    height: 716px;
+    align-items: flex-start;
+}
+
+#calorieDetail .consumed-food-list .second-title-format {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--black100);
+    margin-bottom: 16px;
+}
+
+#calorieDetail .meal-list-wrapper {
+    width: 100%;
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item {
+    align-items: center;
+    padding: 20px 0px;
+    border-bottom: 1px solid #eee;
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item .meal-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-title {
+    font-size: 15px;
+    width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    color: var(--black100);
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-macro-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray300);
+}
+
+
+#calorieDetail .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-macro-wrapper .divider {
+    font-size: clamp(8px, 3vw + 1px, 14px);
+    color: var(--gray100);
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item .text-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item .text-wrapper .weight {
+    font-size: clamp(13px, 2.4vw + 4px, 16px);
+    font-weight: 400;
+    color: var(--gray300);
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item .text-wrapper .divide {
+    font-size: clamp(13px, 2.4vw + 4px, 16px);
+    font-weight: 400;
+    color: var(--gray300);
+}
+
+#calorieDetail .meal-list-wrapper .meal-list-item .text-wrapper .kcal {
+    font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
+    font-weight: 500;
+    color: var(--gray300);
 }
 
 
@@ -84,11 +200,11 @@
 
 #calorieDetail .detail-wrapper .date-wrapper .nav-button {
     display: flex;
-    cursor: pointer;
 }
 
 #calorieDetail .detail-wrapper .date-wrapper .nav-button img {
     width: 16px;
+    cursor: pointer;
 }
 
 #calorieDetail .detail-wrapper .date-wrapper .nav-button .disabled {
@@ -158,7 +274,7 @@
     filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.25));
 }
 
-#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-bar svg{
+#calorieDetail #consumedDataWrapper .cpf-kcal-bar-wrapper .cpf-kcal-bar svg {
     margin-left: 10px;
     width: 100%;
     max-width: 298px;
@@ -193,91 +309,114 @@
     color: var(--gray200);
 }
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container {
+#calorieDetail #consumedDataWrapper .cpf-bar-container {
     display: flex;
     flex-direction: column;
     /* justify-content: space-between; */
     gap: 22px;
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper {
     display: flex;
     width: 120px;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     gap: 3px;
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar-title {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar-title {
     font-size: 13px;
     font-weight: 400;
     color: var(--black100);
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .target, .divide {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .target,
+.divide {
     font-size: 14px;
     font-weight: 300;
     color: var(--gray300);
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar {
     margin-bottom: 2px;
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .consumed {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .cpf-bar .consumed {
     font-size: 18px;
     font-weight: 500;
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-wrapper {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-wrapper {
     width: 100%;
     height: clamp(5.8px, 1.85vw, 9.5px);
     position: relative;
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-front {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-front {
     width: 81%;
     height: clamp(5.8px, 1.85vw, 9.5px);
     position: absolute;
     border-radius: 10px;
-  }
+}
 
-  #calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-back {
+#calorieDetail #consumedDataWrapper .cpf-bar-container .cpf-bar-wrapper .bar-back {
     width: 100%;
     height: clamp(5.8px, 1.85vw, 9.5px);
     position: absolute;
     border-radius: 10px;
     background-color: #F0F0F0;
-  }
+}
 
 
-  /* 아침, 점심, 저녁 별 탄단지 섭취 영역 */
+/* 아침, 점심, 저녁 별 탄단지 섭취 영역 */
 
-  #calorieDetail #consumedMealDataWrapper {
+#calorieDetail #consumedMealDataWrapper {
     display: flex;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
     gap: 40px;
-  }
+}
 
-  #calorieDetail #consumedMealDataWrapper .meal-wrapper {
+#calorieDetail #consumedMealDataWrapper .meal-wrapper {
     display: flex;
     flex-direction: column;
     padding: 30px 16px;
-  }
+    width: 300px;
+    cursor: pointer;
+    transition: box-shadow 140ms ease, transform 140ms ease, border-color 140ms ease;
+    border-radius: 16px;
+}
 
+.meal-wrapper:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+    border-color: rgba(0, 0, 0, 0.12);
+}
 
-  #calorieDetail #consumedMealDataWrapper .meal-wrapper .second-title-format {
+/* 키보드 포커스 접근성 */
+.meal-wrapper:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 3px;
+}
+
+.empty {
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--black100);
+    padding: 20px 0px;
+}
+
+#calorieDetail #consumedMealDataWrapper .meal-wrapper .second-title-format {
     font-size: 20px;
     font-weight: 500;
     color: var(--black100);
     margin-bottom: 30px;
-  }
+}
 
 
-  #calorieDetail #consumedMealDataWrapper .home-meal-bar-container {
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -300,18 +439,18 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 50px
+    /* gap: 50px */
 
 }
 
 #calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .bar-wrapper {
-    width: 190px;
+    width: 130px;
     height: 11px;
     position: relative;
 }
 
 #calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .bar-wrapper .bar-back {
-    width: 190px;
+    width: 130px;
     height: 11px;
     position: absolute;
     border-radius: 10px;
@@ -330,15 +469,16 @@
     white-space: nowrap;
     align-items: center;
     gap: 4px;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 #calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .text-wrapper .consumed {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
 }
 
-#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .text-wrapper .target, .divide {
+#calorieDetail #consumedMealDataWrapper .home-meal-bar-container .meal-bar-wrapper .text-wrapper .target,
+.divide {
     font-size: 14px;
     font-weight: 300;
     color: var(--gray300);

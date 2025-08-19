@@ -1,7 +1,7 @@
 import { registerPopstateHandler, updateURL, getCurrentContent, registerViewLoader } from '/administrate/js/router.js';
 import { renderUserTable, renderTableWithOptionalPagination } from '/administrate/js/user-management/userTable.js';
 import { renderCalorieTable, renderCalorieTableWithOptionalPagination } from '/administrate/js/components/dailyCalorieTable.js';
-import { getUser, getUserDetail, getUserDailyCalories, getDailySummaryInfo, getUserDailySummaryByMealTimes} from './api.js';
+import { getUser, getUserDetail, getUserDailyCalories, getDailySummaryInfo, getUserDailySummaryByMealTimes, getConsumedFoodsByDate } from './api.js';
 
 export async function renderUserInfo() {
     const data = await getUserDataForUserInfo();
@@ -171,6 +171,18 @@ async function getUserDailySummaryByMealTimesData(selectedDate) {
 }
 
 
+async function getConsumedFoodsByDateData(selectedDate) {
+    const userId = getUserIdFromUrl();
+    try {
+        const response = await getConsumedFoodsByDate(userId, selectedDate);
+        
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
+}
+
+
 
 async function getDailyCaloriData() {
     const page = getPageFromURL();
@@ -198,43 +210,88 @@ registerViewLoader('userInfo', renderUserInfo);
 let dateArr = {};
 
 // 칼로리 테이블 row 클릭
-$(document).on('click', `#dailyCalorieTable tr`, async function () {
-    // console.log("칼로리 row 클릭됨", $(this).find('.td-id').text());
+$(document).on('click', `#dailyCalorieTable .consumed-data-table-row`, async function () {
     let currentDateStr = $(this).data("date");
     const dailySummaryData = await getDailySummaryData(currentDateStr);
     const dailySummaryDataByMealtimes = await getUserDailySummaryByMealTimesData(currentDateStr);
+    const consumedFoodsByMealtimes = await getConsumedFoodsByDateData(currentDateStr);
+    const userData = await getUserDataForUserInfo();
     dateArr = dailySummaryData.dates;
-    console.log(dailySummaryDataByMealtimes);
 
     //이전 다음날짜가 없을 경우 < > 버튼 disabled처리
     
     let calorieDetailHtml = `
-      <div id="calorieDetail">
-        <div class="detail-wrapper">
-          <div class="profile-wrapper">
-            <div class="profile-image">
-              <img src="/administrate/images/icon_human_red.png">
+        <div class="background-cover"></div>
+        <div id="calorieDetail">
+            <div class="detail-wrapper">
+            <div class="profile-wrapper">
+                <div class="profile-image">
+                <img src="${userData.profileImageUrl}">
+                </div>
+                <div class="name-wrapper">
+                <div class="profile-name">${userData.name}</div>
+                <div class="name-label">님</div>
+                </div>
             </div>
-            <div class="name-wrapper">
-              <div class="profile-name">하잇</div>
-              <div class="name-label">님</div>
+        
+            <div class="date-wrapper">
+                <div class="prev-image nav-button">
+                    <img class="prev-date-button" src="/administrate/images/icon_arrow_back_black.png">
+                </div>
+                <div class="date">${currentDateStr}</div>
+                <div class="next-image nav-button">
+                    <img class="next-date-button" src="/administrate/images/icon_arrow_front_black.png">
+                </div>
             </div>
-          </div>
-    
-          <div class="date-wrapper">
-            <div class="prev-image nav-button">
-              <img class="prev-date-button" src="/administrate/images/icon_arrow_back_black.png">
+        
+            <div id="consumedDataWrapper"></div>
+            <div id="consumedMealDataWrapper">
+                
             </div>
-            <div class="date">${currentDateStr}</div>
-            <div class="next-image nav-button">
-              <img class="next-date-button" src="/administrate/images/icon_arrow_front_black.png">
+            <div id="detailWrapperCloseBtn" class="close-btn">
+                    <img src="/administrate/images/icon_close.png">
             </div>
-          </div>
-    
-          <div id="consumedDataWrapper"></div>
-          <div id="consumedMealDataWrapper">
-            
-          </div>
+        </div>
+
+
+        <div class="consumed-food-popup breakfast">
+            <div class="consumed-food-list breakfast">
+                <div class="second-title-format">아침식단 리스트</div>
+                <div class="meal-list-wrapper"></div>
+            </div>
+            <div id="consumedFoodPopupCloseBtn" class="close-btn">
+                <img src="/administrate/images/icon_close.png">
+            </div>
+        </div>
+
+        <div class="consumed-food-popup lunch">
+            <div class="consumed-food-list lunch">
+                <div class="second-title-format">점심식단 리스트</div>
+                <div class="meal-list-wrapper"></div>
+            </div>
+            <div id="consumedFoodPopupCloseBtn" class="close-btn">
+                <img src="/administrate/images/icon_close.png">
+            </div>
+        </div>
+
+        <div class="consumed-food-popup dinner">
+            <div class="consumed-food-list dinner">
+                <div class="second-title-format">저녁식단 리스트</div>
+                <div class="meal-list-wrapper"></div>
+            </div>
+            <div id="consumedFoodPopupCloseBtn" class="close-btn">
+                <img src="/administrate/images/icon_close.png">
+            </div>
+        </div>
+        <div class="consumed-food-popup snack">
+            <div class="consumed-food-list snack">
+                <div class="second-title-format">간식 리스트</div>
+                <div class="meal-list-wrapper"></div>
+            </div>
+
+            <div id="consumedFoodPopupCloseBtn" class="close-btn">
+                <img src="/administrate/images/icon_close.png">
+            </div>
         </div>
       </div>
     `;
@@ -242,7 +299,9 @@ $(document).on('click', `#dailyCalorieTable tr`, async function () {
     $("body").append(calorieDetailHtml);
     updateDateAndConsumedData(dailySummaryData.macros);
     updateMealConsumedData(dailySummaryDataByMealtimes);
+    updateConsumedFoodListPopup(consumedFoodsByMealtimes);
     updatePrevNextButtonState();
+    $("body").css("overflow", "hidden");
 });
 
 
@@ -272,7 +331,7 @@ function renderConsumedData(
     fatPercent = 0          //최대값 변환 지방 섭취량 (%)
 ) {
     if (target === null) target = 0;
-    console.log("consumed = " ,consumed)
+    
     const formattedTarget = Math.floor(target).toLocaleString();         //숫자에 , 넣기 위해서
     const formattedConsumed =  Math.floor(consumed).toLocaleString();     //숫자에 , 넣기 위해서
 
@@ -352,55 +411,6 @@ function createBar(type, consumed, target, percent, rawPercent) {
         </div>
     `;
 }
-
-//
-function getCalorieInfo(dateStr) {
-    const data = calorieData[dateStr];
-    if (!data) return { rawPercent: 0, percent: 0, target: null };
-
-    const {
-        consumed, target,
-        consumedCarbo = 0, consumedProtein = 0, consumedFat = 0,
-        targetCarbo = Math.round((target * 0.5) / 4),
-        targetProtein = Math.round((target * 0.3) / 4),
-        targetFat = Math.round((target * 0.2) / 9)
-    } = data;
-
-    const rawPercent = Math.round((consumed / target) * 100);
-    const percent = Math.min(100, rawPercent);
-    const caloriesLeft = target - consumed;
-
-    const carboRawPercent = Math.round((consumedCarbo / targetCarbo) * 100);
-    const carboPercent = Math.min(100, carboRawPercent);
-    const proteinRawPercent = Math.round((consumedProtein / targetProtein) * 100);
-    const proteinPercent = Math.min(100, proteinRawPercent);
-    const fatRawPercent = Math.round((consumedFat / targetFat) * 100);
-    const fatPercent = Math.min(100, fatRawPercent);
-
-    let color = "#EBEBEB";
-    let isGradient = false;
-
-    if (rawPercent === 0) {
-        color = "#EBEBEB";
-    } else if (rawPercent > 0 && rawPercent <= 95) {
-        color = "#FFE1E4";
-    } else if (rawPercent > 95 && rawPercent <= 105) {
-        color = "url(#calorieGradient)";
-        isGradient = true;
-    } else if (rawPercent > 105) {
-        color = "#814949";
-    }
-
-    return {
-        rawPercent, color, isGradient, percent, target, consumed, caloriesLeft,
-        targetCarbo, targetProtein, targetFat,
-        consumedCarbo, consumedProtein, consumedFat,
-        carboRawPercent, carboPercent,
-        proteinRawPercent, proteinPercent,
-        fatRawPercent, fatPercent
-    };
-}
-
 
 function createBackgroundSvg() {
     const centerX = 14;
@@ -561,21 +571,74 @@ function updateDateAndConsumedData(data) {
 //[[consumedMealDataWrapper]] 영역 코드 - 아침 점심 저녁별 탄단지 그래프 영역//
 ///////////////////////////////////////////////////////////////////
 
+$(document).on('click', '.meal-wrapper', function () {
+    const mealTime = $(this).attr('class').split(' ')[1]; 
+    $('.consumed-food-popup').hide();
+    $(`.consumed-food-popup.${mealTime}`).show();
+});
+
+function updateConsumedFoodListPopup(payload) {
+    var map = {
+        breakfast: (payload && payload.breakfastConsumedFoods) || [],
+        lunch: (payload && payload.lunchConsumedFoods) || [],
+        dinner: (payload && payload.dinnerConsumedFoods) || [],
+        snack: (payload && payload.snackConsumedFoods) || []
+    };
+
+    $.each(map, function (meal, list) {
+        var $wrapper = $('.consumed-food-list.' + meal + ' .meal-list-wrapper');
+        $wrapper.empty();
+
+        if (!list || !list.length) {
+            $wrapper.html('<div class="empty">기록이 없습니다.</div>');
+            return;
+        }
+
+        var html = '';
+        $.each(list, function (i, item) {
+            html += renderMealItem(item);
+        });
+        $wrapper.html(html);
+    });
+}
+
+function renderMealItem(data) {
+    return `
+        <div class="meal-list-item" data-consumed-food-id="${data.consumedFoodId}">
+            <div class="meal-info-wrapper">
+                <div class="meal-title">${data.foodName}</div>
+                
+                <div class="meal-macro-wrapper">
+                    <div class="macro-kcal">${(data.kcal).toFixed(1).toLocaleString()} kcal</div>
+                    <div class="divider">|</div>
+                    <div class="macro-carbo">탄수 ${(data.carbo).toFixed(1).toLocaleString()}</div>
+                    <div class="divider">|</div>
+                    <div class="macro-protein">단백 ${(data.protein).toFixed(1).toLocaleString()}</div>
+                    <div class="divider">|</div>
+                    <div class="macro-fat">지방 ${(data.fat).toFixed(1).toLocaleString()}</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+
+
 function updateMealConsumedData(data) {
 
     const breakfastSummaryHtml = `
-        <div class="meal-wrapper">
+        <div class="meal-wrapper breakfast">
             ${createBarContainer("breakfast", data.breakfastDailySummary)}
         </div>
-        <div class="meal-wrapper">
+        <div class="meal-wrapper lunch">
             ${createBarContainer("lunch", data.lunchDailySummary)}
         </div>
 
-        <div class="meal-wrapper">
+        <div class="meal-wrapper dinner">
             ${createBarContainer("dinner", data.dinnerDailySummary)}
         </div>
 
-        <div class="meal-wrapper">
+        <div class="meal-wrapper snack">
             ${createBarContainer("snack", data.snackDailySummary)}
         </div>
     `
@@ -589,10 +652,11 @@ function updateMealConsumedData(data) {
     });
 }
 
+
 function createBarContainer(mealKey, data) {
     const types = ['carbo', 'protein', 'fat'];
     const mealKor = mealToKor(mealKey);
-    // console.log(data);
+    
     return `
         <div class="second-title-format">${mealKor}</div>
         <div class="home-meal-bar-container">
@@ -656,6 +720,23 @@ function createBarByMealTime(mealKey, type, consumed, target, percent, rawPercen
     `;
 }
 
+
+$(document).on('click', '#detailWrapperCloseBtn', function() {
+    $('#calorieDetail').remove();
+    $("body").css("overflow", "auto");
+    $('.background-cover').remove();
+});
+
+$(document).on('click', '.background-cover', function() {
+    $('#calorieDetail').remove();
+    $("body").css("overflow", "auto");
+    $('.background-cover').remove();
+});
+
+$(document).on('click', '#consumedFoodPopupCloseBtn', function() {
+    $('.consumed-food-popup').hide();
+});
+
 function mealToKor(meal) {
     switch (meal) {
         case 'breakfast': return '아침';
@@ -690,22 +771,31 @@ function getUserIdFromUrl() {
 $(document).on('click', '.prev-date-button', async function () {
     $('.date').text(dateArr[0]);
     const data = await getDailySummaryData(dateArr[0]);
+    const dailySummaryDataByMealtimes = await getUserDailySummaryByMealTimesData(dateArr[0]);
+    const consumedFoodsByMealtimes = await getConsumedFoodsByDateData(dateArr[0]);
     dateArr = data.dates;
     
     updatePrevNextButtonState()
 
     updateDateAndConsumedData(data.macros);
+    updateMealConsumedData(dailySummaryDataByMealtimes);
+    updateConsumedFoodListPopup(consumedFoodsByMealtimes);
 });
 
 
 $(document).on('click', '.next-date-button', async function () {
     $('.date').text(dateArr[1]);
     const data = await getDailySummaryData(dateArr[1]);
+    const dailySummaryDataByMealtimes = await getUserDailySummaryByMealTimesData(dateArr[1]);
+    const consumedFoodsByMealtimes = await getConsumedFoodsByDateData(dateArr[1]);
     dateArr = data.dates;
 
     updatePrevNextButtonState();
 
     updateDateAndConsumedData(data.macros);
+    updateMealConsumedData(dailySummaryDataByMealtimes);
+    updateConsumedFoodListPopup(consumedFoodsByMealtimes);
+
 });
 
 
