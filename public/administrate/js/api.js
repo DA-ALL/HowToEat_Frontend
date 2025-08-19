@@ -301,6 +301,14 @@ export function getUserDailySummaryByMealTimes(userId, selectedDate) {
     })
 }
 
+export function getConsumedFoodsByDate(userId, selectedDate) {
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/admin/users/${userId}/consumed-foods?date=${selectedDate}`,
+        contentType: "application/json",
+    });
+}
+
 export function getUserDailyCalories(userId, page) {
     const params = new URLSearchParams({
         page: page,
