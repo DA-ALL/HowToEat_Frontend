@@ -44,7 +44,7 @@ export function renderMyPageHTML(userBasicInfoData) {
                     <div class="mypage-info-wrapper">
 
                         <div class="profile-image">
-                            <img src="/user/images/icon_human_red.png">
+                            <img src="${userBasicInfoData.imageUrl}">
                         </div>
 
                         <div class="info-wrapper">

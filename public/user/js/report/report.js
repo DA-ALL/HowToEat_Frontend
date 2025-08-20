@@ -1,17 +1,23 @@
 let calorieData = {}; // 최종 데이터 저장용
 
-export function renderReportPage() {
-    return `
-        <div class="user-name"></div>
+export async function renderReportPage() {
+
+    const userBasicInfoData = await getUserBasicInfoData();
+    const kcalSummaryData = await getKcalSummaryData();
+
+    const kcalSummaryDataLastItem = kcalSummaryData[kcalSummaryData.length - 1];
+    
+    let reportPageHTML = `
+        <div class="user-name">${userBasicInfoData.name} 님</div>
         <div class="toggle-report-wrapper">
             <div class="toggle-meal-report toggle-report active">식사기록</div>
             <div class="toggle-weight-report toggle-report">몸무게</div>
         </div>
 
         <div id="mealReport">
-            <div class="date"></div>
+            <div class="date">${kcalSummaryDataLastItem.date}</div>
             <div class="amount-wrapper">
-                <div class="amount"></div>
+                <div class="amount">${kcalSummaryDataLastItem.consumedKcal}</div>
                 <div class="unit">kcal</div>
             </div>
             <div class="feedback-comment">조금 더 드셔야 해요</div>
@@ -59,46 +65,47 @@ export function renderReportPage() {
 
         <div id="tooltip"></div>
     `;
+    $("#reportPage").html(reportPageHTML);
+    initWeightChart()
+    loadAndRenderKcalData(kcalSummaryData);
 }
 
-export function initReportPage() {
-    initUserName();
-    initWeightChart();
-    loadAndRenderKcalData();
+
+async function getKcalSummaryData(){
+    const endDate = getDateStr(0);      // 오늘
+    const startDate = getDateStr(29);
+    try {
+        const response = await getKcalSummary(startDate, endDate);
+        return response.data;
+
+    } catch (error) {
+        console.error("kcal 정보 요청 실패", error);
+    }
 }
 
-async function initUserName(){
+async function getUserBasicInfoData(){
     try {
         const response = await getUserBasicInfo();
-        const userName = response.data.name;
+        return response.data;
         document.querySelector('.user-name').textContent = userName + "님";
     } catch (error) {
         console.error("사용자 정보 요청 실패:", error);
     }
 }
 
-function loadAndRenderKcalData() {
-    const endDate = getDateStr(0);      // 오늘
-    const startDate = getDateStr(29);   // 30일 전 (오늘 포함 총 30일)
+function loadAndRenderKcalData(data) {
+    const filledData = fillMissingDates(data, 30);
+    // 객체 형태로 변환
+    calorieData = {};
+    filledData.forEach(item => {
+        calorieData[item.date] = {
+            consumed: item.consumed,
+            target: item.target
+        };
+    });
 
-    getKcalSummary(startDate, endDate)
-        .then((rawData) => {
-            const filledData = fillMissingDates(rawData.data, 30);
-            // 객체 형태로 변환
-            calorieData = {};
-            filledData.forEach(item => {
-                calorieData[item.date] = {
-                    consumed: item.consumed,
-                    target: item.target
-                };
-            });
-
-            // 차트 렌더링
-            initCalorieChart(7); // 기본은 7일
-        })
-        .catch((err) => {
-            console.error("칼로리 데이터 요청 실패:", err);
-        });
+    // 차트 렌더링
+    initCalorieChart(7); // 기본은 7일
 }
 
 function getDateStr(offsetDays = 0) {

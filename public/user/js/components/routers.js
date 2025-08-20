@@ -1,7 +1,7 @@
 import { renderMealDetail, renderMealListHTML } from '../main/homeMeal.js';
 import { initHeaderNav } from './header-nav.js';
 import { renderMealSearch } from '../main/homeMealSearch.js';
-import { renderReportPage, initReportPage } from '../report/report.js';
+import { renderReportPage } from '../report/report.js';
 import { renderConsumedFoodInfo } from '../main/consumedFood.js';
 import { renderMyPage } from '../my-page/myPage.js';
 import { renderIncreaseCPFbar, runAllCountAnimations, updateNextButtonData } from '../main/homeMealRegist.js';
@@ -108,16 +108,6 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
 
         $('#homeMealRegist').show();
     }
-
-    // 리포트, 마이페이지 캐싱 (기존 유지)
-
-    // if ($('#reportPage').children().length === 0) {
-        $("#reportPage").html(renderReportPage());
-        initReportPage();
-    // }
-    // if ($('#myPage').children().length === 0) {
-    //     $("#myPage").html(renderMyPage());
-    // }
 }
 
 
@@ -145,37 +135,16 @@ export function showReport() {
         /@keyframes fillArc/.test(el.innerHTML)
     ).remove();
 
-
-    //리포트 페이지
-    // if ($('#reportPage').children().length === 0) {
-        $("#reportPage").html(renderReportPage());
-        initReportPage();
-    // }
-
-
+    $("#reportPage").html(renderReportPage());
 }
+
+
 
 export function showMyPage(subpath = null, detailId = null, isFromNumericInput = false) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
     $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo, #withDraw').hide();
-
-    // // 그래프 두번 그려주기 방지
-    // $('#kcalGraphPath').attr('d', '');
-
-    // // 그래프 두번 그려주기 방지
-    // $('style').each(function () {
-    //     const content = this.innerHTML;
-    //     if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
-    //         this.remove();
-    //     }
-    // });
-
-    // // 그래프 두번 그려주기 방지
-    // $('style').filter((_, el) =>
-    //     /@keyframes fillArc/.test(el.innerHTML)
-    // ).remove();
 
     if (!subpath) {
         if($('#myPage').children().length === 0 || isFromNumericInput) {
