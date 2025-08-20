@@ -64,7 +64,7 @@ export function showPage(path, isFromAddFavoriteFood, isFromNumericInput) {
         }
     }
     else if (path.startsWith('/report')) {
-        showReport();
+        showReport(isFromNumericInput);
     }
     else if (path.startsWith('/users')) {
         if (!window.usersHistoryStack) window.usersHistoryStack = ['/users'];
