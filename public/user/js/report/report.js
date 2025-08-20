@@ -1,3 +1,5 @@
+import { showNumericInput } from '/user/js/components/numericInput.js';
+
 let calorieData = {}; // 최종 데이터 저장용
 
 export async function renderReportPage() {
@@ -52,7 +54,7 @@ export async function renderReportPage() {
             </div>
             <div class="feedback-comment">목표를 향해 파이팅!</div>
             <div class="recommend-wrapper">
-                <div class="recommend-food">몸무게 기록하기</div>
+                <div class="recommend-weight" data-weight="">몸무게 기록하기</div>
                 <div class="icon">
                     <img src="/user/images/icon_arrow_red.png">
                 </div>
@@ -69,7 +71,6 @@ export async function renderReportPage() {
     initWeightChart()
     loadAndRenderKcalData(kcalSummaryData);
 }
-
 
 async function getKcalSummaryData(){
     const endDate = getDateStr(0);      // 오늘
@@ -173,6 +174,12 @@ $(document).on('click', '.toggle-report', function () {
             initWeightChart();
         }
     }
+});
+
+//식사기록 / 몸무게 토글 클릭시 그래프 뷰 변경
+$(document).on('click', '.recommend-weight', function () {
+    const value = $(this).data('weight');
+    showNumericInput("#report", "weight", value);
 });
 
 // 오늘 날짜의 데이터를 저장할 변수
@@ -517,6 +524,15 @@ async function initWeightChart() {
     const ctx = document.getElementById('weightChart').getContext('2d');
     const chartContainer = document.querySelector("#weightReport .chart-container");
     const { dates, values } = await getWeightDatasByDates() || {};
+
+    
+    if (Array.isArray(values) && values.length > 0) { // values가 배열이고, 빈 배열이 아닐 때만 실행
+        $(".recommend-weight").attr('data-weight', values[values.length - 1]);
+    } else {
+        // values가 없거나 비어있는 경우에 대한 처리 (옵션)
+        $(".recommend-weight").attr('data-weight', 0); // 기본값 0 또는 다른 적절한 값 설정
+    }
+
 
     let isDragging = false;
     let startX;

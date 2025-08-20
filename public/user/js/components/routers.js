@@ -112,7 +112,7 @@ export function showMain(meal = null, subpage = null, type = null, consumedFoodI
 
 
 
-export function showReport() {
+export async function showReport(isFromNumericInput = false) {
     $('#main').hide();
     $('#my').hide();
     $('#report').show();
@@ -135,7 +135,10 @@ export function showReport() {
         /@keyframes fillArc/.test(el.innerHTML)
     ).remove();
 
-    $("#reportPage").html(renderReportPage());
+    $("#reportPage").html(await renderReportPage(isFromNumericInput));
+    if ($('.toggle-weight-report').length > 0 && isFromNumericInput) {
+        $('.toggle-weight-report').trigger('click');
+    }
 }
 
 
