@@ -110,6 +110,13 @@
 }
 
 
+#report #reportPage .recommend-wrapper .recommend-weight {
+    font-size: clamp(12px, 4vw, 20px);
+    font-weight: 400;
+    color: var(--red500);
+    margin-right: 4px;
+}
+
 #report #reportPage .recommend-wrapper .recommend-food {
     font-size: clamp(12px, 4vw, 20px);
     font-weight: 400;

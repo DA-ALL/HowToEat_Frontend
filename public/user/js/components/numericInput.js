@@ -106,7 +106,7 @@ export function showNumericInput(parent, type, value) {
                     </div>
 
                     <div id="buttonArea">
-                        <div id="weightRecordButton" class="record-button disabled">기록하기</div>
+                        <div id="weightRecordButton" class="record-button disabled" data-from="${parent}">기록하기</div>
                     </div>
                 </div>
                 `
@@ -160,6 +160,9 @@ $(document).on('click', '.height-key .number', function () {
                 // 🔷 placeholder 상태에서 . 입력 → 무시
                 return;
             }
+            if (text === 0) {
+                return;
+            }
             // 🔷 숫자 입력 → placeholder 해제
             current = '';
             $input.removeClass('placeholder');
@@ -200,6 +203,7 @@ $(document).on('click', '.height-key .number', function () {
 $(document).on('click', '.weight-key .number', function () {
     const $this = $(this);
     const text = $this.data('text');
+    console.log(text);
     const $input = $('.input-value');
     const $numericInput = $('#numericInput');
     const defaultValue = $numericInput.data('default');
@@ -228,9 +232,12 @@ $(document).on('click', '.weight-key .number', function () {
         if (isPlaceholder) {
             if (text === '.') {
                 // 🔷 placeholder 상태에서 . 입력 → 무시
+                console.log("TESt");
                 return;
             }
-            // 🔷 숫자 입력 → placeholder 해제
+            if (text === 0) {
+                return;
+            }
             current = '';
             $input.removeClass('placeholder');
         }
@@ -299,26 +306,48 @@ $(document).on('click', '#heightRecordButton', function () {
 $(document).on('click', '#weightRecordButton', function () {
     const weight = parseFloat($('.input-value').text());
 
+    const dataFrom = $("#weightRecordButton").data("from");
+    if(dataFrom == "#report") {
+        showPopup("#report", 6, "입력하신 몸무게로 변경할까요?", "새로운 목표 칼로리가 자동으로 계산됩니다").then((confirmed) => {
+            if(confirmed) {
+                    $.ajax({
+                        type: "PATCH",
+                        url: `${window.DOMAIN_URL}/user-info/weight`,
+                        contentType: "application/json",
+                        data: JSON.stringify({ weight: weight }),
+                        success: function (res) {
+                            closeInput();
+                            const newPath = `/report`;
     
-    showPopup("#my", 6, "입력하신 몸무게로 변경할까요?", "새로운 목표 칼로리가 자동으로 계산됩니다").then((confirmed) => {
-        if(confirmed) {
-                $.ajax({
-                    type: "PATCH",
-                    url: `${window.DOMAIN_URL}/user-info/weight`,
-                    contentType: "application/json",
-                    data: JSON.stringify({ weight: weight }),
-                    success: function (res) {
-                        closeInput();
-                        const newPath = `/users`;
-
-                        history.pushState({ view: 'users' }, '', newPath);
-                        showPage(newPath, false, true);
-                        return;
-                    },
-                });
-            return;
-        }
-    });
+                            history.pushState({ view: 'report' }, '', newPath);
+                            showPage(newPath, false, true);
+                            return;
+                        },
+                    });
+                return;
+            }
+        });
+    } else {
+        showPopup("#my", 6, "입력하신 몸무게로 변경할까요?", "새로운 목표 칼로리가 자동으로 계산됩니다").then((confirmed) => {
+            if(confirmed) {
+                    $.ajax({
+                        type: "PATCH",
+                        url: `${window.DOMAIN_URL}/user-info/weight`,
+                        contentType: "application/json",
+                        data: JSON.stringify({ weight: weight }),
+                        success: function (res) {
+                            closeInput();
+                            const newPath = `/users`;
+    
+                            history.pushState({ view: 'users' }, '', newPath);
+                            showPage(newPath, false, true);
+                            return;
+                        },
+                    });
+                return;
+            }
+        });
+    }
 });
 
 

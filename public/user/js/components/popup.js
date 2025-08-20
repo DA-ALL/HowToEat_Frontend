@@ -106,7 +106,7 @@ export function showPopup(parent, type, title, subtitle) {
                             <div class="popup-subtitle">${subtitle}</div>
                         </div>
                         <div class="popup-button-container">
-                            <div id="cancelWithdraw" class="cancel-btn">취소</div>
+                            <div id="cancelRegistBody" class="cancel-btn">취소</div>
                             <div class="next-btn active">변경하기</div>
                         </div>
                     </div>
