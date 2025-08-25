@@ -19,7 +19,7 @@ function createRows({ id, foodName, foodCode, representativeName, kcal, carbo, p
                         foodType === 'CUSTOM' ? '유저 등록' : ''}
                 </div>
             </td>
-            <td class="td-main-food-name">${representativeName}</td>
+            <td class="td-representative-name">${representativeName ? representativeName : '-'}</td>
             <td class="td-calorie">${kcal}kcal</td>
             <td class="td-carbo">${carbo}g</td>
             <td class="td-protein">${protein}g</td>
@@ -44,7 +44,7 @@ export function renderTable(containerId, bodyId) {
                     <th class="th-food-name">식품명</th>
                     <th class="th-food-code">식품코드</th>
                     <th class="th-source">데이터출처</th>   
-                    <th class="th-main-food-name">대표식품명</th>
+                    <th class="th-representative-name">대표식품명</th>
                     <th class="th-calorie">칼로리</th>
                     <th class="th-carbo">탄수화물</th>
                     <th class="th-protein">단백질</th>
