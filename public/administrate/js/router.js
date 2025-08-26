@@ -23,6 +23,7 @@ window.addEventListener('popstate', function (event) {
     $(`#customAlert`).remove();
     $(`#addPtMember`).remove();
     $(`#calorieDetail`).remove();
+    $(`.background-cover`).remove();
 
     if (popstateHandlers[currentContent]) {
         popstateHandlers[currentContent](event);
