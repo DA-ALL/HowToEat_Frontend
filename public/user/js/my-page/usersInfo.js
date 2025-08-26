@@ -99,24 +99,29 @@ function renderMyPageHTML(userDetailInfoData) {
             <div class="info-title">나의 활동량</div>
             <div class="select-container my-activity activity inner-container-format">
                 <div class="select-wrapper very-active ${isActivityValid("VERY_HIGH")}" data-text="VERY_HIGH">
-                    <div class="main-text">매우 활동적</div>
-                    <div class="sub-text">주 6~7회 이상 고강도 운동 (운동 선수) <br> 업무 형태가 활동적</div>
+                    <div class="main-text">운동이 일상이에요</div>
+                    <div class="des-text">운동이 루틴이고, 하루종일 활동적임</div>
+                    <div class="sub-text">주 6~7회 이상 고강도 운동과 (운동 선수) <br> 높은 신체 활동량(트레이너, 현장직 등)</div>
                 </div>
                 <div class="select-wrapper active ${isActivityValid("HIGH")}" data-text="HIGH">
-                    <div class="main-text">활동적</div>
-                    <div class="sub-text">주 4~6회 운동 (웨이트 트레이닝) <br> 주 150분 이상 유산소 운동</div>
+                    <div class="main-text">꽤 자주해요</div>
+                    <div class="des-text">거의 매일 운동함</div>
+                    <div class="sub-text">주 4~6회 웨이트운동과 유산소 포함</div>
                 </div>
                 <div class="select-wrapper moderate ${isActivityValid("NORMAL")}" data-text="NORMAL">
-                    <div class="main-text">보통</div>
+                    <div class="main-text">보통이에요</div>
+                    <div class="des-text">일주일에 몇번 운동함</div>
                     <div class="sub-text">주 2~3회 운동 (유산소 + 웨이트 트레이닝)</div>
                 </div>
                 <div class="select-wrapper low ${isActivityValid("LOW")}" data-text="LOW">
-                    <div class="main-text">적음</div>
-                    <div class="sub-text">주 2회 미만의 운동 <br> 웨이트 트레이닝 / 유산소 운동 선택적 진행</div>
+                    <div class="main-text">가끔해요</div>
+                    <div class="des-text">가볍게 움직임</div>
+                    <div class="sub-text">주 1~2회 가볍게 걷기, 요가, 스트레칭 등</div>
                 </div>
                 <div class="select-wrapper very-low ${isActivityValid("VERY_LOW")}" data-text="VERY_LOW">
-                    <div class="main-text">매우 적음</div>
-                    <div class="sub-text">평소 운동을 하지 않음 <br> 업무 형태가 주로 앉아서 진행</div>
+                    <div class="main-text">안해요</div>
+                    <div class="des-text">운동을 하지 않음</div>
+                    <div class="sub-text">하루에 대부분 앉아서 생활 <br> 운동습관 없음</div>
                 </div>
             </div>
         </div>

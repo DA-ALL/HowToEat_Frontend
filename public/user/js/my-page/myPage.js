@@ -82,19 +82,19 @@ export function renderMyPageHTML(userBasicInfoData) {
                 </div>
             </div>
 
-            <!-- 추후 작업
             <div class="mypage-alarm-container option-container">
                 <div class="title">알람 설정</div>
                 <div class="set-time item-option" data-path="set-time">
                     <div class="option-title">식사 시간 설정</div>
                     <div class="icon"><img src="/user/images/icon_arrow_light_gray.png"></div>
                 </div>
+                <!--
                 <div class="set-alarm item-option">
                     <div class="option-title">알람 권한</div>
                     <div class="alarm-toggle"></div>
                 </div>
+                -->
             </div>
-            --!>
 
             <div class="mypage-customer-service-container option-container">
                 <div class="title">고객 센터</div>

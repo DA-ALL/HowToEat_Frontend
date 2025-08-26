@@ -146,7 +146,8 @@ function getSurveyTemplate(pageNumber) {
 
                 <div class="select-container activity">
                     <div class="select-wrapper very-active" data-text="VERY_HIGH">
-                        <div class="main-text">매우 활동적</div>
+                        <div class="main-text">운동이 일상이에요</div>
+                        <div class="des-text">운동이 루틴이고, 하루종일 활동적임</div>
                         <div class="sub-text">주 6~7회 이상 고강도 운동 (운동 선수) <br> 업무 형태가 활동적</div>
                     </div>
                     <div class="select-wrapper active" data-text="HIGH">
@@ -432,3 +433,8 @@ $(document).on('input', '.decimal', function () {
     $(this).val(val);
 });
 
+$(document).on('keydown', '.decimal', function (e) {
+    if (this.value === '' && e.key === '0') {
+      e.preventDefault();
+    }
+  });
