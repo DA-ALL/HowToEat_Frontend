@@ -17,9 +17,9 @@ export async function renderReportPage() {
         </div>
 
         <div id="mealReport">
-            <div class="date">${kcalSummaryDataLastItem.date}</div>
+            <div class="date">${kcalSummaryDataLastItem == null ? Date.now() : kcalSummaryDataLastItem.date}</div>
             <div class="amount-wrapper">
-                <div class="amount">${kcalSummaryDataLastItem.consumedKcal}</div>
+                <div class="amount">${kcalSummaryDataLastItem == null ? 0 : kcalSummaryDataLastItem.consumedKcal}</div>
                 <div class="unit">kcal</div>
             </div>
             <div class="feedback-comment">조금 더 드셔야 해요</div>
