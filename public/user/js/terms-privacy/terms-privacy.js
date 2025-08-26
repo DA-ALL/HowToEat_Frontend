@@ -20,14 +20,17 @@ $(document).ready(function () {
         birthDay,
         height: user.height || '',
         weight: user.weight || '',
-        gender: user.gender || '',
+        gender: user.gender || '', 
         goal: '',
         activity: '',
         isNextGym: '',
         signupProvider: user.signup_provider || '',
         profileImageUrl: getValidProfileImage(user.profile_image_url),
         termsAgreedAt:'',
-        privacyAgreedAt:''
+        privacyAgreedAt:'',
+        breakfastTime:'',
+        lunchTime:'',
+        dinnerTime:''
     };
 
     localStorage.setItem('surveyData', JSON.stringify(surveyData));

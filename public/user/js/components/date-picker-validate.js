@@ -28,7 +28,7 @@ export function populateDays(days) {
 //클릭 시 드롭다운 토글 나오도록 하는 함수
 export function birthDropDown() {
     var currentYear = new Date().getFullYear();
-    for (var year = 1950; year <= currentYear; year++) {
+    for (var year = currentYear-5; year >= 1950; year--) {
         $('#year-dropdown').append('<div class="dropdown-item" data-value="' + year + '">' + year + '년</div>');
     }
     

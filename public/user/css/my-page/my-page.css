@@ -73,7 +73,9 @@
 
 #my #myPage .mypage-info-container .mypage-info-goal-wrapper .mypage-info-wrapper .profile-image img {
     width: clamp(48px, 16vw, 80px);
+    height: clamp(48px, 16vw, 80px);
     border-radius: 100px;
+    object-fit: cover;
 }
 
 #my #myPage .mypage-info-container .mypage-info-goal-wrapper .mypage-info-wrapper .info-wrapper {
