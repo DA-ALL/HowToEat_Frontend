@@ -12,11 +12,16 @@
     align-items: center;
 }
 
-#profilebar .profile-wrapper .image-profile { 
-    width: 44px;
-    border-radius: 50%;
-    object-fit: cover; 
+#profilebar .profile-wrapper .profile-content { 
+    object-fit: cover;
     margin-right: 14px;
+}
+
+#profilebar .profile-wrapper .image-profile { 
+    border-radius: 50%;
+    object-fit: cover;
+    width: 44px;
+    height: 44px;
 }
 
 #profilebar .profile-wrapper .profile-text-wrapper { 
