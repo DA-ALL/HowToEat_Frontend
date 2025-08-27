@@ -3,11 +3,11 @@ import { renderPagination } from '/administrate/js/components/pagination.js';
 
 const itemsPerPage = 20;
 
-export function createCalorieRow({ id, createdAt, breakfastKcal, lunchKcal, dinnerKcal, snackKcal, totalKcal }) {
+export function createCalorieRow({ id, registeredAt, breakfastKcal, lunchKcal, dinnerKcal, snackKcal, totalKcal }) {
     return `
-        <tr class="consumed-data-table-row" data-user-id="${id}" data-date="${createdAt}">
+        <tr class="consumed-data-table-row" data-user-id="${id}" data-date="${registeredAt}">
             <td class="td-id">${id}</td>
-            <td class="td-date">${createdAt}</td>
+            <td class="td-date">${registeredAt}</td>
             <td class="td-breakfast">${breakfastKcal} Kcal</td>
             <td class="td-lunch">${lunchKcal} Kcal</td>
             <td class="td-dinner">${dinnerKcal} Kcal</td>

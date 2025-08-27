@@ -31,7 +31,9 @@ function updateProfileBar({ name, userRole, profileImageUrl }) {
 
     $('#profilebar').html(`
         <div class="profile-wrapper" style="position: relative;">
-            <img src="${imageUrl}" class="image-profile">
+            <div class="profile-content">
+                <img src="${imageUrl}" class="image-profile">
+            </div>
             <div class="profile-text-wrapper">
                 <div class="label-name">${name}</div>
                 <div class="label-role">${userRole}</div>

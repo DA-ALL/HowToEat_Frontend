@@ -75,6 +75,7 @@
 #userInfo .user-info-container .user-info-wrapper .user-profile-image img{
     width: 150px;
     height: 150px;
+    object-fit: cover;
 }
 
 #userInfo .user-info-container .user-info-wrapper .user-name {
