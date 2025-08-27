@@ -72,7 +72,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: clamp(14px, 2px + 3.2vw, 22px) clamp(6px, 1.6vw, 8px);
+    padding: clamp(14px, 2px + 4.2vw, 22px) clamp(6px, 1.6vw, 8px);
     border-bottom: 1px solid #eee;
     cursor: pointer;
 }
@@ -84,12 +84,12 @@
 }
 
 #homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-title {
-    font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
+    font-size: clamp(15px, 3.88vw + 0.2px, 19.6px);
     width: clamp(222px, 73.68vw + 0.2px, 370px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--black100);
 }
 
@@ -100,6 +100,19 @@
     gap: clamp(5.6px, 1.864vw, 9.33px);
     color: var(--gray300);
 }
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper .macro-flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2px, 2.664vw, 6.33px);
+}
+
+#homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper .macro-flex-wrapper .macro-kcal {
+    font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
+    font-weight: 300;
+    color: var(--gray500);
+}
+
 
 
 #homeMeal .meal-list-container .meal-list-wrapper .meal-list-item .meal-info-wrapper .meal-macro-wrapper .divider{

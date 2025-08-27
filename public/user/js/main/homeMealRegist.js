@@ -386,7 +386,7 @@ $(document).on('click', '#registButton', function () {
     const pathParts = window.location.pathname.split("/");
     const mealTime = pathParts[2];
     const mealTimeUpper = mealTime.toUpperCase();
-    const selectedDate = pathParts[3];
+    const date = pathParts[3];
 
     const formData = new FormData();
 
@@ -403,6 +403,7 @@ $(document).on('click', '#registButton', function () {
     formData.append("source", $btn.data("source"));
     formData.append("isPerServing", $btn.data("is-per-serving"));
     formData.append("unit", $btn.data("unit"));
+    formData.append("date", date);
     // 이미지 파일이 있을 경우 추가
     if (compressedFile) {
         formData.append("foodImageFile", compressedFile, compressedFile.name);
@@ -410,7 +411,7 @@ $(document).on('click', '#registButton', function () {
 
     $.ajax({
         type: "POST",
-        url: `${window.DOMAIN_URL}/consumed-foods/search`,
+        url: `${window.DOMAIN_URL}/consumed-foods/from-search`,
         data: formData,
         processData: false, // 필수: jQuery가 FormData를 문자열로 변환하지 않도록
         contentType: false, // 필수: 브라우저가 boundary 포함한 content-type 자동 설정
@@ -419,7 +420,7 @@ $(document).on('click', '#registButton', function () {
             resetSearchView();
             resetRegistView();
 
-            const targetPath = `/main/${mealTime}/${selectedDate}`;
+            const targetPath = `/main/${mealTime}/${date}`;
             history.pushState({ view: 'main' }, '', targetPath);
             window.lastMainPath = targetPath;
             if (typeof setLastMainPath === 'function') {

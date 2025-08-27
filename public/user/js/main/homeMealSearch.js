@@ -65,14 +65,18 @@ export function renderMealSearch(callback) {
                 <div class="meal-info-wrapper">
                     <div class="meal-title">${item.foodName}</div>
                     
-                    <div class="meal-macro-wrapper">
+                    <div class="macro-flex-wrapper">
                         <div class="macro-kcal">${(item.kcal).toFixed(1).toLocaleString()} kcal</div>
-                        <div class="divider">|</div>
-                        <div class="macro-carbo">탄수 ${(item.carbo).toFixed(1).toLocaleString()}</div>
-                        <div class="divider">|</div>
-                        <div class="macro-protein">단백 ${(item.protein).toFixed(1).toLocaleString()}</div>
-                        <div class="divider">|</div>
-                        <div class="macro-fat">지방 ${(item.fat).toFixed(1).toLocaleString()}</div>
+
+                        <div class="meal-macro-wrapper">
+                            <div class="macro-carbo">탄수 ${(item.carbo).toFixed(1).toLocaleString()}</div>
+                            <div class="divider">|</div>
+                            <div class="macro-protein">단백 ${(item.protein).toFixed(1).toLocaleString()}</div>
+                            <div class="divider">|</div>
+                            <div class="macro-fat">지방 ${(item.fat).toFixed(1).toLocaleString()}</div>
+                            <div class="divider">|</div>
+                            <div class="unit">${item.foodWeight}${item.unit}</div>
+                        </div>
                     </div>
                 </div>
 
@@ -610,7 +614,8 @@ $(document).on('click', '#registFavoriteButton', function () {
             isPerServing: false, // 필요시 변경
             source : $item.data('source'),
             unit: $item.data('unit'),
-            foodImageUrl: ""
+            foodImageUrl: "",
+            date : selectedDate
         };
         consumedFoodList.push(food);
     });
@@ -622,7 +627,7 @@ $(document).on('click', '#registFavoriteButton', function () {
 
     $.ajax({
         type: "POST",
-        url: `${window.DOMAIN_URL}/consumed-foods`,
+        url: `${window.DOMAIN_URL}/consumed-foods/${selectedDate}`,
         contentType: "application/json",
         data: JSON.stringify(consumedFoodList),
         success: function () {  
