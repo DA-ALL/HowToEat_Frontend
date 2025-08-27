@@ -210,8 +210,8 @@ function updateReportData(date, consumed, target) {
             }
             else if (consumed < lowerBound) {
                 feedbackCommentElement.textContent = '목표까지 파이팅! 간식도 챙겨보세요';
-                recommendWrapperElement.style.visibility = 'visible';
-                recommendWrapperElement.style.pointerEvents = 'auto';
+                // recommendWrapperElement.style.visibility = 'visible';
+                // recommendWrapperElement.style.pointerEvents = 'auto';
             } else if (consumed > upperBound) {
                 feedbackCommentElement.textContent = '오늘 목표를 초과했어요 내일은 조절해봐요';
             } else {
@@ -226,8 +226,8 @@ function updateReportData(date, consumed, target) {
         }
         if (consumed < lowerBound) {
             feedbackCommentElement.textContent = '조금 부족했어요. 간식을 챙겨볼까요?';
-            recommendWrapperElement.style.visibility = 'visible';
-            recommendWrapperElement.style.pointerEvents = 'auto';
+            // recommendWrapperElement.style.visibility = 'visible';
+            // recommendWrapperElement.style.pointerEvents = 'auto';
         } else if (consumed > upperBound) {
             feedbackCommentElement.textContent = '조금 초과했지만, 조절해나가면 돼요';
         } else {
