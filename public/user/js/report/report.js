@@ -77,7 +77,21 @@ async function getKcalSummaryData(){
     const startDate = getDateStr(29);
     try {
         const response = await getKcalSummary(startDate, endDate);
-        return response.data;
+        const targetResponse = await getTargetKcals(startDate, endDate);
+
+        const consumedMap = {};
+        for (const item of response.data) {
+            consumedMap[item.date] = item.consumedKcal;
+        }
+
+        // target 배열을 기준으로 result 채우기
+        const result = targetResponse.data.map(item => ({
+            date: item.date,
+            target: item.targetKcal,
+            consumed: consumedMap[item.date] || 0   // 없으면 0
+        }));
+
+        return result;
 
     } catch (error) {
         console.error("kcal 정보 요청 실패", error);
@@ -88,17 +102,16 @@ async function getUserBasicInfoData(){
     try {
         const response = await getUserBasicInfo();
         return response.data;
-        document.querySelector('.user-name').textContent = userName + "님";
+        
     } catch (error) {
         console.error("사용자 정보 요청 실패:", error);
     }
 }
 
 function loadAndRenderKcalData(data) {
-    const filledData = fillMissingDates(data, 30);
     // 객체 형태로 변환
     calorieData = {};
-    filledData.forEach(item => {
+    data.forEach(item => {
         calorieData[item.date] = {
             consumed: item.consumed,
             target: item.target
@@ -117,44 +130,6 @@ function getDateStr(offsetDays = 0) {
     const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
 }
-
-
-function fillMissingDates(rawData, days = 30) {
-    const result = [];
-    const dataMap = new Map();
-
-    // 백엔드 데이터는 'YYYY-MM-DD' 포맷
-    rawData.forEach(({ date, targetKcal, consumedKcal }) => {
-        dataMap.set(date, { date, target: targetKcal, consumed: consumedKcal });
-    });
-
-    const today = new Date();
-
-    for (let i = 0; i < days; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-
-        const yyyy = date.getFullYear();
-        const mm = String(date.getMonth() + 1).padStart(2, '0');
-        const dd = String(date.getDate()).padStart(2, '0');
-        const dateStr = `${yyyy}-${mm}-${dd}`; // 여기서 '-' 사용
-
-        if (dataMap.has(dateStr)) {
-            result.push(dataMap.get(dateStr));
-        } else {
-            result.push({
-                date: dateStr,
-                consumed: 0,
-                target: rawData[0]?.targetKcal || 0
-            });
-        }
-    }
-
-    // 날짜 오름차순 정렬
-    result.sort((a, b) => new Date(a.date) - new Date(b.date));
-    return result;
-}
-
 
 
 //식사기록 / 몸무게 토글 클릭시 그래프 뷰 변경
@@ -710,6 +685,19 @@ function getKcalSummary(start_date, end_date) {
     return $.ajax({
         type: "GET",
         url: `${window.DOMAIN_URL}/daily-summary/kcals?${params.toString()}`,
+        contentType: "application/json",
+    });
+}
+
+function getTargetKcals(start_date, end_date) {
+    const params = new URLSearchParams({
+        start_date: start_date,
+        end_date: end_date
+    });
+
+    return $.ajax({
+        type: "GET",
+        url: `${window.DOMAIN_URL}/targets/kcals?${params.toString()}`,
         contentType: "application/json",
     });
 }
