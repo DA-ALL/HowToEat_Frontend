@@ -24,6 +24,7 @@ window.addEventListener('popstate', function (event) {
     $(`#addPtMember`).remove();
     $(`#calorieDetail`).remove();
     $(`.background-cover`).remove();
+    $("body").css("overflow", "auto");
 
     if (popstateHandlers[currentContent]) {
         popstateHandlers[currentContent](event);
