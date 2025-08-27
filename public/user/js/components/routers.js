@@ -136,9 +136,9 @@ export async function showReport(isFromNumericInput = false) {
     ).remove();
 
     $("#reportPage").html(await renderReportPage(isFromNumericInput));
-    if ($('.toggle-weight-report').length > 0 && isFromNumericInput) {
-        $('.toggle-weight-report').trigger('click');
-    }
+    // if ($('.toggle-weight-report').length > 0 && isFromNumericInput) {
+    //     $('.toggle-weight-report').trigger('click');
+    // }
 }
 
 
@@ -148,7 +148,6 @@ export async function showMyPage(subpath = null, detailId = null, isFromNumericI
     $('#report').hide();
     $('#my').show();
     $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo, #withDraw').hide();
-
 
     $('style').each(function () {
         const content = this.innerHTML;
@@ -162,10 +161,10 @@ export async function showMyPage(subpath = null, detailId = null, isFromNumericI
         /@keyframes fillArc/.test(el.innerHTML)
     ).remove();
 
-    $("#reportPage").html(await renderReportPage(isFromNumericInput));
-    if ($('.toggle-weight-report').length > 0 && isFromNumericInput) {
-        $('.toggle-weight-report').trigger('click');
-    }
+    // $("#reportPage").html(await renderReportPage(isFromNumericInput));
+    // if ($('.toggle-weight-report').length > 0 && isFromNumericInput) {
+    //     $('.toggle-weight-report').trigger('click');
+    // }
 
     if (!subpath) {
         if($('#myPage').children().length === 0 || isFromNumericInput) {
@@ -231,7 +230,6 @@ export async function showMyPage(subpath = null, detailId = null, isFromNumericI
         $('#withDraw').show();  
     }
 }
-
 
 export function resetHomeMealView() {
     $('#homeMeal').empty();
