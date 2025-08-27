@@ -28,9 +28,6 @@ function renderConsumedFoodDetail(consumedFoodData) {
     const urlParts = window.location.pathname.split('/');
     const selectedDate = urlParts[3]; // 3번째가 YYYY-MM-DD
 
-    // 오늘이면 active, 아니면 disabled
-    const deleteBtnClass = (selectedDate === todayStr) ? 'active' : 'disabled';
-
     const commonHeader = `
         <div id="headerNav" data-title="${consumedFoodData.foodName}" data-type="2"></div>
 
@@ -80,7 +77,7 @@ function renderConsumedFoodDetail(consumedFoodData) {
                 : `<div id="createFavoriteFoodButton" class="button-format active hidden">즐겨찾기 추가</div>
                    <div id="deleteFavoriteFoodButton" data-favorite-food-id="${consumedFoodData.favoriteFoodId}" class="button-format active">즐겨찾기 삭제</div>`
             }
-            <div id="deleteConsumedFoodButton" class="button-format ${deleteBtnClass}">삭제</div>
+            <div id="deleteConsumedFoodButton" class="button-format active">삭제</div>
         </div>
     `;
     return `${commonHeader}`;
