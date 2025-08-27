@@ -306,9 +306,25 @@
     background-color: #FFF6F5;
 }
 
-#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-title {
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .macro-flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2px, 2.664vw, 6.33px);
+}
+
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .macro-flex-wrapper .macro-kcal {
     font-size: clamp(14px, 3.68vw + 0.2px, 18.6px);
     font-weight: 300;
+    color: var(--gray500);
+}
+
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item .meal-title {
+    font-size: clamp(15px, 3.88vw + 0.2px, 19.6px);
+    width: clamp(222px, 73.68vw + 0.2px, 370px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
     color: var(--black100);
 }
 
@@ -319,6 +335,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: var(--red500);
+}
+
+#homeMealSearch .favorite-list-container .favorite-meal-list-wrapper .favorite-meal-item.active .macro-kcal {
+    font-weight: 400;
     color: var(--red500);
 }
 

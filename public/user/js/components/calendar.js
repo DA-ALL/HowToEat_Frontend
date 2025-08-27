@@ -148,7 +148,7 @@ function updateCalendar(signupDateStr) {
 function renderCalendarWithSignupLimit(signupDateStr) {
     const today = new Date();
     const todayStr = formatDate(today);
-    const shouldUpdateCPF = (activeDate === todayStr && !hasRenderedCPFOnce);
+    const shouldUpdateCPF = (!hasRenderedCPFOnce);
 
     let year = currentDate.getFullYear();
     let month = currentDate.getMonth();

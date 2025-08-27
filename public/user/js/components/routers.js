@@ -143,11 +143,29 @@ export async function showReport(isFromNumericInput = false) {
 
 
 
-export function showMyPage(subpath = null, detailId = null, isFromNumericInput = false) {
+export async function showMyPage(subpath = null, detailId = null, isFromNumericInput = false) {
     $('#main').hide();
     $('#report').hide();
     $('#my').show();
     $('#myPage, #usersSetTime, #usersNotice, #usersNoticeDetail, #usersTerms, #usersPrivacy, #usersInfo, #withDraw').hide();
+
+
+    $('style').each(function () {
+        const content = this.innerHTML;
+        if (/@keyframes fillBar-(carbo|protein|fat)/.test(content)) {
+            this.remove();
+        }
+    });
+    
+    // 그래프 두번 그려주기 방지
+    $('style').filter((_, el) =>
+        /@keyframes fillArc/.test(el.innerHTML)
+    ).remove();
+
+    $("#reportPage").html(await renderReportPage(isFromNumericInput));
+    if ($('.toggle-weight-report').length > 0 && isFromNumericInput) {
+        $('.toggle-weight-report').trigger('click');
+    }
 
     if (!subpath) {
         if($('#myPage').children().length === 0 || isFromNumericInput) {

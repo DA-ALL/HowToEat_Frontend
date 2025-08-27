@@ -41,7 +41,7 @@ export function renderMealDetail(callback) {
         const mealRegistHTML = commonHeader + content;
         callback(mealRegistHTML);
     
-        // ✅ Safari 대응 핵심: animation 나중에 JS로 수동 트리거
+        // Safari 대응 핵심: animation 나중에 JS로 수동 트리거
         requestAnimationFrame(() => {
             document.querySelectorAll('.bar-front-consumed').forEach(el => {
                 const keyframe = el.dataset.keyframe;
@@ -147,7 +147,6 @@ function mealToKor(meal) {
 // 테스트용 mealData 로부터 리스트 아이템 생성
 export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
     const isToday = isTodayDate(selectedDate);
-    const buttonClass = isToday ? 'active' : 'disabled';
 
     $.ajax({
         type: "GET",
@@ -160,7 +159,7 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
             const listHtml = res.data.map(renderMealListItem).join('');
             const buttonHtml = `
                 <div class="button-container home-meal-button">
-                    <div class="next-button home-meal ${buttonClass}">추가</div>
+                    <div class="next-button home-meal active">추가</div>
                 </div>
             `;
 
@@ -172,20 +171,24 @@ export function renderMealListHTML(mealKey, selectedDate, mealTime, callback) {
 
 function renderMealListItem(data) {
 
-    // console.log(data);
+    console.log(data);
     return `
         <div class="meal-list-item" data-consumed-food-id="${data.consumedFoodId}">
             <div class="meal-info-wrapper">
                 <div class="meal-title">${data.foodName}</div>
                 
-                <div class="meal-macro-wrapper">
+                <div class="macro-flex-wrapper">
                     <div class="macro-kcal">${(data.kcal).toFixed(1).toLocaleString()} kcal</div>
-                    <div class="divider">|</div>
-                    <div class="macro-carbo">탄수 ${(data.carbo).toFixed(1).toLocaleString()}</div>
-                    <div class="divider">|</div>
-                    <div class="macro-protein">단백 ${(data.protein).toFixed(1).toLocaleString()}</div>
-                    <div class="divider">|</div>
-                    <div class="macro-fat">지방 ${(data.fat).toFixed(1).toLocaleString()}</div>
+
+                    <div class="meal-macro-wrapper">
+                        <div class="macro-carbo">탄수 ${(data.carbo).toFixed(1).toLocaleString()}</div>
+                        <div class="divider">|</div>
+                        <div class="macro-protein">단백 ${(data.protein).toFixed(1).toLocaleString()}</div>
+                        <div class="divider">|</div>
+                        <div class="macro-fat">지방 ${(data.fat).toFixed(1).toLocaleString()}</div>
+                        <div class="divider">|</div>
+                        <div class="unit">${data.weight}${data.unit}</div>
+                    </div>
                 </div>
             </div>
 
