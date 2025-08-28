@@ -95,8 +95,8 @@
 }
 
 #report #reportPage .feedback-comment {
-    font-size: clamp(14.4px, 4.8vw, 24px);
-    font-weight: 500;
+    font-size: clamp(15.4px, 4.4vw, 20px);
+    font-weight: 400;
     color: var(--black100);
     margin-bottom: clamp(4.8px, 1.6vw, 8px);
 
