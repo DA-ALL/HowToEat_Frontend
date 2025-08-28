@@ -12,6 +12,9 @@
     background-color: rgba(0, 0, 0, 0.75);
     height: 100%;
     z-index: 9999;
+    max-height: calc(100% - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    margin-top: env(safe-area-inset-top);
+    margin-bottom: env(safe-area-inset-bottom);
   }
 
   .popup-cover .popup {
