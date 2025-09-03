@@ -30,40 +30,86 @@ export function setupAjaxAuthInterceptor() {
             // 인증 정보 에러
             if (errorResponse?.errorType === "NOT_FOUND_AUTHENTICATION_INFO" || errorResponse?.errorType === "MISSING_REFRESH_TOKEN") {
                 showPopup("#main", 3, "로그인해주세요.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
                     redirectToLogin();
                 });
                 showPopup("#report", 3, "로그인해주세요.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
                     redirectToLogin();
                 });
                 showPopup("#my", 3, "로그인해주세요.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
                     redirectToLogin();
                 });
             }
         
             // JWT 관련 에러
             else if (errorResponse?.errorType === "INVALID_REFRESH_TOKEN") {
-                alert("유효하지 않은 리프레시 토큰입니다. 다시 로그인 해주세요.");
+                // alert("유효하지 않은 리프레시 토큰입니다. 다시 로그인 해주세요.");
+                showPopup("#main", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+
                 clearAuthTokensAndRedirect();
                 redirectToLogin();
             }
             else if (errorResponse?.errorType === "INVALID_JWT") {
-                alert("유효하지 않은 토큰입니다. 다시 로그인 해주세요.");
-                clearAuthTokensAndRedirect();
-                redirectToLogin();
+                // alert("유효하지 않은 토큰입니다. 다시 로그인 해주세요.");
+                showPopup("#main", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                
+                // redirectToLogin();
             }
         
             // 로그인 필요
             else if (errorResponse?.errorType === "REQUIRES_LOGIN") {
-                if (confirm("로그인이 필요한 서비스입니다.")) {
+                showPopup("#main", 3, "로그인이 필요한<br>서비스입니다.", "").then((confirmed) => {
                     clearAuthTokensAndRedirect();
                     redirectToLogin();
-                }
+                });
+                showPopup("#report", 3, "로그인이 필요한<br>서비스입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "로그인이 필요한<br>서비스입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
             }
         
             // 로그인 필요
             else if (errorResponse?.errorType === "ALREADY_LOGGED_OUT") {
-                clearAuthTokensAndRedirect();
-                redirectToLogin();
+                showPopup("#main", 3, "로그인이 필요한<br>서비스입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, "로그인이 필요한<br>서비스입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "로그인이 필요한<br>서비스입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
             }
         
             // 권한 에러
@@ -75,22 +121,59 @@ export function setupAjaxAuthInterceptor() {
         
             // 유저 관련 에러
             else if (errorResponse?.errorType === "NOT_FOUND_USER") {
-                alert("존재하지 않는 회원입니다.");
-                redirectToLogin();
+                showPopup("#main", 3, "존재하지 않는 회원입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, "존재하지 않는 회원입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "존재하지 않는 회원입니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+
             } else if (errorResponse?.errorType === "ALREADY_EXISTS_EMAIL") {
                 alert("이미 존재하는 이메일입니다.");
             }
 
             // 유저 스탯 관련 에러
             else if (errorResponse?.errorType === "NOT_FOUND_USER_STAT") {
-                alert("유저 스탯이 존재하지 않습니다.");
-                redirectToLogin();
+                showPopup("#main", 3, "유저 스탯이 존재하지 않습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, "유저 스탯이 존재하지 않습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "유저 스탯이 존재하지 않습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
             }
         
             // 기타 알 수 없는 에러
             else {
                 console.error("⚠️ 에러:", errorResponse);
+
+                let message = errorResponse?.message || "다시 로그인해 주세요"
                 alert(errorResponse?.message || "알 수 없는 에러가 발생했습니다.");
+
+                showPopup("#main", 3, message, "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, message, "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, message, "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+
                 redirectToLogin();
             }
         
