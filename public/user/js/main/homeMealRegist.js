@@ -750,3 +750,12 @@ $(document).on('click', '.portion-item', function () {
 
 
 });
+
+if ($(window).width() <= 450) {
+    $(window).on("focusin", function () {
+        $("#navBottom").hide();
+    });
+    $(window).on("focusout", function () {
+        $("#navBottom").show();
+    });
+}

@@ -97,7 +97,7 @@ export function initHeaderNav(parentSelector = 'body') {
                 const newPath = '/users'
                 window.lastUsersPath = newPath;
                 history.pushState({ view: 'users' }, '', newPath);
-                showPage(newPath);
+                showPage(newPath, false, true);
             }
             return;
 
