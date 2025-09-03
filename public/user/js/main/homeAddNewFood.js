@@ -21,7 +21,7 @@ export function renderAddHomeNewFood() {
                 <div class="input-wrapper">
                     <div class="input-label">설명</div>
                     <div id="descriptionInput" class="input">
-                        <input class="favorite-food-add-input" type="text" inputmode="decimal" id="description" name="description" placeholder="어떤 음식인가요?" maxlength="20" data-text="">
+                        <input class="favorite-food-add-input" type="text" id="description" name="description" placeholder="어떤 음식인가요?" maxlength="30" data-text="">
                     </div>
                 </div>
 
@@ -187,3 +187,18 @@ $(document).on('input', '.decimal', function () {
 
     $(this).val(val);
 });
+
+$(document).on('keydown', '.decimal', function (e) {
+    if (this.value === '' && e.key === '0') {
+      e.preventDefault();
+    }
+});
+
+if ($(window).width() <= 450) {
+    $(window).on("focusin", function () {
+        $("#navBottom").hide();
+    });
+    $(window).on("focusout", function () {
+        $("#navBottom").show();
+    });
+}
