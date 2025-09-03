@@ -45,7 +45,7 @@ export function renderWithDraw() {
     </div>
                         
     <div class="withdraw-button-container">
-        <div class="cancel-btn">취소</div>
+        <div id="cancelWithdraw" class="cancel-btn">취소</div>
         <div class="withdraw-btn">탈퇴하기</div>
     </div>
  
@@ -68,6 +68,13 @@ $(document).on('click', '.withdraw-btn', function () {
         }
     });
 });
+
+$(document).on('click', '#cancelWithdraw', function() {
+    const newPath = `/users`;
+
+    history.pushState({ view: 'users' }, '', newPath);
+    showPage(newPath);
+})
 
 $(document).on('click', '#cancelWithdraw', function () {
     const newPath = `/users`;
