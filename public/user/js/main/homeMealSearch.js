@@ -276,8 +276,7 @@ function handleMealSearch(keyword) {
 
 function renderMealSearchResults(items, isFirstPage) {
     let isItemEmpty = items.length === 0;
-
-
+    
     const html = items.map(item => `
       <div class="meal-item"
            data-id="${item.foodId}"
@@ -291,7 +290,7 @@ function renderMealSearchResults(items, isFirstPage) {
         <div class="meal-wrapper">
           <div class="meal-type ${typeColorClass(item.type)}">${typeToKor(item.type)}</div>
           <div class="meal-name">${item.foodName}</div>
-          <div class="meal-detail">${item.providedBy}</div>
+          <div class="meal-detail">${item.providedBy ? item.providedBy: ''}</div>
         </div>
         <div class="meal-meta">
           <div class="weight">${item.foodWeight}g</div>
