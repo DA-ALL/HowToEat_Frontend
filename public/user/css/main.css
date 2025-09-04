@@ -21,6 +21,9 @@
 @import url("/user/css/consumed-food.css");
 @import url("/user/css/components/popup.css");
 
+* {
+  -webkit-tap-highlight-color: transparent; /* 터치 하이라이트 제거 */
+}
 
 html, body {
     height: 100%;
