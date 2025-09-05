@@ -2,6 +2,10 @@
     padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.264vw, 21.33px);
 }
 
+#my #usersNoticeDetail .notice-info-container-opened {
+    padding: clamp(24px, 8vw, 40px) clamp(12.8px, 4.264vw, 21.33px);
+}
+
 #my #usersNoticeDetail .notice-description {
     font-size: clamp(11.21px, 3.736vw, 18.67px);
     font-weight: 300;

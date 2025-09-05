@@ -858,7 +858,7 @@ export function renderUsersTerms() {
 
                 <div class="content-body-wrapper">
                     <div class="content-body">
-                        본 이용약관은 2025년 2월 16일부터 10일간 공지한 후 2025년 3월 16일부터 시행합니다. (1차 개정)
+                        본 이용약관은 2025년 9월 10일부터 시행합니다. (제1차 제정)
                     </div>
                 </div>
 
