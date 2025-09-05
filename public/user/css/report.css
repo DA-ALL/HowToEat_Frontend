@@ -6,6 +6,10 @@
     background: #f8f8f8;
 }
 
+#report #reportPage {
+    margin-bottom: clamp(70px, 7.2vw + 65px, 120px);
+}
+
 #report .content-container {
     display: flex;
     flex-direction: column;
