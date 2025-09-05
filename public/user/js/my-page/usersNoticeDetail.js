@@ -37,8 +37,8 @@ export function renderUserNoticeDetailHTML(noticeDetailInfoData) {
 
     return `
             <div id="headerNav" data-title="공지사항" data-type="2"></div>
-            <div class="notice-info-container">
-                <div class="notice-container">
+            <div class="notice-info-container-opened">
+                <div class="notice-container-opened">
                     <div class="notice-type">${typeKor}</div>
                     <div class="notice-title">${noticeDetailInfoData.title}</div>
                     <div class="notice-date">${noticeDetailInfoData.modifiedAt}</div>

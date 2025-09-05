@@ -93,13 +93,22 @@ export function initHeaderNav(parentSelector = 'body') {
             const stack = window.usersHistoryStack || ['/users'];
             const parts = currentPath.split('/');
         
+            if(parts[2] === "notice" && parts.length > 3) {
+                const newPath = '/users/notice'
+                window.lastUsersPath = newPath;
+                history.pushState({ view: 'users' }, '', newPath);
+                showPage(newPath, false, false);
+                return;
+            }
+
             if(parts.length > 2) {                
                 const newPath = '/users'
                 window.lastUsersPath = newPath;
                 history.pushState({ view: 'users' }, '', newPath);
                 showPage(newPath, false, true);
+                return;
             }
-            return;
+            
 
             // if (stack.length > 1) {
 

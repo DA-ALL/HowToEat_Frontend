@@ -84,7 +84,7 @@ export function renderUsersPrivacy() {
 
                         <div class="content-body-wrapper">
                             <div class="content-body">
-                                * 필수항목 : SNS 이용자 식별 (네이버, 카카오, 페이스북, 구글)
+                                * 필수항목: SNS 이용자 식별자 (네이버, 카카오, 애플)
                             </div>
                         </div>
 
@@ -316,10 +316,10 @@ export function renderUsersPrivacy() {
                     개인정보 보호책임자
                 </div>
                 <div class="privacy-manager-text">
-                    담당자 : 김예현
+                    담당자 : 김예현 / 이동재
                 </div>            
                 <div class="privacy-manager-text">
-                    이메일 : insidesy4@gmail.com
+                    이메일 : daalliwaver@gmail.com
                 </div>
             
             </div>
@@ -339,10 +339,7 @@ export function renderUsersPrivacy() {
 
                 <div class="content-body-wrapper">
                     <div class="content-body">
-                        개인정보 처리방침 공고일자 : 2025-03-15
-                    </div>
-                    <div class="content-body">
-                        개인정보 처리방침 시행일자 : 2025-03-16
+                        개인정보 처리방침 시행일 : 2025년 9월 10일 (제1차 제정)
                     </div>
                     <div class="content-body" style="display:none">
                         [ 이전 이용약관 보기 ]
