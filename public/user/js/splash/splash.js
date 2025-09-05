@@ -5,7 +5,7 @@ $(document).ready(async function () {
     const redirectTo = (url) => {
         setTimeout(() => {
             window.location.href = url;
-        }, 0); // 1.5초 후 이동
+        }, 1300); // 1.5초 후 이동
     };
 
     try {
