@@ -125,7 +125,7 @@ export function renderMyPageHTML(userBasicInfoData) {
             <div class="mypage-app-version-container option-container">
                 <div class="title">앱 버전</div>
                 <div class="terms-of-use item-option">
-                    <div class="option-title">1.2v</div>
+                    <div class="option-title">1.0v</div>
                 </div>
             </div>
         </div>
