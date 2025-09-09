@@ -308,6 +308,7 @@ function restoreSurveyData() {
     //  Apple 로그인 시, name 값 존재 여부에 따라 disabled 제어
     if (surveyData.signupProvider === 'APPLE') {
         if (surveyData.name && surveyData.name.trim() !== "") {
+            $('#name').val(surveyData.name);
             $('#name')
                 .attr('disabled', true)               // 입력 불가
                 .addClass('disabled');                // CSS 제어용 클래스 추가
@@ -319,7 +320,6 @@ function restoreSurveyData() {
             $('.name-input').removeClass('disabled'); // wrapper에도 제거
         }
     }
-    
 
     if (surveyData.birthYear) {
         $('#year-text').text(surveyData.birthYear + '년').attr('data-text', surveyData.birthYear);
