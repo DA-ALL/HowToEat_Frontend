@@ -62,6 +62,27 @@ export function setupAjaxAuthInterceptor() {
                 clearAuthTokensAndRedirect();
                 redirectToLogin();
             }
+        
+            // JWT 관련 에러
+            else if (errorResponse?.errorType === "EXPIRED_JWT") {
+                // alert("유효하지 않은 리프레시 토큰입니다. 다시 로그인 해주세요.");
+                showPopup("#main", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#report", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+                showPopup("#my", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                });
+
+                clearAuthTokensAndRedirect();
+                redirectToLogin();
+            }
+            
             else if (errorResponse?.errorType === "INVALID_JWT") {
                 // alert("유효하지 않은 토큰입니다. 다시 로그인 해주세요.");
                 showPopup("#main", 3, "로그인이 만료되었습니다.", "").then((confirmed) => {
