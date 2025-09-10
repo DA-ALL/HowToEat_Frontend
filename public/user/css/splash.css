@@ -3,7 +3,7 @@
     min-height: 100%;
     display: flex;
     justify-content: center;
-    background-color: var(--red500);
+    background-color: var(--white300);
 }
 
 #splashPage .splash-page {

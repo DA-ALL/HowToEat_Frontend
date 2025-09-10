@@ -53,7 +53,7 @@ function getSurveyTemplate(pageNumber) {
                 <div class="input-container">
                     <div class="input-wrapper">
                         <div class="input-label">이름</div>
-                        <div class="input">
+                        <div class="input name-input">
                             <input type="text" id="name" name="name" placeholder="이름" ime-mode="active" data-text="">
                         </div>
                     </div>
@@ -305,9 +305,22 @@ function nextPage(pageNumber) {
 }
 
 function restoreSurveyData() {
-    if (surveyData.name) {
-        $('#name').val(surveyData.name);
+    //  Apple 로그인 시, name 값 존재 여부에 따라 disabled 제어
+    if (surveyData.signupProvider === 'APPLE') {
+        if (surveyData.name && surveyData.name.trim() !== "") {
+            $('#name').val(surveyData.name);
+            $('#name')
+                .attr('disabled', true)               // 입력 불가
+                .addClass('disabled');                // CSS 제어용 클래스 추가
+            $('.name-input').addClass('disabled');    // wrapper에도 클래스 넣고 싶다면
+        } else {
+            $('#name')
+                .removeAttr('disabled')               // 입력 가능
+                .removeClass('disabled');             // 클래스 제거
+            $('.name-input').removeClass('disabled'); // wrapper에도 제거
+        }
     }
+
     if (surveyData.birthYear) {
         $('#year-text').text(surveyData.birthYear + '년').attr('data-text', surveyData.birthYear);
     }
