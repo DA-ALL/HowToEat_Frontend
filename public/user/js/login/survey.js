@@ -319,6 +319,8 @@ function restoreSurveyData() {
                 .removeClass('disabled');             // 클래스 제거
             $('.name-input').removeClass('disabled'); // wrapper에도 제거
         }
+    } else {
+        $('#name').val(surveyData.name);
     }
 
     if (surveyData.birthYear) {
