@@ -1,0 +1,33 @@
+html, body {
+    height: 100%;
+    margin: 0; /* 기본 margin 제거 */
+}
+
+#splashPage {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#splashPage .logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+}
+
+#splashPage .logo-wrapper .logo-image {
+    max-width: 240px;
+    height: auto;
+}
+
+/* 모든 이미지 드래그 금지 / 선택 방지 */
+img {
+  -webkit-user-drag: none; /* Safari, Chrome (WebKit) */
+  user-drag: none;         /* 일부 브라우저 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;       /* 텍스트 선택 끄기 (선택 끄고 싶을 때) */
+  -webkit-touch-callout: none; /* iOS에서 컨텍스트 메뉴 방지 */
+}
