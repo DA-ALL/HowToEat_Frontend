@@ -42,7 +42,7 @@ function getPayloadFromToken(token) {
 }
 
 
-function getSurveyTemplate(pageNumber) {
+function getSurveyTemplate(pageNumber, provider) {
     switch (pageNumber) {
         case 1:
             return `
@@ -54,7 +54,7 @@ function getSurveyTemplate(pageNumber) {
                     <div class="input-wrapper">
                         <div class="input-label">이름</div>
                         <div class="input name-input">
-                            <input type="text" id="name" name="name" placeholder="이름" ime-mode="active" data-text="">
+                            <input type="text" data-provider="${provider}" id="name" name="name" placeholder="이름" ime-mode="active" data-text="">
                         </div>
                     </div>
 
@@ -197,7 +197,8 @@ function getSurveyTemplate(pageNumber) {
 }
 
 function loadPage(pageNumber, isBackNavigation = false) {
-    $('#survey').html(getSurveyTemplate(pageNumber));
+    let provider = surveyData.signupProvider;
+    $('#survey').html(getSurveyTemplate(pageNumber, provider));
 
     // 페이지가 1이면 button-prev 숨기기, 그렇지 않으면 보이게 설정
     if (pageNumber === 1) {
