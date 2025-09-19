@@ -36,7 +36,7 @@ export function renderIncreaseCPFbar(callback) {
             <div class="home-meal-container padding">
                 <div class="title-format">${mealKor}의 탄단지</div>
                 <div class="cpf-kcal-left-message-wrapper">
-                    ${getMessageFormat(userConsumedData, foodInfo)}
+                    ${getMessageFormat(userConsumedData, foodInfo, mealKor)}
                     <div class="cpf-kcal-tail-svg">${getTailSvg()}</div>
                 </div>
                 ${createBarContainer(mealKor, userConsumedData, foodInfo)}
@@ -317,7 +317,7 @@ function createBar(mealKey, type, consumed, newConsumed, target, percent, rawPer
 }
 
 // 메시지 텍스트 생성 (과섭취 여부에 따라 문구 다름)
-function getMessageFormat(userConsumedData, foodInfo) {
+function getMessageFormat(userConsumedData, foodInfo, mealKor) {
     const types = ['carbo', 'protein', 'fat'];
 
     for (const type of types) {
@@ -329,7 +329,7 @@ function getMessageFormat(userConsumedData, foodInfo) {
         const rawIncreasePercent = target > 0 ? (newConsumed / target) * 100 : 0;
 
         if (rawIncreasePercent > 105) {
-            return `<span class="cpf-kcal-left-message">아침 목표치보다 많아요. 양을 조절해주세요 ❗️</span>`;
+            return `<span class="cpf-kcal-left-message">${mealKor} 목표치보다 많아요. 양을 조절해주세요 ❗️</span>`;
         }
     }
 
@@ -490,6 +490,7 @@ function updateUIWithRatio(ratio) {
     const regist = window.registFoodData;
     const user = window.userConsumedData;
     const mealKey = window.mealKey;
+    const mealKor = mealToKor(mealKey);
 
     const adjusted = {
         kcal: (regist.kcal * ratio),
@@ -505,7 +506,7 @@ function updateUIWithRatio(ratio) {
     
 
     // 메시지 갱신
-    const message = getMessageFormat(user, adjusted);
+    const message = getMessageFormat(user, adjusted, mealKor);
     $('.cpf-kcal-left-message-wrapper .cpf-kcal-left-message').replaceWith(message);
 
     // 바 업데이트
@@ -688,6 +689,7 @@ $(document).on('click', '.portion-item', function () {
     const original = window.registFoodData;
     const user = window.userConsumedData;
     const mealKey = window.mealKey;
+    const mealKor = mealToKor(mealKey);
 
     // 1. 서브타이틀 g 업데이트
     const adjustedWeight = Math.round(original.foodWeight * ratio);
@@ -702,7 +704,7 @@ $(document).on('click', '.portion-item', function () {
     };
 
     // 3. 메시지 업데이트
-    const message = getMessageFormat(user, adjusted);
+    const message = getMessageFormat(user, adjusted, mealKor);
     $('.cpf-kcal-left-message-wrapper .cpf-kcal-left-message').replaceWith(message);
 
     // 4. 탄단지 바 애니메이션 + 숫자 업데이트
