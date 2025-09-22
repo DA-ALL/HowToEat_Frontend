@@ -33,17 +33,16 @@ export function setupAjaxAuthInterceptor() {
             }
         
             // JWT 관련 에러
-            else if (errorResponse?.errorType === "INVALID_REFRESH_TOKEN") {
-                alert("유효하지 않은 리프레시 토큰입니다. 다시 로그인 해주세요.");
+            else if (errorResponse?.errorType === "INVALID_REFRESH_TOKEN" || errorResponse?.errorType === "INVALID_JWT") {
+                alert("유효하지않은 로그인입니다. 다시 로그인 해주세요.");
+                clearAuthTokensAndRedirect();
+                redirectToLogin();
+            } 
+            else if(errorResponse?.errorType === "EXPIRED_JWT") {
+                alert("로그인 유효기간이 만료되었습니다. 다시 로그인 해주세요.");
                 clearAuthTokensAndRedirect();
                 redirectToLogin();
             }
-            else if (errorResponse?.errorType === "INVALID_JWT") {
-                alert("유효하지 않은 토큰입니다. 다시 로그인 해주세요.");
-                clearAuthTokensAndRedirect();
-                redirectToLogin();
-            }
-        
             // 로그인 필요
             else if (errorResponse?.errorType === "REQUIRES_LOGIN") {
                 if (confirm("로그인이 필요한 서비스입니다.")) {
@@ -55,7 +54,13 @@ export function setupAjaxAuthInterceptor() {
             // 권한 에러
             else if (errorResponse?.errorType === "NOT_AVAILABLE_PERMISSION") {
                 alert("권한이 없습니다.");
-                window.location.href = "/admin/dashboard";
+
+                if (window.location.pathname === "/admin/dashboard") {
+                    clearAuthTokensAndRedirect();
+                    redirectToLogin();
+                } else {
+                    window.location.href = "/admin/dashboard";
+                }
 
             } else if (errorResponse?.errorType === "NOT_ADMIN_ACCOUNT") {
                 alert("관리자 계정이 아니므로 변경할 수 없습니다.");

@@ -61,6 +61,7 @@ export function updateButtonStateFavoriteFood(pageNumber) {
 export function validateInput($input) {
     var $inputType = $input;
     var $inputId = $inputType.attr('id');
+    var $signupProvider = $inputType.data('provider') || null;
     var value = $inputType.val().trim();
     var $wrapper = $inputType.closest('.input');
     var $parent = $inputType.closest('.input').parent();
@@ -69,12 +70,16 @@ export function validateInput($input) {
     var errorType = null;
 
     // 이름 인풋 에러 처리
-    if($inputId === 'name') {
-        if (value.length === 0) {// 공백 입력 시 에러타입 1
+    if ($inputId === 'name') {
+        if (value.length === 0) {
+            // 공백 입력 시 에러타입 1
             errorType = 1;
-        } else if (value.length === 1 || !nameRegex.test(value)) { // 한 글자 입력 시 에러타입 2
-            errorType = 2;
-        } 
+        } else if (value.length === 1 || !nameRegex.test(value)) {
+            // Apple 로그인인 경우에는 특수문자 허용 → errorType 2 제외
+            if ($signupProvider !== "APPLE") {
+                errorType = 2;
+            }
+        }
 
         if (errorType === 1) {
             $wrapper.removeClass('valid').addClass('error').attr('data-error', '1');
@@ -86,8 +91,8 @@ export function validateInput($input) {
             $wrapper.removeClass('error').addClass('valid').removeAttr('data-error');
             $parent.find('.error-wrapper').remove();  // 에러 메시지 제거
         }
-    } 
-    
+    }
+
     else if($inputId === 'height') {
         if (value.length === 0) { // 공백 입력 시 에러타입 1
             errorType = 1;

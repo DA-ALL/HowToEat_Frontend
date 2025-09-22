@@ -17,5 +17,6 @@ $(document).ready(function () {
     // 로그인 페이지 진입 시, 토큰 삭제 처리
     if (window.location.pathname.includes('login-page')) {
         localStorage.removeItem("Authorization");
+        localStorage.removeItem("surveyData");
     }
 });

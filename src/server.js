@@ -114,3 +114,8 @@ app.get([
   ], (req, res) => {
     res.sendFile(path.join(__dirname, '../public/administrate', 'main.html'));
   });
+
+  // admin 스플래쉬 화면
+  app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/administrate', 'splash.html'));
+});
