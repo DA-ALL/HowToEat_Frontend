@@ -279,7 +279,7 @@ function nextPage(pageNumber) {
             weight: parseFloat(storedData.weight),
             goal: storedData.goal,
             activityLevel: storedData.activity,
-            isNextGym: storedData.isNextGym === 'true',
+            isNextGym: storedData.isNextGym,
             signupProvider: storedData.signupProvider,
             profileImageUrl: storedData.profileImageUrl,
         };
